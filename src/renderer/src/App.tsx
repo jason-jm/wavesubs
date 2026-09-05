@@ -258,10 +258,22 @@ export default function App(): React.JSX.Element {
     setView('editor')
   }, [])
 
-  // 仅开发模式的冒烟钩子：让浏览器自动化不用先跑完一个真任务就能进编辑器
+  // 仅开发模式的钩子：浏览器自动化与截图脚本不用跑真任务就能把界面摆到任意状态。
+  // import.meta.env.DEV 在生产构建里是常量 false，整段会被摇掉
   useEffect(() => {
     if (import.meta.env.DEV) {
-      ;(window as unknown as { __openEditor?: typeof openEditor }).__openEditor = openEditor
+      const w = window as unknown as Record<string, unknown>
+      w.__openEditor = openEditor
+      w.__demo = {
+        setView,
+        setModelTab,
+        setJobState,
+        setLastInput,
+        setBatch: (entries: BatchEntry[]) => {
+          batchRef.current = entries
+          setBatch(entries)
+        }
+      }
     }
   }, [openEditor])
 

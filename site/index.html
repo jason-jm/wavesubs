@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wave Subs — 本地优先的视频字幕工作台</title>
+<meta name="description" content="Wave Subs：在你自己的电脑上识别、对齐、翻译、编辑视频字幕。Whisper 本地识别，内嵌字幕轨抽取，本地或云端翻译，批量队列，编辑器与视频预览。macOS（Apple Silicon）与 Windows。">
+<meta property="og:title" content="Wave Subs">
+<meta property="og:description" content="Local-first subtitles for your videos: transcribe, align, translate and edit — all on your own machine.">
+<meta property="og:image" content="assets/hero-wave.jpg">
+<link rel="icon" href="assets/icon.png">
+<style>
+  :root{
+    --bg:#0b0f17;--bg-2:#111827;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.09);
+    --text:#e8edf5;--text-2:#aab4c5;--text-3:#7b8798;
+    --teal:#5fd4d0;--coral:#ff9a7a;--accent:#7cc7ff;
+    --radius:16px;--max:1120px;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  [data-lang]{display:none}
+  html[data-ui="zh"] [data-lang="zh"],html[data-ui="en"] [data-lang="en"]{display:revert}
+  html[data-ui="zh"] span[data-lang="zh"],html[data-ui="en"] span[data-lang="en"]{display:inline}
+
+  /* ---- 顶栏 ---- */
+  header.top{position:sticky;top:0;z-index:10;backdrop-filter:saturate(180%) blur(14px);background:rgba(11,15,23,.72);border-bottom:1px solid var(--line)}
+  .top .wrap{display:flex;align-items:center;gap:20px;height:60px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.2px;color:var(--text)}
+  .brand img{width:26px;height:26px;border-radius:7px}
+  .top nav{margin-left:auto;display:flex;gap:22px;font-size:14px}
+  .top nav a{color:var(--text-2)}
+  .top nav a:hover{color:var(--text);text-decoration:none}
+  .lang-btn{background:var(--panel);border:1px solid var(--line);color:var(--text-2);border-radius:999px;padding:5px 12px;font-size:12.5px;cursor:pointer}
+  .lang-btn:hover{color:var(--text)}
+
+  /* ---- 首屏 ---- */
+  .hero{position:relative;overflow:hidden;padding:96px 0 40px;text-align:center}
+  .hero::before{content:"";position:absolute;inset:0;background:url(assets/hero-wave.jpg) center/cover no-repeat;opacity:.55;mask-image:linear-gradient(to bottom,#000 30%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 30%,transparent 100%)}
+  .hero .wrap{position:relative}
+  .hero h1{font-size:clamp(34px,5.4vw,60px);line-height:1.12;margin:0 0 18px;letter-spacing:-.5px;font-weight:700}
+  .hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--teal),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{font-size:clamp(16px,2vw,20px);color:var(--text-2);max-width:680px;margin:0 auto 34px}
+  .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:12px;font-weight:600;font-size:15px;border:1px solid var(--line);background:var(--panel);color:var(--text);transition:transform .15s,background .15s}
+  .btn:hover{text-decoration:none;background:rgba(255,255,255,.08);transform:translateY(-1px)}
+  .btn.primary{background:linear-gradient(135deg,#5fd4d0,#7cc7ff);color:#08131a;border-color:transparent}
+  .btn.primary:hover{filter:brightness(1.05)}
+  .btn small{font-weight:400;opacity:.75;font-size:12px}
+  .hero .note{margin-top:14px;font-size:12.5px;color:var(--text-3)}
+  .hero-shot{margin:56px auto 0;max-width:1040px;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:0 40px 120px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03) inset;background:#0f1117}
+  .hero-shot img{display:block;width:100%;height:auto}
+
+  /* ---- 章节 ---- */
+  section{padding:88px 0}
+  section h2{font-size:clamp(26px,3.4vw,38px);margin:0 0 10px;letter-spacing:-.3px}
+  section p.sub{color:var(--text-2);font-size:17px;max-width:720px;margin:0 0 36px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 20px}
+  .card h3{margin:0 0 8px;font-size:17px}
+  .card p{margin:0;color:var(--text-2);font-size:14.5px}
+  .card .k{display:inline-block;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,rgba(95,212,208,.25),rgba(124,199,255,.18));margin-bottom:12px;display:grid;place-items:center;color:var(--teal);font-weight:700}
+
+  /* ---- 交替图文 ---- */
+  .feature{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center;padding:36px 0}
+  .feature.flip{grid-template-columns:.85fr 1.15fr}
+  .feature.flip .shot{order:2}
+  .feature .shot{border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 24px 70px rgba(0,0,0,.5);background:#0f1117}
+  .feature .shot img{display:block;width:100%;height:auto}
+  .feature h3{font-size:24px;margin:0 0 10px}
+  .feature p{color:var(--text-2);margin:0 0 10px;font-size:15.5px}
+  .feature ul{margin:12px 0 0;padding-left:18px;color:var(--text-2);font-size:14.5px}
+  .feature li{margin:4px 0}
+  @media (max-width:860px){.feature,.feature.flip{grid-template-columns:1fr}.feature.flip .shot{order:0}}
+
+  /* ---- 隐私 ---- */
+  .privacy{background:linear-gradient(180deg,rgba(95,212,208,.06),transparent);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .privacy .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:24px}
+  .privacy .row div{padding:18px;border-radius:14px;background:var(--panel);border:1px solid var(--line);font-size:14.5px;color:var(--text-2)}
+  .privacy .row strong{display:block;color:var(--text);margin-bottom:6px;font-size:15px}
+
+  /* ---- 下载 ---- */
+  .dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+  .dl .card h3{display:flex;align-items:center;gap:10px}
+  .dl .req{font-size:13px;color:var(--text-3);margin-top:12px;line-height:1.7}
+  .dl .btn{margin-top:14px}
+  .dl code{background:rgba(255,255,255,.07);padding:1px 6px;border-radius:6px;font-size:12.5px}
+
+  /* ---- FAQ ---- */
+  details{border-top:1px solid var(--line);padding:16px 0}
+  details:last-of-type{border-bottom:1px solid var(--line)}
+  summary{cursor:pointer;font-weight:600;font-size:16px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::after{content:"+";color:var(--text-3);font-weight:400;font-size:20px}
+  details[open] summary::after{content:"–"}
+  details p{color:var(--text-2);margin:10px 0 0;font-size:15px}
+
+  footer{padding:40px 0 60px;color:var(--text-3);font-size:13.5px;border-top:1px solid var(--line)}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:18px;align-items:center}
+  footer nav{margin-left:auto;display:flex;gap:18px}
+  footer a{color:var(--text-2)}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="#"><img src="assets/icon.png" alt=""><span>Wave Subs</span></a>
+  <nav>
+    <a href="#features"><span data-lang="zh">功能</span><span data-lang="en">Features</span></a>
+    <a href="#privacy"><span data-lang="zh">隐私</span><span data-lang="en">Privacy</span></a>
+    <a href="#download"><span data-lang="zh">下载</span><span data-lang="en">Download</span></a>
+    <a href="#faq">FAQ</a>
+    <a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">GitHub</a>
+    <button class="lang-btn" id="lang" type="button">English</button>
+  </nav>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <h1 data-lang="zh">视频字幕，<em>在你自己的电脑上</em>完成</h1>
+  <h1 data-lang="en">Subtitles for your videos, <em>made on your own machine</em></h1>
+  <p class="lead" data-lang="zh">识别、对齐、翻译、编辑——不上传任何文件。本地 Whisper 语音识别，内嵌字幕轨直接抽取，本地大模型或你自己的云端接口翻译，整季批量处理。</p>
+  <p class="lead" data-lang="en">Transcribe, align, translate and edit — nothing is uploaded. Local Whisper speech recognition, embedded subtitle track extraction, translation by a local LLM or your own API, whole seasons in one queue.</p>
+  <div class="cta">
+    <a class="btn primary" id="dl-primary" href="#download"><span data-lang="zh">下载 macOS 版</span><span data-lang="en">Download for macOS</span> <small>Apple Silicon</small></a>
+    <a class="btn" id="dl-secondary" href="#download"><span data-lang="zh">下载 Windows 版</span><span data-lang="en">Download for Windows</span> <small>x64</small></a>
+  </div>
+  <p class="note" data-lang="zh">免费 · 无需注册 · 离线可用 · 32 种界面语言</p>
+  <p class="note" data-lang="en">Free · No account · Works offline · 32 interface languages</p>
+  <div class="hero-shot"><img src="assets/shots/zh-Hans-dark-editor.jpg" alt="Wave Subs editor with video preview" width="2880" height="1800"></div>
+</div></section>
+
+<section id="features"><div class="wrap">
+  <h2 data-lang="zh">从视频到字幕，一步到位</h2>
+  <h2 data-lang="en">From video to subtitles, in one pass</h2>
+  <p class="sub" data-lang="zh">拖进一个文件，出来一份可以直接用的字幕。中间的每一步都可以看见、可以改。</p>
+  <p class="sub" data-lang="en">Drop in a file, get back subtitles you can actually use. Every step in between is visible and editable.</p>
+  <div class="grid">
+    <div class="card"><div class="k">1</div><h3 data-lang="zh">本地语音识别</h3><h3 data-lang="en">Local speech recognition</h3>
+      <p data-lang="zh">whisper.cpp 在 Apple Silicon 上用 Metal 加速，自动检测语种。模型在应用内一键下载。</p>
+      <p data-lang="en">whisper.cpp with Metal acceleration on Apple Silicon, automatic language detection. Models download in one click inside the app.</p></div>
+    <div class="card"><div class="k">2</div><h3 data-lang="zh">时间轴精修</h3><h3 data-lang="en">Timing refinement</h3>
+      <p data-lang="zh">语音活动检测加响度分析，把识别出的句子贴回真实的说话时刻。参数用六部整片对照官方字幕反复校准。</p>
+      <p data-lang="en">Voice activity detection plus loudness analysis snap recognized lines back to when they were actually spoken. Tuned against official subtitles of six full-length films.</p></div>
+    <div class="card"><div class="k">3</div><h3 data-lang="zh">三种字幕来源</h3><h3 data-lang="en">Three subtitle sources</h3>
+      <p data-lang="zh">语音识别、MKV/MP4 内嵌字幕轨、外部字幕文件——18 种格式，编码自动识别，按语言自动选轨。</p>
+      <p data-lang="en">Speech recognition, embedded MKV/MP4 subtitle tracks, or external subtitle files — 18 formats, encoding auto-detected, track picked by language.</p></div>
+    <div class="card"><div class="k">4</div><h3 data-lang="zh">翻译，你说了算</h3><h3 data-lang="en">Translation on your terms</h3>
+      <p data-lang="zh">默认用本地 Qwen3，免费离线；也可以接任何 OpenAI 兼容接口。术语表让整季的人名前后一致。</p>
+      <p data-lang="en">Local Qwen3 by default — free and offline — or any OpenAI-compatible API. A glossary keeps names consistent across a whole season.</p></div>
+    <div class="card"><div class="k">5</div><h3 data-lang="zh">质检报告</h3><h3 data-lang="en">Quality report</h3>
+      <p data-lang="zh">每个文件跑完都体检：漏识别的段落、超长条、语速过快、缺译文、译文残留原文，直接告诉你该看哪。</p>
+      <p data-lang="en">Every file gets a health check: missed passages, overlong lines, unreadable speed, missing or half-done translations — it tells you exactly where to look.</p></div>
+    <div class="card"><div class="k">6</div><h3 data-lang="zh">不做重复的活</h3><h3 data-lang="en">Never redo work</h3>
+      <p data-lang="zh">识别结果和译文分层缓存。换个导出格式、换个翻译模型重跑，几秒钟；换了模型或术语表则严格重翻，绝不混用旧译文。</p>
+      <p data-lang="en">Recognition and translation are cached separately. Re-export or retry in seconds; change the model or glossary and it retranslates strictly — never mixing old output in.</p></div>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <div class="feature">
+    <div class="shot"><img src="assets/shots/zh-Hans-dark-home-done.jpg" alt="Conversion finished with quality report" width="2880" height="1800"></div>
+    <div>
+      <h3 data-lang="zh">编辑器，带视频预览</h3><h3 data-lang="en">An editor with video preview</h3>
+      <p data-lang="zh">改文字、调时间、增删合并、撤销、自动保存。点任意一行，直接听这句话怎么说的——哪怕是 HEVC、DTS 这类浏览器播不了的格式，随包的 ffmpeg 也能解出来。</p>
+      <p data-lang="en">Fix text, adjust timing, insert, delete, merge, undo, autosave. Click any line to hear exactly how it was said — even HEVC or DTS files a browser can't play; the bundled ffmpeg decodes them.</p>
+      <ul>
+        <li data-lang="zh">改过原文的行会标记「译文可能过期」，重译时只补这些行</li><li data-lang="en">Lines whose source you edited are flagged; retranslation touches only those</li>
+        <li data-lang="zh">质检发现可点击，直接跳到对应位置</li><li data-lang="en">Quality findings are clickable and jump to the spot</li>
+        <li data-lang="zh">字幕叠加实时反映你的修改</li><li data-lang="en">The subtitle overlay reflects your edits live</li>
+      </ul>
+    </div>
+  </div>
+  <div class="feature flip">
+    <div class="shot"><img src="assets/shots/zh-Hans-dark-batch.jpg" alt="Batch queue" width="2880" height="1800"></div>
+    <div>
+      <h3 data-lang="zh">整季一起跑，每集单独调</h3><h3 data-lang="en">Run a whole season, tune each episode</h3>
+      <p data-lang="zh">把一个文件夹拖进来。全部文件用同一套设置，需要的那几个再单独指定字幕轨、音轨或引擎。跑完的每一行都带质检结论。</p>
+      <p data-lang="en">Drop in a folder. Every file follows the shared settings; override the subtitle track, audio track or engine only where needed. Each finished row carries its quality verdict.</p>
+    </div>
+  </div>
+  <div class="feature">
+    <div class="shot"><img src="assets/shots/zh-Hans-dark-glossary.jpg" alt="Glossary" width="2880" height="1800"></div>
+    <div>
+      <h3 data-lang="zh">术语表与模型管理</h3><h3 data-lang="en">Glossary and models</h3>
+      <p data-lang="zh">人名、地名、专有名词固定译法，单文件和批量共用。识别模型和翻译模型按你这台机器的内存标注「合适 / 偏慢 / 跑不动」，不用猜。</p>
+      <p data-lang="en">Pin how names, places and terms are translated — shared by single files and batches. Recognition and translation models are labeled fit / slow / won't run for the memory in your machine, so there's nothing to guess.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="privacy" id="privacy"><div class="wrap">
+  <h2 data-lang="zh">隐私：默认什么都不发出去</h2>
+  <h2 data-lang="en">Privacy: nothing leaves your machine by default</h2>
+  <p class="sub" data-lang="zh">Wave Subs 没有账号、没有统计、没有服务器。它就是一个在你电脑上跑的程序。</p>
+  <p class="sub" data-lang="en">Wave Subs has no account, no analytics, no server. It is a program that runs on your computer.</p>
+  <div class="row">
+    <div><strong data-lang="zh">视频文件</strong><strong data-lang="en">Your video files</strong><span data-lang="zh">从不上传。识别、抽取、精修全部在本地完成。</span><span data-lang="en">Never uploaded. Recognition, extraction and refinement all happen locally.</span></div>
+    <div><strong data-lang="zh">云端翻译（可选）</strong><strong data-lang="en">Cloud translation (optional)</strong><span data-lang="zh">只有当你自己填入某个服务商的接口和密钥时，字幕文本才会发给那个服务商——由你选择、由你控制。</span><span data-lang="en">Only when you enter a provider's endpoint and key yourself is subtitle text sent to that provider — your choice, under your control.</span></div>
+    <div><strong data-lang="zh">模型下载</strong><strong data-lang="en">Model downloads</strong><span data-lang="zh">识别与翻译模型从公开的 Hugging Face 仓库下载，除此之外应用不联网。</span><span data-lang="en">Recognition and translation models come from public Hugging Face repositories; the app makes no other network requests.</span></div>
+  </div>
+</div></section>
+
+<section id="download"><div class="wrap">
+  <h2 data-lang="zh">下载</h2><h2 data-lang="en">Download</h2>
+  <p class="sub" data-lang="zh">版本 <span id="ver">1.0.0</span>。免费使用。ffmpeg 与 whisper.cpp 已随包附带，无需另装任何东西。</p>
+  <p class="sub" data-lang="en">Version <span id="ver-en">1.0.0</span>. Free. ffmpeg and whisper.cpp are bundled — nothing else to install.</p>
+  <div class="dl">
+    <div class="card">
+      <h3>macOS</h3>
+      <div class="req" data-lang="zh">macOS 12 或更新 · <strong>仅 Apple Silicon</strong>（M1 及之后）· 已由 Apple 公证</div>
+      <div class="req" data-lang="en">macOS 12 or later · <strong>Apple Silicon only</strong> (M1 and later) · Notarized by Apple</div>
+      <a class="btn primary" data-dl="mac-dmg" href="#"><span data-lang="zh">下载 DMG</span><span data-lang="en">Download DMG</span></a>
+      <div class="req"><a data-dl="mac-zip" href="#" data-lang="zh">或者 ZIP 压缩包</a><a data-dl="mac-zip" href="#" data-lang="en">or ZIP archive</a></div>
+    </div>
+    <div class="card">
+      <h3>Windows</h3>
+      <div class="req" data-lang="zh">Windows 10 或更新 · x64 · 建议 16 GB 内存</div>
+      <div class="req" data-lang="en">Windows 10 or later · x64 · 16 GB RAM recommended</div>
+      <a class="btn primary" data-dl="win-exe" href="#"><span data-lang="zh">下载安装程序</span><span data-lang="en">Download installer</span></a>
+      <div class="req"><a data-dl="win-zip" href="#" data-lang="zh">或者便携版 ZIP</a><a data-dl="win-zip" href="#" data-lang="en">or portable ZIP</a></div>
+    </div>
+  </div>
+  <p class="req" style="margin-top:22px;font-size:13.5px;color:var(--text-3)" data-lang="zh">首次使用会引导下载识别模型（large-v3 约 3 GB，也可选更小的）。开源组件许可见 <a href="https://github.com/jason-jm/wavesubs/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>。</p>
+  <p class="req" style="margin-top:22px;font-size:13.5px;color:var(--text-3)" data-lang="en">On first launch you'll be guided to download a recognition model (large-v3 is about 3 GB; smaller ones are available). Open-source component licenses: <a href="https://github.com/jason-jm/wavesubs/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>.</p>
+</div></section>
+
+<section id="faq" style="padding-top:0"><div class="wrap">
+  <h2>FAQ</h2>
+  <details><summary data-lang="zh">能完全离线用吗？</summary><summary data-lang="en">Does it work fully offline?</summary>
+    <p data-lang="zh">能。模型下载好之后，识别、精修、本地翻译、编辑、导出全部不需要联网。只有你主动配置的云端翻译需要网络。</p>
+    <p data-lang="en">Yes. Once models are downloaded, recognition, refinement, local translation, editing and export need no network. Only cloud translation you configure yourself does.</p></details>
+  <details><summary data-lang="zh">支持 Intel Mac 吗？</summary><summary data-lang="en">Is there an Intel Mac version?</summary>
+    <p data-lang="zh">目前没有。本地识别依赖 Apple Silicon 的 Metal 加速，Intel 机器上会慢到不实用。</p>
+    <p data-lang="en">Not currently. Local recognition relies on Metal acceleration on Apple Silicon; on Intel it would be too slow to be useful.</p></details>
+  <details><summary data-lang="zh">识别一部两小时的电影要多久？</summary><summary data-lang="en">How long does a two-hour film take?</summary>
+    <p data-lang="zh">M 系列芯片上用 Large v3 Turbo 大约 3～6 分钟，加上本地翻译再多几分钟。整季批量处理可以挂着跑。</p>
+    <p data-lang="en">Roughly 3–6 minutes with Large v3 Turbo on an M-series chip, plus a few more for local translation. Batch a whole season and let it run.</p></details>
+  <details><summary data-lang="zh">视频里已经有字幕轨了，还要识别吗？</summary><summary data-lang="en">My video already has a subtitle track — do I still need recognition?</summary>
+    <p data-lang="zh">不用。Wave Subs 会自动发现内嵌的文本字幕轨并优先使用（按语言自动选轨），直接进入翻译，比识别快得多也准得多。图形字幕（PGS/VobSub）除外。</p>
+    <p data-lang="en">No. Wave Subs detects embedded text subtitle tracks and prefers them (picked by language), skipping straight to translation — much faster and more accurate. Image-based subtitles (PGS/VobSub) are the exception.</p></details>
+  <details><summary data-lang="zh">Windows 上打开时提示「未知发布者」？</summary><summary data-lang="en">Windows shows an "unknown publisher" warning?</summary>
+    <p data-lang="zh">Windows 版尚未购买代码签名证书，SmartScreen 会对新程序提示。点「更多信息 → 仍要运行」即可；安装包的校验值发布在 GitHub Releases 页面。</p>
+    <p data-lang="en">The Windows build isn't code-signed yet, so SmartScreen warns about new programs. Click "More info → Run anyway"; checksums are published on the GitHub Releases page.</p></details>
+  <details><summary data-lang="zh">云端翻译要花钱吗？</summary><summary data-lang="en">Does cloud translation cost money?</summary>
+    <p data-lang="zh">取决于你选的服务商，费用由服务商向你收取，Wave Subs 不经手。默认的本地 Qwen3 翻译完全免费。</p>
+    <p data-lang="en">That depends on the provider you choose; they bill you directly and Wave Subs takes nothing. The default local Qwen3 translation is entirely free.</p></details>
+</div></section>
+
+<footer><div class="wrap">
+  <span>© 2026 Jiesi Ma · Wave Subs</span>
+  <nav>
+    <a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://github.com/jason-jm/wavesubs/issues" target="_blank" rel="noopener"><span data-lang="zh">反馈问题</span><span data-lang="en">Report an issue</span></a>
+    <a href="https://github.com/jason-jm/wavesubs/blob/main/CHANGELOG.md" target="_blank" rel="noopener"><span data-lang="zh">更新日志</span><span data-lang="en">Changelog</span></a>
+  </nav>
+</div></footer>
+
+<script>
+  // 下载地址集中在这里：换托管位置只改这一处
+  const VERSION = '1.0.0';
+  const BASE = 'https://github.com/jason-jm/wavesubs/releases/download/v' + VERSION + '/';
+  const FILES = {
+    'mac-dmg': 'Wave.Subs-' + VERSION + '-arm64.dmg',
+    'mac-zip': 'Wave.Subs-' + VERSION + '-arm64-mac.zip',
+    'win-exe': 'Wave.Subs.Setup.' + VERSION + '.exe',
+    'win-zip': 'Wave.Subs-' + VERSION + '-win.zip'
+  };
+  document.querySelectorAll('[data-dl]').forEach((a) => { a.href = BASE + FILES[a.dataset.dl]; });
+  // 首屏按钮按访客系统排序：Windows 访客把 Windows 放前面
+  const isWin = /Windows/i.test(navigator.userAgent);
+  const p = document.getElementById('dl-primary'), s = document.getElementById('dl-secondary');
+  p.href = BASE + FILES[isWin ? 'win-exe' : 'mac-dmg']; s.href = BASE + FILES[isWin ? 'mac-dmg' : 'win-exe'];
+  if (isWin) { p.parentNode.insertBefore(s, p); }
+  // 语言：按浏览器语言默认，按钮切换并记住
+  const root = document.documentElement;
+  const saved = localStorage.getItem('ws-lang');
+  const initial = saved || (/^zh/i.test(navigator.language) ? 'zh' : 'en');
+  const apply = (l) => { root.dataset.ui = l; root.lang = l === 'zh' ? 'zh-Hans' : 'en';
+    document.getElementById('lang').textContent = l === 'zh' ? 'English' : '中文';
+    document.title = l === 'zh' ? 'Wave Subs — 本地优先的视频字幕工作台' : 'Wave Subs — Local-first subtitles for your videos'; };
+  apply(initial);
+  document.getElementById('lang').addEventListener('click', () => { const l = root.dataset.ui === 'zh' ? 'en' : 'zh'; localStorage.setItem('ws-lang', l); apply(l); });
+</script>
+</body>
+</html>
