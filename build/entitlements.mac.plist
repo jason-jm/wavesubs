@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!--
+    公证（notarization）强制要求开启 Hardened Runtime，而 Hardened Runtime 会禁掉
+    Electron 必需的几件事。下面每一条都是不加就跑不起来的，不是随手抄的模板。
+  -->
+
+  <!-- V8 要 JIT 编译 JavaScript，禁掉直接白屏 -->
+  <key>com.apple.security.cs.allow-jit</key>
+  <true/>
+  <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+  <true/>
+
+  <!--
+    我们要拉起随包分发的 ffmpeg / whisper-cli / llama-server 子进程。
+    这些二进制由我们自己签，但它们加载的 dylib 不在 Apple 的信任链里，
+    没有这一条会被 library validation 直接拦下。
+  -->
+  <key>com.apple.security.cs.disable-library-validation</key>
+  <true/>
+
+  <!-- 子进程靠环境变量定位随包资源 -->
+  <key>com.apple.security.cs.allow-dyld-environment-variables</key>
+  <true/>
+
+  <!--
+    用户要能读任意位置的视频、往视频同目录写字幕。
+    没有开沙盒（非 App Store 分发），这两条是给 Hardened Runtime 下的文件访问兜底。
+  -->
+  <key>com.apple.security.files.user-selected.read-write</key>
+  <true/>
+</dict>
+</plist>

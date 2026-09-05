@@ -1,0 +1,148 @@
+{
+  "name": "wavesubs",
+  "productName": "Wave Subs",
+  "version": "1.0.0",
+  "description": "Turn any video into translated subtitles (macOS)",
+  "private": true,
+  "type": "module",
+  "main": "out/main/index.js",
+  "author": {
+    "name": "Wave Subs"
+  },
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "cli": "tsx scripts/cli.ts",
+    "typecheck": "tsc --noEmit -p . && tsc --noEmit -p src/renderer",
+    "check-i18n": "tsx scripts/check-i18n.ts",
+    "gen-i18n": "tsx scripts/gen-i18n-registry.ts",
+    "make-icon": "tsx scripts/make-icon.ts",
+    "dist": "npm run build && electron-builder --mac --arm64 -c.mac.identity=null -c.mac.hardenedRuntime=false -c.mac.target=dir && tsx scripts/sign.ts",
+    "check-css": "node scripts/check-css.mjs",
+    "check-batch": "tsx scripts/check-batch.ts",
+    "release": "npm run build && tsx scripts/bundle-deps.ts && electron-builder --mac --arm64",
+    "bundle-deps": "tsx scripts/bundle-deps.ts",
+    "release:win": "npm run build && tsx scripts/bundle-deps-win.ts && electron-builder --win --x64",
+    "bundle-deps:win": "tsx scripts/bundle-deps-win.ts",
+    "check-cache": "tsx scripts/check-cache.ts",
+    "check-glossary": "tsx scripts/check-glossary.ts",
+    "check-qc": "tsx scripts/check-qc.ts",
+    "check-editor": "tsx scripts/check-editor.ts",
+    "check-preview": "tsx scripts/check-preview.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.0",
+    "electron": "^38.2.0",
+    "electron-builder": "^26.15.3",
+    "electron-vite": "^4.0.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tsx": "^4.20.4",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.4"
+  },
+  "build": {
+    "appId": "com.wavesubs.desktop",
+    "productName": "Wave Subs",
+    "copyright": "Wave Subs",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "out/**/*",
+      "package.json",
+      "!**/*.map"
+    ],
+    "mac": {
+      "category": "public.app-category.video",
+      "icon": "build/icon.icns",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "darkModeSupport": true,
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "Wave Subs 不使用麦克风。",
+        "LSMinimumSystemVersion": "12.0"
+      },
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "notarize": true,
+      "extraResources": [
+        {
+          "from": "vendor/",
+          "to": "vendor/",
+          "filter": [
+            "**/*"
+          ]
+        }
+      ]
+    },
+    "dmg": {
+      "title": "Wave Subs ${version}",
+      "contents": [
+        {
+          "x": 180,
+          "y": 190,
+          "type": "file"
+        },
+        {
+          "x": 460,
+          "y": 190,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "extraResources": [
+        {
+          "from": "vendor-win/",
+          "to": "vendor/",
+          "filter": [
+            "**/*"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "shortcutName": "Wave Subs",
+      "deleteAppDataOnUninstall": false
+    }
+  }
+}

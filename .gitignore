@@ -1,0 +1,11 @@
+node_modules/
+out/
+dist/
+release/
+models/
+vendor/
+vendor-win/
+eval/
+*.log
+.DS_Store
+.claude/

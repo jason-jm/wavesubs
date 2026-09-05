@@ -1,0 +1,2343 @@
+/* ============================================================
+   Wave Subs 设计系统 —— 渐变外壳
+   参照 Arc：整扇窗铺一层柔和渐变，内容是浮在渐变上的圆角卡片，
+   渐变从四周露出来当画框。侧边栏不再是一块材质，而是直接坐在渐变上。
+   渐变色标由主进程的主题设置注入到 --grad-* 变量。
+   ============================================================ */
+
+:root {
+  color-scheme: light dark;
+
+  /* 圆角 */
+  --r-xs: 5px;
+  --r-sm: 8px;
+  --r-md: 11px;
+  --r-lg: 15px;
+  --r-xl: 20px;
+  /* 内容卡片的圆角要比窗口圆角小一点，否则贴边处看着"胀" */
+  --r-pane: 13px;
+
+  /* 间距（8pt 栅格） */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+
+  /* 经典滚动条会占据布局宽度（不是 macOS 的浮层式），所以宽度要参与 padding 计算 */
+  --scrollbar-w: 10px;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* 弹一下的曲线，只给"出现/选中"这类正反馈用 */
+  --ease-pop: cubic-bezier(0.34, 1.4, 0.5, 1);
+
+  /* —— 渐变（由 JS 按当前主题写入）—— */
+  --grad-1: #CCE6EB;
+  --grad-2: #AEC7E0;
+  --grad-3: #9AA2D6;
+  --grad-angle: 155deg;
+  --grain: 0.5;
+
+  /* —— 浅色 —— */
+  /* 以下三个只是首帧的兜底值，运行时由 theme.ts 按当前配色算好覆盖掉。
+     取默认配色（海雾）推出来的强调色，这样即使 JS 没跑起来也和渐变是一套 */
+  --accent: hsl(232 42% 44%);
+  --accent-hover: hsl(232 42% 37%);
+  --accent-quiet: hsl(232 42% 44% / 0.13);
+  --on-accent: #fff;
+
+  --green: #1e7f39;
+  --orange: #a24a00;
+  --red: #cc0013;
+  --purple: #7f3ea3;
+
+  /* 内容卡片：浮在渐变上的那张"纸" */
+  --pane: #ffffff;
+  --pane-edge: rgba(255, 255, 255, 0.5);
+  --bg-card: rgba(120, 120, 128, 0.055);
+  --bg-card-hover: rgba(120, 120, 128, 0.085);
+  --bg-control: #ffffff;
+  --bg-control-hover: #f6f6f8;
+  --bg-fill: rgba(120, 120, 128, 0.11);
+  --bg-fill-hover: rgba(120, 120, 128, 0.19);
+
+  --text-1: #1a1a1f;
+  --text-2: #62626b;
+  --text-3: #8a8a93;
+
+  --line: rgba(0, 0, 0, 0.075);
+  --line-strong: rgba(0, 0, 0, 0.14);
+
+  --shadow-card: none;
+  --shadow-pane: 0 10px 34px rgba(20, 20, 40, 0.14), 0 2px 8px rgba(20, 20, 40, 0.08);
+  --shadow-pop: 0 12px 36px rgba(20, 20, 40, 0.22), 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+  --shadow-btn: 0 1px 2px rgba(0, 0, 0, 0.08), 0 0 0 0.5px rgba(0, 0, 0, 0.07);
+
+  --meter-on: #5a5a62;
+  --meter-off: rgba(0, 0, 0, 0.11);
+
+  /* 渐变之上的前景色。浅底渐变用深字，深底渐变用浅字，
+     由 JS 量出渐变亮度后在 <html> 上打 data-grad 标记来切换 */
+  --on-grad: rgba(28, 26, 38, 0.9);
+  --on-grad-dim: rgba(28, 26, 38, 0.56);
+  --pill: rgba(255, 255, 255, 0.92);
+  --pill-shadow: 0 2px 6px rgba(20, 20, 40, 0.14);
+  --grad-hover: rgba(255, 255, 255, 0.34);
+}
+
+:root[data-grad='dark'] {
+  --on-grad: rgba(255, 255, 255, 0.94);
+  --on-grad-dim: rgba(255, 255, 255, 0.62);
+  --pill: rgba(255, 255, 255, 0.18);
+  --pill-shadow: 0 2px 6px rgba(0, 0, 0, 0.24);
+  --grad-hover: rgba(255, 255, 255, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent: hsl(232 42% 68%);
+    --accent-hover: hsl(232 42% 76%);
+    --accent-quiet: hsl(232 42% 68% / 0.22);
+
+    --green: #3ad865;
+    --orange: #ffa62b;
+    --red: #ff5b52;
+    --purple: #c777f2;
+
+    --pane: #1b1c20;
+    --pane-edge: rgba(255, 255, 255, 0.07);
+    --bg-card: rgba(255, 255, 255, 0.045);
+    --bg-card-hover: rgba(255, 255, 255, 0.075);
+    --bg-control: rgba(255, 255, 255, 0.09);
+    --bg-control-hover: rgba(255, 255, 255, 0.14);
+    --bg-fill: rgba(255, 255, 255, 0.09);
+    --bg-fill-hover: rgba(255, 255, 255, 0.16);
+
+    --text-1: #f2f2f5;
+    --text-2: #a0a0aa;
+    --text-3: #82828c;
+
+    --line: rgba(255, 255, 255, 0.085);
+    --line-strong: rgba(255, 255, 255, 0.17);
+
+    --shadow-pane: 0 14px 40px rgba(0, 0, 0, 0.5), 0 2px 10px rgba(0, 0, 0, 0.3);
+    --shadow-pop: 0 14px 40px rgba(0, 0, 0, 0.55), 0 0 0 0.5px rgba(255, 255, 255, 0.09);
+    --shadow-btn: 0 1px 2px rgba(0, 0, 0, 0.3), 0 0 0 0.5px rgba(255, 255, 255, 0.08);
+
+    --meter-on: #b4b4bc;
+    --meter-off: rgba(255, 255, 255, 0.14);
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  /* 前半段是 macOS 的系统字体，后半段是 Windows 的（Segoe UI 拉丁 + 微软雅黑中文）。
+     两边都列出来，同一份 CSS 在两个平台上才都用得上系统原生字体而不是回退到默认无衬线。 */
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue',
+    'Segoe UI', 'Microsoft YaHei', 'Segoe UI Emoji', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-1);
+  background: transparent;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  cursor: default;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--accent-quiet);
+}
+
+/* ============================ 应用骨架 ============================ */
+
+.app {
+  position: relative;
+  display: grid;
+  /* 窄轨道：图标在上、标题在下。88px 是按最长的导航词定的——
+     德语 Einstellungen / 丹麦语 Indstillinger 都是 13 个字符且无法断词 */
+  grid-template-columns: 88px 1fr;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(var(--grad-angle), var(--grad-1), var(--grad-2) 52%, var(--grad-3));
+}
+
+/**
+ * 颗粒噪点。大面积平滑渐变在 8bit 显示器上会出现明显色带，铺一层噪点能把台阶打散。
+ *
+ * 两个关键点，都是量出来的不是估的（用高通滤波后的像素标准差衡量强度）：
+ *
+ * 1. **必须先把噪点的对比度拉开**。feTurbulence 的输出集中在中灰附近，而
+ *    overlay 混合对中灰几乎是空操作——不做处理时颗粒强度只有 0.4 个灰阶，
+ *    等于看不见。用 feComponentTransfer 以 0.5 为中心把范围放大 3 倍之后，
+ *    同样的不透明度能到 5 个灰阶。
+ * 2. **data URI 只能做最小转义**。用 encodeURIComponent 全量编码的话
+ *    Chrome 会静默拒绝加载，不报错、不渲染，只是什么都没有。
+ */
+.app::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: '';
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='3' intercept='-1'/%3E%3CfeFuncG type='linear' slope='3' intercept='-1'/%3E%3CfeFuncB type='linear' slope='3' intercept='-1'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  /* grain=0.5 约 4 个灰阶，grain=1 约 8 个——再高就从"胶片感"变成"脏" */
+  opacity: calc(var(--grain) * 0.55);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.app > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------------------------- 侧边栏 ---------------------------- */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  /* grid 项默认 min-height:auto 会被内容撑高，必须归零 */
+  min-height: 0;
+  -webkit-app-region: drag;
+}
+
+/* 纯占位：交通灯几乎占满窄轨道的宽度，导航必须整体下移让开 */
+.sidebar-top {
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--sp-2) 8px 0;
+  -webkit-app-region: no-drag;
+}
+
+/* 图标在上、标题在下的方块条目 */
+.nav-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  /* 预留两行文字的高度，长词换行时条目不会忽高忽低 */
+  min-height: 68px;
+  padding: 9px 3px;
+  font-size: 10.5px;
+  font-weight: 550;
+  line-height: 1.25;
+  color: var(--on-grad-dim);
+  text-align: center;
+  cursor: default;
+  background: transparent;
+  border: none;
+  border-radius: var(--r-md);
+  /* 多词标题正常换行；单个超长词兜底断开 */
+  overflow-wrap: break-word;
+  transition: background 0.16s var(--ease), color 0.16s var(--ease),
+    box-shadow 0.16s var(--ease), transform 0.14s var(--ease-pop);
+}
+
+.nav-item:hover {
+  color: var(--on-grad);
+  background: var(--grad-hover);
+}
+
+.nav-item-active,
+.nav-item-active:hover {
+  color: var(--text-1);
+  background: var(--pill);
+  box-shadow: var(--pill-shadow);
+}
+
+:root[data-grad='dark'] .nav-item-active,
+:root[data-grad='dark'] .nav-item-active:hover {
+  color: var(--on-grad);
+}
+
+.nav-item:active:not(.nav-item-active) {
+  transform: scale(0.96);
+}
+
+.nav-item svg {
+  color: currentColor;
+  flex-shrink: 0;
+}
+
+.nav-item-active svg {
+  color: var(--accent);
+}
+
+:root[data-grad='dark'] .nav-item-active svg {
+  color: currentColor;
+}
+
+/* 设置钉在轨道底部 */
+.nav-bottom {
+  margin-top: auto;
+  padding-bottom: var(--sp-3);
+}
+
+/* ---------------------------- 内容区 ---------------------------- */
+
+/**
+ * 内容是一张浮在渐变上的纸。四边留出的空隙就是 Arc 的"画框"，
+ * 左边不留——渐变已经被侧边栏占着了，再留一道会显得窗口被切成两半。
+ */
+.content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  margin: 10px 10px 10px 0;
+  overflow: hidden;
+  background: var(--pane);
+  border-radius: var(--r-pane);
+  box-shadow: var(--shadow-pane), inset 0 0 0 0.5px var(--pane-edge);
+}
+
+/**
+ * 纸面上的纹理。
+ *
+ * 渐变只占窗口的一成一（88px 侧栏 + 10px 画框），颗粒全铺在那上面的话，
+ * 用户看的那八成九的正文区域一点纹理都没有——把滑块拉满也感觉不到变化。
+ *
+ * 但纸面不能复用渐变那张噪点：`overlay` 混合会原样保留纯黑和纯白，
+ * 叠在 #fff 的纸上是彻底的空操作。所以浅色用 multiply 配一张高调噪点
+ * （中心 0.9、幅度足够——第一版把值域压到 0.82~1.0，噪点自身标准差只剩 3 个灰阶，
+ * 铺上去等于没有）；深色纸是 #1b1c20，
+ * overlay 在暗背景上反而很有效，直接用渐变那张。
+ */
+.content::after {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  content: '';
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.25' intercept='0.29'/%3E%3CfeFuncG type='linear' slope='1.25' intercept='0.29'/%3E%3CfeFuncB type='linear' slope='1.25' intercept='0.29'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23p)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: calc(var(--grain) * 0.36);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .content::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='k'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='3' intercept='-1'/%3E%3CfeFuncG type='linear' slope='3' intercept='-1'/%3E%3CfeFuncB type='linear' slope='3' intercept='-1'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23k)'/%3E%3C/svg%3E");
+    /* 深色纸上 overlay 很有效，同样的强度会比浅色重一倍，所以要压 */
+    opacity: calc(var(--grain) * 0.28);
+    mix-blend-mode: overlay;
+  }
+}
+
+.toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-6) var(--sp-8) var(--sp-4);
+  -webkit-app-region: drag;
+}
+
+.toolbar h1 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.022em;
+}
+
+.toolbar p {
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: var(--sp-2);
+  padding-bottom: 2px;
+  -webkit-app-region: no-drag;
+}
+
+/**
+ * 滚动区。展开「单独设置」会把内容撑过一屏，滚动条随即出现——它是占布局宽度的
+ * 经典滚动条，于是内容区凭空窄掉 10px，整页向左一跳。scrollbar-gutter: stable
+ * 让槽位常驻，有没有滚动条的布局完全一致。
+ *
+ * 槽位在 padding 之外，右侧总内缩会变成 padding + 10px，比左侧宽一截；
+ * 所以右 padding 要把这 10px 扣回来，让内容左右仍然对称。
+ */
+.scroll {
+  flex: 1;
+  min-height: 0;
+  padding: var(--sp-4) calc(var(--sp-8) - var(--scrollbar-w)) var(--sp-8) var(--sp-8);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.scroll::-webkit-scrollbar {
+  width: var(--scrollbar-w);
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background: transparent;
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 5px;
+}
+
+.scroll:hover::-webkit-scrollbar-thumb {
+  background: var(--bg-fill-hover);
+  background-clip: padding-box;
+}
+
+/* ============================ 通用件 ============================ */
+
+/**
+ * 分组卡片。内容区本身已经是浮在渐变上的一张纸，卡片再用"白底+投影"
+ * 就成了纸上叠纸，层次会糊。改成极淡的填充加一道发丝线，靠明度差分组。
+ */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--r-lg);
+  box-shadow: inset 0 0 0 0.5px var(--line);
+}
+
+.card + .card,
+.section + .section {
+  margin-top: var(--sp-5);
+}
+
+.section-title {
+  padding: 0 var(--sp-1) var(--sp-2);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  letter-spacing: 0.01em;
+}
+
+.section-note {
+  padding: var(--sp-2) var(--sp-1) 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--text-3);
+}
+
+/* 分组行：标签在左、控件在右，行间发丝分隔线 */
+.row {
+  display: flex;
+  gap: var(--sp-4);
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: var(--sp-2) var(--sp-4);
+}
+
+.row + .row {
+  box-shadow: inset 0 0.5px 0 var(--line);
+}
+
+.row-label {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.row-label strong {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.row-label span {
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+.row-control {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.row-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: stretch;
+  padding: var(--sp-3) var(--sp-4);
+}
+
+/* ---------------------------- 按钮 ---------------------------- */
+
+.btn {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  height: 29px;
+  padding: 0 13px;
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--text-1);
+  white-space: nowrap;
+  cursor: default;
+  background: var(--bg-control);
+  border: none;
+  /* 圆角比原来大一档：Arc 里所有可点的东西都偏圆，方角只留给容器 */
+  border-radius: 9px;
+  box-shadow: var(--shadow-btn);
+  transition: background 0.14s var(--ease), transform 0.08s var(--ease),
+    box-shadow 0.14s var(--ease);
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--bg-control-hover);
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.975);
+}
+
+.btn:disabled {
+  color: var(--text-3);
+  opacity: 0.55;
+}
+
+/* 主按钮用当前主题的渐变色，而不是固定蓝——整个界面才像一套东西 */
+.btn-primary {
+  color: var(--on-accent);
+  background: linear-gradient(140deg, var(--grad-2), var(--grad-3));
+  box-shadow: 0 2px 8px rgba(20, 20, 40, 0.2), inset 0 0.5px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.btn-lg {
+  border-radius: 11px;
+}
+
+/* 禁用只降不透明度，不能改成另一种底色——改底色会让按钮在禁用时
+   脱离主题（实测：主题是薰衣草，禁用的主按钮却是系统蓝） */
+.btn-primary:disabled {
+  color: rgba(255, 255, 255, 0.72);
+  opacity: 0.55;
+}
+
+.btn-lg {
+  height: 35px;
+  padding: 0 19px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.btn-quiet {
+  background: transparent;
+  box-shadow: none;
+}
+
+.btn-quiet:hover:not(:disabled) {
+  background: var(--bg-fill);
+}
+
+.btn-danger {
+  color: var(--red);
+}
+
+/**
+ * 展开中的「单独设置」按钮。
+ *
+ * 两条选择器缺一不可，都是被实际撞出来的：
+ * - `.btn.btn-on`（0,2,0）而不是 `.btn-on`（0,1,0）：后者和 `.btn` 同优先级，
+ *   靠先后顺序取胜太脆。这和 `.segmented button.segmented-on` 是同一个坑。
+ * - 还必须显式盖住 hover 态：`.btn:hover:not(:disabled)`（0,3,0）比 `.btn.btn-on`
+ *   还高，会把渐变背景换回 `--bg-control-hover`，而白字来自本规则照旧生效——
+ *   于是「点开之后鼠标还停在按钮上」的那一刻，白字落在近乎白色的底上，整个按钮
+ *   看起来是空的。截图里就是这么发现的。
+ */
+.btn.btn-on,
+.btn.btn-on:hover:not(:disabled) {
+  color: var(--on-accent);
+  background: linear-gradient(140deg, var(--grad-2), var(--grad-3));
+  box-shadow: 0 1px 3px rgba(20, 20, 40, 0.22), inset 0 0.5px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* ---------------------------- 表单控件 ---------------------------- */
+
+.select {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.select select {
+  min-width: 132px;
+  max-width: 320px;
+  height: 29px;
+  padding: 0 26px 0 11px;
+  font-size: 13px;
+  cursor: default;
+  background: var(--bg-control);
+  border: none;
+  border-radius: 9px;
+  box-shadow: var(--shadow-btn);
+  outline: none;
+  appearance: none;
+  transition: background 0.12s var(--ease);
+}
+
+.select select:hover:not(:disabled) {
+  background: var(--bg-control-hover);
+}
+
+.select select:disabled {
+  color: var(--text-3);
+  opacity: 0.55;
+}
+
+.select::after {
+  position: absolute;
+  inset-inline-end: 9px;
+  width: 9px;
+  height: 9px;
+  pointer-events: none;
+  content: '';
+  border-right: 1.4px solid var(--text-3);
+  border-bottom: 1.4px solid var(--text-3);
+  border-radius: 1px;
+  transform: translateY(-2px) rotate(45deg) scale(0.72);
+}
+
+.select-wide select {
+  min-width: 220px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field-label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+.input {
+  height: 31px;
+  padding: 0 11px;
+  font-size: 13px;
+  color: var(--text-1);
+  user-select: text;
+  cursor: text;
+  background: var(--bg-control);
+  border: none;
+  border-radius: 9px;
+  box-shadow: var(--shadow-btn);
+  outline: none;
+  transition: box-shadow 0.14s var(--ease);
+}
+
+.input::placeholder {
+  color: var(--text-3);
+}
+
+.input:focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--grad-2) 26%, transparent),
+    0 0 0 1px var(--grad-2);
+}
+
+/* 分段控件 */
+.segmented {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--bg-fill);
+  border-radius: var(--r-sm);
+}
+
+.segmented button {
+  height: 24px;
+  padding: 0 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  /* 未选中的压暗一档，让选中/未选中除了底色还有字色差 */
+  color: var(--text-2);
+  cursor: default;
+  background: transparent;
+  border: none;
+  border-radius: 5px;
+  transition: background 0.14s var(--ease), color 0.14s var(--ease);
+}
+
+/* 原来 hover 用的是 --bg-fill，和轨道底色是同一个值，等于没有 hover 反馈 */
+.segmented button:hover:not(.segmented-on):not(:disabled) {
+  color: var(--text-1);
+  background: var(--bg-fill-hover);
+}
+
+/**
+ * 选中态用强调色填充，和侧边栏、子标签页是同一套选中语言。
+ *
+ * 必须写成 `.segmented button.segmented-on` 而不是 `.segmented-on`：
+ * 后者优先级 (0,1,0) 低于上面的 `.segmented button` (0,1,1)，
+ * background 会被 transparent 盖掉——原来那版白底压根没画出来，
+ * 选中项和未选中项的差别只剩 box-shadow 那圈 0.5px 描边，所以看着几乎一样。
+ */
+.segmented button.segmented-on {
+  font-weight: 600;
+  color: var(--on-accent);
+  background: linear-gradient(140deg, var(--grad-2), var(--grad-3));
+  box-shadow: 0 1px 3px rgba(20, 20, 40, 0.22), inset 0 0.5px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* 批量跑起来后整组会禁用，但「当前选的是哪个」仍然要看得出来 */
+.segmented button:disabled {
+  opacity: 0.5;
+}
+
+.segmented button.segmented-on:disabled {
+  color: var(--on-accent);
+  opacity: 0.75;
+}
+
+/* 开关 */
+.switch {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  cursor: default;
+  background: var(--bg-fill-hover);
+  border: none;
+  border-radius: 11px;
+  transition: background 0.18s var(--ease);
+}
+
+.switch::after {
+  position: absolute;
+  top: 2px;
+  inset-inline-start: 2px;
+  width: 18px;
+  height: 18px;
+  content: '';
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition: transform 0.18s var(--ease);
+}
+
+.switch-on {
+  background: var(--accent);
+}
+
+.switch-on::after {
+  transform: translateX(16px);
+}
+
+/* ---------------------------- 标签 ---------------------------- */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 19px;
+  padding: 0 8px;
+  font-size: 10.5px;
+  font-weight: 650;
+  letter-spacing: 0.005em;
+  border-radius: 6px;
+}
+
+.tag-accent {
+  color: var(--accent);
+  background: var(--accent-quiet);
+}
+
+.tag-green {
+  color: var(--green);
+  background: color-mix(in srgb, var(--green) 16%, transparent);
+}
+
+.tag-orange {
+  color: var(--orange);
+  background: color-mix(in srgb, var(--orange) 16%, transparent);
+}
+
+.tag-red {
+  color: var(--red);
+  background: color-mix(in srgb, var(--red) 16%, transparent);
+}
+
+.tag-purple {
+  color: var(--purple);
+  background: color-mix(in srgb, var(--purple) 16%, transparent);
+}
+
+.tag-quiet {
+  color: var(--text-2);
+  background: var(--bg-fill);
+}
+
+/* ---------------------------- 提示条 ---------------------------- */
+
+/* 提示条左边一道竖色条，和硬件信息条同一套语言；纯色块提示太像系统弹窗 */
+.notice {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+  padding: 11px var(--sp-4);
+  font-size: 12.5px;
+  border-inline-start: 2.5px solid currentColor;
+  border-radius: var(--r-md);
+}
+
+.notice svg {
+  flex-shrink: 0;
+}
+
+.notice p {
+  flex: 1;
+  min-width: 0;
+}
+
+.notice-warn {
+  color: var(--orange);
+  background: color-mix(in srgb, var(--orange) 12%, transparent);
+}
+
+.notice-error {
+  color: var(--red);
+  background: color-mix(in srgb, var(--red) 12%, transparent);
+}
+
+.notice + * {
+  margin-top: var(--sp-4);
+}
+
+/* ============================ 转换页 ============================ */
+
+/* 空态铺满内容区，整块都是投放目标 */
+.home-empty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  min-height: 100%;
+}
+
+.home-empty > .dropzone {
+  flex: 1 1 auto;
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: var(--sp-8);
+  text-align: center;
+  cursor: default;
+  background: var(--bg-card);
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--r-xl);
+  transition: border-color 0.16s var(--ease), background 0.16s var(--ease),
+    transform 0.16s var(--ease);
+}
+
+.dropzone:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--grad-2);
+}
+
+/* 拖进来的瞬间用主题渐变点亮，比一块死板的强调色更像"接住了" */
+.dropzone-over {
+  background: linear-gradient(140deg, var(--grad-1), var(--grad-2));
+  border-color: transparent;
+  border-style: solid;
+  transform: scale(1.006);
+}
+
+.dropzone-glyph {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin-bottom: var(--sp-2);
+  color: #fff;
+  background: linear-gradient(140deg, var(--grad-2), var(--grad-3));
+  border-radius: 17px;
+  box-shadow: 0 4px 14px rgba(20, 20, 40, 0.18);
+}
+
+.dropzone h2 {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.dropzone p {
+  max-width: 460px;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+.dropzone p b {
+  font-weight: 500;
+  color: var(--text-1);
+}
+
+.dropzone .btn {
+  margin-top: var(--sp-3);
+}
+
+/* 任务卡片 */
+.job-head {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: flex-start;
+  padding: var(--sp-4);
+}
+
+.job-glyph {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  color: var(--accent);
+  background: var(--accent-quiet);
+  border-radius: var(--r-md);
+}
+
+.job-title {
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+.job-meta {
+  margin-top: 3px;
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+
+.job-actions {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+  padding: var(--sp-3) var(--sp-4);
+  box-shadow: inset 0 0.5px 0 var(--line);
+}
+
+.job-actions .spacer {
+  flex: 1;
+}
+
+.lang-flow {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+}
+
+.lang-arrow {
+  color: var(--text-3);
+}
+
+/* 进度 */
+.progress-card {
+  padding: var(--sp-5) var(--sp-5) var(--sp-4);
+}
+
+.progress-head {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-3);
+}
+
+.progress-pct {
+  font-size: 22px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/**
+ * 进度条。转一部长片要几分钟，这条是用户盯着看最久的东西，
+ * 所以给它主题渐变、外发光和一道流动高光——纯色直条撑不住这么长时间的注视。
+ */
+.track {
+  position: relative;
+  height: 8px;
+  overflow: hidden;
+  background: var(--bg-fill);
+  border-radius: 999px;
+  box-shadow: inset 0 0.5px 1px rgba(0, 0, 0, 0.06);
+}
+
+.track-fill {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--grad-1), var(--grad-2) 45%, var(--grad-3));
+  border-radius: 999px;
+  box-shadow: 0 0 10px -1px var(--grad-2);
+  transition: width 0.35s var(--ease);
+}
+
+/* 流动高光：只在进行中出现，说明"还在动"，比单看数字更直观 */
+.track-fill::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.42) 50%,
+    transparent 80%
+  );
+  background-size: 220% 100%;
+  animation: track-sheen 1.9s linear infinite;
+}
+
+@keyframes track-sheen {
+  from { background-position: 180% 0; }
+  to { background-position: -80% 0; }
+}
+
+/* 队列里的小进度条不需要高光，一屏好几条会很吵 */
+.queue-track .track-fill::after {
+  content: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track-fill::after { animation: none; }
+}
+
+/**
+ * 阶段步骤条。原来是「小圆点 + › 分隔」，读起来像面包屑而不是进度。
+ * 改成各阶段等宽、用一条底线连起来，走到哪一段哪一段亮——
+ * 一眼能看出「还剩几步」，这是面包屑给不了的信息。
+ */
+.stages {
+  display: flex;
+  gap: 3px;
+  margin-top: var(--sp-4);
+}
+
+.stage {
+  position: relative;
+  display: flex;
+  flex: 1;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  padding-top: 11px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-3);
+  white-space: nowrap;
+  transition: color 0.2s var(--ease);
+}
+
+/* 每段自己的那截底线 */
+.stage::before {
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  height: 3px;
+  content: '';
+  background: var(--bg-fill);
+  border-radius: 999px;
+  transition: background 0.25s var(--ease);
+}
+
+.stage-done::before {
+  background: var(--grad-2);
+}
+
+.stage-now::before {
+  background: linear-gradient(90deg, var(--grad-2), var(--grad-3));
+  box-shadow: 0 0 8px -1px var(--grad-2);
+}
+
+.stage-done {
+  color: var(--text-2);
+}
+
+.stage-now {
+  font-weight: 650;
+  color: var(--text-1);
+}
+
+/* 结果 */
+.result {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+  padding: var(--sp-4) var(--sp-5);
+}
+
+/**
+ * 结果徽标。跑完一部长片是这个应用里唯一的"成就时刻"，
+ * 原来只是个 32px 的淡色小圆，太轻了。放大并给实心色 + 外发光。
+ */
+.result-glyph {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+}
+
+.result-ok .result-glyph {
+  color: #fff;
+  background: linear-gradient(140deg, var(--green), color-mix(in srgb, var(--green) 70%, #0b5));
+  box-shadow: 0 3px 12px -2px color-mix(in srgb, var(--green) 60%, transparent);
+}
+
+.result-fail .result-glyph {
+  color: #fff;
+  background: linear-gradient(140deg, var(--red), color-mix(in srgb, var(--red) 65%, #900));
+  box-shadow: 0 3px 12px -2px color-mix(in srgb, var(--red) 55%, transparent);
+}
+
+.result-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.result-body h3 {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.result-path {
+  margin-top: 3px;
+  font-size: 11.5px;
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+/* 缓存说明行：信息重要（解释为什么这么快/译文为什么没变），但视觉上要弱于路径 */
+.result-cache {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+/* 术语表行：两个输入框等宽、箭头居中，视觉上和语言选择那对下拉框同构 */
+.glossary-row {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+}
+
+.glossary-row .input {
+  flex: 1;
+  min-width: 0;
+}
+
+.glossary-actions {
+  display: flex;
+  margin-top: var(--sp-3);
+}
+
+/* 质检行：徽标 + 若干发现，允许换行；发现之间靠间距分隔而不是标点 */
+.qc-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.qc-finding {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+/* ---------- 编辑器 ---------- */
+
+.editor-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  min-height: 0;
+  height: 100%;
+}
+
+.editor-head {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+}
+
+.editor-title {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.editor-title strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.editor-meta {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.editor-savestate {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.editor-qc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  align-items: center;
+}
+
+/*
+ * 行列表自己滚动而不是撑开整页：整片有上千条，让 .scroll 滚会把头部与导出条推出视野。
+ * content-visibility 让屏外行跳过渲染——不引入虚拟列表也能扛住两千行。
+ */
+.editor-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.editor-row {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: flex-start;
+  padding: 6px var(--sp-4);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 76px;
+}
+
+.editor-row + .editor-row {
+  box-shadow: inset 0 0.5px 0 var(--line);
+}
+
+.editor-index {
+  min-width: 34px;
+  padding-top: 6px;
+  font-size: 11px;
+  color: var(--text-3);
+  text-align: right;
+}
+
+.editor-times {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.editor-time {
+  width: 92px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, 'Cascadia Mono', Consolas, monospace;
+  font-size: 12px;
+}
+
+.editor-texts {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.editor-text {
+  width: 100%;
+}
+
+/* 原文改过之后译文的「可能过期」提醒：右侧一道橙色内嵌条，不抢注意力但看得见 */
+.editor-stale {
+  box-shadow: inset -3px 0 0 var(--orange, #e8a33d);
+}
+
+.editor-ops {
+  display: flex;
+  gap: 2px;
+  padding-top: 2px;
+}
+
+.editor-empty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  align-items: center;
+  padding: 80px 0;
+  color: var(--text-2);
+}
+
+.editor-actions {
+  gap: var(--sp-3);
+}
+
+.result-actions {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+/* ---------- 编辑器预览 ---------- */
+
+/*
+ * 固定高度而不是按内容伸缩：预览在「无 → 加载中 → 帧」之间切换时高度一变，
+ * 下面的行列表就上下跳，正在点的按钮会从手指底下滑走。
+ */
+.editor-preview {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 240px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #101218;
+  border-radius: 12px;
+}
+
+.editor-video,
+.editor-frame {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.editor-canvas {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.editor-audio-only {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* 字幕叠加：贴近真实播放器的观感——底部居中、白字黑边，译文大、原文小 */
+.editor-subtitle-overlay {
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+  pointer-events: none;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.6);
+}
+
+.editor-subtitle-overlay span {
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.editor-subtitle-overlay .editor-overlay-src {
+  font-size: 12.5px;
+  opacity: 0.85;
+}
+
+.result-error-detail {
+  margin-top: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, 'Cascadia Mono', Consolas, monospace;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--text-2);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+/* ============================ 模型页 ============================ */
+
+.model-row {
+  display: flex;
+  gap: var(--sp-4);
+  align-items: center;
+  padding: var(--sp-3) var(--sp-4);
+}
+
+.model-row + .model-row {
+  box-shadow: inset 0 0.5px 0 var(--line);
+}
+
+/* 这台机器跑不动的模型：压低存在感，但仍然列出来 */
+.model-row-dim .model-main {
+  opacity: 0.55;
+}
+
+.model-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.model-name {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.model-name strong {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.model-detail {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.model-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-top: 5px;
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+.model-meta b {
+  font-weight: 500;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.meter {
+  display: inline-flex;
+  gap: 2px;
+  align-items: center;
+}
+
+/**
+ * 精度/速度量表。原来是一排 3px 高的短横线，远看就是「——————」，
+ * 既读不出刻度也没有质感。改成有高度的圆角分段，填充用主题渐变。
+ */
+.meter i {
+  width: 8px;
+  height: 9px;
+  background: var(--meter-off);
+  border-radius: 3px;
+  transition: background 0.2s var(--ease);
+}
+
+/* 填充段用主题渐变色，和进度条、主按钮同源 */
+.meter i.on {
+  background: linear-gradient(180deg, var(--grad-2), var(--grad-3));
+}
+
+.model-side {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* 下载中：进度条在上，"38% · 570 / 1500 MB" 和取消按钮在下面一行。
+   宽度给足 210px——原来 168px 会让数字折成两行，行高一跳整个列表就歪了 */
+.dl-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  align-items: flex-end;
+  width: 210px;
+}
+
+.dl-label {
+  font-size: 11px;
+  color: var(--text-2);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.hw-strip {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+  padding: 10px var(--sp-4);
+  margin-bottom: var(--sp-4);
+  font-size: 12px;
+  color: var(--text-2);
+  /* 左边一道主题色，把这条"机器信息"和下面的模型列表区分开 */
+  background: var(--bg-card);
+  border-inline-start: 2.5px solid var(--grad-2);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-card);
+}
+
+.hw-strip b {
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.hw-strip svg {
+  color: var(--text-3);
+}
+
+/* 页面级 Tab：标题下独占一行的下划线式，一眼能认出是可切换的分类 */
+/**
+ * 子标签用药丸组。原来是「下划线 + 变粗」，那是网页/iOS 的做法；
+ * 药丸和侧边栏选中态是同一套语言，整个界面才统一。
+ */
+.subnav {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin: 0 var(--sp-8) var(--sp-2);
+  padding: 3px;
+  background: var(--bg-fill);
+  border-radius: 11px;
+}
+
+.subnav-tab {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  height: 28px;
+  padding: 0 13px;
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--text-2);
+  white-space: nowrap;
+  cursor: default;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  transition: color 0.14s var(--ease), background 0.14s var(--ease),
+    box-shadow 0.14s var(--ease);
+}
+
+.subnav-tab:hover:not(.subnav-on) {
+  color: var(--text-1);
+  background: var(--bg-fill);
+}
+
+.subnav-on {
+  font-weight: 600;
+  color: var(--text-1);
+  background: var(--bg-control);
+  box-shadow: var(--shadow-btn);
+}
+
+.subnav-count {
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-2);
+  background: var(--bg-fill);
+  border-radius: 9px;
+  font-variant-numeric: tabular-nums;
+}
+
+.subnav-on .subnav-count {
+  color: var(--accent);
+  background: var(--accent-quiet);
+}
+
+.installed {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--green);
+}
+
+/* 云端服务行：点编辑时这一行本身展开成表单 */
+.model-row-stack {
+  display: block;
+  padding: 0;
+}
+
+.model-row-stack .model-row-head {
+  display: flex;
+  gap: var(--sp-4);
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-3) var(--sp-4);
+}
+
+.model-row-open {
+  background: var(--bg-card-hover);
+  box-shadow: inset 2px 0 0 var(--accent), inset 0 0.5px 0 var(--line);
+}
+
+.row-editing {
+  padding: 0 var(--sp-4) var(--sp-4);
+  animation: unfold 0.22s var(--ease) both;
+}
+
+@keyframes unfold {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 预设选择放在表单最上面，选完再微调下面的字段 */
+.preset-row {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+  padding-bottom: var(--sp-3);
+  margin-bottom: var(--sp-3);
+  border-bottom: 0.5px solid var(--line);
+}
+
+.preset-row .field-label {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.edit-grid {
+  display: grid;
+  gap: var(--sp-3);
+  grid-template-columns: 1fr 1fr;
+}
+
+/* 协议下拉要和同一行的输入框一样高 */
+.edit-grid .field .select select {
+  width: 100%;
+}
+
+.edit-grid .field-full {
+  grid-column: 1 / -1;
+}
+
+.edit-actions {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+  margin-top: var(--sp-4);
+}
+
+.edit-actions .spacer {
+  flex: 1;
+}
+
+/* 云端服务：空态与新增 */
+.empty-pane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  align-items: center;
+  justify-content: center;
+  padding: 56px var(--sp-8);
+  text-align: center;
+  background: var(--bg-card);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.empty-glyph {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--sp-2);
+  color: var(--accent);
+  background: var(--accent-quiet);
+  border-radius: var(--r-md);
+}
+
+.empty-pane h3 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.empty-pane p {
+  max-width: 420px;
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--text-2);
+}
+
+.empty-pane .btn {
+  margin-top: var(--sp-3);
+}
+
+.add-btn {
+  gap: 5px;
+  margin-top: var(--sp-3);
+}
+
+.section-head {
+  padding: var(--sp-3) var(--sp-4) 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.test-inline {
+  margin-top: 5px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+/* 文字链也要有可点的形。纯蓝字在浅色卡片上既不像按钮也够不着 */
+.link-btn {
+  height: 22px;
+  padding: 0 8px;
+  margin-inline-start: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-quiet);
+  border-radius: 7px;
+}
+
+.link-btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+/* ============================ 设置页 ============================ */
+
+.appearance-row {
+  display: grid;
+  gap: var(--sp-3);
+  grid-template-columns: repeat(3, 1fr);
+  padding: var(--sp-4);
+}
+
+.appearance-card {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  align-items: flex-start;
+  padding: var(--sp-3);
+  text-align: start;
+  cursor: default;
+  background: transparent;
+  border: none;
+  border-radius: var(--r-md);
+  transition: background 0.14s var(--ease);
+}
+
+.appearance-card:hover {
+  background: var(--bg-fill);
+}
+
+.appearance-label {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.appearance-label svg {
+  color: var(--accent);
+}
+
+.appearance-hint {
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--text-3);
+}
+
+/* 迷你窗口示意图 */
+.ap-preview {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 62px;
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  box-shadow: 0 0 0 1px var(--line);
+  transition: box-shadow 0.14s var(--ease);
+}
+
+.appearance-on .ap-preview {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.ap-window {
+  position: absolute;
+  display: flex;
+  inset: 0;
+}
+
+.ap-side {
+  width: 26%;
+}
+
+.ap-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  padding: 8px 7px;
+}
+
+.ap-bar {
+  height: 5px;
+  border-radius: 3px;
+}
+
+.ap-bar-short {
+  width: 58%;
+}
+
+/**
+ * 迷你窗口预览：侧边栏画当前主题的真实渐变，正文画一张纸。
+ * 这样「外观」和「配色」两块设置是连着的——换配色时上面的预览跟着变。
+ *
+ * 正文不留内边距。之前给它 2px margin 想做出"纸浮在渐变上"的效果，
+ * 但在 62px 高的预览里那 2px 会在深色正文周围渲染出一圈亮边，
+ * 看着像没渲染干净。这个尺度下只能靠色块本身说话。
+ */
+.ap-light .ap-side {
+  background: linear-gradient(160deg, var(--grad-1), var(--grad-3));
+}
+.ap-light .ap-body {
+  background: #fff;
+}
+.ap-light .ap-bar {
+  background: #dcdce2;
+}
+
+.ap-dark .ap-side {
+  background: linear-gradient(160deg, var(--grad-2), var(--grad-3));
+  filter: brightness(0.5) saturate(1.15);
+}
+.ap-dark .ap-body {
+  background: #1f2026;
+}
+.ap-dark .ap-bar {
+  background: #4a4b52;
+}
+
+.ap-split .ap-dark {
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+
+.settings-grid {
+  display: grid;
+  gap: var(--sp-3);
+  grid-template-columns: 1fr 1fr;
+  padding: var(--sp-4);
+}
+
+.settings-grid .field-full {
+  grid-column: 1 / -1;
+}
+
+.engine-cards {
+  display: grid;
+  gap: var(--sp-3);
+  grid-template-columns: 1fr 1fr;
+  padding: var(--sp-4);
+}
+
+.engine-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--sp-3);
+  text-align: start;
+  cursor: default;
+  background: var(--bg-control);
+  border: none;
+  border-radius: var(--r-md);
+  box-shadow: 0 0 0 1px var(--line);
+  transition: box-shadow 0.14s var(--ease), background 0.14s var(--ease);
+}
+
+.engine-card:hover {
+  background: var(--bg-control-hover);
+}
+
+.engine-card-on {
+  background: var(--accent-quiet);
+  box-shadow: 0 0 0 1.5px var(--accent);
+}
+
+.engine-card-head {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.engine-card-head svg {
+  color: var(--accent);
+}
+
+.engine-card p {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+.save-state {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-size: 12px;
+}
+
+.save-ok {
+  color: var(--green);
+}
+
+.save-fail {
+  color: var(--red);
+}
+
+.test-result {
+  padding: 0 var(--sp-4) var(--sp-4);
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+.loading {
+  padding: var(--sp-6);
+  font-size: 13px;
+  color: var(--text-3);
+  text-align: center;
+}
+
+/* ============================ 动效 ============================ */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.24s var(--ease) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ---------------------------- RTL 适配 ---------------------------- */
+/* 布局本身用的是 flex/grid 与逻辑属性，会自动镜像；
+   下面两处是画出来的装饰，得手动翻面 */
+
+/* 编辑态行首的高亮竖条：inset 的偏移量带方向，RTL 要取反 */
+[dir='rtl'] .model-row-open {
+  box-shadow: inset -2px 0 0 var(--accent), inset 0 0.5px 0 var(--line);
+}
+
+/* 阶段分隔的箭头要指向阅读方向 */
+[dir='rtl'] /* ---------------------------- 批量队列 ---------------------------- */
+
+/* 拖放不再有专门的落点，整页都得能接住文件——否则队列短的时候，
+   下面那一大片空白看着像页面的一部分，拖上去却没反应 */
+.batch-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.queue-head {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.queue-actions {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+  padding-bottom: var(--sp-2);
+}
+
+.queue-actions .queue-summary {
+  padding-bottom: 0;
+}
+
+/* 批量页没有独立拖放区，拖动时整张队列卡片就是落点 */
+.card-dropping {
+  background: var(--bg-card-hover);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.queue-head .section-title {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.queue-summary {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  padding-bottom: var(--sp-2);
+  font-size: 11.5px;
+  color: var(--text-3);
+}
+
+.queue-empty {
+  padding: var(--sp-5) var(--sp-4);
+  font-size: 12.5px;
+  color: var(--text-3);
+  text-align: center;
+}
+
+/* 色条贴着卡片边缘，圆角处得裁掉 */
+.queue-card {
+  overflow: hidden;
+}
+
+/**
+ * 队列行左侧的状态色条——扫一眼就知道哪条卡住了。
+ *
+ * 用独立图层画，不跟行分隔线抢 box-shadow：两者都写 box-shadow 时，
+ * `.model-row + .model-row` (0,2,0) 优先级高于 `.queue-done` (0,1,0)，
+ * 于是除了第一行，所有色条都被分隔线顶掉、根本没画出来。
+ * 顺带 inset-inline-start 天然跟随书写方向，RTL 不用再单独取反。
+ */
+.queue-row {
+  position: relative;
+  transition: background 0.14s var(--ease);
+}
+
+.queue-row::before {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 2px;
+  content: '';
+  background: transparent;
+  transition: background 0.14s var(--ease);
+}
+
+.queue-running {
+  background: var(--bg-card-hover);
+}
+
+.queue-running::before {
+  background: var(--accent);
+}
+
+.queue-done::before {
+  background: var(--green);
+}
+
+.queue-failed::before {
+  background: var(--red);
+}
+
+.queue-track {
+  width: 100%;
+  max-width: 320px;
+  margin: 6px 0 4px;
+}
+
+.queue-error {
+  color: var(--red);
+  /* 报错可能很长，允许换行但别撑破卡片 */
+  overflow-wrap: anywhere;
+}
+
+/* ============================ 渐变主题选择 ============================ */
+
+/**
+ * 主题网格。每个色板画成一个圆角方块，直接把渐变本身画出来——
+ * 用色名或者色点都不如让用户看到"选完长这样"。
+ */
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+}
+
+.theme-swatch {
+  position: relative;
+  aspect-ratio: 1.35;
+  padding: 0;
+  overflow: hidden;
+  cursor: default;
+  background: none;
+  border: none;
+  border-radius: var(--r-md);
+  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);
+  transition: transform 0.16s var(--ease-pop), box-shadow 0.16s var(--ease);
+}
+
+.theme-swatch i {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* 色板上铺同一张噪点，否则"选完和预览不一样" */
+.theme-swatch i::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='3' intercept='-1'/%3E%3CfeFuncG type='linear' slope='3' intercept='-1'/%3E%3CfeFuncB type='linear' slope='3' intercept='-1'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: calc(var(--grain) * 0.55);
+  mix-blend-mode: overlay;
+}
+
+.theme-swatch:hover {
+  transform: translateY(-2px);
+}
+
+.theme-swatch-on {
+  box-shadow: 0 0 0 2px var(--pane), 0 0 0 4px var(--accent);
+}
+
+/* 选中打勾。放在右下角而不是正中，免得盖住渐变本身 */
+.theme-swatch-on::after {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  display: grid;
+  width: 18px;
+  height: 18px;
+  content: '✓';
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-1);
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  place-items: center;
+}
+
+/* 自定义色板：两个取色器 + 角度 */
+.theme-custom {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.theme-color {
+  width: 34px;
+  height: 28px;
+  padding: 0;
+  cursor: default;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 0.5px var(--line-strong);
+}
+
+.theme-color::-webkit-color-swatch-wrapper {
+  padding: 2px;
+}
+
+.theme-color::-webkit-color-swatch {
+  border: none;
+  border-radius: 6px;
+}
+
+/* 滑块：颗粒强度和渐变浓度共用 */
+.theme-slider {
+  flex: 1;
+  min-width: 130px;
+  height: 4px;
+  cursor: default;
+  appearance: none;
+  background: var(--bg-fill);
+  border-radius: 2px;
+}
+
+.theme-slider::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  appearance: none;
+  background: var(--bg-control);
+  border-radius: 50%;
+  box-shadow: var(--shadow-btn);
+}
+
+.theme-preview {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  height: 34px;
+  padding: 3px;
+  overflow: hidden;
+  border-radius: var(--r-md);
+  box-shadow: inset 0 0 0 0.5px var(--line);
+  background: linear-gradient(var(--grad-angle), var(--grad-1), var(--grad-2) 52%, var(--grad-3));
+}
+
+/**
+ * 自定义那一格要一眼和预设区分开，否则用户会以为是第 11 套预设。
+ *
+ * 加号用两层背景画，不用 '+' 字符：色板的填充元素是 <i>，而 HTML 里 <i> 默认
+ * 就是斜体，字符加号被渲染成了斜的。就算强制 font-style: normal，不同系统字体
+ * 里加号的粗细、长短和居中位置也各不相同——画出来的形状是确定的。
+ *
+ * 两条线都放在 ::before 上：::after 已经被色板的颗粒噪点占用了。
+ */
+.theme-swatch-custom i::before {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background:
+    linear-gradient(#fff, #fff) center / 15px 1.5px no-repeat,
+    linear-gradient(#fff, #fff) center / 1.5px 15px no-repeat;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+  opacity: 0.95;
+}
+
+/* 选中时右下角已经有对勾了，加号让位免得两个记号打架 */
+.theme-swatch-custom.theme-swatch-on i::before {
+  opacity: 0;
+}
+
+.theme-custom {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.theme-color {
+  width: 34px;
+  height: 28px;
+  padding: 0;
+  cursor: default;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 0.5px var(--line-strong);
+}
+
+.theme-color::-webkit-color-swatch-wrapper {
+  padding: 2px;
+}
+
+.theme-color::-webkit-color-swatch {
+  border: none;
+  border-radius: 6px;
+}
+
+/* 滑块：颗粒强度和渐变浓度共用 */
+.theme-slider {
+  flex: 1;
+  min-width: 130px;
+  height: 4px;
+  cursor: default;
+  appearance: none;
+  background: var(--bg-fill);
+  border-radius: 2px;
+}
+
+.theme-slider::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  appearance: none;
+  background: var(--bg-control);
+  border-radius: 50%;
+  box-shadow: var(--shadow-btn);
+}
+
+.theme-preview {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  height: 34px;
+  padding: 3px;
+  overflow: hidden;
+  border-radius: var(--r-md);
+  box-shadow: inset 0 0 0 0.5px var(--line);
+  background: linear-gradient(var(--grad-angle), var(--grad-1), var(--grad-2) 52%, var(--grad-3));
+}
+
+/* 云端服务的身份标识：首字母 + 按名字哈希出的稳定色相 */
+.service-mark {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px -1px rgba(20, 20, 40, 0.28), inset 0 0.5px 0 rgba(255, 255, 255, 0.35);
+}
+
+.dl-foot {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+}
+
+.ap-bar-mid {
+  width: 76%;
+}
