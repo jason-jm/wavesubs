@@ -1,92 +1,88 @@
-# 发布与推广文案
+# 推广稿（新定位版）
 
-> 全部是草稿，发布前请过一遍。链接统一用官网 https://jason-jm.github.io/wavesubs/ ，
-> 下载走 GitHub Releases。建议节奏：第 1 天 Show HN + r/macapps + V2EX；第 2 天 Product Hunt（周二到周四早上 PT 00:01 上线最好）；
-> 之后按社区反馈更新 FAQ。
+定位一句话：**看片找不到字幕？Wave Subs 用本地 AI 从影片生成 SRT/ASS 字幕，自动翻译到你的语言。无需联网，全免费。**
+所有稿子都围绕这一句展开：先说痛点（找不到字幕），再说结果（生成 + 翻译），最后说方式（本地、离线、免费）。
+链接统一用官网：https://jason-jm.github.io/wavesubs/ （英文稿用 https://jason-jm.github.io/wavesubs/en/ ）
 
----
+## Show HN（Hacker News）
 
-## Product Hunt
+**标题：** Show HN: Wave Subs – Generate and translate subtitles from any video with local AI, offline and free
 
-**Name:** Wave Subs
-**Tagline (60):** Local-first subtitles: transcribe, translate, edit — on your Mac
-**Description:**
-Wave Subs turns any video into usable subtitles without uploading a single byte. Whisper runs locally with Metal acceleration; timing is refined against real speech (tuned on six full-length films vs. official subs); translation uses a local Qwen3 model or any OpenAI-compatible API you bring; a glossary keeps names consistent across a season. Batch a whole folder, get a quality verdict per file, then fix lines in an editor that plays the exact moment back — even HEVC/DTS MKVs. Free, MIT-licensed, macOS (Apple Silicon) and Windows.
+**正文：**
+Every time I couldn't find subtitles for a film, I ended up uploading it to some website, paying per minute, and waiting. So I built the local version.
 
-**First comment (maker):**
-Hi PH! I built Wave Subs because every "AI subtitle" tool I tried either uploaded my files to someone's server or produced timing that drifted half a second off by the second act. So: everything runs on-device (whisper.cpp + llama.cpp + a self-built LGPL ffmpeg are bundled — zero setup), and the timing pass was tuned by comparing against official subtitles of six full films. Happy to answer anything about the timing work, the caching (change models → it strictly retranslates, never mixes), or why the Mac App Store version is coming a bit later (sandboxing).
+Wave Subs takes a video, runs whisper.cpp on your own machine to recognize the dialogue, refines the timing against the actual speech (VAD + loudness, tuned on six full films with official subtitles), translates with a local Qwen3 model into any of 29 languages, and writes SRT/ASS next to the file. Nothing is uploaded; once models are downloaded it works offline. Free, MIT.
 
----
+Things I spent the most time on:
+- Timing. Whisper's raw timestamps drift and merge; snapping lines back to speech regions made the biggest difference in watchability.
+- Caching that can't lie. Recognition and translation are cached separately, and translations are only reused when engine + model + target language + prompt version + glossary all match — switching models always retranslates.
+- Formats browsers can't play. HEVC/DTS MKVs preview fine in the editor because the bundled ffmpeg does the decoding.
+- A quality report per file (coverage vs. detected speech, gaps, reading speed, untranslated lines) so batch runs don't silently produce garbage.
 
-## Hacker News — Show HN
+macOS (Apple Silicon, notarized) and Windows x64. Electron + TypeScript, whisper.cpp + llama.cpp bundled, ffmpeg self-built LGPL.
 
-**Title:** Show HN: Wave Subs – local-first video subtitles (Whisper + LLM translation, MIT)
-**URL:** https://jason-jm.github.io/wavesubs/
-**Text (first comment):**
-Wave Subs is an Electron app for macOS (Apple Silicon) and Windows that takes a video → transcribes with whisper.cpp locally → refines timing with VAD + loudness analysis → translates with a local Qwen3 model (or your own OpenAI-compatible endpoint) → exports SRT/ASS. It also extracts embedded MKV/MP4 subtitle tracks (picking by language) and reads 18 subtitle formats.
-
-Things I think are worth a look:
-- Timing: Whisper's segment boundaries are loose. The refinement pass snaps cues to actual speech regions and was tuned against official subtitles for six full-length films (metrics and the bench harness are in the repo).
-- Caching with strict invalidation: recognition and translation are cached separately; translation reuse requires an exact match on (engine incl. model, target language, prompt revision, glossary hash) — so switching models can never leave you looking at the old model's output.
-- Preview for formats Chromium can't play: the editor asks the bundled ffmpeg for a few seconds of frames + AAC for the line you clicked.
-- Quality report per file: coverage vs. detected speech, gaps > 8 s, reading speed, untranslated/residual lines, with thresholds from the film baselines.
-
-Privacy: no account, no analytics, nothing uploaded unless you configure a cloud translation provider yourself. MIT licensed; ffmpeg is a self-built LGPL binary.
-
----
-
-## Reddit — r/macapps
-
-**Title:** [Free, open source] Wave Subs — local Whisper subtitles with translation, batch, and an editor with video preview (Apple Silicon)
-**Body:**
-Made a Mac app for generating and translating subtitles entirely on-device. Drop a video (or a whole season folder) → Whisper transcription with Metal → timing cleanup → translation via a local model or your own API → SRT/ASS. If the MKV already has a text subtitle track it uses that instead (picked by language). There's an editor where you click a line and hear that exact moment, plus a quality report telling you which files to double-check.
-Free, MIT, no account, nothing uploaded. Notarized DMG. Windows build too.
-Site: https://jason-jm.github.io/wavesubs/ · Source: https://github.com/jason-jm/wavesubs
-
-**Also consider:** r/software, r/DataHoarder（强调 NAS 整季批量与内嵌轨抽取）, r/LanguageLearning（强调双语字幕）, r/anime（谨慎，先看版规）
-
----
-
-## X / Twitter（thread）
-
-1/ Wave Subs is out: video → subtitles → translation, all on your own Mac. Whisper + local LLM, nothing uploaded. Free & open source. https://jason-jm.github.io/wavesubs/
-2/ The part I spent the most time on: timing. Whisper's boundaries drift; the refinement pass snaps them to real speech, tuned against official subs of six full films. [附 editor 截图]
-3/ Batch a whole season. Each file gets a quality verdict — coverage, gaps, reading speed, missing translations — so you know which ones to check. [附 batch 截图]
-4/ Editor with preview: click a line, hear that exact second, even for HEVC/DTS MKVs a browser can't play. The overlay reflects your edits live.
-5/ Change translation model? It retranslates strictly — never mixes old output. Glossary keeps names consistent across a season. MIT, macOS (Apple Silicon) + Windows. Mac App Store version in review soon.
-
----
+https://jason-jm.github.io/wavesubs/en/ · source: https://github.com/jason-jm/wavesubs
 
 ## V2EX（分享创造）
 
-**标题：** Wave Subs：本地跑的视频字幕工具，识别 + 对齐 + 翻译 + 编辑，开源免费
+**标题：** 看片找不到字幕？做了个本地 AI 字幕工具：从影片直接生成 SRT/ASS 并翻译，离线免费，Mac/Win
+
 **正文：**
-自己做的一个 Mac/Windows 应用，解决的是「NAS 上一堆没中字的片子」这件事：拖进视频 → whisper.cpp 本地识别（Metal 加速）→ 时间轴精修 → 本地 Qwen3 或自己的 API 翻译 → 导出 SRT/ASS。MKV 里已经有字幕轨的话直接抽（按语言选轨），不用识别。
+起因很简单：NAS 里一堆没字幕的片，在线字幕生成要上传整部影片、按分钟收费，字幕站又经常对不上版本。于是做了 Wave Subs：
 
-几个花了功夫的地方：
-- 时间轴：用六部整片对照官方字幕反复调参，不是拿 Whisper 原始时间戳直接用
-- 缓存：识别结果和译文分开缓存，换导出格式秒出；换模型或术语表严格重翻，不会混用旧译文
-- 编辑器带预览：点一行直接听那一秒，HEVC/DTS 的 MKV 也行（随包 ffmpeg 解）
-- 每个文件跑完给质检结论：覆盖率、漏段、语速、缺译
+- 把影片拖进去，本地 whisper.cpp 识别对白，时间轴按真实说话时刻精修（参数用六部整片对照官方字幕调的）
+- 本地 Qwen3 翻译成你的语言（29 种可选），术语表保证整季人名一致；也可以接任何 OpenAI 兼容接口
+- 导出 SRT / ASS 放到影片旁边；跑完带质检报告，告诉你哪里可能漏了
+- 编辑器自带视频预览，HEVC/DTS 的 MKV 也能点一行听一句
+- 整季批量，逐文件可单独设置
 
-没有账号没有统计，视频不上传。MIT 开源，ffmpeg 是自己编的 LGPL 版。
-官网：https://jason-jm.github.io/wavesubs/ 源码：https://github.com/jason-jm/wavesubs
-欢迎拍砖，特别是时间轴和翻译质量方面。
+全部本地完成，不上传、不联网（模型下一次就行）、不收费、MIT 开源。macOS（Apple Silicon，已公证）和 Windows。
 
----
+官网：https://jason-jm.github.io/wavesubs/
+GitHub：https://github.com/jason-jm/wavesubs
 
-## 少数派 / 微博 / 即刻 / 小红书（短文案）
+欢迎拿手头最难搞的片试试，识别/翻译不准的例子发 issue 我来看。
 
-Wave Subs 上线了：在你自己的电脑上把视频变成字幕——识别、对齐、翻译、编辑一条龙，整季批量，不上传任何文件。免费开源，macOS（Apple Silicon）和 Windows。
-👉 https://jason-jm.github.io/wavesubs/
-（配图：编辑器 + 批量两张截图）
+## 少数派 / 什么值得买 风格短文（可投稿或自己发）
 
----
+**标题：** 看片找不到字幕？让本地 AI 直接从影片生成并翻译——Wave Subs 上手
 
-## 常见追问的预备回答
+**导语：** 不上传、不联网、不花钱：一个把「找字幕」变成「生成字幕」的 Mac/Windows 应用。
 
-- **为什么不支持 Intel Mac？** 本地识别靠 Metal，Intel 上慢到不实用。
-- **Windows 为什么提示未知发布者？** 还没买代码签名证书，SmartScreen 对新程序都会提示；Releases 页有校验值。
-- **准确率如何？** 取决于模型与音频质量；Large v3 Turbo 对日/英清晰对白很好，嘈杂/多人重叠会差。质检报告会标出可疑段落。
-- **和 Whisper 网页服务/剪映比？** 本地、离线、不限时长不收费；内嵌轨抽取和整季批量是它们没有的。
-- **App Store 版什么时候？** 正在准备（沙盒改造已完成），审核通过即上架。
+**要点：**
+1. 痛点：字幕站对不上版本、在线工具要传片要付费
+2. 三步：拖进影片 → 本地识别对齐 → 翻译导出 SRT/ASS
+3. 亮点：29 种目标语言、术语表、编辑器带预览、质检报告、整季批量
+4. 隐私与费用：全部本地、永久免费、MIT
+5. 系统要求：macOS 12+ Apple Silicon / Windows 10+ x64，首次下载模型 1.6～3 GB
+
+## Product Hunt
+
+**Tagline（60 字符）：** Generate & translate subtitles from any video, locally & free
+**描述：** Can't find subtitles? Wave Subs recognizes dialogue with local AI, refines timing, translates into 29 languages and exports SRT/ASS — all on your own Mac or PC. No uploads, no internet needed, free forever.
+**首评（Maker comment）：** 见 Show HN 正文，删掉技术细节，保留痛点 + 三步 + 隐私。
+**Topics：** Productivity, Video, Artificial Intelligence, Open Source, Mac
+
+## Reddit r/macapps · r/DataHoarder · r/anime（各发一次，别交叉发）
+
+**r/macapps 标题：** Wave Subs – generate SRT/ASS subtitles from any video with local AI and translate them, free & notarized
+**r/DataHoarder 标题：** Batch-generate subtitles for a whole library locally (whisper.cpp + local LLM translation), nothing uploaded
+**r/anime 标题：** Made a free local tool that generates and translates subtitles from raw episodes (29 languages, glossary keeps names consistent)
+
+正文用 Show HN 的前两段 + 对应板块关心的一点（macapps：公证与沙盒；DataHoarder：批量与缓存；anime：术语表与日语识别）。
+
+## X / Twitter 线程
+
+1/ 看片找不到字幕？我做了 Wave Subs：把影片拖进去，本地 AI 生成 SRT/ASS 字幕并翻译成你的语言。无需联网，全免费。Mac + Windows。[官网链接]
+2/ 三步：拖进影片 → 本地识别 + 时间轴精修 → 翻译导出。带质检报告，哪里漏了直接告诉你。[home-done 截图]
+3/ 29 种翻译目标语言，本地 Qwen3 免费；术语表让整季人名一致。[translate-models 截图]
+4/ 编辑器带视频预览，HEVC/DTS 也能点一行听一句。[editor 截图]
+5/ 不上传、不联网、不收费，MIT 开源。[GitHub 链接]
+
+## 常见追问的回答
+
+- **为什么不支持 Intel Mac？** 本地识别靠 Metal，Intel 上慢到没法用；Windows 版走 CPU（BLAS），建议 16 GB 内存。
+- **识别准吗？** whisper large 系列 + 时间轴精修；每个文件带质检结论。日语动漫实测覆盖率 75～85% 属正常范围，配乐段会有假阳性。
+- **和 Whisper 的 Mac 客户端们有什么区别？** 端到端：识别、对齐、翻译、编辑、批量、质检一条线，且内嵌字幕轨能直接抽出翻译，不用识别。
+- **云端翻译收费吗？** 由你选的服务商收，Wave Subs 不经手；本地 Qwen3 免费。
+- **Windows 未签名警告？** 还没买 Authenticode 证书，点"更多信息 → 仍要运行"；校验值在 Releases 页。
