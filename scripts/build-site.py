@@ -214,6 +214,7 @@ def page(k):
 <section class="privacy" id="privacy"><div class="wrap">
   <h2>{esc(d['pr_h2'])}</h2><p class="sub">{esc(d['pr_sub'])}</p>
   <div class="row">{pr}</div>
+  <p class="req" style="margin-top:18px;font-size:13.5px"><a href="{p}{'en/' if k=='en' else ''}privacy.html">{'Full privacy policy' if k=='en' else '完整隐私政策'}</a></p>
 </div></section>
 
 <section id="download"><div class="wrap">
@@ -264,4 +265,68 @@ for k, out in (('zh', 'docs/index.html'), ('en', 'docs/en/index.html')):
     path = os.path.join(ROOT, out)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     open(path, 'w', encoding='utf-8').write(page(k))
+    print(f'{out}: {os.path.getsize(path)} bytes')
+
+
+# ---------- 隐私政策独立页（App Store 审核要求一个明确的隐私政策 URL） ----------
+PRIVACY = {
+ 'zh': dict(lang='zh-Hans', p='', title='Wave Subs 隐私政策', updated='更新日期：2026 年 9 月 6 日', back='返回官网', other='English', other_href='en/privacy.html',
+  sections=[
+   ('概述', ['Wave Subs 是一款完全在你自己的电脑上运行的桌面软件。<strong>我们不收集、不存储、不传输任何个人数据</strong>，没有账号系统，没有使用统计，没有崩溃上报，也没有任何属于我们的服务器。']),
+   ('在本地处理的数据', ['你导入的视频、音频、字幕文件，以及识别结果、译文、编辑记录和任务缓存，全部保存在你设备的本地目录中，仅供软件本身使用。你可以随时在设置或访达中删除它们。','语音识别与翻译模型在你的设备上运行，处理过程不经过网络。']),
+   ('软件会在什么时候访问网络', ['<strong>下载模型：</strong>首次使用时，识别与翻译模型从 Hugging Face 的公开仓库下载。该请求不包含你的任何个人信息；与任何网络下载一样，对方服务器会看到你的 IP 地址，受 Hugging Face 的隐私政策约束。','<strong>云端翻译（可选，默认关闭）：</strong>只有当你自行填入某个第三方翻译服务的接口地址与密钥时，字幕文本才会发送给<em>你选择的那家服务商</em>，由其隐私政策约束。密钥经系统钥匙串加密后仅保存在本地。不配置云端翻译，软件不会向任何翻译服务发送内容。','除以上两种情况外，软件不进行任何网络请求：没有自动更新检查、没有遥测、没有广告。']),
+   ('第三方组件', ['软件随包附带的开源组件（ffmpeg、whisper.cpp、llama.cpp 等）均在本地运行，不与其作者或任何第三方通信。许可信息见应用内与 <a href="https://github.com/jason-jm/wavesubs/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>。']),
+   ('儿童隐私', ['软件不面向儿童设计，也不从任何年龄段的用户收集数据。']),
+   ('政策变更', ['如本政策有实质性变更，我们会在本页面更新并注明日期。']),
+   ('联系我们', ['关于隐私的任何问题，请通过 <a href="https://github.com/jason-jm/wavesubs/issues">GitHub Issues</a> 联系我们。']),
+  ]),
+ 'en': dict(lang='en', p='../', title='Wave Subs Privacy Policy', updated='Last updated: September 6, 2026', back='Back to site', other='中文', other_href='../privacy.html',
+  sections=[
+   ('Overview', ['Wave Subs is desktop software that runs entirely on your own computer. <strong>We do not collect, store or transmit any personal data.</strong> There is no account system, no usage analytics, no crash reporting, and no server of ours.']),
+   ('Data processed locally', ['The video, audio and subtitle files you import — along with recognition results, translations, edits and the job cache — are stored in local directories on your device and used only by the app itself. You can delete them at any time from Settings or Finder.','Speech recognition and translation models run on your device; processing never goes over the network.']),
+   ('When the app uses the network', ['<strong>Model downloads:</strong> on first use, recognition and translation models are downloaded from public Hugging Face repositories. The request contains none of your personal information; as with any download, the server sees your IP address, subject to Hugging Face\'s privacy policy.','<strong>Cloud translation (optional, off by default):</strong> only if you enter the endpoint and API key of a third-party translation service yourself is subtitle text sent to <em>that provider you chose</em>, subject to its privacy policy. The key is encrypted with the system keychain and stored only locally. Without cloud translation configured, the app sends nothing to any translation service.','Apart from these two cases the app makes no network requests: no update checks, no telemetry, no ads.']),
+   ('Third-party components', ['Bundled open-source components (ffmpeg, whisper.cpp, llama.cpp and others) run locally and do not communicate with their authors or any third party. License information is included in the app and at <a href="https://github.com/jason-jm/wavesubs/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>.']),
+   ('Children\'s privacy', ['The app is not directed at children and collects no data from users of any age.']),
+   ('Changes', ['Material changes to this policy will be posted on this page with an updated date.']),
+   ('Contact', ['For any privacy question, reach us via <a href="https://github.com/jason-jm/wavesubs/issues">GitHub Issues</a>.']),
+  ]),
+}
+
+def privacy_page(k):
+    d = PRIVACY[k]; p = d['p']
+    body = ''.join(f'<h2>{esc(t)}</h2>' + ''.join(f'<p>{x}</p>' for x in ps) for t, ps in d['sections'])
+    return f'''<!doctype html>
+<html lang="{d['lang']}">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(d['title'])}</title>
+<meta name="description" content="{esc(d['title'])}">
+<meta name="robots" content="noindex">
+<link rel="icon" href="{p}assets/icon.png">
+<style>{CSS}
+  .doc{{max-width:760px;margin:0 auto;padding:48px 24px 80px}}
+  .doc h1{{font-size:32px;margin:0 0 6px}}
+  .doc .updated{{color:var(--text-3);font-size:13.5px;margin:0 0 32px}}
+  .doc h2{{font-size:20px;margin:30px 0 8px}}
+  .doc p{{color:var(--text-2);font-size:15.5px;margin:0 0 12px;line-height:1.7}}
+  .doc strong{{color:var(--text)}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="{p if p else './'}"><img src="{p}assets/icon.png" alt="Wave Subs"><span>Wave Subs</span></a>
+  <nav><a href="{p if p else './'}">{esc(d['back'])}</a><a class="lang-btn" href="{d['other_href']}">{d['other']}</a></nav>
+</div></header>
+<main class="doc">
+  <h1>{esc(d['title'])}</h1>
+  <p class="updated">{esc(d['updated'])}</p>
+  {body}
+</main>
+</body>
+</html>
+'''
+
+for k, out in (('zh', 'docs/privacy.html'), ('en', 'docs/en/privacy.html')):
+    path = os.path.join(ROOT, out)
+    open(path, 'w', encoding='utf-8').write(privacy_page(k))
     print(f'{out}: {os.path.getsize(path)} bytes')

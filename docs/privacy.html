@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wave Subs 隐私政策</title>
+<meta name="description" content="Wave Subs 隐私政策">
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/icon.png">
+<style>
+  :root{
+    --bg:#0b0f17;--bg-2:#111827;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.09);
+    --text:#e8edf5;--text-2:#aab4c5;--text-3:#7b8798;
+    --teal:#5fd4d0;--coral:#ff9a7a;--accent:#7cc7ff;
+    --radius:16px;--max:1120px;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  html[data-ui="zh"] [data-lang="en"],html[data-ui="en"] [data-lang="zh"]{display:none !important}
+
+  /* ---- 顶栏 ---- */
+  header.top{position:sticky;top:0;z-index:10;backdrop-filter:saturate(180%) blur(14px);background:rgba(11,15,23,.72);border-bottom:1px solid var(--line)}
+  .top .wrap{display:flex;align-items:center;gap:20px;height:60px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.2px;color:var(--text)}
+  .brand img{width:26px;height:26px;border-radius:7px}
+  .top nav{margin-left:auto;display:flex;gap:22px;font-size:14px}
+  .top nav a{color:var(--text-2)}
+  .top nav a:hover{color:var(--text);text-decoration:none}
+  .lang-btn{background:var(--panel);border:1px solid var(--line);color:var(--text-2);border-radius:999px;padding:5px 12px;font-size:12.5px;cursor:pointer}
+  .lang-btn:hover{color:var(--text)}
+
+  /* ---- 首屏 ---- */
+  .hero{position:relative;overflow:hidden;padding:96px 0 40px;text-align:center}
+  .hero::before{content:"";position:absolute;inset:0;background:url(assets/hero-wave.jpg) center/cover no-repeat;opacity:.55;mask-image:linear-gradient(to bottom,#000 30%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 30%,transparent 100%)}
+  .hero .wrap{position:relative}
+  .hero h1{font-size:clamp(34px,5.4vw,60px);line-height:1.12;margin:0 0 18px;letter-spacing:-.5px;font-weight:700}
+  .hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--teal),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{font-size:clamp(16px,2vw,20px);color:var(--text-2);max-width:680px;margin:0 auto 34px}
+  .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:12px;font-weight:600;font-size:15px;border:1px solid var(--line);background:var(--panel);color:var(--text);transition:transform .15s,background .15s}
+  .btn:hover{text-decoration:none;background:rgba(255,255,255,.08);transform:translateY(-1px)}
+  .btn.primary{background:linear-gradient(135deg,#5fd4d0,#7cc7ff);color:#08131a;border-color:transparent}
+  .btn.primary:hover{filter:brightness(1.05)}
+  .btn small{font-weight:400;opacity:.75;font-size:12px}
+  .hero .note{margin-top:14px;font-size:12.5px;color:var(--text-3)}
+  .hero-shot{margin:56px auto 0;max-width:1040px;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:0 40px 120px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03) inset;background:#0f1117}
+  .hero-shot img{display:block;width:100%;height:auto}
+
+  /* ---- 章节 ---- */
+  section{padding:88px 0}
+  section h2{font-size:clamp(26px,3.4vw,38px);margin:0 0 10px;letter-spacing:-.3px}
+  section p.sub{color:var(--text-2);font-size:17px;max-width:720px;margin:0 0 36px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 20px}
+  .card h3{margin:0 0 8px;font-size:17px}
+  .card p{margin:0;color:var(--text-2);font-size:14.5px}
+  .card .k{display:inline-block;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,rgba(95,212,208,.25),rgba(124,199,255,.18));margin-bottom:12px;display:grid;place-items:center;color:var(--teal);font-weight:700}
+
+  /* ---- 交替图文 ---- */
+  .feature{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center;padding:36px 0}
+  .feature.flip{grid-template-columns:.85fr 1.15fr}
+  .feature.flip .shot{order:2}
+  .feature .shot{border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 24px 70px rgba(0,0,0,.5);background:#0f1117}
+  .feature .shot img{display:block;width:100%;height:auto}
+  .feature h3{font-size:24px;margin:0 0 10px}
+  .feature p{color:var(--text-2);margin:0 0 10px;font-size:15.5px}
+  .feature ul{margin:12px 0 0;padding-left:18px;color:var(--text-2);font-size:14.5px}
+  .feature li{margin:4px 0}
+  @media (max-width:860px){.feature,.feature.flip{grid-template-columns:1fr}.feature.flip .shot{order:0}}
+
+  /* ---- 隐私 ---- */
+  .privacy{background:linear-gradient(180deg,rgba(95,212,208,.06),transparent);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .privacy .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:24px}
+  .privacy .row div{padding:18px;border-radius:14px;background:var(--panel);border:1px solid var(--line);font-size:14.5px;color:var(--text-2)}
+  .privacy .row strong{display:block;color:var(--text);margin-bottom:6px;font-size:15px}
+
+  /* ---- 下载 ---- */
+  .dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+  .dl .card h3{display:flex;align-items:center;gap:10px}
+  .dl .req{font-size:13px;color:var(--text-3);margin-top:12px;line-height:1.7}
+  .dl .btn{margin-top:14px}
+  .dl code{background:rgba(255,255,255,.07);padding:1px 6px;border-radius:6px;font-size:12.5px}
+
+  /* ---- FAQ ---- */
+  details{border-top:1px solid var(--line);padding:16px 0}
+  details:last-of-type{border-bottom:1px solid var(--line)}
+  summary{cursor:pointer;font-weight:600;font-size:16px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::after{content:"+";color:var(--text-3);font-weight:400;font-size:20px}
+  details[open] summary::after{content:"–"}
+  details p{color:var(--text-2);margin:10px 0 0;font-size:15px}
+
+  footer{padding:40px 0 60px;color:var(--text-3);font-size:13.5px;border-top:1px solid var(--line)}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:18px;align-items:center}
+  footer nav{margin-left:auto;display:flex;gap:18px}
+  footer a{color:var(--text-2)}
+
+  .pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+  .pill{font-size:13px;color:var(--text-2);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
+  a.lang-btn{display:inline-block;text-decoration:none}
+  .feature h2{font-size:26px;margin:0 0 10px}
+
+  .doc{max-width:760px;margin:0 auto;padding:48px 24px 80px}
+  .doc h1{font-size:32px;margin:0 0 6px}
+  .doc .updated{color:var(--text-3);font-size:13.5px;margin:0 0 32px}
+  .doc h2{font-size:20px;margin:30px 0 8px}
+  .doc p{color:var(--text-2);font-size:15.5px;margin:0 0 12px;line-height:1.7}
+  .doc strong{color:var(--text)}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><img src="assets/icon.png" alt="Wave Subs"><span>Wave Subs</span></a>
+  <nav><a href="./">返回官网</a><a class="lang-btn" href="en/privacy.html">English</a></nav>
+</div></header>
+<main class="doc">
+  <h1>Wave Subs 隐私政策</h1>
+  <p class="updated">更新日期：2026 年 9 月 6 日</p>
+  <h2>概述</h2><p>Wave Subs 是一款完全在你自己的电脑上运行的桌面软件。<strong>我们不收集、不存储、不传输任何个人数据</strong>，没有账号系统，没有使用统计，没有崩溃上报，也没有任何属于我们的服务器。</p><h2>在本地处理的数据</h2><p>你导入的视频、音频、字幕文件，以及识别结果、译文、编辑记录和任务缓存，全部保存在你设备的本地目录中，仅供软件本身使用。你可以随时在设置或访达中删除它们。</p><p>语音识别与翻译模型在你的设备上运行，处理过程不经过网络。</p><h2>软件会在什么时候访问网络</h2><p><strong>下载模型：</strong>首次使用时，识别与翻译模型从 Hugging Face 的公开仓库下载。该请求不包含你的任何个人信息；与任何网络下载一样，对方服务器会看到你的 IP 地址，受 Hugging Face 的隐私政策约束。</p><p><strong>云端翻译（可选，默认关闭）：</strong>只有当你自行填入某个第三方翻译服务的接口地址与密钥时，字幕文本才会发送给<em>你选择的那家服务商</em>，由其隐私政策约束。密钥经系统钥匙串加密后仅保存在本地。不配置云端翻译，软件不会向任何翻译服务发送内容。</p><p>除以上两种情况外，软件不进行任何网络请求：没有自动更新检查、没有遥测、没有广告。</p><h2>第三方组件</h2><p>软件随包附带的开源组件（ffmpeg、whisper.cpp、llama.cpp 等）均在本地运行，不与其作者或任何第三方通信。许可信息见应用内与 <a href="https://github.com/jason-jm/wavesubs/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>。</p><h2>儿童隐私</h2><p>软件不面向儿童设计，也不从任何年龄段的用户收集数据。</p><h2>政策变更</h2><p>如本政策有实质性变更，我们会在本页面更新并注明日期。</p><h2>联系我们</h2><p>关于隐私的任何问题，请通过 <a href="https://github.com/jason-jm/wavesubs/issues">GitHub Issues</a> 联系我们。</p>
+</main>
+</body>
+</html>
