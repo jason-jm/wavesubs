@@ -74,7 +74,7 @@
 
 | 日 | 动作 |
 |---|---|
-| D0 | Search Console / Bing、GitHub 社交预览、Show HN、V2EX |
+| D0 | Search Console / Bing、winget CLA 回复、Show HN、V2EX |
 | D1 | r/macapps、X 线程 |
 | D2 | Product Hunt（周二–四）、r/LocalLLaMA |
 | D3 | r/opensource、少数派 |
