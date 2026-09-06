@@ -11,3 +11,4 @@ eval/
 .claude/
 .tmp-*
 store/screenshots/
+*.provisionprofile

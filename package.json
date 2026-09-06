@@ -157,7 +157,8 @@
         "ITSAppUsesNonExemptEncryption": false,
         "LSMinimumSystemVersion": "12.0",
         "NSMicrophoneUsageDescription": "Wave Subs 不使用麦克风。"
-      }
+      },
+      "provisioningProfile": "build/WaveSubs_MAS.provisionprofile"
     }
   },
   "license": "MIT",
