@@ -1,4 +1,4 @@
-import { mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { basename, dirname, extname, join, resolve as resolvePath } from 'node:path'
 import type { TranslationKey } from '../../shared/i18n/core'
@@ -24,6 +24,7 @@ import type { Cue } from './subtitle/types'
 import { ffmpegPath, ffprobePath, vadBinPath, whisperCliPath } from './tools'
 import { glossaryHashOf, JobStore, planTranslation, sourceKeyOf } from './jobstore'
 import { computeQc } from './subtitle/qc'
+import { writeOutput } from './output'
 import type { JobRecord } from './jobstore'
 import { PROMPT_REV } from './translate/prompt'
 import { translateCues } from './translate/translateCues'
@@ -55,6 +56,8 @@ export interface JobOptions {
   cacheDir?: string
   /** 忽略已有缓存强制重跑（结果仍会写入缓存） */
   refreshCache?: boolean
+  /** 目标目录写不进去（沙盒/只读卷）时的兜底输出目录；不传则直接报错 */
+  fallbackOutputDir?: string
   onProgress?: (progress: JobProgress) => void
 }
 
@@ -406,15 +409,15 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
       content: opts.output.content,
       outputDir: opts.outputDir
     })
-    await writeFile(
+    const writtenPath = await writeOutput(
       outputPath,
       serializeCues(cues, opts.output.format, opts.output.content),
-      'utf8'
+      opts.fallbackOutputDir
     )
     report('write', 100, 'progress.done')
 
     return {
-      outputPath,
+      outputPath: writtenPath,
       language,
       targetLanguage: opts.translate?.targetLanguage,
       cueCount: cues.length,

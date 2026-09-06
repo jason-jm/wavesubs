@@ -60,7 +60,7 @@ electron-builder（当前 26.15）能直接读这个钥匙串 profile，密码�
 ## 每次发布
 
 ```bash
-npm run check-i18n && npm run check-css && npm run check-batch && npm run check-cache && npm run check-glossary && npm run check-qc && npm run check-editor && npm run check-preview && npm run typecheck
+npm run check-i18n && npm run check-css && npm run check-batch && npm run check-cache && npm run check-glossary && npm run check-qc && npm run check-editor && npm run check-preview && npm run check-output && npm run typecheck
 APPLE_KEYCHAIN_PROFILE=WAVESUBS_NOTARY npm run release
 ```
 
@@ -155,3 +155,21 @@ macOS 上做不了、只能到 Windows 机器上确认：
 - Windows ARM64
 - 自动更新（electron-updater + 更新源）
 - 崩溃上报
+
+## Mac App Store 版
+
+与官网版同一份代码，差别只在打包：`mas` 目标 + 沙盒 entitlements（`build/entitlements.mas.plist`
+与 `.inherit.plist`），签名用 *Apple Distribution* 证书，产物是 `.pkg`，不走公证走 App Review。
+
+```bash
+npm run release:mas        # 需要 build/WaveSubs_MAS.provisionprofile 与 Apple Distribution 证书
+```
+
+沙盒对行为的唯一影响：应用只拿到用户拖入/选中的文件本身的访问权，写不了视频旁边的字幕文件时，
+`core/output.ts` 会把成品落到 `~/Movies/Wave Subs`（entitlement `assets.movies.read-write`），
+界面显示真实路径。拖入整个文件夹则原地写入。
+
+后台准备步骤、商店文案、隐私问卷、审核备注全部在 `store/app-store-metadata.md`。
+截图用 `docs/assets/shots/*.png`（2880×1800）。
+
+**随包 ffmpeg 是 LGPL**，与 App Store 条款的兼容性存在争议（用户已知悉并选择保留）。

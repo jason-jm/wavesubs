@@ -29,7 +29,9 @@
     "check-glossary": "tsx scripts/check-glossary.ts",
     "check-qc": "tsx scripts/check-qc.ts",
     "check-editor": "tsx scripts/check-editor.ts",
-    "check-preview": "tsx scripts/check-preview.ts"
+    "check-preview": "tsx scripts/check-preview.ts",
+    "release:mas": "npm run build && tsx scripts/bundle-deps.ts && electron-builder --mac mas --arm64",
+    "check-output": "tsx scripts/check-output.ts"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
@@ -78,7 +80,8 @@
       "darkModeSupport": true,
       "extendInfo": {
         "NSMicrophoneUsageDescription": "Wave Subs 不使用麦克风。",
-        "LSMinimumSystemVersion": "12.0"
+        "LSMinimumSystemVersion": "12.0",
+        "ElectronTeamID": "TZ7V6PMGV6"
       },
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
@@ -143,6 +146,18 @@
       "perMachine": false,
       "shortcutName": "Wave Subs",
       "deleteAppDataOnUninstall": false
+    },
+    "mas": {
+      "entitlements": "build/entitlements.mas.plist",
+      "entitlementsInherit": "build/entitlements.mas.inherit.plist",
+      "hardenedRuntime": false,
+      "type": "distribution",
+      "category": "public.app-category.video",
+      "extendInfo": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "LSMinimumSystemVersion": "12.0",
+        "NSMicrophoneUsageDescription": "Wave Subs 不使用麦克风。"
+      }
     }
   },
   "license": "MIT",

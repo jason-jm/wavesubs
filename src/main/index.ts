@@ -29,6 +29,7 @@ import { buildSegmentPreview, prunePreviewCache } from './core/preview'
 import { tmpdir } from 'node:os'
 import { computeQc } from './core/subtitle/qc'
 import { resolveOutputPath, serializeCues } from './core/pipeline'
+import { writeOutput } from './core/output'
 import {
   findModelSpec,
   modelDownloadUrl,
@@ -84,6 +85,9 @@ protocol.registerSchemesAsPrivileged([
 ])
 
 const PREVIEW_CACHE = join(tmpdir(), 'wavesubs-preview')
+
+/** 成品写不回视频旁边时的去处：~/Movies/Wave Subs（沙盒版靠 assets.movies 权限写这里） */
+const fallbackOutputDir = (): string => join(app.getPath('videos'), 'Wave Subs')
 
 const VIDEO_EXTENSIONS = ['mkv', 'mp4', 'mov', 'avi', 'ts', 'm2ts', 'webm', 'flv', 'wmv', 'm4v']
 
@@ -396,6 +400,7 @@ function registerIpc(): void {
         translate,
         output,
         cacheDir: join(app.getPath('userData'), 'jobcache'),
+        fallbackOutputDir: fallbackOutputDir(),
         refreshCache: request.refreshCache,
         glossary: settings.glossary,
         onProgress: (p) => {
@@ -520,9 +525,11 @@ function registerIpc(): void {
         format: output.format,
         content: output.content
       })
-      const { writeFile } = await import('node:fs/promises')
-      await writeFile(outputPath, serializeCues(rec.cues, output.format, output.content), 'utf8')
-      return outputPath
+      return writeOutput(
+        outputPath,
+        serializeCues(rec.cues, output.format, output.content),
+        fallbackOutputDir()
+      )
     }
   )
 }
