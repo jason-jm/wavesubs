@@ -147,3 +147,8 @@ The app bundles ffmpeg (LGPL) and whisper.cpp / llama.cpp (MIT); licenses are in
 - `scripts/verify-mas.sh` 全部通过（entitlements、内嵌描述文件、ElectronTeamID、deep --strict）
 - electron-builder 的 `mas` 目标把 pkg 放在 `release/mas-arm64/`，不在 `release/` 顶层
 - 上传：Mac App Store 安装 Transporter → 拖入 pkg → Deliver；之后在 App Store Connect 建 App 记录、选构建、填元数据、提交审核
+
+## 2026-09-06 15:30：1.0.1 的 App Store 包已出、自检全绿
+
+- 文件：`release/mas-arm64/Wave Subs-1.0.1-arm64.pkg`（135 MB）——用 Transporter 上传，然后在版本页把构建换成 1.0.1
+- 本次变化：29 种翻译目标语言、首次启动默认翻译到系统语言、颗粒默认 0.1
