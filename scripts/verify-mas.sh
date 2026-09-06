@@ -2,7 +2,8 @@
 # App Store 包的自检：签名身份、沙盒 entitlements、描述文件、Helper 与随包二进制的继承 entitlements。
 # 本机 Gatekeeper 不会接受商店签名的包（那是商店的事），所以这里不做 spctl。
 set -u
-PKG="$(ls -t release/*.pkg 2>/dev/null | head -1)"
+# electron-builder 把 pkg 放在 release/mas-arm64/ 里，不在 release/ 顶层
+PKG="$(ls -t release/mas-arm64/*.pkg release/*.pkg 2>/dev/null | head -1)"
 [ -n "$PKG" ] || { echo "release/ 里没有 .pkg"; exit 1; }
 fail=0; ok() { echo "  ✓ $1"; }; bad() { echo "  ✗ $1"; fail=1; }
 
@@ -35,6 +36,7 @@ for h in "$APP"/Contents/Frameworks/*Helper*.app "$APP"/Contents/Resources/vendo
   n=$(basename "$h")
   if grep -q "com.apple.security.inherit" <<<"$e" && grep -q "com.apple.security.app-sandbox" <<<"$e"; then ok "$n"; else bad "$n 缺 inherit/app-sandbox"; fi
 done
-codesign --verify --deep --strict "$APP" 2>&1 | grep -q "" && ok "codesign --deep --strict 通过" || bad "深度校验失败"
+# codesign 成功时不输出任何东西，只能看退出码
+if codesign --verify --deep --strict "$APP" 2>/dev/null; then ok "codesign --deep --strict 通过"; else bad "深度校验失败"; fi
 rm -rf "$T"
 exit $fail
