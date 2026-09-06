@@ -132,3 +132,11 @@ The app bundles ffmpeg (LGPL) and whisper.cpp / llama.cpp (MIT); licenses are in
 - ✅ 沙盒行为改造（输出兜底到 ~/Movies/Wave Subs）已在代码里，且已随官网版 1.0.0 发布（非沙盒下不触发）。
 - ⏳ 待你完成：上传桌面上两张 CSR 换证书 → 注册 App ID / App Group / Provisioning Profile → App Store Connect 建 App。
   证书装进钥匙串、profile 放到 `build/WaveSubs_MAS.provisionprofile` 后，我会自动检测并跑 `release:mas` 出 `.pkg`。
+
+## 2026-09-06 14:10：App Store 包已出、自检全绿
+
+- 文件：`release/mas-arm64/Wave Subs-1.0.0-arm64.pkg`（135 MB）
+- App 用 Apple Distribution 签名，四个 Helper 与五个随包二进制均继承沙盒；pkg 用 Mac Installer Distribution 签名
+- `scripts/verify-mas.sh` 全部通过（entitlements、内嵌描述文件、ElectronTeamID、deep --strict）
+- electron-builder 的 `mas` 目标把 pkg 放在 `release/mas-arm64/`，不在 `release/` 顶层
+- 上传：Mac App Store 安装 Transporter → 拖入 pkg → Deliver；之后在 App Store Connect 建 App 记录、选构建、填元数据、提交审核
