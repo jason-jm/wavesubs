@@ -3,6 +3,7 @@
 封面 + 8 个功能页（对应 store/screenshots 的 8 张界面截图）+ 配置要求表 + 常见问题。
 文案全部复用官网各语言文案（scripts/build-site.py 的 T 字典），不另外翻译。
 用法：python3 scripts/build-cards.py [lang ...]   → store/social/3x4/<lang>/<序号>-<id>.jpg
+只重出某几张：CARDS=export,faq python3 scripts/build-cards.py zh
 """
 import os, sys, html, subprocess, importlib.util, tempfile, shutil
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -81,7 +82,7 @@ def cards(k):
     out.append(('flow', f'''<div class="kicker">{esc(d['how_h2'])}</div><h1 class="small">{esc(d['how_sub'])}</h1>
       <div class="steps">{''.join(f'<div class="step"><div class="k">{i+1}</div><div><h3>{esc(t)}</h3><p>{esc(b)}</p></div></div>' for i,(t,b) in enumerate(st[:2]))}</div>{shot('home-running')}'''))
     # 3 翻译并导出
-    out.append(('export', f'''<div class="kicker">3</div><h1>{esc(st[2][0])}</h1><p class="lead">{esc(st[2][1])}</p>{pills([d['pills'][0], d['pills'][2]])}{shot('home-done')}'''))
+    out.append(('export', f'''<h1 style="margin-top:44px">{esc(st[2][0])}</h1><p class="lead">{esc(st[2][1])}</p>{pills([d['pills'][0], d['pills'][2]])}{shot('home-done')}'''))
     # 4 编辑器
     out.append(('editor', f'''<h1 style="margin-top:44px">{esc(d['ed_h2'])}</h1><p class="lead">{esc(d['ed_p'])}</p>{pills([d['hero_note']])}{shot('editor')}'''))
     # 5 翻译模型
@@ -103,7 +104,7 @@ def cards(k):
     out.append(('privacy', f'''<h1 style="margin-top:44px">{esc(d['pr_h2'])}</h1><p class="lead">{esc(d['pr_sub'])}</p>
       <div class="cards">{''.join(f'<div class="card"><b>{esc(t)}</b><span>{esc(b)}</span></div>' for t,b in d['pr_cards'])}</div>{shot('settings')}'''))
     # 11 常见问题
-    qa = d['faq'][:6]
+    qa = d['faq'][:5]
     out.append(('faq', f'''<h1 style="margin-top:44px">{esc(d['faq_h2'])}</h1>
       <div class="faq">{''.join(f'<div><h3>{esc(q)}</h3><p>{esc(a)}</p></div>' for q,a in qa)}</div><div class="spacer"></div>'''))
     return out
@@ -122,7 +123,9 @@ try:
     for k in langs:
         outdir = os.path.join(OUT, k); os.makedirs(outdir, exist_ok=True)
         cs = cards(k)
+        only = [x for x in os.environ.get('CARDS', '').split(',') if x]
         for i, (cid, body) in enumerate(cs, 1):
+            if only and cid not in only: continue
             p = os.path.join(tmp, f'{k}-{i}.html'); open(p, 'w', encoding='utf-8').write(page(k, i, len(cs), body))
             png = shoot(p, os.path.join(tmp, f'{k}-{i}'))
             out = os.path.join(outdir, f'{i:02d}-{cid}.jpg')
