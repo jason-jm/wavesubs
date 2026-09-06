@@ -16,6 +16,7 @@
 | electronjs.org/apps 官方展示 | 文件已推到分支，PR 被仓库限制挡住 | 分支已备好：https://github.com/electron/apps/compare/main...jason-jm:apps:add-wave-subs ，我过几天重试；你也可以打开这个链接点一下 Create pull request |
 | 官网 SEO | 完成 | 11 种语言 hreflang、sitemap.xml、robots.txt、JSON-LD（SoftwareApplication + FAQPage）、各语言 title/description/keywords |
 | 官网「命令行安装」 | 完成 | 下载区显示 brew / scoop 命令 |
+| GitHub 仓库社交预览图 | 完成 | 已上传 `docs/assets/social/en.jpg`，仓库链接在 X / 微信 / Slack 展开时带图 |
 | Product Hunt 素材 | 完成 | `store/producthunt/`：画廊图 1270×760 ×5、缩略图 240×240；文案见 launch-posts.md |
 
 ## 二、需要你本人做的（按优先级排，每项都注明材料位置）
@@ -28,7 +29,11 @@
    - https://search.google.com/search-console → 添加资源 → 网域 `wavesubs.com` → 用 DNS TXT 验证（在 Netlify 的 DNS 里加一条 TXT）。验证后提交 sitemap：`https://wavesubs.com/sitemap.xml`。
    - https://www.bing.com/webmasters → 可以直接「从 Google Search Console 导入」，一键。
    - 顺手把旧的 `https://jason-jm.github.io/wavesubs/` 也添加为资源并提交同一份 sitemap（App Store 审核里填的是这个地址）。
-2. **GitHub 仓库社交预览图**（1 分钟）：https://github.com/jason-jm/wavesubs/settings → Social preview → Upload → 选 `docs/assets/social/en.jpg`。这样仓库链接在 X / 微信 / Slack 里展开会带图。
+2. **winget 的 CLA 签署**（30 秒，只有你本人能签）：打开 https://github.com/microsoft/winget-pkgs/pull/430387 ，在评论框回复一行：
+   ```
+   @microsoft-github-policy-service agree
+   ```
+   微软的机器人会随即标记 CLA 已签，之后验证流水线自动跑；不签这个 PR 不会被合并。
 3. **Show HN**（5 分钟）：文案在 launch-posts.md「Show HN」。最佳时间：美东工作日早上 8–10 点（北京时间晚上 8–10 点），周二到周四。发完前两小时守着回评论，HN 的排名取决于早期互动。
 4. **V2EX 分享创造**（5 分钟）：launch-posts.md「V2EX」。发完回评论。
 
