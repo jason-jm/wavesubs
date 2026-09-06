@@ -123,3 +123,8 @@
   .cta-note a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(232,237,245,.35)}
   .cta-note a:hover{border-bottom-color:var(--teal)}
   .btn svg{flex:none;opacity:.9}
+  /* 下载区：命令行安装 */
+  .cli{margin-top:22px;border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:14px 18px;display:grid;gap:8px}
+  .cli-h{font-size:12.5px;color:var(--text-3);font-weight:600;letter-spacing:.2px}
+  .cli div span{display:inline-block;min-width:150px;font-size:13px;color:var(--text-2)}
+  .cli code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;color:var(--text);background:rgba(255,255,255,.05);padding:3px 8px;border-radius:6px;user-select:all;overflow-wrap:anywhere}

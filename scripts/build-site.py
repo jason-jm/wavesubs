@@ -83,6 +83,7 @@ T['zh'] = dict(
   req_notes=['「运行占用内存」是模型加载后实际占用；识别与翻译先后进行，不会同时占用两份。',
              'Apple Silicon 用 Metal 加速；Windows 版为 CPU（BLAS）运算，速度明显慢于同档 Mac，且不支持 Intel Mac。',
              'M 系列芯片上，两小时电影用 Large v3 Turbo 约 3～6 分钟识别，本地翻译再加几分钟。'],
+  cli_h='命令行安装',
   dl_h2='下载', dl_sub=f'版本 {VERSION}。ffmpeg 与 whisper.cpp 已随包附带，装完就能用，不需要另装任何东西。',
   mac_req='macOS 12 或更新 · <strong>仅 Apple Silicon</strong>（M1 及之后）· 已由 Apple 公证',
   win_req='Windows 10 或更新 · x64 · 建议 16 GB 内存',
@@ -141,6 +142,7 @@ T['en'] = dict(
   req_notes=['"RAM in use" is what the loaded model actually occupies; recognition and translation run one after the other, never both at once.',
              'Apple Silicon uses Metal acceleration; the Windows build runs on the CPU (BLAS) and is noticeably slower than a comparable Mac. Intel Macs are not supported.',
              'On M-series chips, a two-hour film takes about 3–6 minutes with Large v3 Turbo, plus a few more minutes for local translation.'],
+  cli_h='Install from the command line',
   dl_h2='Download', dl_sub=f'Version {VERSION}. ffmpeg and whisper.cpp are bundled — install and go, nothing else to set up.',
   mac_req='macOS 12 or later · <strong>Apple Silicon only</strong> (M1 and later) · Notarized by Apple',
   win_req='Windows 10 or later · x64 · 16 GB RAM recommended',
@@ -199,6 +201,7 @@ T['ja'] = dict(
   req_notes=['「使用メモリ」はモデル読み込み後の実占有量。認識と翻訳は順に実行され、同時には占有しません。',
              'Apple Silicon は Metal で高速化。Windows 版は CPU（BLAS）処理のため同クラスの Mac よりかなり遅く、Intel Mac は非対応です。',
              'M シリーズでは 2 時間の映画を Large v3 Turbo で約 3〜6 分で認識、ローカル翻訳にさらに数分。'],
+  cli_h='コマンドラインでインストール',
   dl_h2='ダウンロード', dl_sub=f'バージョン {VERSION}。ffmpeg と whisper.cpp は同梱済み。インストールしてすぐ使えます。',
   mac_req='macOS 12 以降 · <strong>Apple Silicon のみ</strong>（M1 以降）· Apple 公証済み',
   win_req='Windows 10 以降 · x64 · メモリ 16 GB 推奨',
@@ -253,6 +256,7 @@ T['ko'] = dict(
   req_notes=['"사용 메모리"는 모델을 불러온 뒤 실제 점유량. 인식과 번역은 차례로 실행되어 동시에 점유하지 않습니다.',
              'Apple Silicon은 Metal 가속. Windows 버전은 CPU(BLAS) 연산이라 같은 급 Mac보다 눈에 띄게 느리며, Intel Mac은 지원하지 않습니다.',
              'M 시리즈 칩에서 2시간 영화는 Large v3 Turbo로 약 3~6분, 로컬 번역에 몇 분 추가.'],
+  cli_h='명령줄로 설치',
   dl_h2='다운로드', dl_sub=f'버전 {VERSION}. ffmpeg와 whisper.cpp가 내장되어 설치 후 바로 사용.',
   mac_req='macOS 12 이상 · <strong>Apple Silicon 전용</strong>(M1 이후) · Apple 공증 완료',
   win_req='Windows 10 이상 · x64 · 16 GB 메모리 권장',
@@ -307,6 +311,7 @@ T['fr'] = dict(
   req_notes=['« RAM utilisée » est l\'occupation réelle du modèle chargé ; reconnaissance et traduction s\'enchaînent, jamais en même temps.',
              'Apple Silicon utilise l\'accélération Metal ; la version Windows tourne sur le CPU (BLAS) et est nettement plus lente qu\'un Mac équivalent. Les Mac Intel ne sont pas pris en charge.',
              'Sur puce M, un film de deux heures prend environ 3 à 6 minutes avec Large v3 Turbo, plus quelques minutes de traduction locale.'],
+  cli_h='Installation en ligne de commande',
   dl_h2='Téléchargement', dl_sub=f'Version {VERSION}. ffmpeg et whisper.cpp sont inclus — rien d\'autre à installer.',
   mac_req='macOS 12 ou ultérieur · <strong>Apple Silicon uniquement</strong> (M1 et suivants) · Notarisé par Apple',
   win_req='Windows 10 ou ultérieur · x64 · 16 Go de RAM conseillés',
@@ -361,6 +366,7 @@ T['de'] = dict(
   req_notes=['„RAM im Betrieb“ ist die tatsächliche Belegung des geladenen Modells; Erkennung und Übersetzung laufen nacheinander, nie gleichzeitig.',
              'Apple Silicon nutzt Metal-Beschleunigung; die Windows-Version rechnet auf der CPU (BLAS) und ist deutlich langsamer als ein vergleichbarer Mac. Intel-Macs werden nicht unterstützt.',
              'Auf M-Chips dauert ein zweistündiger Film mit Large v3 Turbo etwa 3–6 Minuten, plus einige Minuten lokale Übersetzung.'],
+  cli_h='Installation über die Kommandozeile',
   dl_h2='Download', dl_sub=f'Version {VERSION}. ffmpeg und whisper.cpp sind enthalten — installieren und loslegen.',
   mac_req='macOS 12 oder neuer · <strong>nur Apple Silicon</strong> (ab M1) · von Apple beglaubigt',
   win_req='Windows 10 oder neuer · x64 · 16 GB RAM empfohlen',
@@ -415,6 +421,7 @@ T['ru'] = dict(
   req_notes=['«Память при работе» — фактическое потребление загруженной модели; распознавание и перевод идут по очереди, а не одновременно.',
              'Apple Silicon использует ускорение Metal; версия для Windows считает на CPU (BLAS) и заметно медленнее сопоставимого Mac. Intel Mac не поддерживаются.',
              'На чипах M двухчасовой фильм занимает около 3–6 минут с Large v3 Turbo плюс несколько минут локального перевода.'],
+  cli_h='Установка из командной строки',
   dl_h2='Скачать', dl_sub=f'Версия {VERSION}. ffmpeg и whisper.cpp уже внутри — установите и работайте.',
   mac_req='macOS 12 и новее · <strong>только Apple Silicon</strong> (M1 и новее) · нотаризовано Apple',
   win_req='Windows 10 и новее · x64 · рекомендуется 16 ГБ ОЗУ',
@@ -469,6 +476,7 @@ T['id'] = dict(
   req_notes=['"RAM saat dipakai" adalah pemakaian nyata setelah model dimuat; pengenalan dan terjemahan berjalan bergantian, tidak bersamaan.',
              'Apple Silicon memakai akselerasi Metal; versi Windows berjalan di CPU (BLAS) dan jauh lebih lambat dari Mac sekelas. Mac Intel tidak didukung.',
              'Di chip seri M, film dua jam butuh sekitar 3–6 menit dengan Large v3 Turbo, ditambah beberapa menit terjemahan lokal.'],
+  cli_h='Pasang lewat baris perintah',
   dl_h2='Unduh', dl_sub=f'Versi {VERSION}. ffmpeg dan whisper.cpp sudah disertakan — pasang dan langsung pakai.',
   mac_req='macOS 12 atau lebih baru · <strong>hanya Apple Silicon</strong> (M1 ke atas) · dinotarisasi Apple',
   win_req='Windows 10 atau lebih baru · x64 · RAM 16 GB disarankan',
@@ -523,6 +531,7 @@ T['ms'] = dict(
   req_notes=['"RAM semasa digunakan" ialah penggunaan sebenar selepas model dimuatkan; pengecaman dan terjemahan berjalan bergilir, bukan serentak.',
              'Apple Silicon menggunakan pecutan Metal; versi Windows berjalan pada CPU (BLAS) dan jauh lebih perlahan daripada Mac setara. Mac Intel tidak disokong.',
              'Pada cip siri M, filem dua jam mengambil kira-kira 3–6 minit dengan Large v3 Turbo, ditambah beberapa minit terjemahan tempatan.'],
+  cli_h='Pasang melalui baris arahan',
   dl_h2='Muat turun', dl_sub=f'Versi {VERSION}. ffmpeg dan whisper.cpp disertakan — pasang dan terus guna.',
   mac_req='macOS 12 atau lebih baharu · <strong>Apple Silicon sahaja</strong> (M1 ke atas) · dinotari Apple',
   win_req='Windows 10 atau lebih baharu · x64 · RAM 16 GB disyorkan',
@@ -577,6 +586,7 @@ T['vi'] = dict(
   req_notes=['"RAM khi chạy" là mức chiếm dụng thực tế sau khi nạp mô hình; nhận dạng và dịch chạy lần lượt, không đồng thời.',
              'Apple Silicon dùng tăng tốc Metal; bản Windows chạy trên CPU (BLAS) nên chậm hơn rõ rệt so với Mac cùng tầm. Không hỗ trợ Mac Intel.',
              'Trên chip dòng M, phim hai tiếng mất khoảng 3–6 phút với Large v3 Turbo, cộng vài phút dịch cục bộ.'],
+  cli_h='Cài qua dòng lệnh',
   dl_h2='Tải về', dl_sub=f'Phiên bản {VERSION}. ffmpeg và whisper.cpp đã đi kèm — cài là dùng.',
   mac_req='macOS 12 trở lên · <strong>chỉ Apple Silicon</strong> (M1 trở lên) · đã được Apple công chứng',
   win_req='Windows 10 trở lên · x64 · khuyến nghị 16 GB RAM',
@@ -631,6 +641,7 @@ T['th'] = dict(
   req_notes=['"แรมขณะใช้งาน" คือที่ใช้จริงหลังโหลดโมเดล การจับบทพูดกับการแปลทำทีละอย่าง ไม่กินแรมพร้อมกัน',
              'Apple Silicon ใช้การเร่งด้วย Metal ส่วนเวอร์ชัน Windows ประมวลผลบน CPU (BLAS) จึงช้ากว่า Mac ระดับเดียวกันอย่างเห็นได้ชัด และไม่รองรับ Mac Intel',
              'บนชิปตระกูล M หนังสองชั่วโมงใช้เวลาราว 3–6 นาทีด้วย Large v3 Turbo บวกอีกไม่กี่นาทีสำหรับการแปลในเครื่อง'],
+  cli_h='ติดตั้งผ่านคอมมานด์ไลน์',
   dl_h2='ดาวน์โหลด', dl_sub=f'เวอร์ชัน {VERSION} มี ffmpeg และ whisper.cpp มาพร้อมแล้ว ติดตั้งแล้วใช้ได้เลย',
   mac_req='macOS 12 ขึ้นไป · <strong>เฉพาะ Apple Silicon</strong> (M1 ขึ้นไป) · ผ่านการรับรองจาก Apple',
   win_req='Windows 10 ขึ้นไป · x64 · แนะนำแรม 16 GB',
@@ -700,8 +711,8 @@ def page(k):
 {alts}
 <meta property="og:type" content="website"><meta property="og:site_name" content="Wave Subs">
 <meta property="og:title" content="{esc(d['og_title'])}"><meta property="og:description" content="{esc(d['description'])}">
-<meta property="og:url" content="{canonical}"><meta property="og:image" content="{SITE}assets/hero-wave.jpg"><meta property="og:locale" content="{OG_LOCALE[k]}">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(d['og_title'])}"><meta name="twitter:description" content="{esc(d['description'])}"><meta name="twitter:image" content="{SITE}assets/hero-wave.jpg">
+<meta property="og:url" content="{canonical}"><meta property="og:image" content="{SITE}assets/social/{k}.jpg"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:locale" content="{OG_LOCALE[k]}">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(d['og_title'])}"><meta name="twitter:description" content="{esc(d['description'])}"><meta name="twitter:image" content="{SITE}assets/social/{k}.jpg">
 <link rel="icon" href="{p}assets/icon.png">
 <script type="application/ld+json">{json.dumps(app_ld, ensure_ascii=False)}</script>
 <script type="application/ld+json">{json.dumps(faq_ld, ensure_ascii=False)}</script>
@@ -779,6 +790,10 @@ def page(k):
     <div class="card"><h3>Windows</h3><div class="req">{d['win_req']}</div>
       <a class="btn primary" data-dl="win-exe" href="#">{esc(d['dl_win'])}</a><div class="req"><a data-dl="win-zip" href="#">{esc(d['dl_win_alt'])}</a></div></div>
   </div>
+  <div class="cli"><div class="cli-h">{esc(d['cli_h'])}</div>
+    <div><span>macOS · Homebrew</span><code>brew install --cask jason-jm/wavesubs/wavesubs</code></div>
+    <div><span>Windows · Scoop</span><code>scoop bucket add wavesubs https://github.com/jason-jm/scoop-wavesubs &amp;&amp; scoop install wavesubs</code></div>
+  </div>
   <p class="req" style="margin-top:22px;font-size:13.5px;color:var(--text-3)">{d['dl_note']}</p>
 </div></section>
 
@@ -821,17 +836,22 @@ def page(k):
 </html>
 '''
 
-pages = []
-for k in LANGS:
-    out = 'docs/index.html' if k == 'zh' else f'docs/{k}/index.html'
-    path = os.path.join(ROOT, out)
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    open(path, 'w', encoding='utf-8').write(page(k))
-    pages.append(SITE + ('' if k == 'zh' else f'{k}/'))
-    print(f'{out}: {os.path.getsize(path)} bytes')
+def build_all():
+  pages = []
+  for k in LANGS:
+      out = 'docs/index.html' if k == 'zh' else f'docs/{k}/index.html'
+      path = os.path.join(ROOT, out)
+      os.makedirs(os.path.dirname(path), exist_ok=True)
+      open(path, 'w', encoding='utf-8').write(page(k))
+      pages.append(SITE + ('' if k == 'zh' else f'{k}/'))
+      print(f'{out}: {os.path.getsize(path)} bytes')
 
-# sitemap + robots
-sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{u}</loc></url>\n' for u in pages + [SITE+'privacy.html', SITE+'en/privacy.html']) + '</urlset>\n'
-open(os.path.join(ROOT, 'docs', 'sitemap.xml'), 'w').write(sm)
-open(os.path.join(ROOT, 'docs', 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nSitemap: {SITE}sitemap.xml\n')
-print('sitemap.xml / robots.txt 已生成')
+  # sitemap + robots
+  sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{u}</loc></url>\n' for u in pages + [SITE+'privacy.html', SITE+'en/privacy.html']) + '</urlset>\n'
+  open(os.path.join(ROOT, 'docs', 'sitemap.xml'), 'w').write(sm)
+  open(os.path.join(ROOT, 'docs', 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nSitemap: {SITE}sitemap.xml\n')
+  print('sitemap.xml / robots.txt 已生成')
+
+
+if __name__ == '__main__':
+  build_all()
