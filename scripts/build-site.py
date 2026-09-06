@@ -11,6 +11,8 @@ import json, os, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = 'https://jason-jm.github.io/wavesubs/'
 REPO = 'https://github.com/jason-jm/wavesubs'
+# Google Search Console 的所有权验证（HTML tag 方式）；令牌本身是公开的，放在每个页面 head 里
+GOOGLE_SITE_VERIFICATION = 'TLrKCVF2uPAhjO3BwQfRuoxYQfg0VOYPy0XAY4ELXDk'
 VERSION = json.load(open(os.path.join(ROOT, 'package.json')))['version']
 CSS = open(os.path.join(ROOT, 'scripts', 'site.css')).read()
 
@@ -707,6 +709,7 @@ def page(k):
 <title>{esc(d['title'])}</title>
 <meta name="description" content="{esc(d['description'])}">
 <meta name="keywords" content="{esc(d['keywords'])}">
+<meta name="google-site-verification" content="{GOOGLE_SITE_VERIFICATION}">
 <link rel="canonical" href="{canonical}">
 {alts}
 <meta property="og:type" content="website"><meta property="og:site_name" content="Wave Subs">
