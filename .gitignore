@@ -13,3 +13,4 @@ eval/
 store/screenshots/
 *.provisionprofile
 __pycache__/
+store/social/3x4/

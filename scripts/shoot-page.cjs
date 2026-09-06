@@ -20,6 +20,10 @@ app.whenReady().then(async () => {
       : `window.scrollTo({ top: ${+y}, behavior: 'instant' }); true`
     await win.webContents.executeJavaScript(expr)
     await sleep(800)
+    if (process.env.CHECK_OVERFLOW) {
+      const n = await win.webContents.executeJavaScript(`(() => { const e = document.querySelector(${JSON.stringify(process.env.CHECK_OVERFLOW)}); return e ? e.scrollHeight - e.clientHeight : 0 })()`)
+      console.log(`overflow=${n}`)
+    }
     const img = await win.webContents.capturePage()
     fs.writeFileSync(`${prefix}-${y.replace(/[#+]/g, '')}.png`, img.toPNG())
   }
