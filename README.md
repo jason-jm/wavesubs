@@ -1,5 +1,33 @@
 # Wave Subs
 
+[![Release](https://img.shields.io/github/v/release/jason-jm/wavesubs?display_name=tag&include_prereleases)](https://github.com/jason-jm/wavesubs/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Website](https://img.shields.io/badge/website-jason--jm.github.io%2Fwavesubs-5fd4d0)](https://jason-jm.github.io/wavesubs/)
+
+**Local-first subtitles for your videos** — transcribe with Whisper, refine timing, translate with a local LLM or your own API, edit with video preview, batch whole seasons. Nothing is uploaded. macOS (Apple Silicon) and Windows.
+
+[**Download**](https://jason-jm.github.io/wavesubs/#download) · [Website](https://jason-jm.github.io/wavesubs/) · [Changelog](./CHANGELOG.md) · [Third-party licenses](./THIRD-PARTY-LICENSES.md)
+
+![Wave Subs editor with video preview](docs/assets/shots/en-dark-editor.jpg)
+
+<details>
+<summary><b>English overview</b></summary>
+
+- **Three subtitle sources**: local speech recognition (whisper.cpp, Metal), embedded MKV/MP4 text tracks (picked by language), or 18 external subtitle formats with encoding detection.
+- **Timing refinement**: VAD + loudness analysis snap cues to real speech; parameters tuned against official subtitles of six full-length films (see `bench/`).
+- **Translation**: local Qwen3 by default (free, offline) or any OpenAI-compatible endpoint; glossary for consistent names.
+- **Batch**: run a folder with shared settings, override tracks/engine per file.
+- **Editor with preview**: click a line to hear that moment — even HEVC/DTS files a browser can't play (bundled ffmpeg decodes a few seconds of frames + audio).
+- **Quality report** per file: speech coverage, gaps, reading speed, missing or half-done translations.
+- **Strict caching**: recognition and translation cached separately; translation reuse requires an exact match on engine+model, target language, prompt revision and glossary hash.
+- **Privacy**: no account, no analytics; only user-configured cloud translation sends subtitle text anywhere.
+
+Build from source: `npm install && npm run dev`. Release pipeline: see [RELEASE.md](./RELEASE.md).
+</details>
+
+---
+
+
 Mac 与 Windows 桌面应用：导入视频 → 取得原文字幕（本地语音识别 / 内嵌字幕轨 / 外部字幕文件）→ 翻译为目标语言（默认中文）→ 导出 SRT/ASS 字幕。产品定义见 [PRD.md](./PRD.md)。
 
 字幕来源有三种：
