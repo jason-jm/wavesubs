@@ -38,7 +38,7 @@
   --grad-2: #AEC7E0;
   --grad-3: #9AA2D6;
   --grad-angle: 155deg;
-  --grain: 0.5;
+  --grain: 0.1;
 
   /* —— 浅色 —— */
   /* 以下三个只是首帧的兜底值，运行时由 theme.ts 按当前配色算好覆盖掉。

@@ -14,7 +14,7 @@ import type {
   TranslationEngine
 } from '../shared/types'
 import type { Translate } from '../shared/i18n'
-import { DEFAULT_THEME, type ThemeSetting } from '../shared/palettes'
+import { DEFAULT_THEME, LEGACY_DEFAULT_GRAIN, type ThemeSetting } from '../shared/palettes'
 import { pickLocale, translatorFor } from '../shared/i18n'
 import { normalizeBaseUrl } from './core/translate/openaiCompatible'
 import { normalizeAnthropicBaseUrl } from './core/translate/anthropic'
@@ -49,6 +49,8 @@ function normalizeUrlFor(protocol: CloudProtocol, raw: string): string {
 interface StoredSettings {
   appearance: Appearance
   theme: ThemeSetting
+  /** 颗粒默认值的版本：1 = 0.5（1.0.0），2 = 0.1（1.0.1 起）。用来只迁移一次 */
+  grainDefaultRev?: number
   /** 'system' 表示跟随系统语言 */
   language: string
   selectedModel?: string
@@ -66,9 +68,12 @@ interface StoredSettings {
   legacy?: { baseUrl?: string; model?: string; apiKeyEnc?: string }
 }
 
+const GRAIN_DEFAULT_REV = 2
+
 const DEFAULTS: StoredSettings = {
   appearance: 'system',
   theme: { ...DEFAULT_THEME },
+  grainDefaultRev: GRAIN_DEFAULT_REV,
   language: 'system',
   translateEnabled: false,
   translation: {
@@ -87,6 +92,12 @@ export class SettingsStore {
   constructor() {
     this.path = join(app.getPath('userData'), 'settings.json')
     this.data = this.load()
+    const migrated = migrateGrain({ ...DEFAULT_THEME, ...this.data.theme }, this.data.grainDefaultRev)
+    if (migrated.grain !== this.data.theme?.grain || this.data.grainDefaultRev !== GRAIN_DEFAULT_REV) {
+      this.data.theme = migrated
+      this.data.grainDefaultRev = GRAIN_DEFAULT_REV
+      this.save()
+    }
     // 迁移过就立刻落盘，免得旧字段一直残留、下次启动重复迁移
     if (this.migrated) this.save()
   }
@@ -330,6 +341,18 @@ function guessProviderName(baseUrl: string): string {
   if (host.includes('qingcloud')) return '青云'
   if (host.includes('localhost') || host.includes('127.0.0.1')) return '本机服务'
   return host || '未命名服务'
+}
+
+/**
+ * 1.0.0 把颗粒默认成 0.5，用户装上就会把 0.5 写进设置文件。1.0.1 想把默认降到 0.1，
+ * 但设置里已经有值了，普通的「缺省补齐」碰不到它。只在文件仍是旧版本号、且值恰好
+ * 等于旧默认时改——手动调过的（不等于 0.5）一律不动。
+ */
+function migrateGrain(theme: ThemeSetting, rev: number | undefined): ThemeSetting {
+  if ((rev ?? 1) < GRAIN_DEFAULT_REV && theme.grain === LEGACY_DEFAULT_GRAIN) {
+    return { ...theme, grain: DEFAULT_THEME.grain }
+  }
+  return theme
 }
 
 const GLOSSARY_MAX_ENTRIES = 200

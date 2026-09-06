@@ -131,9 +131,13 @@ export interface ThemeSetting {
   intensity: number
 }
 
+/** 1.0.0 的默认颗粒；1.0.1 起降到 0.1，存着旧默认值且从没调过的用户会被迁移到新值 */
+export const LEGACY_DEFAULT_GRAIN = 0.5
+
 export const DEFAULT_THEME: ThemeSetting = {
   paletteId: DEFAULT_PALETTE,
-  grain: 0.5,
+  // 只要够压住大面积渐变的色带就行；0.5 在截图里已经是明显的磨砂感
+  grain: 0.1,
   intensity: 1
 }
 
