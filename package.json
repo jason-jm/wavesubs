@@ -21,9 +21,9 @@
     "dist": "npm run build && electron-builder --mac --arm64 -c.mac.identity=null -c.mac.hardenedRuntime=false -c.mac.target=dir && tsx scripts/sign.ts",
     "check-css": "node scripts/check-css.mjs",
     "check-batch": "tsx scripts/check-batch.ts",
-    "release": "bash scripts/preflight-notary.sh && npm run build && tsx scripts/bundle-deps.ts && electron-builder --mac --arm64 && bash scripts/notarize-dmg.sh",
+    "release": "bash scripts/preflight-notary.sh && npm run build && tsx scripts/bundle-deps.ts && electron-builder --mac --arm64 --publish never && bash scripts/notarize-dmg.sh",
     "bundle-deps": "tsx scripts/bundle-deps.ts",
-    "release:win": "npm run build && tsx scripts/bundle-deps-win.ts && electron-builder --win --x64",
+    "release:win": "npm run build && tsx scripts/bundle-deps-win.ts && electron-builder --win --x64 --publish never",
     "bundle-deps:win": "tsx scripts/bundle-deps-win.ts",
     "check-cache": "tsx scripts/check-cache.ts",
     "check-glossary": "tsx scripts/check-glossary.ts",
@@ -31,7 +31,7 @@
     "check-editor": "tsx scripts/check-editor.ts",
     "check-preview": "tsx scripts/check-preview.ts",
     "check-site": "python3 scripts/build-site.py && electron scripts/check-site.cjs",
-    "release:mas": "npm run build && tsx scripts/bundle-deps.ts && electron-builder --mac mas --arm64",
+    "release:mas": "npm run build && tsx scripts/bundle-deps.ts && electron-builder --mac mas --arm64 --publish never",
     "check-output": "tsx scripts/check-output.ts"
   },
   "devDependencies": {
