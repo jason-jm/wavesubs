@@ -36,7 +36,7 @@
   .top .wrap{display:flex;align-items:center;gap:20px;height:60px}
   .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.2px;color:var(--text)}
   .brand img{width:26px;height:26px;border-radius:7px}
-  .top nav{margin-left:auto;display:flex;gap:22px;font-size:14px}
+  .top nav{margin-left:auto;display:flex;align-items:center;gap:22px;font-size:14px}
   .top nav a{color:var(--text-2)}
   .top nav a:hover{color:var(--text);text-decoration:none}
   .lang-btn{background:var(--panel);border:1px solid var(--line);color:var(--text-2);border-radius:999px;padding:5px 12px;font-size:12.5px;cursor:pointer}
@@ -61,6 +61,7 @@
 
   /* ---- 章节 ---- */
   section{padding:88px 0}
+  #how{padding-bottom:0}  /* 「翻译并导出」与下一个特性块之间的缝要和其它特性块之间一样宽 */
   section h2{font-size:clamp(26px,3.4vw,38px);margin:0 0 10px;letter-spacing:-.3px}
   section p.sub{color:var(--text-2);font-size:17px;max-width:720px;margin:0 0 36px}
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
@@ -109,7 +110,6 @@
 
   .pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
   .pill{font-size:13px;color:var(--text-2);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
-  a.lang-btn{display:inline-block;text-decoration:none}
   .feature h2{font-size:26px;margin:0 0 10px}
   /* 两行标题：h1 大标题 + 副标题（渐变色） */
   .hero h1{margin-bottom:8px}
