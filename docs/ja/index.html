@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wave Subs — 字幕が見つからない？ローカル AI が動画から SRT/ASS 字幕を生成・翻訳。無料・オフライン（Mac / Windows）</title>
+<meta name="description" content="Wave Subs はローカル AI で動画から直接 SRT / ASS 字幕を生成し、あなたの言語に自動翻訳します。すべてあなたのパソコンで完結、インターネット不要、ずっと無料。macOS（Apple Silicon）と Windows に対応。">
+<meta name="keywords" content="動画 字幕 生成,字幕 自動生成,AI 字幕,字幕 翻訳,SRT 作成,ASS 字幕,オフライン 字幕,whisper mac,映画 字幕,アニメ 字幕,無料 字幕ソフト">
+<link rel="canonical" href="https://jason-jm.github.io/wavesubs/ja/">
+<link rel="alternate" hreflang="zh-Hans" href="https://jason-jm.github.io/wavesubs/"><link rel="alternate" hreflang="en" href="https://jason-jm.github.io/wavesubs/en/"><link rel="alternate" hreflang="ja" href="https://jason-jm.github.io/wavesubs/ja/"><link rel="alternate" hreflang="ko" href="https://jason-jm.github.io/wavesubs/ko/"><link rel="alternate" hreflang="fr" href="https://jason-jm.github.io/wavesubs/fr/"><link rel="alternate" hreflang="de" href="https://jason-jm.github.io/wavesubs/de/"><link rel="alternate" hreflang="ru" href="https://jason-jm.github.io/wavesubs/ru/"><link rel="alternate" hreflang="id" href="https://jason-jm.github.io/wavesubs/id/"><link rel="alternate" hreflang="ms" href="https://jason-jm.github.io/wavesubs/ms/"><link rel="alternate" hreflang="vi" href="https://jason-jm.github.io/wavesubs/vi/"><link rel="alternate" hreflang="th" href="https://jason-jm.github.io/wavesubs/th/"><link rel="alternate" hreflang="x-default" href="https://jason-jm.github.io/wavesubs/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Wave Subs">
+<meta property="og:title" content="Wave Subs — 字幕が見つからない？ローカル AI が生成して翻訳"><meta property="og:description" content="Wave Subs はローカル AI で動画から直接 SRT / ASS 字幕を生成し、あなたの言語に自動翻訳します。すべてあなたのパソコンで完結、インターネット不要、ずっと無料。macOS（Apple Silicon）と Windows に対応。">
+<meta property="og:url" content="https://jason-jm.github.io/wavesubs/ja/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/hero-wave.jpg"><meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — 字幕が見つからない？ローカル AI が生成して翻訳"><meta name="twitter:description" content="Wave Subs はローカル AI で動画から直接 SRT / ASS 字幕を生成し、あなたの言語に自動翻訳します。すべてあなたのパソコンで完結、インターネット不要、ずっと無料。macOS（Apple Silicon）と Windows に対応。"><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/hero-wave.jpg">
+<link rel="icon" href="../assets/icon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "ja", "description": "Wave Subs はローカル AI で動画から直接 SRT / ASS 字幕を生成し、あなたの言語に自動翻訳します。すべてあなたのパソコンで完結、インターネット不要、ずっと無料。macOS（Apple Silicon）と Windows に対応。", "url": "https://jason-jm.github.io/wavesubs/ja/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/ja-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "SRT / ASS 字幕を生成, あなたの言語に自動翻訳（29 言語）, ローカル AI · ネット不要 · ずっと無料"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "どんな動画に対応していますか？", "acceptedAnswer": {"@type": "Answer", "text": "MKV、MP4、MOV、TS、AVI など一般的な形式に対応。ブラウザで再生できない HEVC、DTS、TrueHD も、同梱の ffmpeg がすべてデコードします。音声のみのファイルも可。"}}, {"@type": "Question", "name": "対応言語は？", "acceptedAnswer": {"@type": "Answer", "text": "認識は whisper が対応する約 100 言語を自動判定。翻訳先は 29 言語、UI は 32 言語。"}}, {"@type": "Question", "name": "本当にネット不要？", "acceptedAnswer": {"@type": "Answer", "text": "認識・同期・翻訳・編集・書き出しはすべてローカル。ネットを使うのは初回のモデルダウンロードと、自分で設定した場合のクラウド翻訳だけです。"}}, {"@type": "Question", "name": "2 時間の映画はどれくらいかかる？", "acceptedAnswer": {"@type": "Answer", "text": "M シリーズなら Large v3 Turbo で約 3〜6 分、ローカル翻訳にさらに数分。シーズンまるごと一括処理して放置できます。"}}, {"@type": "Question", "name": "Intel Mac は？", "acceptedAnswer": {"@type": "Answer", "text": "現在非対応です。ローカル認識は Apple Silicon の Metal 加速に依存しており、Intel では実用にならない速度です。"}}]}</script>
+<style>
+  :root{
+    --bg:#0b0f17;--bg-2:#111827;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.09);
+    --text:#e8edf5;--text-2:#aab4c5;--text-3:#7b8798;
+    --teal:#5fd4d0;--coral:#ff9a7a;--accent:#7cc7ff;
+    --radius:16px;--max:1120px;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  html[data-ui="zh"] [data-lang="en"],html[data-ui="en"] [data-lang="zh"]{display:none !important}
+
+  /* ---- 顶栏 ---- */
+  header.top{position:sticky;top:0;z-index:10;backdrop-filter:saturate(180%) blur(14px);background:rgba(11,15,23,.72);border-bottom:1px solid var(--line)}
+  .top .wrap{display:flex;align-items:center;gap:20px;height:60px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.2px;color:var(--text)}
+  .brand img{width:26px;height:26px;border-radius:7px}
+  .top nav{margin-left:auto;display:flex;gap:22px;font-size:14px}
+  .top nav a{color:var(--text-2)}
+  .top nav a:hover{color:var(--text);text-decoration:none}
+  .lang-btn{background:var(--panel);border:1px solid var(--line);color:var(--text-2);border-radius:999px;padding:5px 12px;font-size:12.5px;cursor:pointer}
+  .lang-btn:hover{color:var(--text)}
+
+  /* ---- 首屏 ---- */
+  .hero{position:relative;overflow:hidden;padding:96px 0 40px;text-align:center}
+  .hero::before{content:"";position:absolute;inset:0;background:url(../assets/hero-wave.jpg) center/cover no-repeat;opacity:.55;mask-image:linear-gradient(to bottom,#000 30%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 30%,transparent 100%)}
+  .hero .wrap{position:relative}
+  .hero h1{font-size:clamp(34px,5.4vw,60px);line-height:1.12;margin:0 0 18px;letter-spacing:-.5px;font-weight:700}
+  .hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--teal),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{font-size:clamp(16px,2vw,20px);color:var(--text-2);max-width:680px;margin:0 auto 34px}
+  .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:12px;font-weight:600;font-size:15px;border:1px solid var(--line);background:var(--panel);color:var(--text);transition:transform .15s,background .15s}
+  .btn:hover{text-decoration:none;background:rgba(255,255,255,.08);transform:translateY(-1px)}
+  .btn.primary{background:linear-gradient(135deg,#5fd4d0,#7cc7ff);color:#08131a;border-color:transparent}
+  .btn.primary:hover{filter:brightness(1.05)}
+  .btn small{font-weight:400;opacity:.75;font-size:12px}
+  .hero .note{margin-top:14px;font-size:12.5px;color:var(--text-3)}
+  .hero-shot{margin:56px auto 0;max-width:1040px;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:0 40px 120px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03) inset;background:#0f1117}
+  .hero-shot img{display:block;width:100%;height:auto}
+
+  /* ---- 章节 ---- */
+  section{padding:88px 0}
+  section h2{font-size:clamp(26px,3.4vw,38px);margin:0 0 10px;letter-spacing:-.3px}
+  section p.sub{color:var(--text-2);font-size:17px;max-width:720px;margin:0 0 36px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 20px}
+  .card h3{margin:0 0 8px;font-size:17px}
+  .card p{margin:0;color:var(--text-2);font-size:14.5px}
+  .card .k{display:inline-block;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,rgba(95,212,208,.25),rgba(124,199,255,.18));margin-bottom:12px;display:grid;place-items:center;color:var(--teal);font-weight:700}
+
+  /* ---- 交替图文 ---- */
+  .feature{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center;padding:36px 0}
+  .feature.flip{grid-template-columns:.85fr 1.15fr}
+  .feature.flip .shot{order:2}
+  .feature .shot{border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 24px 70px rgba(0,0,0,.5);background:#0f1117}
+  .feature .shot img{display:block;width:100%;height:auto}
+  .feature h3{font-size:24px;margin:0 0 10px}
+  .feature p{color:var(--text-2);margin:0 0 10px;font-size:15.5px}
+  .feature ul{margin:12px 0 0;padding-left:18px;color:var(--text-2);font-size:14.5px}
+  .feature li{margin:4px 0}
+  @media (max-width:860px){.feature,.feature.flip{grid-template-columns:1fr}.feature.flip .shot{order:0}}
+
+  /* ---- 隐私 ---- */
+  .privacy{background:linear-gradient(180deg,rgba(95,212,208,.06),transparent);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .privacy .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:24px}
+  .privacy .row div{padding:18px;border-radius:14px;background:var(--panel);border:1px solid var(--line);font-size:14.5px;color:var(--text-2)}
+  .privacy .row strong{display:block;color:var(--text);margin-bottom:6px;font-size:15px}
+
+  /* ---- 下载 ---- */
+  .dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+  .dl .card h3{display:flex;align-items:center;gap:10px}
+  .dl .req{font-size:13px;color:var(--text-3);margin-top:12px;line-height:1.7}
+  .dl .btn{margin-top:14px}
+  .dl code{background:rgba(255,255,255,.07);padding:1px 6px;border-radius:6px;font-size:12.5px}
+
+  /* ---- FAQ ---- */
+  details{border-top:1px solid var(--line);padding:16px 0}
+  details:last-of-type{border-bottom:1px solid var(--line)}
+  summary{cursor:pointer;font-weight:600;font-size:16px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::after{content:"+";color:var(--text-3);font-weight:400;font-size:20px}
+  details[open] summary::after{content:"–"}
+  details p{color:var(--text-2);margin:10px 0 0;font-size:15px}
+
+  footer{padding:40px 0 60px;color:var(--text-3);font-size:13.5px;border-top:1px solid var(--line)}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:18px;align-items:center}
+  footer nav{margin-left:auto;display:flex;gap:18px}
+  footer a{color:var(--text-2)}
+
+  .pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+  .pill{font-size:13px;color:var(--text-2);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
+  a.lang-btn{display:inline-block;text-decoration:none}
+  .feature h2{font-size:26px;margin:0 0 10px}
+  /* 两行标题：h1 大标题 + 副标题（渐变色） */
+  .hero h1{margin-bottom:8px}
+  .hero p.h2sub{font-size:clamp(22px,3.2vw,36px);line-height:1.2;font-weight:700;letter-spacing:-.3px;margin:0 0 20px}
+  .hero p.h2sub em{font-style:normal;background:linear-gradient(90deg,var(--teal),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+  /* 语言切换下拉 */
+  select.lang-btn{appearance:none;-webkit-appearance:none;padding-right:26px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23aab4c5' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;font-family:inherit}
+  select.lang-btn option{background:var(--bg-2);color:var(--text)}
+  /* 配置要求表格 */
+  .tbl-title{font-size:17px;margin:34px 0 12px;color:var(--text)}
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+  .tbl table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+  .tbl th,.tbl td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;white-space:nowrap}
+  .tbl td:last-child{white-space:normal;min-width:220px}
+  .tbl th{font-weight:600;color:var(--text-3);font-size:12.5px;letter-spacing:.2px;background:rgba(255,255,255,.02);white-space:nowrap}
+  .tbl tr:last-child td{border-bottom:0}
+  .tbl td:first-child{font-weight:600}
+  .tbl td.dots{letter-spacing:2px;color:var(--teal);font-size:12px}
+  .notes{margin:22px 0 0;padding-left:20px;color:var(--text-3);font-size:13.5px;line-height:1.7}
+  .notes li{margin:4px 0}
+  @media (max-width:640px){.tbl table{min-width:640px}}
+  /* 窄屏：导航链接收起，只留语言切换；链接本身不换行 */
+  header.top nav a{white-space:nowrap}
+  @media (max-width:820px){header.top nav a{display:none}header.top nav{gap:0}}
+</style>
+
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="../"><img src="../assets/icon.png" alt="Wave Subs"><span>Wave Subs</span></a>
+  <nav>
+    <a href="#how">使い方</a><a href="#translate">翻訳</a><a href="#privacy">プライバシー</a><a href="#requirements">動作環境</a>
+    <a href="#download">ダウンロード</a><a href="#faq">よくある質問</a>
+    <a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">GitHub</a>
+    <select class="lang-btn" id="lang" aria-label="Language"><option value="zh">简体中文</option><option value="en">English</option><option value="ja" selected>日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select>
+  </nav>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <h1>字幕が見つからない？</h1>
+  <p class="h2sub"><em>ローカル AI に動画から直接作らせよう</em></p>
+  <p class="lead">Wave Subs は動画のセリフを認識して SRT / ASS 字幕を生成し、あなたの言語に自動翻訳します。すべてあなたのパソコンの中で完結——インターネット不要、完全無料。</p>
+  <div class="cta">
+    <a class="btn primary" id="dl-primary" href="#download">macOS 版を無料ダウンロード <small>Apple Silicon</small></a>
+    <a class="btn" id="dl-secondary" href="#download">Windows 版を無料ダウンロード <small>x64</small></a>
+  </div>
+  <div class="pills"><span class="pill">SRT / ASS 字幕を生成</span><span class="pill">あなたの言語に自動翻訳（29 言語）</span><span class="pill">ローカル AI · ネット不要 · ずっと無料</span></div>
+  <div class="hero-shot"><img src="../assets/shots/ja-dark-editor.jpg" alt="動画プレビュー付きエディタ" width="1920" height="1200" fetchpriority="high"></div>
+  <p class="note">字幕エディタ：テキスト修正、タイミング調整、行をクリックしてそのセリフを再生</p>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <h2>3 ステップで動画から字幕へ</h2><p class="sub">字幕サイトを探す必要も、動画をアップロードする必要も、アカウント登録も不要。</p>
+  <div class="grid"><div class="card"><div class="k">1</div><h3>動画をドロップ</h3><p>MKV、MP4、MOV、TS に対応。内蔵の字幕トラックがあれば自動検出してそのまま使います。</p></div><div class="card"><div class="k">2</div><h3>ローカル AI が認識して合わせる</h3><p>whisper.cpp があなたのパソコンでセリフを認識し、言語を自動判定。タイミングは実際に話している瞬間に補正（長編 6 作品の公式字幕で校正済み）。</p></div><div class="card"><div class="k">3</div><h3>翻訳して書き出し</h3><p>あなたの言語に翻訳し、SRT または ASS を動画の隣に保存。どのプレーヤーでも読めます。品質チェックの結果付き。</p></div></div>
+  <div class="feature" style="padding-top:40px">
+    <div class="shot"><img src="../assets/shots/ja-dark-home-done.jpg" alt="翻訳して書き出し" width="1920" height="1200" loading="lazy"></div>
+    <div><h3>翻訳して書き出し</h3><p>あなたの言語に翻訳し、SRT または ASS を動画の隣に保存。どのプレーヤーでも読めます。品質チェックの結果付き。</p></div>
+  </div>
+</div></section>
+
+<section id="translate" style="padding-top:0"><div class="wrap">
+  <div class="feature flip">
+    <div class="shot"><img src="../assets/shots/ja-dark-translate-models.jpg" alt="あなたの言語に自動翻訳" width="1920" height="1200" loading="lazy"></div>
+    <div><h2>あなたの言語に自動翻訳</h2><p>翻訳先は 29 言語：日本語、英語、中国語（簡体・繁体）、韓国語、フランス語、ドイツ語、スペイン語、ポルトガル語、ロシア語、タイ語、ベトナム語、インドネシア語、マレー語など。標準はローカルで動く Qwen3 モデル——無料でオフライン。OpenAI 互換 API も接続可能。</p><ul><li>用語集：人名・地名の訳語を固定し、シーズン全体で統一</li><li>二言語または訳文のみで書き出し</li><li>モデルや用語集を変えたら厳密に再翻訳。古い訳文は混ぜない</li></ul></div>
+  </div>
+  <div class="feature">
+    <div class="shot"><img src="../assets/shots/ja-dark-editor.jpg" alt="動画プレビュー付きエディタ" width="1920" height="1200" loading="lazy"></div>
+    <div><h2>動画プレビュー付きエディタ</h2><p>テキスト修正、タイミング調整、追加・削除・結合、取り消し、自動保存。行をクリックすればそのセリフをその場で再生——ブラウザで再生できない HEVC や DTS も、同梱の ffmpeg がデコードします。品質チェックの指摘はクリックで移動。</p></div>
+  </div>
+  <div class="feature flip">
+    <div class="shot"><img src="../assets/shots/ja-dark-batch.jpg" alt="シーズンまるごと一括、話ごとに個別調整" width="1920" height="1200" loading="lazy"></div>
+    <div><h2>シーズンまるごと一括、話ごとに個別調整</h2><p>フォルダをドロップすれば全ファイルに同じ設定。必要なファイルだけ字幕トラック・音声トラック・エンジンを変更できます。完了した行には品質判定が付きます。</p></div>
+  </div>
+</div></section>
+
+<section class="privacy" id="privacy"><div class="wrap">
+  <h2>ローカルにこだわる理由</h2><p class="sub">オンラインの字幕ツールは動画全体のアップロードを求めます。Wave Subs は何も送信しません。</p>
+  <div class="row"><div><strong>ネット不要</strong>認識・同期・翻訳・編集・書き出しはすべてローカル。モデルをダウンロードすれば、オフラインでも動きます。</div><div><strong>動画は送信しない</strong>アカウントも解析もサーバーもありません。あなたのパソコンで動くただのプログラムです。</div><div><strong>ずっと無料</strong>回数制限も会員制もなし。クラウド翻訳を自分で接続した場合のみ、そのサービスから課金されます。</div></div>
+  <p class="req" style="margin-top:18px;font-size:13.5px"><a href="../en/privacy.html">プライバシーポリシー全文（英語）</a></p>
+</div></section>
+
+<section id="requirements"><div class="wrap">
+  <h2>モデルと動作環境</h2><p class="sub">モデルはアプリ内でワンクリックでダウンロード。アプリはお使いの機種のメモリに応じて各モデルを「最適 / 使用可 / 動作不可」と表示します。同じルールを表にしました。</p>
+  <h3 class="tbl-title">音声認識モデル（whisper）</h3><div class="tbl"><table><thead><tr><th>モデル</th><th>ダウンロード</th><th>使用メモリ</th><th>品質</th><th>速度</th><th>Mac 推奨メモリ</th><th>Windows PC 推奨メモリ</th></tr></thead><tbody><tr><td>Tiny</td><td>75 MB</td><td>0.5 GB</td><td class="dots">●○○○○</td><td class="dots">●●●●●</td><td>8 GB</td><td>16 GB</td></tr><tr><td>Base</td><td>142 MB</td><td>0.7 GB</td><td class="dots">●●○○○</td><td class="dots">●●●●●</td><td>8 GB</td><td>16 GB</td></tr><tr><td>Small</td><td>466 MB</td><td>1.2 GB</td><td class="dots">●●●○○</td><td class="dots">●●●●○</td><td>8 GB</td><td>16 GB</td></tr><tr><td>Medium</td><td>1.5 GB</td><td>2.6 GB</td><td class="dots">●●●●○</td><td class="dots">●●○○○</td><td>16 GB</td><td>24 GB</td></tr><tr><td>Large v3 Turbo</td><td>1.6 GB</td><td>2.2 GB</td><td class="dots">●●●●◐</td><td class="dots">●●●●○</td><td>16 GB</td><td>24 GB</td></tr><tr><td>Large v3</td><td>3.0 GB</td><td>4.5 GB</td><td class="dots">●●●●●</td><td class="dots">●○○○○</td><td>16 GB</td><td>24 GB</td></tr></tbody></table></div>
+  <h3 class="tbl-title">ローカル翻訳モデル（Qwen3）</h3><div class="tbl"><table><thead><tr><th>モデル</th><th>ダウンロード</th><th>使用メモリ</th><th>品質</th><th>速度</th><th>Mac 推奨メモリ</th><th>Windows PC 推奨メモリ</th></tr></thead><tbody><tr><td>Qwen3 1.7B</td><td>1.8 GB</td><td>2.5 GB</td><td class="dots">●●○○○</td><td class="dots">●●●●●</td><td>16 GB</td><td>24 GB</td></tr><tr><td>Qwen3 4B</td><td>2.4 GB</td><td>3.5 GB</td><td class="dots">●●●○○</td><td class="dots">●●●●○</td><td>16 GB</td><td>24 GB</td></tr><tr><td>Qwen3 8B</td><td>4.9 GB</td><td>6 GB</td><td class="dots">●●●●○</td><td class="dots">●●●○○</td><td>16 GB</td><td>24 GB</td></tr><tr><td>Qwen3 14B</td><td>9.0 GB</td><td>10.5 GB</td><td class="dots">●●●●◐</td><td class="dots">●●○○○</td><td>24 GB</td><td>32 GB</td></tr><tr><td>Qwen3 32B</td><td>19.7 GB</td><td>22 GB</td><td class="dots">●●●●●</td><td class="dots">●○○○○</td><td>32 GB</td><td>48 GB</td></tr></tbody></table></div>
+  <h3 class="tbl-title" id="combos">おすすめの組み合わせ</h3><div class="tbl"><table><thead><tr><th>お使いの機種</th><th>認識</th><th>翻訳</th><th>備考</th></tr></thead><tbody><tr><td>Mac 8 GB</td><td>Small または Large v3 Turbo</td><td>Qwen3 1.7B</td><td>十分使えます。Turbo は 8 GB でも動きますが他のアプリは閉じて</td></tr><tr><td>Mac 16 GB</td><td>Large v3 Turbo</td><td>Qwen3 8B</td><td>標準のおすすめ。品質と速度のバランス点</td></tr><tr><td>Mac 32 GB</td><td>Large v3</td><td>Qwen3 14B</td><td>認識品質が最高、翻訳もより正確</td></tr><tr><td>Mac 48 GB 以上</td><td>Large v3</td><td>Qwen3 32B</td><td>翻訳品質が最高、速度は遅め</td></tr><tr><td>Windows PC 16 GB</td><td>Large v3 Turbo</td><td>Qwen3 4B</td><td>CPU のみの処理。同じモデルでも Apple Silicon の数倍の時間</td></tr><tr><td>Windows PC 32 GB</td><td>Large v3 Turbo</td><td>Qwen3 8B</td><td>大きなモデルも動きますが時間に余裕を</td></tr></tbody></table></div>
+  <ul class="notes"><li>「使用メモリ」はモデル読み込み後の実占有量。認識と翻訳は順に実行され、同時には占有しません。</li><li>Apple Silicon は Metal で高速化。Windows 版は CPU（BLAS）処理のため同クラスの Mac よりかなり遅く、Intel Mac は非対応です。</li><li>M シリーズでは 2 時間の映画を Large v3 Turbo で約 3〜6 分で認識、ローカル翻訳にさらに数分。</li></ul>
+</div></section>
+
+<section id="download" style="padding-top:0"><div class="wrap">
+  <h2>無料ダウンロード</h2><p class="sub">バージョン 1.0.1。ffmpeg と whisper.cpp は同梱済み。インストールしてすぐ使えます。</p>
+  <div class="dl">
+    <div class="card"><h3>macOS</h3><div class="req">macOS 12 以降 · <strong>Apple Silicon のみ</strong>（M1 以降）· Apple 公証済み</div>
+      <a class="btn primary" data-dl="mac-dmg" href="#">DMG をダウンロード</a><div class="req"><a data-dl="mac-zip" href="#">または ZIP</a></div></div>
+    <div class="card"><h3>Windows</h3><div class="req">Windows 10 以降 · x64 · メモリ 16 GB 推奨</div>
+      <a class="btn primary" data-dl="win-exe" href="#">インストーラをダウンロード</a><div class="req"><a data-dl="win-zip" href="#">またはポータブル版 ZIP</a></div></div>
+  </div>
+  <p class="req" style="margin-top:22px;font-size:13.5px;color:var(--text-3)">初回起動時に音声認識モデルのダウンロードを案内します（その後はネット不要）。オープンソースのライセンス：<a href="https://github.com/jason-jm/wavesubs/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>。</p>
+</div></section>
+
+<section id="faq" style="padding-top:0"><div class="wrap"><h2>よくある質問</h2><details><summary>どんな動画に対応していますか？</summary><p>MKV、MP4、MOV、TS、AVI など一般的な形式に対応。ブラウザで再生できない HEVC、DTS、TrueHD も、同梱の ffmpeg がすべてデコードします。音声のみのファイルも可。</p></details><details><summary>対応言語は？</summary><p>認識は whisper が対応する約 100 言語を自動判定。翻訳先は 29 言語、UI は 32 言語。</p></details><details><summary>本当にネット不要？</summary><p>認識・同期・翻訳・編集・書き出しはすべてローカル。ネットを使うのは初回のモデルダウンロードと、自分で設定した場合のクラウド翻訳だけです。</p></details><details><summary>2 時間の映画はどれくらいかかる？</summary><p>M シリーズなら Large v3 Turbo で約 3〜6 分、ローカル翻訳にさらに数分。シーズンまるごと一括処理して放置できます。</p></details><details><summary>Intel Mac は？</summary><p>現在非対応です。ローカル認識は Apple Silicon の Metal 加速に依存しており、Intel では実用にならない速度です。</p></details></div></section>
+
+<footer><div class="wrap">
+  <span>© 2026 Jiesi Ma · Wave Subs</span>
+  <nav><a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/jason-jm/wavesubs/issues" target="_blank" rel="noopener">問題を報告</a><a href="https://github.com/jason-jm/wavesubs/blob/main/CHANGELOG.md" target="_blank" rel="noopener">更新履歴</a></nav>
+</div></footer>
+
+<script>
+  const VERSION = '1.0.1';
+  const BASE = 'https://github.com/jason-jm/wavesubs/releases/download/v' + VERSION + '/';
+  const FILES = { 'mac-dmg': BASE + 'Wave.Subs-' + VERSION + '-arm64.dmg', 'mac-zip': BASE + 'Wave.Subs-' + VERSION + '-arm64-mac.zip',
+    'win-exe': BASE + 'Wave.Subs.Setup.' + VERSION + '.exe', 'win-zip': BASE + 'Wave.Subs-' + VERSION + '-win.zip' };
+  const isWin = /Windows/i.test(navigator.userAgent);
+  const applyLinks = (files) => {
+    document.querySelectorAll('[data-dl]').forEach((a) => { if (files[a.dataset.dl]) a.href = files[a.dataset.dl]; });
+    document.getElementById('dl-primary').href = isWin ? files['win-exe'] : files['mac-dmg'];
+    document.getElementById('dl-secondary').href = isWin ? files['mac-dmg'] : files['win-exe'];
+  };
+  applyLinks(FILES);
+  if (isWin) { const p = document.getElementById('dl-primary'), s = document.getElementById('dl-secondary'); p.parentNode.insertBefore(s, p); }
+  fetch('https://api.github.com/repos/jason-jm/wavesubs/releases/latest', { headers: { Accept: 'application/vnd.github+json' } })
+    .then((r) => (r.ok ? r.json() : null)).then((rel) => {
+      if (!rel || !Array.isArray(rel.assets)) return;
+      const pick = (test) => (rel.assets.find((x) => test(x.name)) || {}).browser_download_url;
+      const files = { 'mac-dmg': pick((n) => n.endsWith('.dmg')), 'mac-zip': pick((n) => n.endsWith('-mac.zip')),
+        'win-exe': pick((n) => n.endsWith('.exe')), 'win-zip': pick((n) => n.endsWith('-win.zip')) };
+      if (files['mac-dmg'] && files['win-exe']) applyLinks(files);
+    }).catch(() => {});
+  // 语言切换：记住选择（根页的自动跳转会尊重它），再跳到对应目录
+  document.getElementById('lang').addEventListener('change', (e) => {
+    const v = e.target.value; try { localStorage.setItem('ws-lang', v); } catch (_) {}
+    const root = '../';
+    location.href = v === 'zh' ? root : root + v + '/';
+  });
+</script>
+</body>
+</html>

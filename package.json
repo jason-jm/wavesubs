@@ -30,6 +30,7 @@
     "check-qc": "tsx scripts/check-qc.ts",
     "check-editor": "tsx scripts/check-editor.ts",
     "check-preview": "tsx scripts/check-preview.ts",
+    "check-site": "python3 scripts/build-site.py && electron scripts/check-site.cjs",
     "release:mas": "npm run build && tsx scripts/bundle-deps.ts && electron-builder --mac mas --arm64",
     "check-output": "tsx scripts/check-output.ts"
   },

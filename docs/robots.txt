@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://jason-jm.github.io/wavesubs/sitemap.xml

@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wave Subs — Không có phụ đề? AI cục bộ tạo phụ đề SRT/ASS từ video và dịch. Miễn phí, ngoại tuyến (Mac / Windows)</title>
+<meta name="description" content="Wave Subs tạo phụ đề SRT / ASS trực tiếp từ video bằng AI cục bộ rồi dịch sang ngôn ngữ của bạn. Chạy hoàn toàn trên máy của bạn — không cần internet, miễn phí mãi mãi. macOS (Apple Silicon) và Windows.">
+<meta name="keywords" content="tạo phụ đề từ video,phụ đề tự động,AI phụ đề,dịch phụ đề,tạo SRT,phụ đề ASS,phần mềm phụ đề ngoại tuyến,whisper mac,phụ đề phim,phụ đề anime,miễn phí">
+<link rel="canonical" href="https://jason-jm.github.io/wavesubs/vi/">
+<link rel="alternate" hreflang="zh-Hans" href="https://jason-jm.github.io/wavesubs/"><link rel="alternate" hreflang="en" href="https://jason-jm.github.io/wavesubs/en/"><link rel="alternate" hreflang="ja" href="https://jason-jm.github.io/wavesubs/ja/"><link rel="alternate" hreflang="ko" href="https://jason-jm.github.io/wavesubs/ko/"><link rel="alternate" hreflang="fr" href="https://jason-jm.github.io/wavesubs/fr/"><link rel="alternate" hreflang="de" href="https://jason-jm.github.io/wavesubs/de/"><link rel="alternate" hreflang="ru" href="https://jason-jm.github.io/wavesubs/ru/"><link rel="alternate" hreflang="id" href="https://jason-jm.github.io/wavesubs/id/"><link rel="alternate" hreflang="ms" href="https://jason-jm.github.io/wavesubs/ms/"><link rel="alternate" hreflang="vi" href="https://jason-jm.github.io/wavesubs/vi/"><link rel="alternate" hreflang="th" href="https://jason-jm.github.io/wavesubs/th/"><link rel="alternate" hreflang="x-default" href="https://jason-jm.github.io/wavesubs/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Wave Subs">
+<meta property="og:title" content="Wave Subs — Không có phụ đề? Để AI cục bộ tạo và dịch"><meta property="og:description" content="Wave Subs tạo phụ đề SRT / ASS trực tiếp từ video bằng AI cục bộ rồi dịch sang ngôn ngữ của bạn. Chạy hoàn toàn trên máy của bạn — không cần internet, miễn phí mãi mãi. macOS (Apple Silicon) và Windows.">
+<meta property="og:url" content="https://jason-jm.github.io/wavesubs/vi/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/hero-wave.jpg"><meta property="og:locale" content="vi_VN">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — Không có phụ đề? Để AI cục bộ tạo và dịch"><meta name="twitter:description" content="Wave Subs tạo phụ đề SRT / ASS trực tiếp từ video bằng AI cục bộ rồi dịch sang ngôn ngữ của bạn. Chạy hoàn toàn trên máy của bạn — không cần internet, miễn phí mãi mãi. macOS (Apple Silicon) và Windows."><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/hero-wave.jpg">
+<link rel="icon" href="../assets/icon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "vi", "description": "Wave Subs tạo phụ đề SRT / ASS trực tiếp từ video bằng AI cục bộ rồi dịch sang ngôn ngữ của bạn. Chạy hoàn toàn trên máy của bạn — không cần internet, miễn phí mãi mãi. macOS (Apple Silicon) và Windows.", "url": "https://jason-jm.github.io/wavesubs/vi/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/vi-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Phụ đề SRT / ASS, Tự động dịch sang ngôn ngữ của bạn (29), AI cục bộ · không cần mạng · miễn phí mãi mãi"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Tạo phụ đề được cho video nào?", "acceptedAnswer": {"@type": "Answer", "text": "MKV, MP4, MOV, TS, AVI và các định dạng phổ biến; HEVC, DTS, TrueHD trình duyệt không phát được cũng ổn vì ffmpeg đi kèm giải mã được tất cả. Tệp chỉ có âm thanh cũng được."}}, {"@type": "Question", "name": "Hỗ trợ ngôn ngữ nào?", "acceptedAnswer": {"@type": "Answer", "text": "Nhận dạng gần 100 ngôn ngữ của whisper với tự phát hiện; 29 ngôn ngữ đích để dịch; giao diện 32 ngôn ngữ."}}, {"@type": "Question", "name": "Thật sự không cần internet?", "acceptedAnswer": {"@type": "Answer", "text": "Mọi thứ chạy cục bộ. Mạng chỉ dùng cho lần tải mô hình đầu tiên và dịch đám mây nếu bạn tự cấu hình."}}, {"@type": "Question", "name": "Phim hai tiếng mất bao lâu?", "acceptedAnswer": {"@type": "Answer", "text": "Khoảng 3–6 phút với Large v3 Turbo trên chip dòng M, cộng vài phút dịch cục bộ. Chạy cả mùa hàng loạt rồi để đó."}}, {"@type": "Question", "name": "Mac Intel thì sao?", "acceptedAnswer": {"@type": "Answer", "text": "Hiện chưa. Nhận dạng cục bộ dựa vào tăng tốc Metal của Apple Silicon; trên Intel sẽ quá chậm."}}]}</script>
+<style>
+  :root{
+    --bg:#0b0f17;--bg-2:#111827;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.09);
+    --text:#e8edf5;--text-2:#aab4c5;--text-3:#7b8798;
+    --teal:#5fd4d0;--coral:#ff9a7a;--accent:#7cc7ff;
+    --radius:16px;--max:1120px;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  html[data-ui="zh"] [data-lang="en"],html[data-ui="en"] [data-lang="zh"]{display:none !important}
+
+  /* ---- 顶栏 ---- */
+  header.top{position:sticky;top:0;z-index:10;backdrop-filter:saturate(180%) blur(14px);background:rgba(11,15,23,.72);border-bottom:1px solid var(--line)}
+  .top .wrap{display:flex;align-items:center;gap:20px;height:60px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.2px;color:var(--text)}
+  .brand img{width:26px;height:26px;border-radius:7px}
+  .top nav{margin-left:auto;display:flex;gap:22px;font-size:14px}
+  .top nav a{color:var(--text-2)}
+  .top nav a:hover{color:var(--text);text-decoration:none}
+  .lang-btn{background:var(--panel);border:1px solid var(--line);color:var(--text-2);border-radius:999px;padding:5px 12px;font-size:12.5px;cursor:pointer}
+  .lang-btn:hover{color:var(--text)}
+
+  /* ---- 首屏 ---- */
+  .hero{position:relative;overflow:hidden;padding:96px 0 40px;text-align:center}
+  .hero::before{content:"";position:absolute;inset:0;background:url(../assets/hero-wave.jpg) center/cover no-repeat;opacity:.55;mask-image:linear-gradient(to bottom,#000 30%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 30%,transparent 100%)}
+  .hero .wrap{position:relative}
+  .hero h1{font-size:clamp(34px,5.4vw,60px);line-height:1.12;margin:0 0 18px;letter-spacing:-.5px;font-weight:700}
+  .hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--teal),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{font-size:clamp(16px,2vw,20px);color:var(--text-2);max-width:680px;margin:0 auto 34px}
+  .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:12px;font-weight:600;font-size:15px;border:1px solid var(--line);background:var(--panel);color:var(--text);transition:transform .15s,background .15s}
+  .btn:hover{text-decoration:none;background:rgba(255,255,255,.08);transform:translateY(-1px)}
+  .btn.primary{background:linear-gradient(135deg,#5fd4d0,#7cc7ff);color:#08131a;border-color:transparent}
+  .btn.primary:hover{filter:brightness(1.05)}
+  .btn small{font-weight:400;opacity:.75;font-size:12px}
+  .hero .note{margin-top:14px;font-size:12.5px;color:var(--text-3)}
+  .hero-shot{margin:56px auto 0;max-width:1040px;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:0 40px 120px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03) inset;background:#0f1117}
+  .hero-shot img{display:block;width:100%;height:auto}
+
+  /* ---- 章节 ---- */
+  section{padding:88px 0}
+  section h2{font-size:clamp(26px,3.4vw,38px);margin:0 0 10px;letter-spacing:-.3px}
+  section p.sub{color:var(--text-2);font-size:17px;max-width:720px;margin:0 0 36px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 20px}
+  .card h3{margin:0 0 8px;font-size:17px}
+  .card p{margin:0;color:var(--text-2);font-size:14.5px}
+  .card .k{display:inline-block;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,rgba(95,212,208,.25),rgba(124,199,255,.18));margin-bottom:12px;display:grid;place-items:center;color:var(--teal);font-weight:700}
+
+  /* ---- 交替图文 ---- */
+  .feature{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center;padding:36px 0}
+  .feature.flip{grid-template-columns:.85fr 1.15fr}
+  .feature.flip .shot{order:2}
+  .feature .shot{border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 24px 70px rgba(0,0,0,.5);background:#0f1117}
+  .feature .shot img{display:block;width:100%;height:auto}
+  .feature h3{font-size:24px;margin:0 0 10px}
+  .feature p{color:var(--text-2);margin:0 0 10px;font-size:15.5px}
+  .feature ul{margin:12px 0 0;padding-left:18px;color:var(--text-2);font-size:14.5px}
+  .feature li{margin:4px 0}
+  @media (max-width:860px){.feature,.feature.flip{grid-template-columns:1fr}.feature.flip .shot{order:0}}
+
+  /* ---- 隐私 ---- */
+  .privacy{background:linear-gradient(180deg,rgba(95,212,208,.06),transparent);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .privacy .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:24px}
+  .privacy .row div{padding:18px;border-radius:14px;background:var(--panel);border:1px solid var(--line);font-size:14.5px;color:var(--text-2)}
+  .privacy .row strong{display:block;color:var(--text);margin-bottom:6px;font-size:15px}
+
+  /* ---- 下载 ---- */
+  .dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+  .dl .card h3{display:flex;align-items:center;gap:10px}
+  .dl .req{font-size:13px;color:var(--text-3);margin-top:12px;line-height:1.7}
+  .dl .btn{margin-top:14px}
+  .dl code{background:rgba(255,255,255,.07);padding:1px 6px;border-radius:6px;font-size:12.5px}
+
+  /* ---- FAQ ---- */
+  details{border-top:1px solid var(--line);padding:16px 0}
+  details:last-of-type{border-bottom:1px solid var(--line)}
+  summary{cursor:pointer;font-weight:600;font-size:16px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::after{content:"+";color:var(--text-3);font-weight:400;font-size:20px}
+  details[open] summary::after{content:"–"}
+  details p{color:var(--text-2);margin:10px 0 0;font-size:15px}
+
+  footer{padding:40px 0 60px;color:var(--text-3);font-size:13.5px;border-top:1px solid var(--line)}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:18px;align-items:center}
+  footer nav{margin-left:auto;display:flex;gap:18px}
+  footer a{color:var(--text-2)}
+
+  .pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+  .pill{font-size:13px;color:var(--text-2);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
+  a.lang-btn{display:inline-block;text-decoration:none}
+  .feature h2{font-size:26px;margin:0 0 10px}
+  /* 两行标题：h1 大标题 + 副标题（渐变色） */
+  .hero h1{margin-bottom:8px}
+  .hero p.h2sub{font-size:clamp(22px,3.2vw,36px);line-height:1.2;font-weight:700;letter-spacing:-.3px;margin:0 0 20px}
+  .hero p.h2sub em{font-style:normal;background:linear-gradient(90deg,var(--teal),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+  /* 语言切换下拉 */
+  select.lang-btn{appearance:none;-webkit-appearance:none;padding-right:26px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23aab4c5' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;font-family:inherit}
+  select.lang-btn option{background:var(--bg-2);color:var(--text)}
+  /* 配置要求表格 */
+  .tbl-title{font-size:17px;margin:34px 0 12px;color:var(--text)}
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+  .tbl table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+  .tbl th,.tbl td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;white-space:nowrap}
+  .tbl td:last-child{white-space:normal;min-width:220px}
+  .tbl th{font-weight:600;color:var(--text-3);font-size:12.5px;letter-spacing:.2px;background:rgba(255,255,255,.02);white-space:nowrap}
+  .tbl tr:last-child td{border-bottom:0}
+  .tbl td:first-child{font-weight:600}
+  .tbl td.dots{letter-spacing:2px;color:var(--teal);font-size:12px}
+  .notes{margin:22px 0 0;padding-left:20px;color:var(--text-3);font-size:13.5px;line-height:1.7}
+  .notes li{margin:4px 0}
+  @media (max-width:640px){.tbl table{min-width:640px}}
+  /* 窄屏：导航链接收起，只留语言切换；链接本身不换行 */
+  header.top nav a{white-space:nowrap}
+  @media (max-width:820px){header.top nav a{display:none}header.top nav{gap:0}}
+</style>
+
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="../"><img src="../assets/icon.png" alt="Wave Subs"><span>Wave Subs</span></a>
+  <nav>
+    <a href="#how">Cách dùng</a><a href="#translate">Dịch</a><a href="#privacy">Riêng tư</a><a href="#requirements">Cấu hình</a>
+    <a href="#download">Tải về</a><a href="#faq">Hỏi đáp</a>
+    <a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">GitHub</a>
+    <select class="lang-btn" id="lang" aria-label="Language"><option value="zh">简体中文</option><option value="en">English</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="vi" selected>Tiếng Việt</option><option value="th">ไทย</option></select>
+  </nav>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <h1>Không tìm thấy phụ đề?</h1>
+  <p class="h2sub"><em>Để AI cục bộ tạo trực tiếp từ video</em></p>
+  <p class="lead">Wave Subs nhận dạng lời thoại trong video, tạo phụ đề SRT / ASS và dịch sang ngôn ngữ của bạn. Tất cả ngay trên máy của bạn — không cần internet, hoàn toàn miễn phí.</p>
+  <div class="cta">
+    <a class="btn primary" id="dl-primary" href="#download">Tải miễn phí cho macOS <small>Apple Silicon</small></a>
+    <a class="btn" id="dl-secondary" href="#download">Tải miễn phí cho Windows <small>x64</small></a>
+  </div>
+  <div class="pills"><span class="pill">Phụ đề SRT / ASS</span><span class="pill">Tự động dịch sang ngôn ngữ của bạn (29)</span><span class="pill">AI cục bộ · không cần mạng · miễn phí mãi mãi</span></div>
+  <div class="hero-shot"><img src="../assets/shots/vi-dark-editor.jpg" alt="Trình chỉnh sửa có xem trước video" width="1920" height="1200" fetchpriority="high"></div>
+  <p class="note">Trình chỉnh sửa: sửa chữ, chỉnh thời gian, bấm vào dòng nào cũng nghe được</p>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <h2>Ba bước từ video ra phụ đề</h2><p class="sub">Không cần tìm trang phụ đề, không tải video lên, không tạo tài khoản.</p>
+  <div class="grid"><div class="card"><div class="k">1</div><h3>Kéo video vào</h3><p>MKV, MP4, MOV, TS đều được. Rãnh phụ đề có sẵn trong video được phát hiện và dùng ngay.</p></div><div class="card"><div class="k">2</div><h3>AI cục bộ nhận dạng và căn chỉnh</h3><p>whisper.cpp nhận dạng lời thoại trên máy bạn, tự phát hiện ngôn ngữ; thời gian khớp với đúng lúc lời thoại được nói (tinh chỉnh theo phụ đề chính thức của sáu bộ phim dài).</p></div><div class="card"><div class="k">3</div><h3>Dịch và xuất</h3><p>Dịch sang ngôn ngữ của bạn, xuất SRT hoặc ASS đặt cạnh video — trình phát nào cũng đọc được. Đánh giá chất lượng cho biết chỗ cần xem.</p></div></div>
+  <div class="feature" style="padding-top:40px">
+    <div class="shot"><img src="../assets/shots/vi-dark-home-done.jpg" alt="Dịch và xuất" width="1920" height="1200" loading="lazy"></div>
+    <div><h3>Dịch và xuất</h3><p>Dịch sang ngôn ngữ của bạn, xuất SRT hoặc ASS đặt cạnh video — trình phát nào cũng đọc được. Đánh giá chất lượng cho biết chỗ cần xem.</p></div>
+  </div>
+</div></section>
+
+<section id="translate" style="padding-top:0"><div class="wrap">
+  <div class="feature flip">
+    <div class="shot"><img src="../assets/shots/vi-dark-translate-models.jpg" alt="Tự động dịch sang ngôn ngữ của bạn" width="1920" height="1200" loading="lazy"></div>
+    <div><h2>Tự động dịch sang ngôn ngữ của bạn</h2><p>29 ngôn ngữ đích: Việt, Anh, Trung (giản thể/phồn thể), Nhật, Hàn, Pháp, Đức, Tây Ban Nha, Bồ Đào Nha, Nga, Thái, Indonesia, Mã Lai… Mặc định dùng mô hình Qwen3 cục bộ — miễn phí và ngoại tuyến — hoặc bất kỳ API tương thích OpenAI nào.</p><ul><li>Bảng thuật ngữ: cố định cách dịch tên để cả mùa nhất quán</li><li>Xuất song ngữ hoặc chỉ bản dịch</li><li>Đổi mô hình hay thuật ngữ là dịch lại nghiêm ngặt, không trộn kết quả cũ</li></ul></div>
+  </div>
+  <div class="feature">
+    <div class="shot"><img src="../assets/shots/vi-dark-editor.jpg" alt="Trình chỉnh sửa có xem trước video" width="1920" height="1200" loading="lazy"></div>
+    <div><h2>Trình chỉnh sửa có xem trước video</h2><p>Sửa chữ, chỉnh thời gian, chèn, xóa, gộp, hoàn tác, tự lưu. Bấm vào dòng nào cũng nghe đúng câu đó — kể cả HEVC hay DTS trình duyệt không phát được, nhờ ffmpeg đi kèm. Phát hiện chất lượng bấm được.</p></div>
+  </div>
+  <div class="feature flip">
+    <div class="shot"><img src="../assets/shots/vi-dark-batch.jpg" alt="Cả mùa một lượt, từng tập chỉnh riêng" width="1920" height="1200" loading="lazy"></div>
+    <div><h2>Cả mùa một lượt, từng tập chỉnh riêng</h2><p>Kéo cả thư mục vào; mọi tệp dùng chung thiết lập, tệp riêng có thể chọn rãnh phụ đề, rãnh âm thanh hoặc công cụ khác. Mỗi dòng xong đều có đánh giá chất lượng.</p></div>
+  </div>
+</div></section>
+
+<section class="privacy" id="privacy"><div class="wrap">
+  <h2>Vì sao chọn cục bộ</h2><p class="sub">Công cụ phụ đề trực tuyến bắt bạn tải cả phim lên. Wave Subs không gửi gì đi.</p>
+  <div class="row"><div><strong>Không cần internet</strong>Nhận dạng, căn chỉnh, dịch, chỉnh sửa, xuất — tất cả tại chỗ. Tải mô hình xong là dùng được khi mất mạng.</div><div><strong>Video không bao giờ được tải lên</strong>Không tài khoản, không thống kê, không máy chủ. Chỉ là một chương trình chạy trên máy bạn.</div><div><strong>Miễn phí mãi mãi</strong>Không giới hạn, không thuê bao. Chỉ nhà cung cấp dịch đám mây do bạn tự kết nối mới tính phí.</div></div>
+  <p class="req" style="margin-top:18px;font-size:13.5px"><a href="../en/privacy.html">Chính sách quyền riêng tư đầy đủ (tiếng Anh)</a></p>
+</div></section>
+
+<section id="requirements"><div class="wrap">
+  <h2>Mô hình và yêu cầu cấu hình</h2><p class="sub">Mô hình tải một chạm trong ứng dụng; ứng dụng đánh dấu từng mô hình &quot;phù hợp / dùng được / quá nặng&quot; theo RAM máy bạn. Cùng quy tắc đó, dạng bảng:</p>
+  <h3 class="tbl-title">Mô hình nhận dạng giọng nói (whisper)</h3><div class="tbl"><table><thead><tr><th>Mô hình</th><th>Dung lượng tải</th><th>RAM khi chạy</th><th>Chất lượng</th><th>Tốc độ</th><th>Mac: RAM đề xuất</th><th>PC Windows: RAM đề xuất</th></tr></thead><tbody><tr><td>Tiny</td><td>75 MB</td><td>0.5 GB</td><td class="dots">●○○○○</td><td class="dots">●●●●●</td><td>8 GB</td><td>16 GB</td></tr><tr><td>Base</td><td>142 MB</td><td>0.7 GB</td><td class="dots">●●○○○</td><td class="dots">●●●●●</td><td>8 GB</td><td>16 GB</td></tr><tr><td>Small</td><td>466 MB</td><td>1.2 GB</td><td class="dots">●●●○○</td><td class="dots">●●●●○</td><td>8 GB</td><td>16 GB</td></tr><tr><td>Medium</td><td>1.5 GB</td><td>2.6 GB</td><td class="dots">●●●●○</td><td class="dots">●●○○○</td><td>16 GB</td><td>24 GB</td></tr><tr><td>Large v3 Turbo</td><td>1.6 GB</td><td>2.2 GB</td><td class="dots">●●●●◐</td><td class="dots">●●●●○</td><td>16 GB</td><td>24 GB</td></tr><tr><td>Large v3</td><td>3.0 GB</td><td>4.5 GB</td><td class="dots">●●●●●</td><td class="dots">●○○○○</td><td>16 GB</td><td>24 GB</td></tr></tbody></table></div>
+  <h3 class="tbl-title">Mô hình dịch cục bộ (Qwen3)</h3><div class="tbl"><table><thead><tr><th>Mô hình</th><th>Dung lượng tải</th><th>RAM khi chạy</th><th>Chất lượng</th><th>Tốc độ</th><th>Mac: RAM đề xuất</th><th>PC Windows: RAM đề xuất</th></tr></thead><tbody><tr><td>Qwen3 1.7B</td><td>1.8 GB</td><td>2.5 GB</td><td class="dots">●●○○○</td><td class="dots">●●●●●</td><td>16 GB</td><td>24 GB</td></tr><tr><td>Qwen3 4B</td><td>2.4 GB</td><td>3.5 GB</td><td class="dots">●●●○○</td><td class="dots">●●●●○</td><td>16 GB</td><td>24 GB</td></tr><tr><td>Qwen3 8B</td><td>4.9 GB</td><td>6 GB</td><td class="dots">●●●●○</td><td class="dots">●●●○○</td><td>16 GB</td><td>24 GB</td></tr><tr><td>Qwen3 14B</td><td>9.0 GB</td><td>10.5 GB</td><td class="dots">●●●●◐</td><td class="dots">●●○○○</td><td>24 GB</td><td>32 GB</td></tr><tr><td>Qwen3 32B</td><td>19.7 GB</td><td>22 GB</td><td class="dots">●●●●●</td><td class="dots">●○○○○</td><td>32 GB</td><td>48 GB</td></tr></tbody></table></div>
+  <h3 class="tbl-title" id="combos">Tổ hợp đề xuất</h3><div class="tbl"><table><thead><tr><th>Máy của bạn</th><th>Nhận dạng</th><th>Dịch</th><th>Ghi chú</th></tr></thead><tbody><tr><td>Mac 8 GB</td><td>Small hoặc Large v3 Turbo</td><td>Qwen3 1.7B</td><td>Đủ dùng; Turbo chạy được với 8 GB nhưng hãy đóng ứng dụng khác</td></tr><tr><td>Mac 16 GB</td><td>Large v3 Turbo</td><td>Qwen3 8B</td><td>Đề xuất mặc định, cân bằng chất lượng và tốc độ</td></tr><tr><td>Mac 32 GB</td><td>Large v3</td><td>Qwen3 14B</td><td>Nhận dạng tốt nhất, dịch chính xác hơn</td></tr><tr><td>Mac 48 GB trở lên</td><td>Large v3</td><td>Qwen3 32B</td><td>Dịch tốt nhất, chậm hơn</td></tr><tr><td>PC Windows 16 GB</td><td>Large v3 Turbo</td><td>Qwen3 4B</td><td>Chỉ CPU: cùng mô hình thường mất gấp vài lần thời gian so với Apple Silicon</td></tr><tr><td>PC Windows 32 GB</td><td>Large v3 Turbo</td><td>Qwen3 8B</td><td>Mô hình lớn chạy được, cần thêm thời gian</td></tr></tbody></table></div>
+  <ul class="notes"><li>&quot;RAM khi chạy&quot; là mức chiếm dụng thực tế sau khi nạp mô hình; nhận dạng và dịch chạy lần lượt, không đồng thời.</li><li>Apple Silicon dùng tăng tốc Metal; bản Windows chạy trên CPU (BLAS) nên chậm hơn rõ rệt so với Mac cùng tầm. Không hỗ trợ Mac Intel.</li><li>Trên chip dòng M, phim hai tiếng mất khoảng 3–6 phút với Large v3 Turbo, cộng vài phút dịch cục bộ.</li></ul>
+</div></section>
+
+<section id="download" style="padding-top:0"><div class="wrap">
+  <h2>Tải miễn phí</h2><p class="sub">Phiên bản 1.0.1. ffmpeg và whisper.cpp đã đi kèm — cài là dùng.</p>
+  <div class="dl">
+    <div class="card"><h3>macOS</h3><div class="req">macOS 12 trở lên · <strong>chỉ Apple Silicon</strong> (M1 trở lên) · đã được Apple công chứng</div>
+      <a class="btn primary" data-dl="mac-dmg" href="#">Tải DMG</a><div class="req"><a data-dl="mac-zip" href="#">hoặc bản ZIP</a></div></div>
+    <div class="card"><h3>Windows</h3><div class="req">Windows 10 trở lên · x64 · khuyến nghị 16 GB RAM</div>
+      <a class="btn primary" data-dl="win-exe" href="#">Tải trình cài đặt</a><div class="req"><a data-dl="win-zip" href="#">hoặc ZIP di động</a></div></div>
+  </div>
+  <p class="req" style="margin-top:22px;font-size:13.5px;color:var(--text-3)">Lần mở đầu tiên sẽ hướng dẫn tải mô hình nhận dạng (sau đó không cần mạng). Giấy phép mã nguồn mở: <a href="https://github.com/jason-jm/wavesubs/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>.</p>
+</div></section>
+
+<section id="faq" style="padding-top:0"><div class="wrap"><h2>Câu hỏi thường gặp</h2><details><summary>Tạo phụ đề được cho video nào?</summary><p>MKV, MP4, MOV, TS, AVI và các định dạng phổ biến; HEVC, DTS, TrueHD trình duyệt không phát được cũng ổn vì ffmpeg đi kèm giải mã được tất cả. Tệp chỉ có âm thanh cũng được.</p></details><details><summary>Hỗ trợ ngôn ngữ nào?</summary><p>Nhận dạng gần 100 ngôn ngữ của whisper với tự phát hiện; 29 ngôn ngữ đích để dịch; giao diện 32 ngôn ngữ.</p></details><details><summary>Thật sự không cần internet?</summary><p>Mọi thứ chạy cục bộ. Mạng chỉ dùng cho lần tải mô hình đầu tiên và dịch đám mây nếu bạn tự cấu hình.</p></details><details><summary>Phim hai tiếng mất bao lâu?</summary><p>Khoảng 3–6 phút với Large v3 Turbo trên chip dòng M, cộng vài phút dịch cục bộ. Chạy cả mùa hàng loạt rồi để đó.</p></details><details><summary>Mac Intel thì sao?</summary><p>Hiện chưa. Nhận dạng cục bộ dựa vào tăng tốc Metal của Apple Silicon; trên Intel sẽ quá chậm.</p></details></div></section>
+
+<footer><div class="wrap">
+  <span>© 2026 Jiesi Ma · Wave Subs</span>
+  <nav><a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/jason-jm/wavesubs/issues" target="_blank" rel="noopener">Báo lỗi</a><a href="https://github.com/jason-jm/wavesubs/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Nhật ký thay đổi</a></nav>
+</div></footer>
+
+<script>
+  const VERSION = '1.0.1';
+  const BASE = 'https://github.com/jason-jm/wavesubs/releases/download/v' + VERSION + '/';
+  const FILES = { 'mac-dmg': BASE + 'Wave.Subs-' + VERSION + '-arm64.dmg', 'mac-zip': BASE + 'Wave.Subs-' + VERSION + '-arm64-mac.zip',
+    'win-exe': BASE + 'Wave.Subs.Setup.' + VERSION + '.exe', 'win-zip': BASE + 'Wave.Subs-' + VERSION + '-win.zip' };
+  const isWin = /Windows/i.test(navigator.userAgent);
+  const applyLinks = (files) => {
+    document.querySelectorAll('[data-dl]').forEach((a) => { if (files[a.dataset.dl]) a.href = files[a.dataset.dl]; });
+    document.getElementById('dl-primary').href = isWin ? files['win-exe'] : files['mac-dmg'];
+    document.getElementById('dl-secondary').href = isWin ? files['mac-dmg'] : files['win-exe'];
+  };
+  applyLinks(FILES);
+  if (isWin) { const p = document.getElementById('dl-primary'), s = document.getElementById('dl-secondary'); p.parentNode.insertBefore(s, p); }
+  fetch('https://api.github.com/repos/jason-jm/wavesubs/releases/latest', { headers: { Accept: 'application/vnd.github+json' } })
+    .then((r) => (r.ok ? r.json() : null)).then((rel) => {
+      if (!rel || !Array.isArray(rel.assets)) return;
+      const pick = (test) => (rel.assets.find((x) => test(x.name)) || {}).browser_download_url;
+      const files = { 'mac-dmg': pick((n) => n.endsWith('.dmg')), 'mac-zip': pick((n) => n.endsWith('-mac.zip')),
+        'win-exe': pick((n) => n.endsWith('.exe')), 'win-zip': pick((n) => n.endsWith('-win.zip')) };
+      if (files['mac-dmg'] && files['win-exe']) applyLinks(files);
+    }).catch(() => {});
+  // 语言切换：记住选择（根页的自动跳转会尊重它），再跳到对应目录
+  document.getElementById('lang').addEventListener('change', (e) => {
+    const v = e.target.value; try { localStorage.setItem('ws-lang', v); } catch (_) {}
+    const root = '../';
+    location.href = v === 'zh' ? root : root + v + '/';
+  });
+</script>
+</body>
+</html>
