@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://jason-jm.github.io/wavesubs/ko/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/hero-wave.jpg"><meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — 자막을 못 찾겠다면? 로컬 AI가 만들고 번역합니다"><meta name="twitter:description" content="Wave Subs는 로컬 AI로 영상에서 바로 SRT / ASS 자막을 만들고 내 언어로 자동 번역합니다. 모든 작업이 내 컴퓨터에서 끝나며 인터넷이 필요 없고 영원히 무료입니다. macOS(Apple Silicon)와 Windows 지원."><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/hero-wave.jpg">
 <link rel="icon" href="../assets/icon.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "ko", "description": "Wave Subs는 로컬 AI로 영상에서 바로 SRT / ASS 자막을 만들고 내 언어로 자동 번역합니다. 모든 작업이 내 컴퓨터에서 끝나며 인터넷이 필요 없고 영원히 무료입니다. macOS(Apple Silicon)와 Windows 지원.", "url": "https://jason-jm.github.io/wavesubs/ko/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/ko-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "SRT / ASS 자막 생성, 내 언어로 자동 번역 (29개), 로컬 AI · 인터넷 불필요 · 영원히 무료"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "ko", "description": "Wave Subs는 로컬 AI로 영상에서 바로 SRT / ASS 자막을 만들고 내 언어로 자동 번역합니다. 모든 작업이 내 컴퓨터에서 끝나며 인터넷이 필요 없고 영원히 무료입니다. macOS(Apple Silicon)와 Windows 지원.", "url": "https://jason-jm.github.io/wavesubs/ko/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/ko-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "SRT / ASS 자막 생성, 내 언어로 자동 번역 (29개), 로컬 AI · 인터넷 불필요"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "어떤 영상에 자막을 만들 수 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "MKV, MP4, MOV, TS, AVI 등 일반 형식 모두. 브라우저가 못 여는 HEVC, DTS, TrueHD도 내장 ffmpeg가 모두 디코딩합니다. 오디오 파일도 됩니다."}}, {"@type": "Question", "name": "지원 언어는?", "acceptedAnswer": {"@type": "Answer", "text": "인식은 whisper가 지원하는 약 100개 언어를 자동 감지. 번역 대상 29개, 인터페이스 32개 언어."}}, {"@type": "Question", "name": "정말 인터넷이 필요 없나요?", "acceptedAnswer": {"@type": "Answer", "text": "인식·정렬·번역·편집·내보내기 모두 로컬. 네트워크는 첫 모델 다운로드와, 직접 설정한 경우의 클라우드 번역에만 씁니다."}}, {"@type": "Question", "name": "2시간 영화는 얼마나 걸리나요?", "acceptedAnswer": {"@type": "Answer", "text": "M 시리즈 칩에서 Large v3 Turbo로 약 3~6분, 로컬 번역에 몇 분 추가. 시즌 전체를 일괄로 걸어 두세요."}}, {"@type": "Question", "name": "Intel Mac은요?", "acceptedAnswer": {"@type": "Answer", "text": "현재 미지원. 로컬 인식이 Apple Silicon의 Metal 가속에 의존해 Intel에서는 실용적이지 않습니다."}}]}</script>
 <style>
   :root{
@@ -134,6 +134,12 @@
   /* 窄屏：导航链接收起，只留语言切换；链接本身不换行 */
   header.top nav a{white-space:nowrap}
   @media (max-width:820px){header.top nav a{display:none}header.top nav{gap:0}}
+  /* 按钮下方的开源/免费/无内购声明 */
+  .cta-note{margin:18px 0 0;font-size:15px;font-weight:600;color:var(--text);letter-spacing:.1px}
+  .cta-note span{margin:0 10px;color:var(--text-3);font-weight:400}
+  .cta-note a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(232,237,245,.35)}
+  .cta-note a:hover{border-bottom-color:var(--teal)}
+  .btn svg{flex:none;opacity:.9}
 </style>
 
 </head>
@@ -153,10 +159,11 @@
   <p class="h2sub"><em>로컬 AI가 영상에서 바로 만들어 드립니다</em></p>
   <p class="lead">Wave Subs는 영상의 대사를 인식해 SRT / ASS 자막을 만들고 내 언어로 자동 번역합니다. 모든 작업이 내 컴퓨터 안에서 끝납니다 — 인터넷 불필요, 완전 무료.</p>
   <div class="cta">
-    <a class="btn primary" id="dl-primary" href="#download">macOS용 무료 다운로드 <small>Apple Silicon</small></a>
-    <a class="btn" id="dl-secondary" href="#download">Windows용 무료 다운로드 <small>x64</small></a>
+    <a class="btn primary" id="dl-primary" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>macOS용 <small>Apple Silicon</small></a>
+    <a class="btn" id="dl-secondary" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>Windows용 <small>x64</small></a>
   </div>
-  <div class="pills"><span class="pill">SRT / ASS 자막 생성</span><span class="pill">내 언어로 자동 번역 (29개)</span><span class="pill">로컬 AI · 인터넷 불필요 · 영원히 무료</span></div>
+  <p class="cta-note"><a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">완전 오픈소스</a><span>·</span>완전 무료<span>·</span>인앱 결제 없음</p>
+  <div class="pills"><span class="pill">SRT / ASS 자막 생성</span><span class="pill">내 언어로 자동 번역 (29개)</span><span class="pill">로컬 AI · 인터넷 불필요</span></div>
   <div class="hero-shot"><img src="../assets/shots/ko-dark-editor.jpg" alt="영상 미리보기가 있는 편집기" width="1920" height="1200" fetchpriority="high"></div>
   <p class="note">자막 편집기: 텍스트 수정, 타이밍 조정, 아무 줄이나 클릭해 그 대사 듣기</p>
 </div></section>
@@ -200,7 +207,7 @@
 </div></section>
 
 <section id="download" style="padding-top:0"><div class="wrap">
-  <h2>무료 다운로드</h2><p class="sub">버전 1.0.1. ffmpeg와 whisper.cpp가 내장되어 설치 후 바로 사용.</p>
+  <h2>다운로드</h2><p class="sub">버전 1.0.1. ffmpeg와 whisper.cpp가 내장되어 설치 후 바로 사용.</p>
   <div class="dl">
     <div class="card"><h3>macOS</h3><div class="req">macOS 12 이상 · <strong>Apple Silicon 전용</strong>(M1 이후) · Apple 공증 완료</div>
       <a class="btn primary" data-dl="mac-dmg" href="#">DMG 다운로드</a><div class="req"><a data-dl="mac-zip" href="#">또는 ZIP</a></div></div>

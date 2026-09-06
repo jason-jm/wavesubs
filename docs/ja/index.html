@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://jason-jm.github.io/wavesubs/ja/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/hero-wave.jpg"><meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — 字幕が見つからない？ローカル AI が生成して翻訳"><meta name="twitter:description" content="Wave Subs はローカル AI で動画から直接 SRT / ASS 字幕を生成し、あなたの言語に自動翻訳します。すべてあなたのパソコンで完結、インターネット不要、ずっと無料。macOS（Apple Silicon）と Windows に対応。"><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/hero-wave.jpg">
 <link rel="icon" href="../assets/icon.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "ja", "description": "Wave Subs はローカル AI で動画から直接 SRT / ASS 字幕を生成し、あなたの言語に自動翻訳します。すべてあなたのパソコンで完結、インターネット不要、ずっと無料。macOS（Apple Silicon）と Windows に対応。", "url": "https://jason-jm.github.io/wavesubs/ja/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/ja-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "SRT / ASS 字幕を生成, あなたの言語に自動翻訳（29 言語）, ローカル AI · ネット不要 · ずっと無料"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "ja", "description": "Wave Subs はローカル AI で動画から直接 SRT / ASS 字幕を生成し、あなたの言語に自動翻訳します。すべてあなたのパソコンで完結、インターネット不要、ずっと無料。macOS（Apple Silicon）と Windows に対応。", "url": "https://jason-jm.github.io/wavesubs/ja/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/ja-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "SRT / ASS 字幕を生成, あなたの言語に自動翻訳（29 言語）, ローカル AI · ネット不要"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "どんな動画に対応していますか？", "acceptedAnswer": {"@type": "Answer", "text": "MKV、MP4、MOV、TS、AVI など一般的な形式に対応。ブラウザで再生できない HEVC、DTS、TrueHD も、同梱の ffmpeg がすべてデコードします。音声のみのファイルも可。"}}, {"@type": "Question", "name": "対応言語は？", "acceptedAnswer": {"@type": "Answer", "text": "認識は whisper が対応する約 100 言語を自動判定。翻訳先は 29 言語、UI は 32 言語。"}}, {"@type": "Question", "name": "本当にネット不要？", "acceptedAnswer": {"@type": "Answer", "text": "認識・同期・翻訳・編集・書き出しはすべてローカル。ネットを使うのは初回のモデルダウンロードと、自分で設定した場合のクラウド翻訳だけです。"}}, {"@type": "Question", "name": "2 時間の映画はどれくらいかかる？", "acceptedAnswer": {"@type": "Answer", "text": "M シリーズなら Large v3 Turbo で約 3〜6 分、ローカル翻訳にさらに数分。シーズンまるごと一括処理して放置できます。"}}, {"@type": "Question", "name": "Intel Mac は？", "acceptedAnswer": {"@type": "Answer", "text": "現在非対応です。ローカル認識は Apple Silicon の Metal 加速に依存しており、Intel では実用にならない速度です。"}}]}</script>
 <style>
   :root{
@@ -134,6 +134,12 @@
   /* 窄屏：导航链接收起，只留语言切换；链接本身不换行 */
   header.top nav a{white-space:nowrap}
   @media (max-width:820px){header.top nav a{display:none}header.top nav{gap:0}}
+  /* 按钮下方的开源/免费/无内购声明 */
+  .cta-note{margin:18px 0 0;font-size:15px;font-weight:600;color:var(--text);letter-spacing:.1px}
+  .cta-note span{margin:0 10px;color:var(--text-3);font-weight:400}
+  .cta-note a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(232,237,245,.35)}
+  .cta-note a:hover{border-bottom-color:var(--teal)}
+  .btn svg{flex:none;opacity:.9}
 </style>
 
 </head>
@@ -153,10 +159,11 @@
   <p class="h2sub"><em>ローカル AI に動画から直接作らせよう</em></p>
   <p class="lead">Wave Subs は動画のセリフを認識して SRT / ASS 字幕を生成し、あなたの言語に自動翻訳します。すべてあなたのパソコンの中で完結——インターネット不要、完全無料。</p>
   <div class="cta">
-    <a class="btn primary" id="dl-primary" href="#download">macOS 版を無料ダウンロード <small>Apple Silicon</small></a>
-    <a class="btn" id="dl-secondary" href="#download">Windows 版を無料ダウンロード <small>x64</small></a>
+    <a class="btn primary" id="dl-primary" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>macOS 版 <small>Apple Silicon</small></a>
+    <a class="btn" id="dl-secondary" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>Windows 版 <small>x64</small></a>
   </div>
-  <div class="pills"><span class="pill">SRT / ASS 字幕を生成</span><span class="pill">あなたの言語に自動翻訳（29 言語）</span><span class="pill">ローカル AI · ネット不要 · ずっと無料</span></div>
+  <p class="cta-note"><a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">完全オープンソース</a><span>·</span>完全無料<span>·</span>アプリ内課金なし</p>
+  <div class="pills"><span class="pill">SRT / ASS 字幕を生成</span><span class="pill">あなたの言語に自動翻訳（29 言語）</span><span class="pill">ローカル AI · ネット不要</span></div>
   <div class="hero-shot"><img src="../assets/shots/ja-dark-editor.jpg" alt="動画プレビュー付きエディタ" width="1920" height="1200" fetchpriority="high"></div>
   <p class="note">字幕エディタ：テキスト修正、タイミング調整、行をクリックしてそのセリフを再生</p>
 </div></section>
@@ -200,7 +207,7 @@
 </div></section>
 
 <section id="download" style="padding-top:0"><div class="wrap">
-  <h2>無料ダウンロード</h2><p class="sub">バージョン 1.0.1。ffmpeg と whisper.cpp は同梱済み。インストールしてすぐ使えます。</p>
+  <h2>ダウンロード</h2><p class="sub">バージョン 1.0.1。ffmpeg と whisper.cpp は同梱済み。インストールしてすぐ使えます。</p>
   <div class="dl">
     <div class="card"><h3>macOS</h3><div class="req">macOS 12 以降 · <strong>Apple Silicon のみ</strong>（M1 以降）· Apple 公証済み</div>
       <a class="btn primary" data-dl="mac-dmg" href="#">DMG をダウンロード</a><div class="req"><a data-dl="mac-zip" href="#">または ZIP</a></div></div>

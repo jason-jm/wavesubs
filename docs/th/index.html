@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://jason-jm.github.io/wavesubs/th/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/hero-wave.jpg"><meta property="og:locale" content="th_TH">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — หาซับไม่เจอ? ให้ AI ในเครื่องสร้างและแปลให้"><meta name="twitter:description" content="Wave Subs สร้างซับไตเติล SRT / ASS จากวิดีโอโดยตรงด้วย AI ในเครื่อง แล้วแปลเป็นภาษาของคุณ ทำงานทั้งหมดบนคอมพิวเตอร์ของคุณ — ไม่ต้องต่ออินเทอร์เน็ต ฟรีตลอดไป macOS (Apple Silicon) และ Windows"><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/hero-wave.jpg">
 <link rel="icon" href="../assets/icon.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "th", "description": "Wave Subs สร้างซับไตเติล SRT / ASS จากวิดีโอโดยตรงด้วย AI ในเครื่อง แล้วแปลเป็นภาษาของคุณ ทำงานทั้งหมดบนคอมพิวเตอร์ของคุณ — ไม่ต้องต่ออินเทอร์เน็ต ฟรีตลอดไป macOS (Apple Silicon) และ Windows", "url": "https://jason-jm.github.io/wavesubs/th/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/th-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "สร้างซับ SRT / ASS, แปลเป็นภาษาของคุณอัตโนมัติ (29 ภาษา), AI ในเครื่อง · ไม่ต้องต่อเน็ต · ฟรีตลอดไป"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "th", "description": "Wave Subs สร้างซับไตเติล SRT / ASS จากวิดีโอโดยตรงด้วย AI ในเครื่อง แล้วแปลเป็นภาษาของคุณ ทำงานทั้งหมดบนคอมพิวเตอร์ของคุณ — ไม่ต้องต่ออินเทอร์เน็ต ฟรีตลอดไป macOS (Apple Silicon) และ Windows", "url": "https://jason-jm.github.io/wavesubs/th/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/th-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "สร้างซับ SRT / ASS, แปลเป็นภาษาของคุณอัตโนมัติ (29 ภาษา), AI ในเครื่อง · ไม่ต้องต่อเน็ต"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "ใช้กับวิดีโอแบบไหนได้บ้าง?", "acceptedAnswer": {"@type": "Answer", "text": "MKV, MP4, MOV, TS, AVI และรูปแบบทั่วไป HEVC, DTS, TrueHD ที่เบราว์เซอร์เล่นไม่ได้ก็ใช้ได้ เพราะ ffmpeg ที่มาพร้อมแอปถอดรหัสได้ทุกอย่าง ไฟล์เสียงอย่างเดียวก็ได้"}}, {"@type": "Question", "name": "รองรับภาษาอะไรบ้าง?", "acceptedAnswer": {"@type": "Answer", "text": "จับบทพูดได้เกือบ 100 ภาษาที่ whisper รองรับพร้อมตรวจภาษาอัตโนมัติ แปลได้ 29 ภาษา หน้าจอมี 32 ภาษา"}}, {"@type": "Question", "name": "ไม่ต้องต่อเน็ตจริงเหรอ?", "acceptedAnswer": {"@type": "Answer", "text": "ทำในเครื่องทั้งหมด ใช้เน็ตแค่โหลดโมเดลครั้งแรก กับการแปลบนคลาวด์ถ้าคุณตั้งค่าเอง"}}, {"@type": "Question", "name": "หนังสองชั่วโมงใช้เวลานานไหม?", "acceptedAnswer": {"@type": "Answer", "text": "ราว 3–6 นาทีด้วย Large v3 Turbo บนชิปตระกูล M บวกอีกไม่กี่นาทีสำหรับแปลในเครื่อง สั่งทั้งซีซันแล้วปล่อยให้รันได้"}}, {"@type": "Question", "name": "Mac Intel ล่ะ?", "acceptedAnswer": {"@type": "Answer", "text": "ยังไม่รองรับ การจับบทพูดในเครื่องต้องพึ่งการเร่งด้วย Metal ของ Apple Silicon บน Intel จะช้าเกินกว่าจะใช้งานจริง"}}]}</script>
 <style>
   :root{
@@ -134,6 +134,12 @@
   /* 窄屏：导航链接收起，只留语言切换；链接本身不换行 */
   header.top nav a{white-space:nowrap}
   @media (max-width:820px){header.top nav a{display:none}header.top nav{gap:0}}
+  /* 按钮下方的开源/免费/无内购声明 */
+  .cta-note{margin:18px 0 0;font-size:15px;font-weight:600;color:var(--text);letter-spacing:.1px}
+  .cta-note span{margin:0 10px;color:var(--text-3);font-weight:400}
+  .cta-note a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(232,237,245,.35)}
+  .cta-note a:hover{border-bottom-color:var(--teal)}
+  .btn svg{flex:none;opacity:.9}
 </style>
 
 </head>
@@ -153,10 +159,11 @@
   <p class="h2sub"><em>ให้ AI ในเครื่องสร้างจากวิดีโอโดยตรง</em></p>
   <p class="lead">Wave Subs จับบทพูดในวิดีโอ สร้างซับ SRT / ASS แล้วแปลเป็นภาษาของคุณ ทำทั้งหมดบนคอมพิวเตอร์ของคุณเอง — ไม่ต้องต่อเน็ต ฟรีทั้งหมด</p>
   <div class="cta">
-    <a class="btn primary" id="dl-primary" href="#download">ดาวน์โหลดฟรีสำหรับ macOS <small>Apple Silicon</small></a>
-    <a class="btn" id="dl-secondary" href="#download">ดาวน์โหลดฟรีสำหรับ Windows <small>x64</small></a>
+    <a class="btn primary" id="dl-primary" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>macOS <small>Apple Silicon</small></a>
+    <a class="btn" id="dl-secondary" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>Windows <small>x64</small></a>
   </div>
-  <div class="pills"><span class="pill">สร้างซับ SRT / ASS</span><span class="pill">แปลเป็นภาษาของคุณอัตโนมัติ (29 ภาษา)</span><span class="pill">AI ในเครื่อง · ไม่ต้องต่อเน็ต · ฟรีตลอดไป</span></div>
+  <p class="cta-note"><a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">โอเพนซอร์สทั้งหมด</a><span>·</span>ฟรีทั้งหมด<span>·</span>ไม่มีการซื้อในแอป</p>
+  <div class="pills"><span class="pill">สร้างซับ SRT / ASS</span><span class="pill">แปลเป็นภาษาของคุณอัตโนมัติ (29 ภาษา)</span><span class="pill">AI ในเครื่อง · ไม่ต้องต่อเน็ต</span></div>
   <div class="hero-shot"><img src="../assets/shots/th-dark-editor.jpg" alt="ตัวแก้ไขพร้อมพรีวิววิดีโอ" width="1920" height="1200" fetchpriority="high"></div>
   <p class="note">ตัวแก้ไข: แก้ข้อความ ปรับเวลา คลิกบรรทัดไหนก็ฟังได้</p>
 </div></section>
@@ -200,7 +207,7 @@
 </div></section>
 
 <section id="download" style="padding-top:0"><div class="wrap">
-  <h2>ดาวน์โหลดฟรี</h2><p class="sub">เวอร์ชัน 1.0.1 มี ffmpeg และ whisper.cpp มาพร้อมแล้ว ติดตั้งแล้วใช้ได้เลย</p>
+  <h2>ดาวน์โหลด</h2><p class="sub">เวอร์ชัน 1.0.1 มี ffmpeg และ whisper.cpp มาพร้อมแล้ว ติดตั้งแล้วใช้ได้เลย</p>
   <div class="dl">
     <div class="card"><h3>macOS</h3><div class="req">macOS 12 ขึ้นไป · <strong>เฉพาะ Apple Silicon</strong> (M1 ขึ้นไป) · ผ่านการรับรองจาก Apple</div>
       <a class="btn primary" data-dl="mac-dmg" href="#">ดาวน์โหลด DMG</a><div class="req"><a data-dl="mac-zip" href="#">หรือไฟล์ ZIP</a></div></div>

@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://jason-jm.github.io/wavesubs/en/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/hero-wave.jpg"><meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — Can&#x27;t find subtitles? Let local AI generate and translate them"><meta name="twitter:description" content="Wave Subs generates SRT / ASS subtitles directly from a video using local AI, then translates them into your language. Runs entirely on your computer — no internet needed, free forever. macOS (Apple Silicon) and Windows."><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/hero-wave.jpg">
 <link rel="icon" href="../assets/icon.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "en", "description": "Wave Subs generates SRT / ASS subtitles directly from a video using local AI, then translates them into your language. Runs entirely on your computer — no internet needed, free forever. macOS (Apple Silicon) and Windows.", "url": "https://jason-jm.github.io/wavesubs/en/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/en-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Generate SRT / ASS subtitles, Auto-translate into your language (29), Local AI · no internet · free forever"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "en", "description": "Wave Subs generates SRT / ASS subtitles directly from a video using local AI, then translates them into your language. Runs entirely on your computer — no internet needed, free forever. macOS (Apple Silicon) and Windows.", "url": "https://jason-jm.github.io/wavesubs/en/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/en-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Generate SRT / ASS subtitles, Auto-translate into your language (29), Local AI · no internet needed"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Which videos can it generate subtitles for?", "acceptedAnswer": {"@type": "Answer", "text": "MKV, MP4, MOV, TS, AVI and other common formats; HEVC, DTS and TrueHD streams a browser can't play are fine too, because the bundled ffmpeg decodes everything. Audio-only files work as well."}}, {"@type": "Question", "name": "Which languages are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Recognition covers the nearly 100 languages whisper supports, with automatic detection; there are 29 translation targets; the interface comes in 32 languages."}}, {"@type": "Question", "name": "Does it really work without internet?", "acceptedAnswer": {"@type": "Answer", "text": "Recognition, alignment, translation, editing and export all run locally. Only two things touch the network: the one-time model download, and cloud translation if you choose to configure it."}}, {"@type": "Question", "name": "How long does a two-hour film take?", "acceptedAnswer": {"@type": "Answer", "text": "Roughly 3–6 minutes with Large v3 Turbo on an M-series chip, plus a few more for local translation. Batch a whole season and let it run."}}, {"@type": "Question", "name": "How accurate are the subtitles?", "acceptedAnswer": {"@type": "Answer", "text": "Recognition uses the whisper large family; timing is snapped to when lines are actually spoken using voice activity detection and loudness analysis, tuned against official subtitles of six full films. Every file gets a quality verdict."}}, {"@type": "Question", "name": "What if the video already has a subtitle track?", "acceptedAnswer": {"@type": "Answer", "text": "Embedded text tracks are detected and preferred, skipping straight to translation — faster and more accurate than recognition. Image-based subtitles (PGS/VobSub) are the exception."}}, {"@type": "Question", "name": "Is there an Intel Mac version?", "acceptedAnswer": {"@type": "Answer", "text": "Not currently. Local recognition relies on Metal acceleration on Apple Silicon; on Intel it would be too slow to be useful."}}, {"@type": "Question", "name": "Windows says \"unknown publisher\"?", "acceptedAnswer": {"@type": "Answer", "text": "The Windows build isn't code-signed yet, so SmartScreen warns about new programs. Click \"More info → Run anyway\"; checksums are on the GitHub Releases page."}}, {"@type": "Question", "name": "How is this different from online subtitle generators?", "acceptedAnswer": {"@type": "Answer", "text": "Online tools make you upload the whole film, charge per minute and cap the length. Wave Subs uploads nothing, costs nothing and has no length limit — speed depends on your machine."}}]}</script>
 <style>
   :root{
@@ -134,6 +134,12 @@
   /* 窄屏：导航链接收起，只留语言切换；链接本身不换行 */
   header.top nav a{white-space:nowrap}
   @media (max-width:820px){header.top nav a{display:none}header.top nav{gap:0}}
+  /* 按钮下方的开源/免费/无内购声明 */
+  .cta-note{margin:18px 0 0;font-size:15px;font-weight:600;color:var(--text);letter-spacing:.1px}
+  .cta-note span{margin:0 10px;color:var(--text-3);font-weight:400}
+  .cta-note a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(232,237,245,.35)}
+  .cta-note a:hover{border-bottom-color:var(--teal)}
+  .btn svg{flex:none;opacity:.9}
 </style>
 
 </head>
@@ -153,10 +159,11 @@
   <p class="h2sub"><em>Let local AI generate them from the video</em></p>
   <p class="lead">Wave Subs recognizes the dialogue in a video, generates SRT / ASS subtitles, and translates them into your language. Everything runs on your own computer — no internet needed, completely free.</p>
   <div class="cta">
-    <a class="btn primary" id="dl-primary" href="#download">Free download for macOS <small>Apple Silicon</small></a>
-    <a class="btn" id="dl-secondary" href="#download">Free download for Windows <small>x64</small></a>
+    <a class="btn primary" id="dl-primary" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>macOS <small>Apple Silicon</small></a>
+    <a class="btn" id="dl-secondary" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>Windows <small>x64</small></a>
   </div>
-  <div class="pills"><span class="pill">Generate SRT / ASS subtitles</span><span class="pill">Auto-translate into your language (29)</span><span class="pill">Local AI · no internet · free forever</span></div>
+  <p class="cta-note"><a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">Fully open source</a><span>·</span>Completely free<span>·</span>No in-app purchases</p>
+  <div class="pills"><span class="pill">Generate SRT / ASS subtitles</span><span class="pill">Auto-translate into your language (29)</span><span class="pill">Local AI · no internet needed</span></div>
   <div class="hero-shot"><img src="../assets/shots/en-dark-editor.jpg" alt="An editor with video preview" width="1920" height="1200" fetchpriority="high"></div>
   <p class="note">The editor: fix text, adjust timing, click any line to hear it</p>
 </div></section>
@@ -200,7 +207,7 @@
 </div></section>
 
 <section id="download" style="padding-top:0"><div class="wrap">
-  <h2>Free download</h2><p class="sub">Version 1.0.1. ffmpeg and whisper.cpp are bundled — install and go, nothing else to set up.</p>
+  <h2>Download</h2><p class="sub">Version 1.0.1. ffmpeg and whisper.cpp are bundled — install and go, nothing else to set up.</p>
   <div class="dl">
     <div class="card"><h3>macOS</h3><div class="req">macOS 12 or later · <strong>Apple Silicon only</strong> (M1 and later) · Notarized by Apple</div>
       <a class="btn primary" data-dl="mac-dmg" href="#">Download DMG</a><div class="req"><a data-dl="mac-zip" href="#">or ZIP archive</a></div></div>
