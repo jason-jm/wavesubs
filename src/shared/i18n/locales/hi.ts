@@ -240,6 +240,12 @@ export const hi: Dict = {
     'ffmpeg (मीडिया) · whisper.cpp (वाक् पहचान) · llama.cpp + Qwen3 (स्थानीय अनुवाद)',
   'settings.about.note':
     'पहचान और अनुवाद के मॉडल तथा क्लाउड सेवाएँ “मॉडल” पन्ने से संभाली जाती हैं। कौन-सा मॉडल लेना है, अनुवाद करना है या नहीं, और किस प्रारूप में सहेजना है — यह सब फ़ाइल छोड़ने के बाद चुना जाता है।',
+  'help.feedback': 'समस्या बताएँ / सुझाव दें…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'App Store पर रेट करें…',
+  'help.website': 'वेबसाइट',
+  'settings.about.feedback': 'प्रतिक्रिया',
+  'settings.about.feedbackHint': 'कोई समस्या या सुझाव? खाते की ज़रूरत नहीं — सीधे हमें बताएँ',
 
   'req.anyMac': 'कोई भी Mac, पुराने Intel वाले भी',
   'req.mac8gb': '8GB या ज़्यादा मेमोरी वाला कोई भी Mac',

@@ -240,6 +240,12 @@ export const nl: Dict = {
     'ffmpeg (media) · whisper.cpp (spraakherkenning) · llama.cpp + Qwen3 (lokale vertaling)',
   'settings.about.note':
     'Herkennings- en vertaalmodellen en cloudservices beheer je op de pagina Modellen. Welk model je gebruikt, of er vertaald wordt en welk exportformaat je kiest, bepaal je nadat je een bestand hebt neergezet.',
+  'help.feedback': 'Probleem melden / Suggestie…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'Beoordelen in de App Store…',
+  'help.website': 'Website',
+  'settings.about.feedback': 'Feedback',
+  'settings.about.feedbackHint': 'Probleem gevonden of een idee? Geen account nodig, laat het ons weten',
 
   'req.anyMac': 'Elke Mac, ook oudere Intel-modellen',
   'req.mac8gb': 'Elke Mac met 8 GB geheugen of meer',

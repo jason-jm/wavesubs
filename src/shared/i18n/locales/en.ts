@@ -236,6 +236,12 @@ export const en: Dict = {
   'settings.about.deps': 'Open-source components used',
   'settings.about.depsHint': 'ffmpeg (media) · whisper.cpp (speech recognition) · llama.cpp + Qwen3 (local translation)',
   'settings.about.note': 'Speech models, translation models and cloud services are all managed on the Models page. Which model to use, whether to translate, and the export format are all chosen after you drop a file in.',
+  'help.feedback': 'Report a problem / Suggest…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'Rate on the App Store…',
+  'help.website': 'Website',
+  'settings.about.feedback': 'Feedback',
+  'settings.about.feedbackHint': 'Found a problem or have an idea? No account needed — just tell us',
 
   'req.anyMac': 'Any Mac, including older Intel models',
   'req.mac8gb': 'Any Mac with 8 GB memory or more',

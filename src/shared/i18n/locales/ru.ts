@@ -240,6 +240,12 @@ export const ru: Dict = {
     'ffmpeg (медиа) · whisper.cpp (распознавание речи) · llama.cpp + Qwen3 (локальный перевод)',
   'settings.about.note':
     'Модели распознавания и перевода, а также облачные сервисы настраиваются на странице «Модели». Какую модель взять, переводить ли и в каком формате сохранять — выбирается после того, как вы перетащите файл.',
+  'help.feedback': 'Сообщить о проблеме / Предложить…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'Оценить в App Store…',
+  'help.website': 'Сайт',
+  'settings.about.feedback': 'Обратная связь',
+  'settings.about.feedbackHint': 'Нашли проблему или есть идея? Аккаунт не нужен — просто напишите нам',
 
   'req.anyMac': 'Любой Mac, включая старые на Intel',
   'req.mac8gb': 'Любой Mac с 8 ГБ памяти и более',

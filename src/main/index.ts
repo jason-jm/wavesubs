@@ -1,9 +1,13 @@
-import { app, BrowserWindow, dialog, ipcMain, nativeTheme, protocol, shell } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain, Menu, nativeTheme, protocol, shell } from 'electron'
+import type { MenuItemConstructorOptions } from 'electron'
+import { translatorFor } from '../shared/i18n'
+import { APP_STORE_REVIEW_URL, DISCUSSIONS_URL, SITE_URL, feedbackUrl, isAllowedExternalUrl } from '../shared/feedback'
 import type { IpcMainInvokeEvent } from 'electron'
 import { rmSync } from 'node:fs'
 import { stat } from 'node:fs/promises'
 import { extname, join } from 'node:path'
 import type {
+  AppInfo,
   CloudProviderInput,
   ExportContent,
   ExportFormat,
@@ -289,10 +293,17 @@ function registerIpc(): void {
       nativeTheme.themeSource = patch.appearance
       refreshTitleBarOverlay()
     }
+    // 菜单文案跟着界面语言走
+    if (patch.language !== undefined) buildAppMenu()
     return next
   })
 
   handle('shell:openPath', (_event, path: string) => shell.openPath(path))
+  handle('shell:openExternal', (_event, url: string) => {
+    if (!isAllowedExternalUrl(url)) throw new Error(`refused to open ${url}`)
+    return shell.openExternal(url)
+  })
+  handle('app:info', () => appInfo())
 
   handle('cloud:save', (_event, input: CloudProviderInput) => {
     settings.saveProvider(input)
@@ -557,6 +568,37 @@ function refreshTitleBarOverlay(): void {
   }
 }
 
+function appInfo(): AppInfo {
+  return { version: app.getVersion(), platform: process.platform, mas: Boolean(process.mas), locale: settings.resolvedLanguage }
+}
+
+/**
+ * 自建应用菜单：不建的话 Electron 默认的「帮助」菜单指向 Electron 自己的文档，
+ * 这里换成我们的反馈入口。标准项用 role，Electron 会按系统语言自动本地化。
+ */
+function buildAppMenu(): void {
+  const t = translatorFor(settings.resolvedLanguage)
+  const info = appInfo()
+  const open = (url: string) => (): void => {
+    void shell.openExternal(url)
+  }
+  const help: MenuItemConstructorOptions[] = [
+    { label: t('help.feedback'), click: open(feedbackUrl(info.version, info.platform, info.locale)) },
+    { label: t('help.discussions'), click: open(DISCUSSIONS_URL) },
+    { label: t('help.website'), click: open(SITE_URL) }
+  ]
+  if (info.mas) help.push({ type: 'separator' }, { label: t('help.rate'), click: open(APP_STORE_REVIEW_URL) })
+  const template: MenuItemConstructorOptions[] = [
+    ...(process.platform === 'darwin' ? [{ role: 'appMenu' as const }] : []),
+    { role: 'fileMenu' },
+    { role: 'editMenu' },
+    { role: 'viewMenu' },
+    { role: 'windowMenu' },
+    { role: 'help', submenu: help }
+  ]
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+}
+
 function createWindow(): void {
   const win = new BrowserWindow({
     width: 1060,
@@ -636,6 +678,7 @@ void app.whenReady().then(() => {
   asrDownloader = new ModelDownloader(modelsDir())
   llmDownloader = new ModelDownloader(llmDir())
   registerIpc()
+  buildAppMenu()
   createWindow()
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()

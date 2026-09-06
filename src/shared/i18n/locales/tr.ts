@@ -240,6 +240,12 @@ export const tr: Dict = {
     'ffmpeg (medya) · whisper.cpp (konuşma tanıma) · llama.cpp + Qwen3 (yerel çeviri)',
   'settings.about.note':
     'Tanıma ve çeviri modelleri ile bulut servisleri “Modeller” sayfasından yönetilir. Hangi modelin kullanılacağı, çeviri yapılıp yapılmayacağı ve dışa aktarma biçimi ise dosyayı bıraktıktan sonra seçilir.',
+  'help.feedback': 'Sorun bildir / Öneri gönder…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'App Store\'da değerlendir…',
+  'help.website': 'Web sitesi',
+  'settings.about.feedback': 'Geri bildirim',
+  'settings.about.feedbackHint': 'Bir sorun mu buldunuz ya da fikriniz mi var? Hesap gerekmez, bize yazın',
 
   'req.anyMac': 'Eski Intel modeller dahil her Mac',
   'req.mac8gb': '8 GB ve üzeri belleğe sahip her Mac',

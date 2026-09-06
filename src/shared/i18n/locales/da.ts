@@ -240,6 +240,12 @@ export const da: Dict = {
     'ffmpeg (medier) · whisper.cpp (talegenkendelse) · llama.cpp + Qwen3 (lokal oversættelse)',
   'settings.about.note':
     'Modeller til genkendelse og oversættelse samt skytjenester styres på siden Modeller. Hvilken model der bruges, om der skal oversættes, og hvilket eksportformat du vil have, vælger du efter at have sluppet arkivet.',
+  'help.feedback': 'Rapportér et problem / Foreslå…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'Bedøm i App Store…',
+  'help.website': 'Websted',
+  'settings.about.feedback': 'Feedback',
+  'settings.about.feedbackHint': 'Fundet et problem eller har du en idé? Ingen konto nødvendig – fortæl os det',
 
   'req.anyMac': 'Enhver Mac, også ældre Intel-modeller',
   'req.mac8gb': 'Enhver Mac med 8 GB hukommelse eller mere',

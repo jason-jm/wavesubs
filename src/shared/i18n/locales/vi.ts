@@ -240,6 +240,12 @@ export const vi: Dict = {
     'ffmpeg (xử lý đa phương tiện) · whisper.cpp (nhận dạng giọng nói) · llama.cpp + Qwen3 (dịch cục bộ)',
   'settings.about.note':
     'Mô hình nhận dạng, mô hình dịch và dịch vụ đám mây đều quản lý ở trang “Mô hình”. Dùng mô hình nào, có dịch hay không, xuất ra định dạng gì thì chọn sau khi kéo tệp vào.',
+  'help.feedback': 'Báo lỗi / Góp ý…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'Đánh giá trên App Store…',
+  'help.website': 'Trang web',
+  'settings.about.feedback': 'Góp ý',
+  'settings.about.feedbackHint': 'Gặp lỗi hay có ý tưởng? Không cần tài khoản, cứ cho chúng tôi biết',
 
   'req.anyMac': 'Mọi máy Mac, kể cả các máy Intel đời cũ',
   'req.mac8gb': 'Mọi máy Mac có từ 8 GB bộ nhớ trở lên',

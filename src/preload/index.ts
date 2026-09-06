@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer, webUtils } from 'electron'
 import type { IpcRendererEvent } from 'electron'
 import type {
+  AppInfo,
   CloudProviderInput,
   ExportContent,
   ExportFormat,
@@ -57,6 +58,11 @@ const api = {
   testCloudProvider: (id: string): Promise<TranslationTestResult> =>
     ipcRenderer.invoke('cloud:test', id),
 
+  appInfo: (): Promise<AppInfo> => ipcRenderer.invoke('app:info'),
+  /** 只放行官网 / 仓库 / App Store 评价链接，主进程再校验一次 */
+  openExternal: (url: string): void => {
+    void ipcRenderer.invoke('shell:openExternal', url)
+  },
   revealInFinder: (path: string): void => {
     void ipcRenderer.invoke('shell:reveal', path)
   },

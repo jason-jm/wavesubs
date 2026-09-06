@@ -240,6 +240,12 @@ export const cs: Dict = {
     'ffmpeg (média) · whisper.cpp (rozpoznávání řeči) · llama.cpp + Qwen3 (místní překlad)',
   'settings.about.note':
     'Modely rozpoznávání a překladu i cloudové služby spravujete na stránce „Modely“. Který model použít, zda překládat a v jakém formátu exportovat, vyberete až po přetažení souboru.',
+  'help.feedback': 'Nahlásit problém / Navrhnout…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'Ohodnotit v App Store…',
+  'help.website': 'Web',
+  'settings.about.feedback': 'Zpětná vazba',
+  'settings.about.feedbackHint': 'Našli jste problém nebo máte nápad? Bez účtu – prostě nám napište',
 
   'req.anyMac': 'Jakýkoli Mac, včetně starších s Intelem',
   'req.mac8gb': 'Jakýkoli Mac s 8 GB paměti a více',

@@ -240,6 +240,12 @@ export const id: Dict = {
     'ffmpeg (media) · whisper.cpp (pengenalan suara) · llama.cpp + Qwen3 (terjemahan lokal)',
   'settings.about.note':
     'Model pengenalan, model penerjemahan, dan layanan awan dikelola di halaman “Model”. Model mana yang dipakai, diterjemahkan atau tidak, dan format ekspornya dipilih setelah Anda menyeret berkas masuk.',
+  'help.feedback': 'Laporkan masalah / Beri saran…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'Beri nilai di App Store…',
+  'help.website': 'Situs web',
+  'settings.about.feedback': 'Masukan',
+  'settings.about.feedbackHint': 'Menemukan masalah atau punya ide? Tanpa akun, langsung beri tahu kami',
 
   'req.anyMac': 'Mac apa pun, termasuk model Intel lama',
   'req.mac8gb': 'Mac apa pun dengan memori 8 GB atau lebih',

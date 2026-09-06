@@ -239,6 +239,12 @@ export const he: Dict = {
     'ffmpeg (מדיה) · whisper.cpp (זיהוי דיבור) · llama.cpp + Qwen3 (תרגום מקומי)',
   'settings.about.note':
     'מודלים לזיהוי ולתרגום ושירותי ענן מנוהלים בדף «מודלים». באיזה מודל להשתמש, אם לתרגם ובאיזו תבנית לייצא — כל אלה נבחרים אחרי שגוררים קובץ פנימה.',
+  'help.feedback': 'דיווח על בעיה / הצעה…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'דירוג ב-App Store…',
+  'help.website': 'אתר',
+  'settings.about.feedback': 'משוב',
+  'settings.about.feedbackHint': 'מצאתם בעיה או יש לכם רעיון? בלי חשבון — פשוט ספרו לנו',
 
   'req.anyMac': 'כל Mac, כולל דגמי Intel ישנים',
   'req.mac8gb': 'כל Mac עם 8GB זיכרון ומעלה',

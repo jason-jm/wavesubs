@@ -669,6 +669,80 @@ DL_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="c
 
 def esc(s): return html.escape(s, quote=True)
 
+# 官网反馈表单（Netlify Forms，零后端）：每种语言一页 feedback.html + 成功页 feedback-ok.html
+FB = {
+ 'zh': dict(title='反馈', h1='有问题或建议？直接告诉我们', intro='不需要注册账号。填写下面的表单即可；留邮箱的话我们会回复你。也可以到 GitHub 讨论区交流。',
+            kind='类型', k_bug='遇到问题', k_idea='功能建议', k_other='其它', msg='内容', msg_ph='发生了什么、期望怎样；如果是问题，附上文件格式和大致操作步骤', email='邮箱（选填，用于回复）', submit='发送',
+            ok_h1='已收到，谢谢！', ok_p='如果留了邮箱，我们会尽快回复。', back='返回官网', gh='GitHub 讨论区', issues='GitHub Issues'),
+ 'en': dict(title='Feedback', h1='Found a problem or have an idea? Tell us', intro='No account needed. Fill in the form below; leave an email if you want a reply. You can also use GitHub Discussions.',
+            kind='Type', k_bug='Problem', k_idea='Feature idea', k_other='Other', msg='Message', msg_ph='What happened and what you expected; for problems, include the file format and roughly what you did', email='Email (optional, for a reply)', submit='Send',
+            ok_h1='Received, thank you!', ok_p='If you left an email, we will get back to you soon.', back='Back to the website', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'ja': dict(title='フィードバック', h1='問題や要望があれば教えてください', intro='アカウント登録は不要です。下のフォームに記入してください。返信をご希望の場合はメールアドレスをお書きください。GitHub Discussions も利用できます。',
+            kind='種類', k_bug='不具合', k_idea='機能の要望', k_other='その他', msg='内容', msg_ph='何が起きたか、どうなってほしいか。不具合の場合はファイル形式と操作手順も', email='メールアドレス（任意・返信用）', submit='送信',
+            ok_h1='受け取りました。ありがとうございます！', ok_p='メールアドレスをいただいた場合は、できるだけ早く返信します。', back='サイトに戻る', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'ko': dict(title='피드백', h1='문제나 제안이 있나요? 알려주세요', intro='계정이 필요 없습니다. 아래 양식을 작성해 주세요. 답장을 원하시면 이메일을 남겨 주세요. GitHub Discussions도 이용할 수 있습니다.',
+            kind='유형', k_bug='문제', k_idea='기능 제안', k_other='기타', msg='내용', msg_ph='무슨 일이 있었고 어떻게 되길 바라는지. 문제라면 파일 형식과 대략적인 조작 순서도 적어 주세요', email='이메일 (선택, 답장용)', submit='보내기',
+            ok_h1='잘 받았습니다. 감사합니다!', ok_p='이메일을 남기셨다면 곧 답장드리겠습니다.', back='웹사이트로 돌아가기', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'fr': dict(title='Commentaires', h1='Un problème ou une idée ? Dites-le-nous', intro='Aucun compte nécessaire. Remplissez le formulaire ci-dessous ; laissez un e-mail si vous souhaitez une réponse. Vous pouvez aussi utiliser GitHub Discussions.',
+            kind='Type', k_bug='Problème', k_idea='Suggestion', k_other='Autre', msg='Message', msg_ph="Ce qui s'est passé et ce que vous attendiez ; pour un problème, indiquez le format du fichier et les étapes", email='E-mail (facultatif, pour une réponse)', submit='Envoyer',
+            ok_h1='Bien reçu, merci !', ok_p='Si vous avez laissé un e-mail, nous vous répondrons rapidement.', back='Retour au site', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'de': dict(title='Feedback', h1='Problem gefunden oder eine Idee? Sag es uns', intro='Kein Konto nötig. Fülle das Formular aus; hinterlasse eine E-Mail, wenn du eine Antwort möchtest. Du kannst auch GitHub Discussions nutzen.',
+            kind='Art', k_bug='Problem', k_idea='Funktionswunsch', k_other='Sonstiges', msg='Nachricht', msg_ph='Was passiert ist und was du erwartet hast; bei Problemen bitte Dateiformat und ungefähre Schritte', email='E-Mail (optional, für eine Antwort)', submit='Senden',
+            ok_h1='Angekommen, danke!', ok_p='Wenn du eine E-Mail hinterlassen hast, melden wir uns bald.', back='Zurück zur Website', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'ru': dict(title='Обратная связь', h1='Нашли проблему или есть идея? Напишите нам', intro='Аккаунт не нужен. Заполните форму ниже; оставьте e-mail, если хотите получить ответ. Также можно написать в GitHub Discussions.',
+            kind='Тип', k_bug='Проблема', k_idea='Предложение', k_other='Другое', msg='Сообщение', msg_ph='Что произошло и чего вы ожидали; для проблем укажите формат файла и примерные шаги', email='E-mail (необязательно, для ответа)', submit='Отправить',
+            ok_h1='Получено, спасибо!', ok_p='Если вы оставили e-mail, мы скоро ответим.', back='Вернуться на сайт', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'id': dict(title='Masukan', h1='Menemukan masalah atau punya ide? Beri tahu kami', intro='Tidak perlu akun. Isi formulir di bawah; tinggalkan email jika ingin dibalas. Anda juga bisa memakai GitHub Discussions.',
+            kind='Jenis', k_bug='Masalah', k_idea='Usulan fitur', k_other='Lainnya', msg='Pesan', msg_ph='Apa yang terjadi dan apa yang Anda harapkan; untuk masalah, sertakan format berkas dan langkah yang dilakukan', email='Email (opsional, untuk balasan)', submit='Kirim',
+            ok_h1='Diterima, terima kasih!', ok_p='Jika Anda meninggalkan email, kami akan segera membalas.', back='Kembali ke situs', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'ms': dict(title='Maklum balas', h1='Jumpa masalah atau ada idea? Beritahu kami', intro='Tiada akaun diperlukan. Isi borang di bawah; tinggalkan e-mel jika mahu balasan. Anda juga boleh guna GitHub Discussions.',
+            kind='Jenis', k_bug='Masalah', k_idea='Cadangan ciri', k_other='Lain-lain', msg='Mesej', msg_ph='Apa yang berlaku dan apa yang anda jangkakan; untuk masalah, sertakan format fail dan langkah yang dilakukan', email='E-mel (pilihan, untuk balasan)', submit='Hantar',
+            ok_h1='Diterima, terima kasih!', ok_p='Jika anda tinggalkan e-mel, kami akan membalas tidak lama lagi.', back='Kembali ke laman', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'vi': dict(title='Góp ý', h1='Gặp lỗi hay có ý tưởng? Hãy cho chúng tôi biết', intro='Không cần tài khoản. Điền vào biểu mẫu bên dưới; để lại email nếu bạn muốn nhận phản hồi. Bạn cũng có thể dùng GitHub Discussions.',
+            kind='Loại', k_bug='Lỗi', k_idea='Đề xuất tính năng', k_other='Khác', msg='Nội dung', msg_ph='Điều gì đã xảy ra và bạn mong đợi gì; nếu là lỗi, kèm định dạng tệp và các bước thao tác', email='Email (không bắt buộc, để phản hồi)', submit='Gửi',
+            ok_h1='Đã nhận, cảm ơn bạn!', ok_p='Nếu bạn để lại email, chúng tôi sẽ sớm phản hồi.', back='Về trang chủ', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'th': dict(title='ข้อเสนอแนะ', h1='พบปัญหาหรือมีไอเดีย? บอกเราได้เลย', intro='ไม่ต้องสมัครบัญชี กรอกแบบฟอร์มด้านล่าง หากต้องการคำตอบกลับโปรดใส่อีเมล หรือจะคุยกันใน GitHub Discussions ก็ได้',
+            kind='ประเภท', k_bug='พบปัญหา', k_idea='เสนอฟีเจอร์', k_other='อื่น ๆ', msg='ข้อความ', msg_ph='เกิดอะไรขึ้นและคาดหวังอย่างไร หากเป็นปัญหา โปรดระบุรูปแบบไฟล์และขั้นตอนคร่าว ๆ', email='อีเมล (ไม่บังคับ ใช้ตอบกลับ)', submit='ส่ง',
+            ok_h1='ได้รับแล้ว ขอบคุณ!', ok_p='หากคุณใส่อีเมลไว้ เราจะตอบกลับโดยเร็ว', back='กลับไปหน้าเว็บ', gh='GitHub Discussions', issues='GitHub Issues'),
+}
+
+def feedback_page(k, ok=False):
+    f = FB[k]; p = '' if k == 'zh' else '../'
+    home = p if p else './'
+    css = CSS.replace('url(assets/hero-wave.jpg)', 'url(' + p + v('assets/hero-wave.jpg') + ')')
+    head = (f'<!doctype html><html lang="{HTML_LANG[k]}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">\n'
+            f'<title>{esc(f["title"])} · Wave Subs</title><meta name="robots" content="noindex"><link rel="icon" href="{p}{v("assets/icon.png")}">\n'
+            f'<style>{css}\n'
+            '  .fb{max-width:680px;margin:0 auto;padding:56px 24px 80px} .fb h1{font-size:clamp(26px,4vw,38px);margin:0 0 12px} .fb p.intro{color:var(--text-2);margin:0 0 28px;line-height:1.7}\n'
+            '  .fb label{display:block;font-size:13.5px;color:var(--text-2);margin:18px 0 6px} .fb select,.fb input,.fb textarea{width:100%;box-sizing:border-box;background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:11px 12px;font:inherit;font-size:15px}\n'
+            '  .fb textarea{min-height:180px;resize:vertical} .fb .btn{margin-top:22px;cursor:pointer} .fb .links{margin-top:28px;font-size:13.5px;color:var(--text-3)} .fb .links a{margin-right:16px}\n'
+            '  .hidden{display:none}\n</style></head><body>\n'
+            f'<header class="top"><div class="wrap"><a class="brand" href="{home}"><img src="{p}{v("assets/icon.png")}" alt="Wave Subs"><span>Wave Subs</span></a></div></header>\n'
+            '<main class="fb">')
+    foot = (f'<div class="links"><a href="{REPO}/discussions" target="_blank" rel="noopener">{esc(f["gh"])}</a>'
+            f'<a href="{REPO}/issues" target="_blank" rel="noopener">{esc(f["issues"])}</a><a href="{home}">{esc(f["back"])}</a></div></main></body></html>\n')
+    if ok:
+        return head + f'<h1>{esc(f["ok_h1"])}</h1><p class="intro">{esc(f["ok_p"])}</p>' + foot
+    form = (f'<h1>{esc(f["h1"])}</h1><p class="intro">{esc(f["intro"])}</p>\n'
+            f'<form name="feedback" method="POST" action="feedback-ok.html" data-netlify="true" netlify-honeypot="bot-field">\n'
+            '  <input type="hidden" name="form-name" value="feedback">\n'
+            '  <p class="hidden"><label>Do not fill this out: <input name="bot-field"></label></p>\n'
+            f'  <input type="hidden" name="version" id="f-version"><input type="hidden" name="os" id="f-os"><input type="hidden" name="locale" id="f-locale"><input type="hidden" name="page" value="{k}">\n'
+            f'  <label for="f-kind">{esc(f["kind"])}</label>\n'
+            f'  <select name="kind" id="f-kind"><option value="bug">{esc(f["k_bug"])}</option><option value="idea">{esc(f["k_idea"])}</option><option value="other">{esc(f["k_other"])}</option></select>\n'
+            f'  <label for="f-msg">{esc(f["msg"])}</label>\n'
+            f'  <textarea name="message" id="f-msg" required placeholder="{esc(f["msg_ph"])}"></textarea>\n'
+            f'  <label for="f-email">{esc(f["email"])}</label>\n'
+            '  <input type="email" name="email" id="f-email" autocomplete="email">\n'
+            f'  <button class="btn primary" type="submit">{esc(f["submit"])}</button>\n'
+            '</form>\n'
+            '<script>\n'
+            '  // 应用里的「反馈」入口带上版本/系统/语言：?v=1.0.1&os=darwin&locale=zh-Hans；网页直接打开则留空\n'
+            "  (function(){ var q = new URLSearchParams(location.search); var g = function(id, key){ var e = document.getElementById(id); if (e) e.value = q.get(key) || ''; };\n"
+            "    g('f-version','v'); g('f-os','os'); g('f-locale','locale'); })();\n"
+            '</script>\n')
+    return head + form + foot
+
 def req_table(rows, cols):
     head = ''.join(f'<th>{esc(c)}</th>' for c in cols)
     body = ''.join(f'<tr><td>{esc(n)}</td><td>{size(mb)}</td><td>{ram} GB</td><td class="dots">{dots(q)}</td><td class="dots">{dots(sp)}</td><td>{fit_mac(ram)}</td><td>{fit_pc(ram)}</td></tr>' for n, mb, ram, q, sp in rows)
@@ -811,7 +885,7 @@ def page(k):
 
 <footer><div class="wrap">
   <span>© 2026 Jiesi Ma · Wave Subs</span>
-  <nav><a href="{REPO}" target="_blank" rel="noopener">GitHub</a><a href="{REPO}/issues" target="_blank" rel="noopener">{esc(d['footer_issue'])}</a><a href="{REPO}/blob/main/CHANGELOG.md" target="_blank" rel="noopener">{esc(d['footer_changelog'])}</a></nav>
+  <nav><a href="feedback.html">{esc(FB[k]['title'])}</a><a href="{REPO}" target="_blank" rel="noopener">GitHub</a><a href="{REPO}/issues" target="_blank" rel="noopener">{esc(d['footer_issue'])}</a><a href="{REPO}/blob/main/CHANGELOG.md" target="_blank" rel="noopener">{esc(d['footer_changelog'])}</a></nav>
 </div></footer>
 
 <script>
@@ -853,6 +927,9 @@ def build_all():
       path = os.path.join(ROOT, out)
       os.makedirs(os.path.dirname(path), exist_ok=True)
       open(path, 'w', encoding='utf-8').write(page(k))
+      fdir = os.path.dirname(path)
+      open(os.path.join(fdir, 'feedback.html'), 'w', encoding='utf-8').write(feedback_page(k))
+      open(os.path.join(fdir, 'feedback-ok.html'), 'w', encoding='utf-8').write(feedback_page(k, ok=True))
       pages.append(SITE + ('' if k == 'zh' else f'{k}/'))
       print(f'{out}: {os.path.getsize(path)} bytes')
 

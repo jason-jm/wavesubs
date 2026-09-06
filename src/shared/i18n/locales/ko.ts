@@ -235,6 +235,12 @@ export const ko: Dict = {
   'settings.about.deps': '사용한 오픈소스',
   'settings.about.depsHint': 'ffmpeg(미디어 처리) · whisper.cpp(음성 인식) · llama.cpp + Qwen3(로컬 번역)',
   'settings.about.note': '인식 모델, 번역 모델, 클라우드 서비스는 모두 "모델" 페이지에서 관리합니다. 어떤 모델을 쓸지, 번역할지, 어떤 형식으로 내보낼지는 파일을 넣은 뒤에 고릅니다.',
+  'help.feedback': '문제 신고 / 제안하기…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'App Store에서 평가…',
+  'help.website': '웹사이트',
+  'settings.about.feedback': '피드백',
+  'settings.about.feedbackHint': '문제나 제안이 있나요? 계정 없이 바로 보낼 수 있습니다',
 
   'req.anyMac': '모든 Mac(구형 Intel 포함)',
   'req.mac8gb': '메모리 8GB 이상인 모든 Mac',

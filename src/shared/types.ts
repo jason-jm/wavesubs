@@ -332,3 +332,11 @@ export interface SettingsUpdate {
   }
   export?: { format?: ExportFormat; content?: ExportContent }
 }
+
+/** 主进程告诉界面的运行信息：版本号、平台、是否 App Store 版、生效的界面语言 */
+export interface AppInfo {
+  version: string
+  platform: string
+  mas: boolean
+  locale: string
+}

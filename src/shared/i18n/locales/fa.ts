@@ -240,6 +240,12 @@ export const fa: Dict = {
     'ffmpeg (رسانه) · whisper.cpp (تشخیص گفتار) · llama.cpp + Qwen3 (ترجمهٔ محلی)',
   'settings.about.note':
     'مدل‌های تشخیص و ترجمه و سرویس‌های ابری در صفحهٔ «مدل‌ها» مدیریت می‌شوند. اینکه کدام مدل به کار رود، ترجمه بشود یا نه، و با چه قالبی ذخیره شود، پس از رها کردن فایل انتخاب می‌شود.',
+  'help.feedback': 'گزارش مشکل / پیشنهاد…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'امتیاز در App Store…',
+  'help.website': 'وب‌سایت',
+  'settings.about.feedback': 'بازخورد',
+  'settings.about.feedbackHint': 'مشکلی دیدید یا ایده‌ای دارید؟ بدون حساب کاربری، مستقیم به ما بگویید',
 
   'req.anyMac': 'هر Mac، از جمله مدل‌های قدیمی Intel',
   'req.mac8gb': 'هر Mac با ۸ گیگابایت حافظه یا بیشتر',

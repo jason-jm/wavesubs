@@ -240,6 +240,12 @@ export const fi: Dict = {
     'ffmpeg (media) · whisper.cpp (puheentunnistus) · llama.cpp + Qwen3 (paikallinen käännös)',
   'settings.about.note':
     'Tunnistus- ja käännösmalleja sekä pilvipalveluita hallitaan Mallit-sivulla. Minkä mallin valitset, käännetäänkö ja missä muodossa vienti tehdään, päätät vasta kun olet pudottanut tiedoston.',
+  'help.feedback': 'Ilmoita ongelmasta / Ehdota…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'Arvioi App Storessa…',
+  'help.website': 'Verkkosivu',
+  'settings.about.feedback': 'Palaute',
+  'settings.about.feedbackHint': 'Löysitkö ongelman tai onko sinulla idea? Ei tiliä – kerro meille',
 
   'req.anyMac': 'Mikä tahansa Mac, myös vanhat Intel-mallit',
   'req.mac8gb': 'Mikä tahansa Mac, jossa on vähintään 8 Gt muistia',

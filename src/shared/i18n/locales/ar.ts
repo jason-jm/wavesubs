@@ -239,6 +239,12 @@ export const ar: Dict = {
     'ffmpeg (معالجة الوسائط) · whisper.cpp (التعرف على الكلام) · llama.cpp + Qwen3 (الترجمة المحلية)',
   'settings.about.note':
     'تُدار نماذج التعرف والترجمة والخدمات السحابية من صفحة «النماذج». أما أي نموذج تستخدم، وهل تترجم أم لا، وصيغة التصدير، فتُختار بعد إفلات الملف.',
+  'help.feedback': 'الإبلاغ عن مشكلة / اقتراح…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'التقييم في App Store…',
+  'help.website': 'الموقع',
+  'settings.about.feedback': 'ملاحظات',
+  'settings.about.feedbackHint': 'وجدت مشكلة أو لديك فكرة؟ لا حاجة لحساب — أخبرنا مباشرة',
 
   'req.anyMac': 'أي جهاز Mac، بما فيها أجهزة Intel القديمة',
   'req.mac8gb': 'أي Mac بذاكرة 8 غيغابايت أو أكثر',

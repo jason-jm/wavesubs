@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import type { Appearance, SettingsUpdate, SettingsView } from '../../../shared/types'
+import type { AppInfo, Appearance, SettingsUpdate, SettingsView } from '../../../shared/types'
+import { APP_STORE_REVIEW_URL, DISCUSSIONS_URL, feedbackUrl } from '../../../shared/feedback'
 import type { TranslationKey } from '../../../shared/i18n'
 import { AVAILABLE_LOCALES, localeMeta } from '../../../shared/i18n'
 import { DEFAULT_THEME, PALETTES, type ThemeSetting } from '../../../shared/palettes'
@@ -180,6 +181,10 @@ function ThemePicker({
 
 export function SettingsPage({ settings, updateSettings }: Props): React.JSX.Element {
   const t = useT()
+  const [info, setInfo] = useState<AppInfo | null>(null)
+  useEffect(() => {
+    void window.waveSubs.appInfo().then(setInfo)
+  }, [])
   if (!settings) return <p className="loading">{t('common.loadingSettings')}</p>
 
   const systemName = localeMeta(settings.systemLanguage).native
@@ -249,7 +254,7 @@ export function SettingsPage({ settings, updateSettings }: Props): React.JSX.Ele
               <span>{t('app.tagline')}</span>
             </div>
             <div className="row-control">
-              <span className="tag tag-quiet">0.1.0</span>
+              <span className="tag tag-quiet">{info?.version ?? ''}</span>
             </div>
           </div>
           <div className="row">
@@ -262,6 +267,29 @@ export function SettingsPage({ settings, updateSettings }: Props): React.JSX.Ele
             <div className="row-label">
               <strong>{t('settings.about.deps')}</strong>
               <span>{t('settings.about.depsHint')}</span>
+            </div>
+          </div>
+          <div className="row">
+            <div className="row-label">
+              <strong>{t('settings.about.feedback')}</strong>
+              <span>{t('settings.about.feedbackHint')}</span>
+            </div>
+            <div className="row-control about-links">
+              <button
+                type="button"
+                className="btn"
+                onClick={() => window.waveSubs.openExternal(feedbackUrl(info?.version ?? '', info?.platform ?? '', info?.locale ?? ''))}
+              >
+                {t('help.feedback')}
+              </button>
+              <button type="button" className="btn" onClick={() => window.waveSubs.openExternal(DISCUSSIONS_URL)}>
+                {t('help.discussions')}
+              </button>
+              {info?.mas && (
+                <button type="button" className="btn" onClick={() => window.waveSubs.openExternal(APP_STORE_REVIEW_URL)}>
+                  {t('help.rate')}
+                </button>
+              )}
             </div>
           </div>
         </div>

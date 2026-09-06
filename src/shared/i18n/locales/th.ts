@@ -239,6 +239,12 @@ export const th: Dict = {
     'ffmpeg (จัดการสื่อ) · whisper.cpp (รู้จำเสียงพูด) · llama.cpp + Qwen3 (แปลในเครื่อง)',
   'settings.about.note':
     'โมเดลรู้จำเสียง โมเดลแปล และบริการคลาวด์ จัดการได้ที่หน้า “โมเดล” ส่วนจะใช้โมเดลไหน จะแปลหรือไม่ และส่งออกเป็นรูปแบบใด ค่อยเลือกหลังลากไฟล์เข้ามา',
+  'help.feedback': 'รายงานปัญหา / เสนอแนะ…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'ให้คะแนนใน App Store…',
+  'help.website': 'เว็บไซต์',
+  'settings.about.feedback': 'ข้อเสนอแนะ',
+  'settings.about.feedbackHint': 'พบปัญหาหรือมีไอเดีย? ไม่ต้องสมัครบัญชี บอกเราได้เลย',
 
   'req.anyMac': 'Mac ทุกรุ่น รวมถึงรุ่น Intel เก่า',
   'req.mac8gb': 'Mac ที่มีหน่วยความจำ 8GB ขึ้นไป',

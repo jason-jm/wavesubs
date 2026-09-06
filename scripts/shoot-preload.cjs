@@ -15,6 +15,7 @@ contextBridge.exposeInMainWorld('waveSubs', {
   getSettings: settings, updateSettings: settings, saveCloudProvider: settings, removeCloudProvider: settings,
   testCloudProvider: async () => ({ ok: true, message: 'ok' }),
   revealInFinder: () => {}, openPath: () => {}, pathForFile: (f) => f.name,
+  appInfo: async () => ({ version: '1.0.1', platform: 'darwin', mas: false, locale: 'zh-Hans' }), openExternal: () => {},
   loadRecord: async () => data.record,
   saveRecordCues: async () => true,
   exportRecord: async () => data.exportPath,

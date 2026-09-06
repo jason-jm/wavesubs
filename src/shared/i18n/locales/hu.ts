@@ -240,6 +240,12 @@ export const hu: Dict = {
     'ffmpeg (média) · whisper.cpp (beszédfelismerés) · llama.cpp + Qwen3 (helyi fordítás)',
   'settings.about.note':
     'A felismerő- és fordítómodelleket, valamint a felhőszolgáltatásokat a „Modellek” oldalon kezeled. Hogy melyik modellt használod, fordítson-e, és milyen formátumba mentsen, azt a fájl behúzása után választod ki.',
+  'help.feedback': 'Hiba jelentése / Javaslat…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'Értékelés az App Store-ban…',
+  'help.website': 'Weboldal',
+  'settings.about.feedback': 'Visszajelzés',
+  'settings.about.feedbackHint': 'Hibát talált vagy ötlete van? Fiók nélkül, csak írja meg nekünk',
 
   'req.anyMac': 'Bármelyik Mac, a régebbi Inteles gépeket is beleértve',
   'req.mac8gb': 'Bármelyik Mac legalább 8 GB memóriával',

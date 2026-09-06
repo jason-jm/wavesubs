@@ -2341,3 +2341,11 @@ textarea {
 .ap-bar-mid {
   width: 76%;
 }
+
+/* 设置页「关于」里的反馈按钮组 */
+.about-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}

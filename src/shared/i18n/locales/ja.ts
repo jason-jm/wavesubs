@@ -236,6 +236,12 @@ export const ja: Dict = {
   'settings.about.deps': '利用しているオープンソース',
   'settings.about.depsHint': 'ffmpeg（メディア処理）· whisper.cpp（音声認識）· llama.cpp + Qwen3（ローカル翻訳）',
   'settings.about.note': '認識モデル・翻訳モデル・クラウド接続は「モデル」ページで管理します。どのモデルを使うか、翻訳するかどうか、書き出し形式は、ファイルをドロップしたあとに選べます。',
+  'help.feedback': '問題を報告 / 要望を送る…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'App Store で評価…',
+  'help.website': '公式サイト',
+  'settings.about.feedback': 'フィードバック',
+  'settings.about.feedbackHint': '問題や要望があれば、アカウント不要でそのまま送れます',
 
   'req.anyMac': 'すべての Mac（旧 Intel 機を含む）',
   'req.mac8gb': 'メモリ 8GB 以上の Mac',

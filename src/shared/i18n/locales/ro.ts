@@ -241,6 +241,12 @@ export const ro: Dict = {
     'ffmpeg (media) · whisper.cpp (recunoaștere vocală) · llama.cpp + Qwen3 (traducere locală)',
   'settings.about.note':
     'Modelele de recunoaștere și traducere și serviciile din cloud se administrează în pagina „Modele”. Ce model folosești, dacă se traduce și în ce format exporți alegi după ce tragi fișierul înăuntru.',
+  'help.feedback': 'Raportează o problemă / Sugerează…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'Evaluează în App Store…',
+  'help.website': 'Site',
+  'settings.about.feedback': 'Feedback',
+  'settings.about.feedbackHint': 'Ai găsit o problemă sau ai o idee? Fără cont – spune-ne direct',
 
   'req.anyMac': 'Orice Mac, inclusiv modelele Intel mai vechi',
   'req.mac8gb': 'Orice Mac cu cel puțin 8 GB de memorie',

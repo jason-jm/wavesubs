@@ -241,6 +241,12 @@ export const ms: Dict = {
     'ffmpeg (media) · whisper.cpp (pengecaman pertuturan) · llama.cpp + Qwen3 (terjemahan setempat)',
   'settings.about.note':
     'Model pengecaman, model terjemahan dan perkhidmatan awan diuruskan di halaman “Model”. Model mana yang digunakan, sama ada hendak diterjemah, dan format eksport dipilih selepas anda menyeret fail masuk.',
+  'help.feedback': 'Laporkan masalah / Cadangan…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'Nilai di App Store…',
+  'help.website': 'Laman web',
+  'settings.about.feedback': 'Maklum balas',
+  'settings.about.feedbackHint': 'Jumpa masalah atau ada idea? Tanpa akaun, terus beritahu kami',
 
   'req.anyMac': 'Mana-mana Mac, termasuk model Intel lama',
   'req.mac8gb': 'Mana-mana Mac dengan memori 8 GB atau lebih',

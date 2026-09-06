@@ -241,6 +241,12 @@ export const es: Dict = {
     'ffmpeg (medios) · whisper.cpp (reconocimiento de voz) · llama.cpp + Qwen3 (traducción local)',
   'settings.about.note':
     'Los modelos de voz y traducción y los servicios en la nube se gestionan en la página Modelos. Qué modelo usar, si traducir y el formato de exportación se eligen después de soltar el archivo.',
+  'help.feedback': 'Informar de un problema / Sugerir…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'Valorar en el App Store…',
+  'help.website': 'Sitio web',
+  'settings.about.feedback': 'Comentarios',
+  'settings.about.feedbackHint': '¿Un problema o una idea? Sin cuenta, cuéntanoslo directamente',
 
   'req.anyMac': 'Cualquier Mac, incluidos los Intel antiguos',
   'req.mac8gb': 'Cualquier Mac con 8 GB de memoria o más',

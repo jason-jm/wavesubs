@@ -249,6 +249,12 @@ export const zhHans = {
   'settings.about.deps': '依赖的开源组件',
   'settings.about.depsHint': 'ffmpeg（媒体处理）· whisper.cpp（语音识别）· llama.cpp + Qwen3（本地翻译）',
   'settings.about.note': '识别模型、翻译模型与云端接口都在「模型」页管理。具体用哪个模型、翻不翻译、导出什么格式，都在拖入文件之后按需选择。',
+  'help.feedback': '反馈问题 / 提建议…',
+  'help.discussions': 'GitHub 讨论区',
+  'help.rate': '在 App Store 评价…',
+  'help.website': '官网',
+  'settings.about.feedback': '反馈',
+  'settings.about.feedbackHint': '有问题或建议？不需要注册账号，直接告诉我们',
 
   'req.anyMac': '任何 Mac（含老款 Intel）',
   'req.mac8gb': '任何 8GB 内存以上的 Mac',

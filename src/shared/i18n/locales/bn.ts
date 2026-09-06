@@ -240,6 +240,12 @@ export const bn: Dict = {
     'ffmpeg (মিডিয়া) · whisper.cpp (কণ্ঠ শনাক্তকরণ) · llama.cpp + Qwen3 (স্থানীয় অনুবাদ)',
   'settings.about.note':
     'শনাক্তকরণ ও অনুবাদের মডেল এবং ক্লাউড পরিষেবা “মডেল” পাতা থেকে সামলানো হয়। কোন মডেল ব্যবহার হবে, অনুবাদ হবে কি না, আর কোন ধরনে সংরক্ষণ হবে — এসব ফাইল টেনে আনার পরে বেছে নেওয়া যায়।',
+  'help.feedback': 'সমস্যা জানান / পরামর্শ দিন…',
+  'help.discussions': 'GitHub Discussions',
+  'help.rate': 'App Store-এ রেট করুন…',
+  'help.website': 'ওয়েবসাইট',
+  'settings.about.feedback': 'মতামত',
+  'settings.about.feedbackHint': 'কোনো সমস্যা বা ধারণা আছে? অ্যাকাউন্ট লাগবে না — সরাসরি আমাদের জানান',
 
   'req.anyMac': 'যেকোনো Mac, পুরোনো Intel মডেলসহ',
   'req.mac8gb': '৮GB বা তার বেশি মেমরির যেকোনো Mac',

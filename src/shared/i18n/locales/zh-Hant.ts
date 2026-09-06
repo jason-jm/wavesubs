@@ -235,6 +235,12 @@ export const zhHant: Dict = {
   'settings.about.deps': '依賴的開源元件',
   'settings.about.depsHint': 'ffmpeg（媒體處理）· whisper.cpp（語音辨識）· llama.cpp + Qwen3（本機翻譯）',
   'settings.about.note': '辨識模型、翻譯模型與雲端介面都在「模型」頁管理。具體用哪個模型、翻不翻譯、匯出什麼格式，都在拖入檔案之後按需選擇。',
+  'help.feedback': '回報問題 / 提建議…',
+  'help.discussions': 'GitHub 討論區',
+  'help.rate': '在 App Store 評分…',
+  'help.website': '官網',
+  'settings.about.feedback': '回饋',
+  'settings.about.feedbackHint': '有問題或建議？不需要註冊帳號，直接告訴我們',
 
   'req.anyMac': '任何 Mac（含舊款 Intel）',
   'req.mac8gb': '任何 8GB 記憶體以上的 Mac',
