@@ -22,14 +22,14 @@ html,body{{margin:0;width:1280px;height:640px;overflow:hidden;background:#0b0f17
 .brand img{{width:56px;height:56px;border-radius:14px}}
 h1{{margin:0 0 14px;font-size:68px;line-height:1.1;letter-spacing:-.5px;font-weight:700;color:#fff}}
 .h2{{margin:0;font-size:38px;line-height:1.2;font-weight:700;background:linear-gradient(90deg,#5fd4d0,#f0a07a);-webkit-background-clip:text;background-clip:text;color:transparent}}
-.foot{{font-size:23px;color:#aab4c5}} .foot b{{color:#e8edf5;font-weight:600}} .foot span{{margin:0 12px;color:#7b8798}}
+.foot{{font-size:19px;color:#aab4c5;white-space:nowrap;line-height:1.5}} .foot b{{color:#e8edf5;font-weight:600}} .foot span{{margin:0 10px;color:#7b8798}} .foot .l2{{font-size:22px;margin-top:2px}}
 .shot{{position:absolute;right:-150px;bottom:-140px;width:700px;border-radius:16px;border:1px solid rgba(255,255,255,.14);box-shadow:0 40px 120px rgba(0,0,0,.7);transform:rotate(-5deg)}}
 </style></head><body><div class="bg"></div><div class="grad"></div>
 <img class="shot" src="{a(f'shots/{sh}-dark-editor.jpg')}">
 <div class="col">
   <div class="brand"><img src="{a('icon.png')}"><span>Wave Subs</span></div>
   <div><h1>{esc(d['h1'])}</h1><p class="h2">{esc(d['h2'])}</p></div>
-  <div class="foot"><b>macOS</b><span>·</span><b>Windows</b><span>·</span>{esc(foot)}<span>·</span>wavesubs.com</div>
+  <div class="foot"><div>{esc(foot)}</div><div class="l2"><b>macOS</b><span>·</span><b>Windows</b><span>·</span><b>wavesubs.com</b></div></div>
 </div></body></html>'''
 
 tmp = tempfile.mkdtemp(prefix='wavesubs-social-')
