@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Feedback form (no account needed) / 反馈表单（无需账号）
+    url: https://wavesubs.com/feedback.html
+    about: Report a problem or suggest something without a GitHub account. / 不用 GitHub 账号也能反馈。
+  - name: Questions & discussion / 提问与讨论
+    url: https://github.com/jason-jm/wavesubs/discussions
+    about: Ask how to do something, share your setup, or discuss ideas. / 用法问题、配置分享、想法讨论。

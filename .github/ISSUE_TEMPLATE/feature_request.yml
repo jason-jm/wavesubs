@@ -1,0 +1,23 @@
+name: Feature request / 功能建议
+description: An idea to make Wave Subs better / 让 Wave Subs 更好用的想法
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do? / 你想做什么
+      description: Describe the situation, not just the feature. / 说说场景，不只是功能本身。
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: How should it work? / 希望怎样工作
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform / 平台
+      multiple: true
+      options:
+        - macOS
+        - Windows

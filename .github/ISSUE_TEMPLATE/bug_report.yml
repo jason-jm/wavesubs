@@ -1,0 +1,49 @@
+name: Bug report / 问题反馈
+description: Something went wrong / 遇到了问题
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. No GitHub account? Use the form at https://wavesubs.com/feedback.html instead.
+        谢谢反馈。没有 GitHub 账号也可以用官网表单：https://wavesubs.com/feedback.html
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened? / 发生了什么
+      description: What did you do, what did you expect, what happened instead? / 做了什么、期望什么、实际发生了什么
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Wave Subs version / 版本
+      placeholder: "1.0.1 (Settings → About / 设置 → 关于)"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: System / 系统
+      options:
+        - macOS (Apple Silicon)
+        - macOS (App Store build)
+        - Windows 10
+        - Windows 11
+    validations:
+      required: true
+  - type: input
+    id: file
+    attributes:
+      label: Input file / 输入文件
+      placeholder: "e.g. MKV, HEVC video + DTS audio, 2h / 例如 MKV，HEVC + DTS，两小时"
+  - type: input
+    id: models
+    attributes:
+      label: Models used / 使用的模型
+      placeholder: "e.g. Large v3 Turbo + Qwen3 8B, or cloud provider / 例如 Large v3 Turbo + Qwen3 8B，或云端接口"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots / 日志或截图
+      description: Drag files here. / 直接把文件拖进来。
