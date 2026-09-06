@@ -2,8 +2,8 @@
 # 用户安装：brew install --cask jason-jm/wavesubs/wavesubs
 # 每次发新版：改 version 与 sha256（release/SHA256SUMS.txt 里 DMG 那行）
 cask "wavesubs" do
-  version "1.0.1"
-  sha256 "e2f49a52e70f535816aaed522315d643b84d8049a6ed672c98e0a82624e3b431"
+  version "1.0.2"
+  sha256 "5da2eeb6ccde32645ae7d76b7b94dff35a2e1765baec758d45cd2bd4419a3800"
 
   url "https://github.com/jason-jm/wavesubs/releases/download/v#{version}/Wave.Subs-#{version}-arm64.dmg"
   name "Wave Subs"

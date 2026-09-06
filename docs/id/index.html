@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://jason-jm.github.io/wavesubs/id/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/social/id.jpg"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:locale" content="id_ID">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — Tak ada subtitle? AI lokal yang membuat dan menerjemahkannya"><meta name="twitter:description" content="Wave Subs membuat subtitle SRT / ASS langsung dari video dengan AI lokal, lalu menerjemahkannya ke bahasa Anda. Semua berjalan di komputer Anda — tanpa internet, gratis selamanya. macOS (Apple Silicon) dan Windows."><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/social/id.jpg">
 <link rel="icon" href="../assets/icon.png?v=b5f064a4">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "id", "description": "Wave Subs membuat subtitle SRT / ASS langsung dari video dengan AI lokal, lalu menerjemahkannya ke bahasa Anda. Semua berjalan di komputer Anda — tanpa internet, gratis selamanya. macOS (Apple Silicon) dan Windows.", "url": "https://jason-jm.github.io/wavesubs/id/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/id-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Subtitle SRT / ASS, Terjemahan otomatis ke bahasa Anda (29), AI lokal · tanpa internet"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.2", "inLanguage": "id", "description": "Wave Subs membuat subtitle SRT / ASS langsung dari video dengan AI lokal, lalu menerjemahkannya ke bahasa Anda. Semua berjalan di komputer Anda — tanpa internet, gratis selamanya. macOS (Apple Silicon) dan Windows.", "url": "https://jason-jm.github.io/wavesubs/id/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/id-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Subtitle SRT / ASS, Terjemahan otomatis ke bahasa Anda (29), AI lokal · tanpa internet"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Video apa saja yang bisa?", "acceptedAnswer": {"@type": "Answer", "text": "MKV, MP4, MOV, TS, AVI dan format umum lainnya; HEVC, DTS, TrueHD yang tak bisa diputar browser juga bisa, karena ffmpeg bawaan mendekode semuanya. Berkas audio saja juga bisa."}}, {"@type": "Question", "name": "Bahasa apa yang didukung?", "acceptedAnswer": {"@type": "Answer", "text": "Pengenalan mencakup hampir 100 bahasa whisper dengan deteksi otomatis; 29 bahasa target terjemahan; antarmuka 32 bahasa."}}, {"@type": "Question", "name": "Benar-benar tanpa internet?", "acceptedAnswer": {"@type": "Answer", "text": "Semua berjalan lokal. Jaringan hanya dipakai untuk unduhan model pertama kali dan terjemahan cloud jika Anda memasangnya sendiri."}}, {"@type": "Question", "name": "Berapa lama film dua jam?", "acceptedAnswer": {"@type": "Answer", "text": "Sekitar 3–6 menit dengan Large v3 Turbo di chip seri M, ditambah beberapa menit terjemahan lokal. Jalankan satu musim sekaligus."}}, {"@type": "Question", "name": "Mac Intel?", "acceptedAnswer": {"@type": "Answer", "text": "Belum. Pengenalan lokal bergantung pada akselerasi Metal di Apple Silicon; di Intel terlalu lambat."}}]}</script>
 <style>
   :root{
@@ -213,7 +213,7 @@
 </div></section>
 
 <section id="download" style="padding-top:0"><div class="wrap">
-  <h2>Unduh</h2><p class="sub">Versi 1.0.1. ffmpeg dan whisper.cpp sudah disertakan — pasang dan langsung pakai.</p>
+  <h2>Unduh</h2><p class="sub">Versi 1.0.2. ffmpeg dan whisper.cpp sudah disertakan — pasang dan langsung pakai.</p>
   <div class="dl">
     <div class="card"><h3>macOS</h3><div class="req">macOS 12 atau lebih baru · <strong>hanya Apple Silicon</strong> (M1 ke atas) · dinotarisasi Apple</div>
       <a class="btn primary" data-dl="mac-dmg" href="#">Unduh DMG</a><div class="req"><a data-dl="mac-zip" href="#">atau arsip ZIP</a></div></div>
@@ -235,7 +235,7 @@
 </div></footer>
 
 <script>
-  const VERSION = '1.0.1';
+  const VERSION = '1.0.2';
   const BASE = 'https://github.com/jason-jm/wavesubs/releases/download/v' + VERSION + '/';
   const FILES = { 'mac-dmg': BASE + 'Wave.Subs-' + VERSION + '-arm64.dmg', 'mac-zip': BASE + 'Wave.Subs-' + VERSION + '-arm64-mac.zip',
     'win-exe': BASE + 'Wave.Subs.Setup.' + VERSION + '.exe', 'win-zip': BASE + 'Wave.Subs-' + VERSION + '-win.zip' };

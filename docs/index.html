@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://jason-jm.github.io/wavesubs/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/social/zh.jpg"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:locale" content="zh_CN">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — 看片找不到字幕？本地 AI 帮你生成并翻译"><meta name="twitter:description" content="看片找不到字幕？Wave Subs 用本地 AI 直接从影片生成 SRT / ASS 字幕，并自动翻译成你的语言。完全在你的电脑上运行，无需联网，永久免费。支持 macOS（Apple Silicon）与 Windows。"><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/social/zh.jpg">
 <link rel="icon" href="assets/icon.png?v=b5f064a4">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "zh-Hans", "description": "看片找不到字幕？Wave Subs 用本地 AI 直接从影片生成 SRT / ASS 字幕，并自动翻译成你的语言。完全在你的电脑上运行，无需联网，永久免费。支持 macOS（Apple Silicon）与 Windows。", "url": "https://jason-jm.github.io/wavesubs/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/zh-Hans-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "生成 SRT / ASS 字幕, 自动翻译到你的语言（29 种）, 本地 AI · 无需联网"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.2", "inLanguage": "zh-Hans", "description": "看片找不到字幕？Wave Subs 用本地 AI 直接从影片生成 SRT / ASS 字幕，并自动翻译成你的语言。完全在你的电脑上运行，无需联网，永久免费。支持 macOS（Apple Silicon）与 Windows。", "url": "https://jason-jm.github.io/wavesubs/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/zh-Hans-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "生成 SRT / ASS 字幕, 自动翻译到你的语言（29 种）, 本地 AI · 无需联网"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "哪些视频可以生成字幕？", "acceptedAnswer": {"@type": "Answer", "text": "MKV、MP4、MOV、TS、AVI 等常见格式都可以；HEVC、DTS、TrueHD 这类浏览器播不了的编码也没问题，因为随包的 ffmpeg 什么都能解。纯音频文件同样可以。"}}, {"@type": "Question", "name": "支持哪些语言？", "acceptedAnswer": {"@type": "Answer", "text": "识别支持 whisper 覆盖的近百种语言并自动检测；翻译目标语言 29 种；界面有 32 种语言。"}}, {"@type": "Question", "name": "真的不需要联网吗？", "acceptedAnswer": {"@type": "Answer", "text": "识别、对齐、翻译、编辑、导出全部本地完成。只有两件事用到网络：第一次下载模型，以及你自己选择配置云端翻译。"}}, {"@type": "Question", "name": "一部两小时的电影要多久？", "acceptedAnswer": {"@type": "Answer", "text": "M 系列芯片上用 Large v3 Turbo 大约 3～6 分钟，加上本地翻译再多几分钟。整季批量可以挂着跑。"}}, {"@type": "Question", "name": "生成的字幕准吗？", "acceptedAnswer": {"@type": "Answer", "text": "识别用 whisper large 系列模型；时间轴用语音活动检测和响度分析贴回真实说话时刻，参数对照六部整片的官方字幕校准。每个文件跑完会附带质检结论。"}}, {"@type": "Question", "name": "影片里已经有字幕轨了呢？", "acceptedAnswer": {"@type": "Answer", "text": "会自动发现内嵌的文本字幕轨并优先使用，直接进入翻译，比识别更快更准。图形字幕（PGS/VobSub）除外。"}}, {"@type": "Question", "name": "支持 Intel Mac 吗？", "acceptedAnswer": {"@type": "Answer", "text": "目前不支持。本地识别依赖 Apple Silicon 的 Metal 加速，Intel 机器上慢到不实用。"}}, {"@type": "Question", "name": "Windows 提示\"未知发布者\"？", "acceptedAnswer": {"@type": "Answer", "text": "Windows 版尚未购买代码签名证书，SmartScreen 会对新程序提示。点\"更多信息 → 仍要运行\"即可；校验值在 GitHub Releases 页。"}}, {"@type": "Question", "name": "和在线字幕生成网站比有什么区别？", "acceptedAnswer": {"@type": "Answer", "text": "在线工具要你上传整部影片、按分钟计费、通常有时长上限。Wave Subs 不上传、不收费、不限时长，速度取决于你的电脑。"}}]}</script>
 <style>
   :root{
@@ -219,7 +219,7 @@
 </div></section>
 
 <section id="download" style="padding-top:0"><div class="wrap">
-  <h2>下载</h2><p class="sub">版本 1.0.1。ffmpeg 与 whisper.cpp 已随包附带，装完就能用，不需要另装任何东西。</p>
+  <h2>下载</h2><p class="sub">版本 1.0.2。ffmpeg 与 whisper.cpp 已随包附带，装完就能用，不需要另装任何东西。</p>
   <div class="dl">
     <div class="card"><h3>macOS</h3><div class="req">macOS 12 或更新 · <strong>仅 Apple Silicon</strong>（M1 及之后）· 已由 Apple 公证</div>
       <a class="btn primary" data-dl="mac-dmg" href="#">下载 DMG</a><div class="req"><a data-dl="mac-zip" href="#">或者 ZIP 压缩包</a></div></div>
@@ -241,7 +241,7 @@
 </div></footer>
 
 <script>
-  const VERSION = '1.0.1';
+  const VERSION = '1.0.2';
   const BASE = 'https://github.com/jason-jm/wavesubs/releases/download/v' + VERSION + '/';
   const FILES = { 'mac-dmg': BASE + 'Wave.Subs-' + VERSION + '-arm64.dmg', 'mac-zip': BASE + 'Wave.Subs-' + VERSION + '-arm64-mac.zip',
     'win-exe': BASE + 'Wave.Subs.Setup.' + VERSION + '.exe', 'win-zip': BASE + 'Wave.Subs-' + VERSION + '-win.zip' };

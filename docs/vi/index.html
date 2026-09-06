@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://jason-jm.github.io/wavesubs/vi/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/social/vi.jpg"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:locale" content="vi_VN">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — Không có phụ đề? Để AI cục bộ tạo và dịch"><meta name="twitter:description" content="Wave Subs tạo phụ đề SRT / ASS trực tiếp từ video bằng AI cục bộ rồi dịch sang ngôn ngữ của bạn. Chạy hoàn toàn trên máy của bạn — không cần internet, miễn phí mãi mãi. macOS (Apple Silicon) và Windows."><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/social/vi.jpg">
 <link rel="icon" href="../assets/icon.png?v=b5f064a4">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "vi", "description": "Wave Subs tạo phụ đề SRT / ASS trực tiếp từ video bằng AI cục bộ rồi dịch sang ngôn ngữ của bạn. Chạy hoàn toàn trên máy của bạn — không cần internet, miễn phí mãi mãi. macOS (Apple Silicon) và Windows.", "url": "https://jason-jm.github.io/wavesubs/vi/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/vi-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Phụ đề SRT / ASS, Tự động dịch sang ngôn ngữ của bạn (29), AI cục bộ · không cần mạng"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.2", "inLanguage": "vi", "description": "Wave Subs tạo phụ đề SRT / ASS trực tiếp từ video bằng AI cục bộ rồi dịch sang ngôn ngữ của bạn. Chạy hoàn toàn trên máy của bạn — không cần internet, miễn phí mãi mãi. macOS (Apple Silicon) và Windows.", "url": "https://jason-jm.github.io/wavesubs/vi/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/vi-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Phụ đề SRT / ASS, Tự động dịch sang ngôn ngữ của bạn (29), AI cục bộ · không cần mạng"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Tạo phụ đề được cho video nào?", "acceptedAnswer": {"@type": "Answer", "text": "MKV, MP4, MOV, TS, AVI và các định dạng phổ biến; HEVC, DTS, TrueHD trình duyệt không phát được cũng ổn vì ffmpeg đi kèm giải mã được tất cả. Tệp chỉ có âm thanh cũng được."}}, {"@type": "Question", "name": "Hỗ trợ ngôn ngữ nào?", "acceptedAnswer": {"@type": "Answer", "text": "Nhận dạng gần 100 ngôn ngữ của whisper với tự phát hiện; 29 ngôn ngữ đích để dịch; giao diện 32 ngôn ngữ."}}, {"@type": "Question", "name": "Thật sự không cần internet?", "acceptedAnswer": {"@type": "Answer", "text": "Mọi thứ chạy cục bộ. Mạng chỉ dùng cho lần tải mô hình đầu tiên và dịch đám mây nếu bạn tự cấu hình."}}, {"@type": "Question", "name": "Phim hai tiếng mất bao lâu?", "acceptedAnswer": {"@type": "Answer", "text": "Khoảng 3–6 phút với Large v3 Turbo trên chip dòng M, cộng vài phút dịch cục bộ. Chạy cả mùa hàng loạt rồi để đó."}}, {"@type": "Question", "name": "Mac Intel thì sao?", "acceptedAnswer": {"@type": "Answer", "text": "Hiện chưa. Nhận dạng cục bộ dựa vào tăng tốc Metal của Apple Silicon; trên Intel sẽ quá chậm."}}]}</script>
 <style>
   :root{
@@ -213,7 +213,7 @@
 </div></section>
 
 <section id="download" style="padding-top:0"><div class="wrap">
-  <h2>Tải về</h2><p class="sub">Phiên bản 1.0.1. ffmpeg và whisper.cpp đã đi kèm — cài là dùng.</p>
+  <h2>Tải về</h2><p class="sub">Phiên bản 1.0.2. ffmpeg và whisper.cpp đã đi kèm — cài là dùng.</p>
   <div class="dl">
     <div class="card"><h3>macOS</h3><div class="req">macOS 12 trở lên · <strong>chỉ Apple Silicon</strong> (M1 trở lên) · đã được Apple công chứng</div>
       <a class="btn primary" data-dl="mac-dmg" href="#">Tải DMG</a><div class="req"><a data-dl="mac-zip" href="#">hoặc bản ZIP</a></div></div>
@@ -235,7 +235,7 @@
 </div></footer>
 
 <script>
-  const VERSION = '1.0.1';
+  const VERSION = '1.0.2';
   const BASE = 'https://github.com/jason-jm/wavesubs/releases/download/v' + VERSION + '/';
   const FILES = { 'mac-dmg': BASE + 'Wave.Subs-' + VERSION + '-arm64.dmg', 'mac-zip': BASE + 'Wave.Subs-' + VERSION + '-arm64-mac.zip',
     'win-exe': BASE + 'Wave.Subs.Setup.' + VERSION + '.exe', 'win-zip': BASE + 'Wave.Subs-' + VERSION + '-win.zip' };
