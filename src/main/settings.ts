@@ -16,6 +16,7 @@ import type {
 import type { Translate } from '../shared/i18n'
 import { DEFAULT_THEME, LEGACY_DEFAULT_GRAIN, type ThemeSetting } from '../shared/palettes'
 import { pickLocale, translatorFor } from '../shared/i18n'
+import { targetForUiLocale } from '../shared/targetLanguages'
 import { normalizeBaseUrl } from './core/translate/openaiCompatible'
 import { normalizeAnthropicBaseUrl } from './core/translate/anthropic'
 
@@ -107,7 +108,10 @@ export class SettingsStore {
     try {
       raw = JSON.parse(readFileSync(this.path, 'utf8')) as Record<string, unknown>
     } catch {
-      return structuredClone(DEFAULTS)
+      // 全新安装：翻译目标跟随系统语言，而不是一律中文
+      const fresh = structuredClone(DEFAULTS)
+      fresh.translation.targetLanguage = targetForUiLocale(pickLocale('system', systemLanguages()))
+      return fresh
     }
     const t = (raw.translation ?? {}) as Record<string, unknown>
     const data: StoredSettings = {

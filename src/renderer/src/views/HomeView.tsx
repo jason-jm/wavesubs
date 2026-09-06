@@ -12,8 +12,8 @@ import type {
 } from '../../../shared/types'
 import type { TranslationKey } from '../../../shared/i18n'
 import type { JobState } from '../App'
-import { useT, withNode } from '../i18n'
-import { normalizeLanguageTag, SOURCE_LANGUAGES, TARGET_LANGUAGES } from '../lib/languages'
+import { useI18n, withNode } from '../i18n'
+import { normalizeLanguageTag, SOURCE_LANGUAGES, TARGET_LANGUAGES, targetLanguageLabel } from '../lib/languages'
 import { cacheNote } from '../lib/jobSummary'
 import { QC_TAG, qcFindingText } from '../lib/qc'
 import { fileNameOf } from '../lib/paths'
@@ -84,7 +84,7 @@ function Select(props: {
 export function HomeView(props: Props): React.JSX.Element {
   const { settings, overview, jobState, lastInput, onEdit, onRun, updateSettings } = props
   const { onSelectModel, onSelectLlm, goModels } = props
-  const t = useT()
+  const { t, locale } = useI18n()
   const [dragOver, setDragOver] = useState(false)
   const [pending, setPending] = useState<PendingFile | null>(null)
   const [sourceKey, setSourceKey] = useState('asr')
@@ -358,7 +358,7 @@ export function HomeView(props: Props): React.JSX.Element {
               <Select value={targetLang} onChange={setTargetLang}>
                 {TARGET_LANGUAGES.map((l) => (
                   <option key={l.value} value={l.value}>
-                    {t(l.key)}
+                    {targetLanguageLabel(l.value, locale, t)}
                   </option>
                 ))}
               </Select>

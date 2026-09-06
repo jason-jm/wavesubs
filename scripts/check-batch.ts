@@ -9,6 +9,8 @@
  */
 import { mergeBatchRequest } from '../src/renderer/src/lib/runBatchQueue'
 import { pickDefaultSource } from '../src/renderer/src/lib/source'
+import { TARGET_LANGUAGE_CODES, targetForUiLocale } from '../src/shared/targetLanguages'
+import { languageName } from '../src/main/core/translate/types'
 import type { JobRequest, MediaProbeInfo } from '../src/shared/types'
 
 const GLOBAL: JobRequest = {
@@ -147,6 +149,15 @@ console.log('\n自动选轨按语言打分（pickDefaultSource）：')
     { kind: 'embedded', subtitleIndex: 0 }
   )
 }
+
+console.log('\n首次启动的默认翻译目标（targetForUiLocale）：')
+eq('简体中文界面 → zh', targetForUiLocale('zh-Hans'), 'zh')
+eq('繁体中文界面 → zh-Hant', targetForUiLocale('zh-Hant'), 'zh-Hant')
+eq('挪威语界面 nb → no（后端用 no）', targetForUiLocale('nb'), 'no')
+eq('德语界面 → de', targetForUiLocale('de'), 'de')
+eq('带地区的 pt-BR → pt', targetForUiLocale('pt-BR'), 'pt')
+eq('后端不支持的界面语言 → 英语兜底', targetForUiLocale('bn'), 'en')
+eq('所有目标码都能被翻译提示词认出（不出现裸码）', TARGET_LANGUAGE_CODES.filter((c) => languageName(c) === c), [])
 
 console.log(bad === 0 ? '\n全部通过' : `\n${bad} 条不符`)
 process.exit(bad === 0 ? 0 : 1)

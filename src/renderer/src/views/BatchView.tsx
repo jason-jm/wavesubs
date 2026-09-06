@@ -10,9 +10,9 @@ import type {
   SettingsView,
   SubtitleSource
 } from '../../../shared/types'
-import { useT } from '../i18n'
+import { useI18n } from '../i18n'
 import type { Translate } from '../../../shared/i18n'
-import { SOURCE_LANGUAGES, TARGET_LANGUAGES } from '../lib/languages'
+import { SOURCE_LANGUAGES, TARGET_LANGUAGES, targetLanguageLabel } from '../lib/languages'
 import { cacheNote } from '../lib/jobSummary'
 import { QC_TAG, qcFindingText } from '../lib/qc'
 import { pickDefaultSource } from '../lib/source'
@@ -97,6 +97,7 @@ function EntryConfig(props: {
   onChange: (o: BatchOverride | undefined) => void
   t: Translate
 }): React.JSX.Element {
+  const { locale } = useI18n()
   const { entry, providers, onChange, t } = props
   const o = entry.override ?? {}
   const info = entry.info
@@ -204,7 +205,7 @@ function EntryConfig(props: {
             {followOption}
             {TARGET_LANGUAGES.map((l) => (
               <option key={l.value} value={l.value}>
-                {t(l.key)}
+                {targetLanguageLabel(l.value, locale, t)}
               </option>
             ))}
           </Select>
@@ -297,7 +298,7 @@ function EntryConfig(props: {
 export function BatchView(props: Props): React.JSX.Element {
   const { settings, overview, entries, running, stopping, onAdd, onRemove, onClear } = props
   const { onOverride, onEdit, onStart, onStop, updateSettings, goModels } = props
-  const t = useT()
+  const { t, locale } = useI18n()
 
   const [dragOver, setDragOver] = useState(false)
   const [skipped, setSkipped] = useState(0)
@@ -419,7 +420,7 @@ export function BatchView(props: Props): React.JSX.Element {
               <Select value={targetLang} onChange={setTargetLang} disabled={running}>
                 {TARGET_LANGUAGES.map((l) => (
                   <option key={l.value} value={l.value}>
-                    {t(l.key)}
+                    {targetLanguageLabel(l.value, locale, t)}
                   </option>
                 ))}
               </Select>
