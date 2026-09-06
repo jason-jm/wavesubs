@@ -13,7 +13,7 @@
 <meta property="og:title" content="Wave Subs — Tiada sari kata? AI tempatan menjana dan menterjemahnya"><meta property="og:description" content="Wave Subs menjana sari kata SRT / ASS terus daripada video dengan AI tempatan, kemudian menterjemahnya ke bahasa anda. Semuanya berjalan pada komputer anda — tanpa internet, percuma selamanya. macOS (Apple Silicon) dan Windows.">
 <meta property="og:url" content="https://jason-jm.github.io/wavesubs/ms/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/social/ms.jpg"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:locale" content="ms_MY">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — Tiada sari kata? AI tempatan menjana dan menterjemahnya"><meta name="twitter:description" content="Wave Subs menjana sari kata SRT / ASS terus daripada video dengan AI tempatan, kemudian menterjemahnya ke bahasa anda. Semuanya berjalan pada komputer anda — tanpa internet, percuma selamanya. macOS (Apple Silicon) dan Windows."><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/social/ms.jpg">
-<link rel="icon" href="../assets/icon.png">
+<link rel="icon" href="../assets/icon.png?v=b5f064a4">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "ms", "description": "Wave Subs menjana sari kata SRT / ASS terus daripada video dengan AI tempatan, kemudian menterjemahnya ke bahasa anda. Semuanya berjalan pada komputer anda — tanpa internet, percuma selamanya. macOS (Apple Silicon) dan Windows.", "url": "https://jason-jm.github.io/wavesubs/ms/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/ms-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Sari kata SRT / ASS, Terjemahan automatik ke bahasa anda (29), AI tempatan · tanpa internet"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Video apa yang boleh?", "acceptedAnswer": {"@type": "Answer", "text": "MKV, MP4, MOV, TS, AVI dan format biasa lain; HEVC, DTS, TrueHD yang pelayar tidak boleh main pun boleh, kerana ffmpeg yang disertakan menyahkod semuanya. Fail audio sahaja juga boleh."}}, {"@type": "Question", "name": "Bahasa apa yang disokong?", "acceptedAnswer": {"@type": "Answer", "text": "Pengecaman meliputi hampir 100 bahasa whisper dengan pengesanan automatik; 29 bahasa sasaran terjemahan; antara muka 32 bahasa."}}, {"@type": "Question", "name": "Betul-betul tanpa internet?", "acceptedAnswer": {"@type": "Answer", "text": "Semuanya tempatan. Rangkaian hanya digunakan untuk muat turun model kali pertama dan terjemahan awan jika anda memasangnya sendiri."}}, {"@type": "Question", "name": "Berapa lama filem dua jam?", "acceptedAnswer": {"@type": "Answer", "text": "Kira-kira 3–6 minit dengan Large v3 Turbo pada cip siri M, ditambah beberapa minit terjemahan tempatan. Jalankan satu musim sekali gus."}}, {"@type": "Question", "name": "Mac Intel?", "acceptedAnswer": {"@type": "Answer", "text": "Belum. Pengecaman tempatan bergantung pada pecutan Metal Apple Silicon; pada Intel terlalu perlahan."}}]}</script>
 <style>
@@ -45,7 +45,7 @@
 
   /* ---- 首屏 ---- */
   .hero{position:relative;overflow:hidden;padding:96px 0 40px;text-align:center}
-  .hero::before{content:"";position:absolute;inset:0;background:url(../assets/hero-wave.jpg) center 35%/cover no-repeat;opacity:.85;mask-image:linear-gradient(to bottom,#000 45%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 45%,transparent 100%)}
+  .hero::before{content:"";position:absolute;inset:0;background:url(../assets/hero-wave.jpg?v=9acb51fc) center 35%/cover no-repeat;opacity:.85;mask-image:linear-gradient(to bottom,#000 45%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 45%,transparent 100%)}
   .hero .wrap{position:relative}
   .hero h1{font-size:clamp(34px,5.4vw,60px);line-height:1.12;margin:0 0 18px;letter-spacing:-.5px;font-weight:700}
   .hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--teal),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -151,7 +151,7 @@
 </head>
 <body>
 <header class="top"><div class="wrap">
-  <a class="brand" href="../"><img src="../assets/icon.png" alt="Wave Subs"><span>Wave Subs</span></a>
+  <a class="brand" href="../"><img src="../assets/icon.png?v=b5f064a4" alt="Wave Subs"><span>Wave Subs</span></a>
   <nav>
     <a href="#how">Cara guna</a><a href="#translate">Terjemahan</a><a href="#privacy">Privasi</a><a href="#requirements">Keperluan</a>
     <a href="#download">Muat turun</a><a href="#faq">Soalan lazim</a>
@@ -170,7 +170,7 @@
   </div>
   <p class="cta-note"><a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">Sumber terbuka sepenuhnya</a><span>·</span>Percuma sepenuhnya<span>·</span>Tiada pembelian dalam apl</p>
   <div class="pills"><span class="pill">Sari kata SRT / ASS</span><span class="pill">Terjemahan automatik ke bahasa anda (29)</span><span class="pill">AI tempatan · tanpa internet</span></div>
-  <div class="hero-shot"><img src="../assets/shots/ms-dark-editor.jpg" alt="Editor dengan pratonton video" width="1920" height="1200" fetchpriority="high"></div>
+  <div class="hero-shot"><img src="../assets/shots/ms-dark-editor.jpg?v=65dac171" alt="Editor dengan pratonton video" width="1920" height="1200" fetchpriority="high"></div>
   <p class="note">Editor: betulkan teks, laras masa, klik mana-mana baris untuk mendengarnya</p>
 </div></section>
 
@@ -178,22 +178,22 @@
   <h2>Tiga langkah daripada video ke sari kata</h2><p class="sub">Tanpa mencari laman sari kata, tanpa memuat naik video, tanpa mencipta akaun.</p>
   <div class="grid"><div class="card"><div class="k">1</div><h3>Seret video</h3><p>MKV, MP4, MOV, TS semuanya boleh. Trek sari kata terbenam dikesan dan digunakan terus.</p></div><div class="card"><div class="k">2</div><h3>AI tempatan mengecam dan menjajarkan</h3><p>whisper.cpp mengecam dialog pada komputer anda dengan pengesanan bahasa automatik; masa diselaraskan dengan saat dialog benar-benar dituturkan (ditala dengan sari kata rasmi enam filem penuh).</p></div><div class="card"><div class="k">3</div><h3>Terjemah dan eksport</h3><p>Diterjemah ke bahasa anda, dieksport sebagai SRT atau ASS di sebelah video — boleh dibaca mana-mana pemain. Penilaian kualiti menunjukkan bahagian yang perlu dilihat.</p></div></div>
   <div class="feature" style="padding-top:40px">
-    <div class="shot"><img src="../assets/shots/ms-dark-home-done.jpg" alt="Terjemah dan eksport" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/ms-dark-home-done.jpg?v=0e54342f" alt="Terjemah dan eksport" width="1920" height="1200" loading="lazy"></div>
     <div><h3>Terjemah dan eksport</h3><p>Diterjemah ke bahasa anda, dieksport sebagai SRT atau ASS di sebelah video — boleh dibaca mana-mana pemain. Penilaian kualiti menunjukkan bahagian yang perlu dilihat.</p></div>
   </div>
 </div></section>
 
 <section id="translate" style="padding-top:0"><div class="wrap">
   <div class="feature flip">
-    <div class="shot"><img src="../assets/shots/ms-dark-translate-models.jpg" alt="Diterjemah secara automatik ke bahasa anda" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/ms-dark-translate-models.jpg?v=933abfce" alt="Diterjemah secara automatik ke bahasa anda" width="1920" height="1200" loading="lazy"></div>
     <div><h2>Diterjemah secara automatik ke bahasa anda</h2><p>29 bahasa sasaran: Melayu, Inggeris, Cina (ringkas/tradisional), Jepun, Korea, Perancis, Jerman, Sepanyol, Portugis, Rusia, Thai, Vietnam, Indonesia dan banyak lagi. Secara lalai model Qwen3 tempatan — percuma dan luar talian — atau mana-mana API serasi OpenAI.</p><ul><li>Glosari: tetapkan terjemahan nama supaya satu musim konsisten</li><li>Eksport dwibahasa atau terjemahan sahaja</li><li>Tukar model atau glosari = terjemah semula ketat, hasil lama tidak dicampur</li></ul></div>
   </div>
   <div class="feature">
-    <div class="shot"><img src="../assets/shots/ms-dark-editor.jpg" alt="Editor dengan pratonton video" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/ms-dark-editor.jpg?v=65dac171" alt="Editor dengan pratonton video" width="1920" height="1200" loading="lazy"></div>
     <div><h2>Editor dengan pratonton video</h2><p>Betulkan teks, laras masa, sisip, padam, gabung, buat asal, simpan automatik. Klik mana-mana baris untuk mendengar tepat bagaimana ia dituturkan — walaupun HEVC atau DTS yang pelayar tidak boleh main, berkat ffmpeg yang disertakan. Penemuan kualiti boleh diklik.</p></div>
   </div>
   <div class="feature flip">
-    <div class="shot"><img src="../assets/shots/ms-dark-batch.jpg" alt="Satu musim sekali gus, setiap episod boleh dilaras" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/ms-dark-batch.jpg?v=c3bc8c5c" alt="Satu musim sekali gus, setiap episod boleh dilaras" width="1920" height="1200" loading="lazy"></div>
     <div><h2>Satu musim sekali gus, setiap episod boleh dilaras</h2><p>Seret satu folder; semua fail mengikut tetapan yang sama, dan fail tertentu boleh mengatasi trek sari kata, trek audio atau enjin. Setiap baris yang siap membawa penilaian kualitinya.</p></div>
   </div>
 </div></section>

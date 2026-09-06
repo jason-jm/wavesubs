@@ -16,6 +16,13 @@ GOOGLE_SITE_VERIFICATION = 'TLrKCVF2uPAhjO3BwQfRuoxYQfg0VOYPy0XAY4ELXDk'
 VERSION = json.load(open(os.path.join(ROOT, 'package.json')))['version']
 CSS = open(os.path.join(ROOT, 'scripts', 'site.css')).read()
 
+import hashlib
+def v(rel):
+    """assets/xxx → assets/xxx?v=<内容哈希前 8 位>：文件一变 URL 就变，绕开长缓存"""
+    f = os.path.join(ROOT, 'docs', rel)
+    h = hashlib.sha1(open(f, 'rb').read()).hexdigest()[:8] if os.path.exists(f) else '0'
+    return f'{rel}?v={h}'
+
 # 语言目录：zh 在根目录，其它在 <code>/ 下
 LANGS = ['zh', 'en', 'ja', 'ko', 'fr', 'de', 'ru', 'id', 'ms', 'vi', 'th']
 NATIVE = dict(zh='简体中文', en='English', ja='日本語', ko='한국어', fr='Français', de='Deutsch', ru='Русский',
@@ -677,7 +684,7 @@ def lang_href(k, p):
 
 def page(k):
     d = T[k]; p = '' if k == 'zh' else '../'; sh = SHOTS.get(k, k)
-    a = lambda name: f'{p}assets/shots/{sh}-dark-{name}.jpg'
+    a = lambda name: p + v(f'assets/shots/{sh}-dark-{name}.jpg')
     canonical = SITE + ('' if k == 'zh' else f'{k}/')
     faq_ld = {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":ans}} for q,ans in d['faq']]}
     app_ld = {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Wave Subs","applicationCategory":"MultimediaApplication",
@@ -716,15 +723,15 @@ def page(k):
 <meta property="og:title" content="{esc(d['og_title'])}"><meta property="og:description" content="{esc(d['description'])}">
 <meta property="og:url" content="{canonical}"><meta property="og:image" content="{SITE}assets/social/{k}.jpg"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:locale" content="{OG_LOCALE[k]}">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(d['og_title'])}"><meta name="twitter:description" content="{esc(d['description'])}"><meta name="twitter:image" content="{SITE}assets/social/{k}.jpg">
-<link rel="icon" href="{p}assets/icon.png">
+<link rel="icon" href="{p}{v("assets/icon.png")}">
 <script type="application/ld+json">{json.dumps(app_ld, ensure_ascii=False)}</script>
 <script type="application/ld+json">{json.dumps(faq_ld, ensure_ascii=False)}</script>
-<style>{CSS.replace('url(assets/', 'url(' + p + 'assets/')}</style>
+<style>{CSS.replace('url(assets/hero-wave.jpg)', 'url(' + p + v('assets/hero-wave.jpg') + ')')}</style>
 {detect}
 </head>
 <body>
 <header class="top"><div class="wrap">
-  <a class="brand" href="{p if p else './'}"><img src="{p}assets/icon.png" alt="Wave Subs"><span>Wave Subs</span></a>
+  <a class="brand" href="{p if p else './'}"><img src="{p}{v("assets/icon.png")}" alt="Wave Subs"><span>Wave Subs</span></a>
   <nav>
     <a href="#how">{esc(nav[0])}</a><a href="#translate">{esc(nav[1])}</a><a href="#privacy">{esc(nav[2])}</a><a href="#requirements">{esc(nav[3])}</a>
     <a href="#download">{esc(nav[4])}</a><a href="#faq">{esc(nav[5])}</a>

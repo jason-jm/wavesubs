@@ -13,7 +13,7 @@
 <meta property="og:title" content="Wave Subs — Không có phụ đề? Để AI cục bộ tạo và dịch"><meta property="og:description" content="Wave Subs tạo phụ đề SRT / ASS trực tiếp từ video bằng AI cục bộ rồi dịch sang ngôn ngữ của bạn. Chạy hoàn toàn trên máy của bạn — không cần internet, miễn phí mãi mãi. macOS (Apple Silicon) và Windows.">
 <meta property="og:url" content="https://jason-jm.github.io/wavesubs/vi/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/social/vi.jpg"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:locale" content="vi_VN">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — Không có phụ đề? Để AI cục bộ tạo và dịch"><meta name="twitter:description" content="Wave Subs tạo phụ đề SRT / ASS trực tiếp từ video bằng AI cục bộ rồi dịch sang ngôn ngữ của bạn. Chạy hoàn toàn trên máy của bạn — không cần internet, miễn phí mãi mãi. macOS (Apple Silicon) và Windows."><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/social/vi.jpg">
-<link rel="icon" href="../assets/icon.png">
+<link rel="icon" href="../assets/icon.png?v=b5f064a4">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "vi", "description": "Wave Subs tạo phụ đề SRT / ASS trực tiếp từ video bằng AI cục bộ rồi dịch sang ngôn ngữ của bạn. Chạy hoàn toàn trên máy của bạn — không cần internet, miễn phí mãi mãi. macOS (Apple Silicon) và Windows.", "url": "https://jason-jm.github.io/wavesubs/vi/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/vi-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Phụ đề SRT / ASS, Tự động dịch sang ngôn ngữ của bạn (29), AI cục bộ · không cần mạng"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Tạo phụ đề được cho video nào?", "acceptedAnswer": {"@type": "Answer", "text": "MKV, MP4, MOV, TS, AVI và các định dạng phổ biến; HEVC, DTS, TrueHD trình duyệt không phát được cũng ổn vì ffmpeg đi kèm giải mã được tất cả. Tệp chỉ có âm thanh cũng được."}}, {"@type": "Question", "name": "Hỗ trợ ngôn ngữ nào?", "acceptedAnswer": {"@type": "Answer", "text": "Nhận dạng gần 100 ngôn ngữ của whisper với tự phát hiện; 29 ngôn ngữ đích để dịch; giao diện 32 ngôn ngữ."}}, {"@type": "Question", "name": "Thật sự không cần internet?", "acceptedAnswer": {"@type": "Answer", "text": "Mọi thứ chạy cục bộ. Mạng chỉ dùng cho lần tải mô hình đầu tiên và dịch đám mây nếu bạn tự cấu hình."}}, {"@type": "Question", "name": "Phim hai tiếng mất bao lâu?", "acceptedAnswer": {"@type": "Answer", "text": "Khoảng 3–6 phút với Large v3 Turbo trên chip dòng M, cộng vài phút dịch cục bộ. Chạy cả mùa hàng loạt rồi để đó."}}, {"@type": "Question", "name": "Mac Intel thì sao?", "acceptedAnswer": {"@type": "Answer", "text": "Hiện chưa. Nhận dạng cục bộ dựa vào tăng tốc Metal của Apple Silicon; trên Intel sẽ quá chậm."}}]}</script>
 <style>
@@ -45,7 +45,7 @@
 
   /* ---- 首屏 ---- */
   .hero{position:relative;overflow:hidden;padding:96px 0 40px;text-align:center}
-  .hero::before{content:"";position:absolute;inset:0;background:url(../assets/hero-wave.jpg) center 35%/cover no-repeat;opacity:.85;mask-image:linear-gradient(to bottom,#000 45%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 45%,transparent 100%)}
+  .hero::before{content:"";position:absolute;inset:0;background:url(../assets/hero-wave.jpg?v=9acb51fc) center 35%/cover no-repeat;opacity:.85;mask-image:linear-gradient(to bottom,#000 45%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 45%,transparent 100%)}
   .hero .wrap{position:relative}
   .hero h1{font-size:clamp(34px,5.4vw,60px);line-height:1.12;margin:0 0 18px;letter-spacing:-.5px;font-weight:700}
   .hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--teal),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -151,7 +151,7 @@
 </head>
 <body>
 <header class="top"><div class="wrap">
-  <a class="brand" href="../"><img src="../assets/icon.png" alt="Wave Subs"><span>Wave Subs</span></a>
+  <a class="brand" href="../"><img src="../assets/icon.png?v=b5f064a4" alt="Wave Subs"><span>Wave Subs</span></a>
   <nav>
     <a href="#how">Cách dùng</a><a href="#translate">Dịch</a><a href="#privacy">Riêng tư</a><a href="#requirements">Cấu hình</a>
     <a href="#download">Tải về</a><a href="#faq">Hỏi đáp</a>
@@ -170,7 +170,7 @@
   </div>
   <p class="cta-note"><a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">Mã nguồn mở hoàn toàn</a><span>·</span>Miễn phí hoàn toàn<span>·</span>Không mua trong ứng dụng</p>
   <div class="pills"><span class="pill">Phụ đề SRT / ASS</span><span class="pill">Tự động dịch sang ngôn ngữ của bạn (29)</span><span class="pill">AI cục bộ · không cần mạng</span></div>
-  <div class="hero-shot"><img src="../assets/shots/vi-dark-editor.jpg" alt="Trình chỉnh sửa có xem trước video" width="1920" height="1200" fetchpriority="high"></div>
+  <div class="hero-shot"><img src="../assets/shots/vi-dark-editor.jpg?v=57470ce9" alt="Trình chỉnh sửa có xem trước video" width="1920" height="1200" fetchpriority="high"></div>
   <p class="note">Trình chỉnh sửa: sửa chữ, chỉnh thời gian, bấm vào dòng nào cũng nghe được</p>
 </div></section>
 
@@ -178,22 +178,22 @@
   <h2>Ba bước từ video ra phụ đề</h2><p class="sub">Không cần tìm trang phụ đề, không tải video lên, không tạo tài khoản.</p>
   <div class="grid"><div class="card"><div class="k">1</div><h3>Kéo video vào</h3><p>MKV, MP4, MOV, TS đều được. Rãnh phụ đề có sẵn trong video được phát hiện và dùng ngay.</p></div><div class="card"><div class="k">2</div><h3>AI cục bộ nhận dạng và căn chỉnh</h3><p>whisper.cpp nhận dạng lời thoại trên máy bạn, tự phát hiện ngôn ngữ; thời gian khớp với đúng lúc lời thoại được nói (tinh chỉnh theo phụ đề chính thức của sáu bộ phim dài).</p></div><div class="card"><div class="k">3</div><h3>Dịch và xuất</h3><p>Dịch sang ngôn ngữ của bạn, xuất SRT hoặc ASS đặt cạnh video — trình phát nào cũng đọc được. Đánh giá chất lượng cho biết chỗ cần xem.</p></div></div>
   <div class="feature" style="padding-top:40px">
-    <div class="shot"><img src="../assets/shots/vi-dark-home-done.jpg" alt="Dịch và xuất" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/vi-dark-home-done.jpg?v=bec81162" alt="Dịch và xuất" width="1920" height="1200" loading="lazy"></div>
     <div><h3>Dịch và xuất</h3><p>Dịch sang ngôn ngữ của bạn, xuất SRT hoặc ASS đặt cạnh video — trình phát nào cũng đọc được. Đánh giá chất lượng cho biết chỗ cần xem.</p></div>
   </div>
 </div></section>
 
 <section id="translate" style="padding-top:0"><div class="wrap">
   <div class="feature flip">
-    <div class="shot"><img src="../assets/shots/vi-dark-translate-models.jpg" alt="Tự động dịch sang ngôn ngữ của bạn" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/vi-dark-translate-models.jpg?v=233ba8d1" alt="Tự động dịch sang ngôn ngữ của bạn" width="1920" height="1200" loading="lazy"></div>
     <div><h2>Tự động dịch sang ngôn ngữ của bạn</h2><p>29 ngôn ngữ đích: Việt, Anh, Trung (giản thể/phồn thể), Nhật, Hàn, Pháp, Đức, Tây Ban Nha, Bồ Đào Nha, Nga, Thái, Indonesia, Mã Lai… Mặc định dùng mô hình Qwen3 cục bộ — miễn phí và ngoại tuyến — hoặc bất kỳ API tương thích OpenAI nào.</p><ul><li>Bảng thuật ngữ: cố định cách dịch tên để cả mùa nhất quán</li><li>Xuất song ngữ hoặc chỉ bản dịch</li><li>Đổi mô hình hay thuật ngữ là dịch lại nghiêm ngặt, không trộn kết quả cũ</li></ul></div>
   </div>
   <div class="feature">
-    <div class="shot"><img src="../assets/shots/vi-dark-editor.jpg" alt="Trình chỉnh sửa có xem trước video" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/vi-dark-editor.jpg?v=57470ce9" alt="Trình chỉnh sửa có xem trước video" width="1920" height="1200" loading="lazy"></div>
     <div><h2>Trình chỉnh sửa có xem trước video</h2><p>Sửa chữ, chỉnh thời gian, chèn, xóa, gộp, hoàn tác, tự lưu. Bấm vào dòng nào cũng nghe đúng câu đó — kể cả HEVC hay DTS trình duyệt không phát được, nhờ ffmpeg đi kèm. Phát hiện chất lượng bấm được.</p></div>
   </div>
   <div class="feature flip">
-    <div class="shot"><img src="../assets/shots/vi-dark-batch.jpg" alt="Cả mùa một lượt, từng tập chỉnh riêng" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/vi-dark-batch.jpg?v=96ad521c" alt="Cả mùa một lượt, từng tập chỉnh riêng" width="1920" height="1200" loading="lazy"></div>
     <div><h2>Cả mùa một lượt, từng tập chỉnh riêng</h2><p>Kéo cả thư mục vào; mọi tệp dùng chung thiết lập, tệp riêng có thể chọn rãnh phụ đề, rãnh âm thanh hoặc công cụ khác. Mỗi dòng xong đều có đánh giá chất lượng.</p></div>
   </div>
 </div></section>

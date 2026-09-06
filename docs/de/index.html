@@ -13,7 +13,7 @@
 <meta property="og:title" content="Wave Subs — Keine Untertitel? Lokale KI erstellt und übersetzt sie"><meta property="og:description" content="Wave Subs erstellt SRT / ASS-Untertitel direkt aus einem Video mit lokaler KI und übersetzt sie in deine Sprache. Läuft komplett auf deinem Rechner — ohne Internet, für immer kostenlos. macOS (Apple Silicon) und Windows.">
 <meta property="og:url" content="https://jason-jm.github.io/wavesubs/de/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/social/de.jpg"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:locale" content="de_DE">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — Keine Untertitel? Lokale KI erstellt und übersetzt sie"><meta name="twitter:description" content="Wave Subs erstellt SRT / ASS-Untertitel direkt aus einem Video mit lokaler KI und übersetzt sie in deine Sprache. Läuft komplett auf deinem Rechner — ohne Internet, für immer kostenlos. macOS (Apple Silicon) und Windows."><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/social/de.jpg">
-<link rel="icon" href="../assets/icon.png">
+<link rel="icon" href="../assets/icon.png?v=b5f064a4">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "de", "description": "Wave Subs erstellt SRT / ASS-Untertitel direkt aus einem Video mit lokaler KI und übersetzt sie in deine Sprache. Läuft komplett auf deinem Rechner — ohne Internet, für immer kostenlos. macOS (Apple Silicon) und Windows.", "url": "https://jason-jm.github.io/wavesubs/de/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/de-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "SRT / ASS-Untertitel erstellen, Automatisch in deine Sprache (29), Lokale KI · kein Internet nötig"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Welche Videos gehen?", "acceptedAnswer": {"@type": "Answer", "text": "MKV, MP4, MOV, TS, AVI und andere gängige Formate; auch HEVC, DTS und TrueHD, die Browser nicht abspielen, weil das mitgelieferte ffmpeg alles dekodiert. Reine Audiodateien ebenfalls."}}, {"@type": "Question", "name": "Welche Sprachen?", "acceptedAnswer": {"@type": "Answer", "text": "Die Erkennung deckt die knapp 100 Sprachen von whisper mit automatischer Erkennung ab; 29 Zielsprachen für die Übersetzung; Oberfläche in 32 Sprachen."}}, {"@type": "Question", "name": "Wirklich ohne Internet?", "acceptedAnswer": {"@type": "Answer", "text": "Alles läuft lokal. Nur der erste Modell-Download und – falls eingerichtet – die Cloud-Übersetzung nutzen das Netz."}}, {"@type": "Question", "name": "Wie lange dauert ein zweistündiger Film?", "acceptedAnswer": {"@type": "Answer", "text": "Etwa 3–6 Minuten mit Large v3 Turbo auf einem M-Chip, plus einige Minuten lokale Übersetzung. Eine ganze Staffel im Stapel laufen lassen."}}, {"@type": "Question", "name": "Gibt es eine Intel-Mac-Version?", "acceptedAnswer": {"@type": "Answer", "text": "Derzeit nicht. Die lokale Erkennung braucht die Metal-Beschleunigung von Apple Silicon; auf Intel wäre es zu langsam."}}]}</script>
 <style>
@@ -45,7 +45,7 @@
 
   /* ---- 首屏 ---- */
   .hero{position:relative;overflow:hidden;padding:96px 0 40px;text-align:center}
-  .hero::before{content:"";position:absolute;inset:0;background:url(../assets/hero-wave.jpg) center 35%/cover no-repeat;opacity:.85;mask-image:linear-gradient(to bottom,#000 45%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 45%,transparent 100%)}
+  .hero::before{content:"";position:absolute;inset:0;background:url(../assets/hero-wave.jpg?v=9acb51fc) center 35%/cover no-repeat;opacity:.85;mask-image:linear-gradient(to bottom,#000 45%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 45%,transparent 100%)}
   .hero .wrap{position:relative}
   .hero h1{font-size:clamp(34px,5.4vw,60px);line-height:1.12;margin:0 0 18px;letter-spacing:-.5px;font-weight:700}
   .hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--teal),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -151,7 +151,7 @@
 </head>
 <body>
 <header class="top"><div class="wrap">
-  <a class="brand" href="../"><img src="../assets/icon.png" alt="Wave Subs"><span>Wave Subs</span></a>
+  <a class="brand" href="../"><img src="../assets/icon.png?v=b5f064a4" alt="Wave Subs"><span>Wave Subs</span></a>
   <nav>
     <a href="#how">So geht&#x27;s</a><a href="#translate">Übersetzung</a><a href="#privacy">Datenschutz</a><a href="#requirements">Systemvoraussetzungen</a>
     <a href="#download">Download</a><a href="#faq">FAQ</a>
@@ -170,7 +170,7 @@
   </div>
   <p class="cta-note"><a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">Vollständig Open Source</a><span>·</span>Komplett kostenlos<span>·</span>Keine In-App-Käufe</p>
   <div class="pills"><span class="pill">SRT / ASS-Untertitel erstellen</span><span class="pill">Automatisch in deine Sprache (29)</span><span class="pill">Lokale KI · kein Internet nötig</span></div>
-  <div class="hero-shot"><img src="../assets/shots/de-dark-editor.jpg" alt="Ein Editor mit Videovorschau" width="1920" height="1200" fetchpriority="high"></div>
+  <div class="hero-shot"><img src="../assets/shots/de-dark-editor.jpg?v=6b85f963" alt="Ein Editor mit Videovorschau" width="1920" height="1200" fetchpriority="high"></div>
   <p class="note">Der Editor: Text korrigieren, Timing anpassen, eine Zeile anklicken und anhören</p>
 </div></section>
 
@@ -178,22 +178,22 @@
   <h2>In drei Schritten vom Video zu Untertiteln</h2><p class="sub">Keine Untertitelseiten durchsuchen, kein Video hochladen, kein Konto anlegen.</p>
   <div class="grid"><div class="card"><div class="k">1</div><h3>Video ablegen</h3><p>MKV, MP4, MOV, TS. Eine eingebettete Untertitelspur wird erkannt und direkt verwendet.</p></div><div class="card"><div class="k">2</div><h3>Lokale KI erkennt und synchronisiert</h3><p>whisper.cpp erkennt die Dialoge auf deinem Rechner mit automatischer Spracherkennung; das Timing wird auf den tatsächlichen Sprechzeitpunkt gesetzt (abgestimmt an offiziellen Untertiteln von sechs Spielfilmen).</p></div><div class="card"><div class="k">3</div><h3>Übersetzen und exportieren</h3><p>In deine Sprache übersetzt, als SRT oder ASS neben dem Video gespeichert — jeder Player liest es. Ein Qualitätsurteil zeigt, wo du hinschauen solltest.</p></div></div>
   <div class="feature" style="padding-top:40px">
-    <div class="shot"><img src="../assets/shots/de-dark-home-done.jpg" alt="Übersetzen und exportieren" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/de-dark-home-done.jpg?v=691652ea" alt="Übersetzen und exportieren" width="1920" height="1200" loading="lazy"></div>
     <div><h3>Übersetzen und exportieren</h3><p>In deine Sprache übersetzt, als SRT oder ASS neben dem Video gespeichert — jeder Player liest es. Ein Qualitätsurteil zeigt, wo du hinschauen solltest.</p></div>
   </div>
 </div></section>
 
 <section id="translate" style="padding-top:0"><div class="wrap">
   <div class="feature flip">
-    <div class="shot"><img src="../assets/shots/de-dark-translate-models.jpg" alt="Automatisch in deine Sprache übersetzt" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/de-dark-translate-models.jpg?v=efe10f6d" alt="Automatisch in deine Sprache übersetzt" width="1920" height="1200" loading="lazy"></div>
     <div><h2>Automatisch in deine Sprache übersetzt</h2><p>29 Zielsprachen: Deutsch, Englisch, Chinesisch (vereinfacht/traditionell), Japanisch, Koreanisch, Französisch, Spanisch, Portugiesisch, Russisch, Thai, Vietnamesisch, Indonesisch, Malaiisch … Standardmäßig ein lokales Qwen3-Modell — kostenlos und offline — oder jede OpenAI-kompatible API.</p><ul><li>Glossar: Namen und Begriffe festlegen, damit eine Staffel konsistent bleibt</li><li>Zweisprachig oder nur Übersetzung exportieren</li><li>Neues Modell oder Glossar → strikte Neuübersetzung, nichts Altes wird vermischt</li></ul></div>
   </div>
   <div class="feature">
-    <div class="shot"><img src="../assets/shots/de-dark-editor.jpg" alt="Ein Editor mit Videovorschau" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/de-dark-editor.jpg?v=6b85f963" alt="Ein Editor mit Videovorschau" width="1920" height="1200" loading="lazy"></div>
     <div><h2>Ein Editor mit Videovorschau</h2><p>Text korrigieren, Timing anpassen, einfügen, löschen, zusammenführen, rückgängig machen, automatisch speichern. Eine Zeile anklicken und genau hören, wie sie gesprochen wurde — auch bei HEVC oder DTS dank des mitgelieferten ffmpeg. Qualitätsbefunde sind anklickbar.</p></div>
   </div>
   <div class="feature flip">
-    <div class="shot"><img src="../assets/shots/de-dark-batch.jpg" alt="Ganze Staffel im Stapel, jede Folge einzeln einstellbar" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/de-dark-batch.jpg?v=f933dcc9" alt="Ganze Staffel im Stapel, jede Folge einzeln einstellbar" width="1920" height="1200" loading="lazy"></div>
     <div><h2>Ganze Staffel im Stapel, jede Folge einzeln einstellbar</h2><p>Ordner ablegen; alle Dateien folgen denselben Einstellungen, einzelne können Untertitelspur, Tonspur oder Engine überschreiben. Jede fertige Zeile trägt ihr Qualitätsurteil.</p></div>
   </div>
 </div></section>
