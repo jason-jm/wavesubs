@@ -22,5 +22,6 @@ xcrun stapler staple "$APP"
 xcrun stapler validate "$APP"
 spctl -a -t exec -vv "$APP" 2>&1 | tail -2
 # identity=null：绝不能让 electron-builder 重签，重签会作废刚装订的票据
-npx electron-builder --mac --arm64 --prepackaged release/mac-arm64 -c.mac.identity=null -c.mac.notarize=false
+# --prepackaged 要指向 .app 本身；指向父目录会把整个文件夹当 App 塞进 DMG
+npx electron-builder --mac --arm64 --prepackaged "$APP" -c.mac.identity=null -c.mac.notarize=false
 bash scripts/notarize-dmg.sh

@@ -24,6 +24,7 @@ spctl -a -t open --context context:primary-signature "$DMG" >/dev/null 2>&1 && o
 # DMG 里的 App 必须就是 release/mac-arm64 里这份（同一 cdhash）
 mnt=$(hdiutil attach -nobrowse -readonly "$DMG" 2>/dev/null | grep -o "/Volumes/.*" | head -1)
 if [ -n "$mnt" ]; then
+  [ -d "$mnt/Wave Subs.app" ] || bad "DMG 根目录里没有 Wave Subs.app（内容：$(ls "$mnt" | tr "\n" " ")）"
   inner=$(codesign -dvvv "$mnt/Wave Subs.app" 2>&1 | grep -o "CDHash=[0-9a-f]*")
   outer=$(grep -o "CDHash=[0-9a-f]*" <<<"$info")
   [ -n "$inner" ] && [ "$inner" = "$outer" ] && ok "DMG 内 App 与已验证的 App 一致" || bad "DMG 内 App 与外面的不一致（${inner:-读不到} vs ${outer:-读不到}）"
