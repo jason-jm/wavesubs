@@ -374,7 +374,8 @@ L['th'] = dict(asc='ไทย (th)', shots='th',
 bad = 0
 out = ['# App Store Connect 多语言文案（11 种商店语言）\n',
        '> 由 `scripts/build-asc-copy.py` 生成并校验字数；改文案改脚本。截图对应 `store/screenshots/<语言>/`，',
-       '> 上传顺序 editor → translate-models → batch → home-done → glossary。在 App Store Connect 版本页右上角语言下拉里「添加语言」逐个添加。\n',
+       '> 上传顺序 editor → translate-models → batch → home-done → glossary。在 App Store Connect 版本页右上角语言下拉里「添加语言」逐个添加。',
+       '> 营销网址每种语言填官网对应语言页（官网会按浏览器语言自动跳转，直链更稳）；隐私政策目前只有中英两版，其余语言填英文版。\n',
        '| 商店语言 | 名称 | 副标题 | 关键词字数 | 宣传文本字数 |', '|---|---|---|---|---|']
 for code, d in L.items():
     for k, lim in LIMITS.items():
@@ -384,7 +385,10 @@ for code, d in L.items():
     out.append(f"| {d['asc']} | {d['name']} | {d['subtitle']} | {len(d['keywords'])} | {len(d['promo'])} |")
 out.append('')
 for code, d in L.items():
-    out += [f"## {d['asc']}", '', f"截图：`store/screenshots/{d['shots']}/`", '',
+    site = 'https://jason-jm.github.io/wavesubs/' + ('' if d['shots'] == 'zh-Hans' else d['shots'] + '/')
+    privacy = 'https://jason-jm.github.io/wavesubs/' + ('privacy.html' if d['shots'] == 'zh-Hans' else 'en/privacy.html')
+    out += [f"## {d['asc']}", '', f"截图：`store/screenshots/{d['shots']}/`",
+            f"营销网址：`{site}` · 支持网址：`https://github.com/jason-jm/wavesubs/issues` · 隐私政策网址：`{privacy}`", '',
             f"**名称（{len(d['name'])}/30）：** `{d['name']}`", f"**副标题（{len(d['subtitle'])}/30）：** `{d['subtitle']}`",
             f"**关键词（{len(d['keywords'])}/100）：** `{d['keywords']}`", '',
             f"**宣传文本（{len(d['promo'])}/170）：**", d['promo'], '',

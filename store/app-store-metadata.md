@@ -99,8 +99,8 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 | 价格 | 免费 |
 | 版权 | © 2026 Jiesi Ma |
 | 支持网址 | https://github.com/jason-jm/wavesubs/issues |
-| 营销网址 | https://jason-jm.github.io/wavesubs/ |
-| 隐私政策网址 | https://jason-jm.github.io/wavesubs/#privacy |
+| 营销网址 | https://jason-jm.github.io/wavesubs/ （各语言填对应语言页，见 app-store-localizations.md） |
+| 隐私政策网址 | https://jason-jm.github.io/wavesubs/privacy.html （英文 en/privacy.html；其余语言也填英文版） |
 
 ## App 隐私问卷（App Privacy）
 

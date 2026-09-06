@@ -2,6 +2,7 @@
 
 > 由 `scripts/build-asc-copy.py` 生成并校验字数；改文案改脚本。截图对应 `store/screenshots/<语言>/`，
 > 上传顺序 editor → translate-models → batch → home-done → glossary。在 App Store Connect 版本页右上角语言下拉里「添加语言」逐个添加。
+> 营销网址每种语言填官网对应语言页（官网会按浏览器语言自动跳转，直链更稳）；隐私政策目前只有中英两版，其余语言填英文版。
 
 | 商店语言 | 名称 | 副标题 | 关键词字数 | 宣传文本字数 |
 |---|---|---|---|---|
@@ -20,6 +21,7 @@
 ## 简体中文 (zh-Hans)
 
 截图：`store/screenshots/zh-Hans/`
+营销网址：`https://jason-jm.github.io/wavesubs/` · 支持网址：`https://github.com/jason-jm/wavesubs/issues` · 隐私政策网址：`https://jason-jm.github.io/wavesubs/privacy.html`
 
 **名称（20/30）：** `Wave Subs：AI 字幕生成与翻译`
 **副标题（12/30）：** `从影片生成字幕并自动翻译`
@@ -63,6 +65,7 @@
 ## English (U.S.) (en-US)
 
 截图：`store/screenshots/en/`
+营销网址：`https://jason-jm.github.io/wavesubs/en/` · 支持网址：`https://github.com/jason-jm/wavesubs/issues` · 隐私政策网址：`https://jason-jm.github.io/wavesubs/en/privacy.html`
 
 **名称（28/30）：** `Wave Subs: AI Subtitle Maker`
 **副标题（30/30）：** `Auto-translate video subtitles`
@@ -106,6 +109,7 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 ## 日本語 (ja)
 
 截图：`store/screenshots/ja/`
+营销网址：`https://jason-jm.github.io/wavesubs/ja/` · 支持网址：`https://github.com/jason-jm/wavesubs/issues` · 隐私政策网址：`https://jason-jm.github.io/wavesubs/en/privacy.html`
 
 **名称（20/30）：** `Wave Subs：AI 字幕生成・翻訳`
 **副标题（14/30）：** `動画から字幕を生成し自動翻訳`
@@ -149,6 +153,7 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 ## 한국어 (ko)
 
 截图：`store/screenshots/ko/`
+营销网址：`https://jason-jm.github.io/wavesubs/ko/` · 支持网址：`https://github.com/jason-jm/wavesubs/issues` · 隐私政策网址：`https://jason-jm.github.io/wavesubs/en/privacy.html`
 
 **名称（22/30）：** `Wave Subs: AI 자막 생성·번역`
 **副标题（17/30）：** `영상에서 자막 생성, 자동 번역`
@@ -192,6 +197,7 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 ## Français (fr-FR)
 
 截图：`store/screenshots/fr/`
+营销网址：`https://jason-jm.github.io/wavesubs/fr/` · 支持网址：`https://github.com/jason-jm/wavesubs/issues` · 隐私政策网址：`https://jason-jm.github.io/wavesubs/en/privacy.html`
 
 **名称（30/30）：** `Wave Subs : sous-titres par IA`
 **副标题（25/30）：** `Sous-titres auto-traduits`
@@ -235,6 +241,7 @@ Nécessite macOS 12 ou ultérieur sur Apple Silicon. Au premier lancement, un mo
 ## Deutsch (de-DE)
 
 截图：`store/screenshots/de/`
+营销网址：`https://jason-jm.github.io/wavesubs/de/` · 支持网址：`https://github.com/jason-jm/wavesubs/issues` · 隐私政策网址：`https://jason-jm.github.io/wavesubs/en/privacy.html`
 
 **名称（24/30）：** `Wave Subs: KI-Untertitel`
 **副标题（25/30）：** `Untertitel auto-übersetzt`
@@ -278,6 +285,7 @@ Benötigt macOS 12 oder neuer auf Apple Silicon. Beim ersten Start wirst du durc
 ## Русский (ru)
 
 截图：`store/screenshots/ru/`
+营销网址：`https://jason-jm.github.io/wavesubs/ru/` · 支持网址：`https://github.com/jason-jm/wavesubs/issues` · 隐私政策网址：`https://jason-jm.github.io/wavesubs/en/privacy.html`
 
 **名称（24/30）：** `Wave Subs: субтитры с ИИ`
 **副标题（30/30）：** `Автоперевод субтитров из видео`
@@ -321,6 +329,7 @@ Benötigt macOS 12 oder neuer auf Apple Silicon. Beim ersten Start wirst du durc
 ## Bahasa Indonesia (id)
 
 截图：`store/screenshots/id/`
+营销网址：`https://jason-jm.github.io/wavesubs/id/` · 支持网址：`https://github.com/jason-jm/wavesubs/issues` · 隐私政策网址：`https://jason-jm.github.io/wavesubs/en/privacy.html`
 
 **名称（22/30）：** `Wave Subs: Subtitle AI`
 **副标题（28/30）：** `Subtitle video diterjemahkan`
@@ -364,6 +373,7 @@ Memerlukan macOS 12 atau lebih baru di Apple Silicon. Saat pertama dibuka Anda a
 ## Bahasa Melayu (ms)
 
 截图：`store/screenshots/ms/`
+营销网址：`https://jason-jm.github.io/wavesubs/ms/` · 支持网址：`https://github.com/jason-jm/wavesubs/issues` · 隐私政策网址：`https://jason-jm.github.io/wavesubs/en/privacy.html`
 
 **名称（23/30）：** `Wave Subs: Sari Kata AI`
 **副标题（27/30）：** `Sari kata video, diterjemah`
@@ -407,6 +417,7 @@ Memerlukan macOS 12 atau lebih baharu pada Apple Silicon. Pada pelancaran pertam
 ## Tiếng Việt (vi)
 
 截图：`store/screenshots/vi/`
+营销网址：`https://jason-jm.github.io/wavesubs/vi/` · 支持网址：`https://github.com/jason-jm/wavesubs/issues` · 隐私政策网址：`https://jason-jm.github.io/wavesubs/en/privacy.html`
 
 **名称（20/30）：** `Wave Subs: Phụ đề AI`
 **副标题（29/30）：** `Phụ đề từ video, tự động dịch`
@@ -450,6 +461,7 @@ Yêu cầu macOS 12 trở lên trên Apple Silicon. Lần mở đầu tiên sẽ
 ## ไทย (th)
 
 截图：`store/screenshots/th/`
+营销网址：`https://jason-jm.github.io/wavesubs/th/` · 支持网址：`https://github.com/jason-jm/wavesubs/issues` · 隐私政策网址：`https://jason-jm.github.io/wavesubs/en/privacy.html`
 
 **名称（23/30）：** `Wave Subs: ซับไตเติล AI`
 **副标题（25/30）：** `ซับจากวิดีโอ แปลอัตโนมัติ`

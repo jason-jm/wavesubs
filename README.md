@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Platforms](https://img.shields.io/badge/macOS%2012%2B%20Apple%20Silicon%20%7C%20Windows%2010%2B-lightgrey)
 
-**官网 / Website：** https://jason-jm.github.io/wavesubs/ · [English](https://jason-jm.github.io/wavesubs/en/) · [下载 Download](https://github.com/jason-jm/wavesubs/releases/latest) · [更新日志](CHANGELOG.md)
+**官网 / Website：** https://jason-jm.github.io/wavesubs/ （11 种语言，按浏览器语言自动切换 · [English](https://jason-jm.github.io/wavesubs/en/)） · [下载 Download](https://github.com/jason-jm/wavesubs/releases/latest) · [更新日志](CHANGELOG.md)
 
 ## 它做什么
 
