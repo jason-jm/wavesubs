@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""3:4 竖版宣传图（小红书 / Instagram 信息流），每种语言 11 张，2160×2880。
-封面 + 8 个功能页（对应 store/screenshots 的 8 张界面截图）+ 配置要求表 + 常见问题。
+"""3:4 竖版宣传图（小红书 / Instagram 信息流），每种语言 10 张，2160×2880。
+封面 + 三步流程 + 6 个功能页（对应 store/screenshots 的界面截图）+ 配置要求表 + 常见问题。
 文案全部复用官网各语言文案（scripts/build-site.py 的 T 字典），不另外翻译。
 用法：python3 scripts/build-cards.py [lang ...]   → store/social/3x4/<lang>/<序号>-<id>.jpg
 只重出某几张：CARDS=export,faq python3 scripts/build-cards.py zh
@@ -77,33 +77,31 @@ def cards(k):
     # 1 封面
     out.append(('cover', f'''<h1 style="margin-top:56px">{esc(d['h1'])}</h1><p class="h2">{esc(d['h2'])}</p>
       <p class="lead">{esc(d['lead'])}</p>{pills(d['pills'])}{shot('editor')}'''))
-    # 2 流程：拖入 + 识别对齐
+    # 2 三步流程：拖入 → 识别对齐 → 翻译导出（用完成页截图）
     st = d['steps']
     out.append(('flow', f'''<div class="kicker">{esc(d['how_h2'])}</div><h1 class="small">{esc(d['how_sub'])}</h1>
-      <div class="steps">{''.join(f'<div class="step"><div class="k">{i+1}</div><div><h3>{esc(t)}</h3><p>{esc(b)}</p></div></div>' for i,(t,b) in enumerate(st[:2]))}</div>{shot('home-running')}'''))
-    # 3 翻译并导出
-    out.append(('export', f'''<h1 style="margin-top:44px">{esc(st[2][0])}</h1><p class="lead">{esc(st[2][1])}</p>{pills([d['pills'][0], d['pills'][2]])}{shot('home-done')}'''))
-    # 4 编辑器
+      <div class="steps">{''.join(f'<div class="step"><div class="k">{i+1}</div><div><h3>{esc(t)}</h3><p>{esc(b)}</p></div></div>' for i,(t,b) in enumerate(st))}</div>{shot('home-done')}'''))
+    # 3 编辑器
     out.append(('editor', f'''<h1 style="margin-top:44px">{esc(d['ed_h2'])}</h1><p class="lead">{esc(d['ed_p'])}</p>{pills([d['hero_note']])}{shot('editor')}'''))
-    # 5 翻译模型
+    # 4 翻译模型
     out.append(('translate', f'''<h1 style="margin-top:44px">{esc(d['tr_h2'])}</h1><p class="lead">{esc(d['tr_p'])}</p>{bullets(d['tr_li'])}{shot('translate-models')}'''))
-    # 6 批量
+    # 5 批量
     out.append(('batch', f'''<h1 style="margin-top:44px">{esc(d['ba_h2'])}</h1><p class="lead">{esc(d['ba_p'])}</p>{shot('batch')}'''))
-    # 7 术语表
+    # 6 术语表
     out.append(('glossary', f'''<h1 class="small" style="margin-top:44px">{esc(d['tr_li'][0])}</h1><p class="lead">{esc(d['tr_li'][2])}</p>{pills([d['pills'][1], d['tr_li'][1]])}{shot('glossary')}'''))
-    # 8 模型页
+    # 7 模型页
     out.append(('models', f'''<h1 style="margin-top:44px">{esc(d['req_h2'])}</h1><p class="lead">{esc(d['req_sub'])}</p>
       {bullets([f"{m}: {a} + {l}" for m,a,l,_ in combos[:3]])}{shot('models')}'''))
-    # 9 配置要求表（纯文字）
+    # 8 配置要求表（纯文字）
     rows = ''.join(f'<tr><td>{esc(m)}</td><td>{esc(a)}<br>{esc(l)}</td><td class="note">{esc(n)}</td></tr>' for m,a,l,n in combos)
     cc = d['req_combo_cols']
     out.append(('requirements', f'''<div class="kicker">{esc(d['req_h2'])}</div><h1 class="small">{esc(d['req_combo_h3'])}</h1>
       <table><thead><tr><th>{esc(cc[0])}</th><th>{esc(cc[1])} + {esc(cc[2])}</th><th>{esc(cc[3])}</th></tr></thead><tbody>{rows}</tbody></table>
       <p class="lead" style="font-size:21px">{esc(d['req_notes'][1])}</p><div class="spacer"></div>'''))
-    # 10 隐私
+    # 9 隐私
     out.append(('privacy', f'''<h1 style="margin-top:44px">{esc(d['pr_h2'])}</h1><p class="lead">{esc(d['pr_sub'])}</p>
       <div class="cards">{''.join(f'<div class="card"><b>{esc(t)}</b><span>{esc(b)}</span></div>' for t,b in d['pr_cards'])}</div>{shot('settings')}'''))
-    # 11 常见问题
+    # 10 常见问题
     qa = d['faq'][:5]
     out.append(('faq', f'''<h1 style="margin-top:44px">{esc(d['faq_h2'])}</h1>
       <div class="faq">{''.join(f'<div><h3>{esc(q)}</h3><p>{esc(a)}</p></div>' for q,a in qa)}</div><div class="spacer"></div>'''))
