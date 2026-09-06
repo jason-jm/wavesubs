@@ -5,7 +5,9 @@ const [url, prefix, w = '1280', h = '800', ...ys] = process.argv.slice(2)
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 setTimeout(() => app.exit(2), 40000)
 app.whenReady().then(async () => {
-  const win = new BrowserWindow({ width: +w, height: +h, useContentSize: true, show: true, frame: false })
+  // OFFSCREEN=1：离屏渲染，窗口尺寸不受屏幕大小限制（竖版 1080×1920 的社交图要用）；按 1× 像素输出
+  const offscreen = process.env.OFFSCREEN === '1'
+  const win = new BrowserWindow({ width: +w, height: +h, useContentSize: true, show: !offscreen, frame: false, webPreferences: offscreen ? { offscreen: true } : {} })
   await win.loadURL(url)
   await sleep(900)
   const positions = ys.length ? ys : ['0']

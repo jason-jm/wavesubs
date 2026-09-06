@@ -7,7 +7,7 @@
 | 渠道 | 状态 | 链接 / 说明 |
 |---|---|---|
 | GitHub 仓库信息 | 完成 | 主页改为 wavesubs.com，20 个 topics（subtitles / whisper / srt / ass / local-ai / translation …），英文 README + 中文 README.zh-CN.md，首屏截图 |
-| 社交分享卡片 | 完成 | 11 种语言各一张 1280×640，官网各语言页 og:image / Twitter card 指向自己的卡片；`docs/assets/social/` |
+| 社交分享图 | 完成 | 11 种语言 × 4 种尺寸：横版 1280×640（官网 og:image）、横版高清 2560×1280、竖版 1080×1920、竖版 1080×1440；发帖用的在 `store/social/` |
 | Homebrew（macOS） | 上线 | `brew install --cask jason-jm/wavesubs/wavesubs`，仓库 github.com/jason-jm/homebrew-wavesubs，`brew audit` 通过 |
 | Scoop（Windows） | 上线 | `scoop bucket add wavesubs https://github.com/jason-jm/scoop-wavesubs && scoop install wavesubs`，带 autoupdate |
 | winget（Windows 官方包管理器） | PR 已提交，等微软机器人验证 | https://github.com/microsoft/winget-pkgs/pull/430387 ，合并后 `winget install JiesiMa.WaveSubs` |

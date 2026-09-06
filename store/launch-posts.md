@@ -1,6 +1,6 @@
 # 推广文案（全部可直接复制）
 
-> 配套：分工与时间表见 [promotion-plan.md](./promotion-plan.md)。图片：社交卡片 `docs/assets/social/<语言>.jpg`（1280×640），截图 `docs/assets/shots/<语言>-dark-*.jpg`，Product Hunt 专用 `store/producthunt/`。
+> 配套：分工与时间表见 [promotion-plan.md](./promotion-plan.md)。图片都在 `store/social/`：横版高清 `<语言>@2x.jpg`（2560×1280，X / 微博 / 知乎），竖版 `<语言>-9x16.jpg`（1080×1920，小红书 / 抖音 / Stories）和 `<语言>-3x4.jpg`（1080×1440，小红书信息流）；界面截图 `docs/assets/shots/<语言>-dark-*.jpg`；Product Hunt 专用 `store/producthunt/`。语言代码：zh en ja ko fr de ru id ms vi th。
 > 所有链接统一用 **https://wavesubs.com**（会按浏览器语言自动跳转）；仓库 https://github.com/jason-jm/wavesubs。
 
 ---
@@ -138,7 +138,7 @@ macOS (Apple Silicon) + Windows, MIT: https://github.com/jason-jm/wavesubs
 Site: https://wavesubs.com
 Source: https://github.com/jason-jm/wavesubs
 ```
-配图：第 1 条用 `docs/assets/social/en.jpg`，第 3 条用 `docs/assets/shots/en-dark-editor.jpg`。
+配图：第 1 条用 `store/social/en@2x.jpg`，第 3 条用 `docs/assets/shots/en-dark-editor.jpg`。
 
 ## X / 微博 / 即刻（中文）
 
@@ -221,7 +221,7 @@ brew install --cask jason-jm/wavesubs/wavesubs
 
 ## 小红书（3 条图文）
 
-**第 1 条** 封面 `docs/assets/social/zh.jpg`，内页 `zh-Hans-dark-editor.jpg`、`zh-Hans-dark-home-done.jpg`
+**第 1 条** 封面 `store/social/zh-3x4.jpg`（信息流）或 `zh-9x16.jpg`，内页 `zh-Hans-dark-editor.jpg`、`zh-Hans-dark-home-done.jpg`
 ```
 看片找不到字幕？让本地 AI 直接从影片生成 🎬
 
@@ -319,7 +319,7 @@ Jiesi Ma
 
 ---
 
-## 多语言短帖（X / Mastodon / 各国论坛，配各自语言的社交卡片 `docs/assets/social/<语言>.jpg`）
+## 多语言短帖（X / Mastodon / 各国论坛，配各自语言的图 `store/social/<语言>@2x.jpg`，竖版平台用 `-9x16` / `-3x4`）
 
 **日本語**（X / Zenn / note）
 ```
