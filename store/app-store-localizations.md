@@ -5,24 +5,24 @@
 
 | 商店语言 | 名称 | 副标题 | 关键词字数 | 宣传文本字数 |
 |---|---|---|---|---|
-| 简体中文 (zh-Hans) | Wave Subs：AI 字幕生成与翻译 | 看片找不到字幕？本地生成、离线免费 | 56 | 59 |
-| English (U.S.) (en-US) | Wave Subs: AI Subtitle Maker | Make SRT subtitles from video | 91 | 167 |
-| 日本語 (ja) | Wave Subs：AI 字幕生成・翻訳 | 動画から字幕を作成、オフライン無料 | 53 | 76 |
-| 한국어 (ko) | Wave Subs: AI 자막 생성·번역 | 영상에서 자막 생성, 오프라인 무료 | 52 | 86 |
-| Français (fr-FR) | Wave Subs : sous-titres par IA | Créer et traduire des SRT | 93 | 165 |
-| Deutsch (de-DE) | Wave Subs: KI-Untertitel | SRT erstellen und übersetzen | 95 | 163 |
-| Русский (ru) | Wave Subs: субтитры с ИИ | Субтитры из видео, офлайн | 92 | 153 |
-| Bahasa Indonesia (id) | Wave Subs: Subtitle AI | Subtitle dari video, offline | 95 | 158 |
-| Bahasa Melayu (ms) | Wave Subs: Sari Kata AI | Sari kata dari video, offline | 93 | 154 |
-| Tiếng Việt (vi) | Wave Subs: Phụ đề AI | Tạo & dịch phụ đề từ video | 100 | 152 |
-| ไทย (th) | Wave Subs: ซับไตเติล AI | สร้างและแปลซับจากวิดีโอ | 85 | 114 |
+| 简体中文 (zh-Hans) | Wave Subs：AI 字幕生成与翻译 | 从影片生成字幕并自动翻译 | 56 | 59 |
+| English (U.S.) (en-US) | Wave Subs: AI Subtitle Maker | Auto-translate video subtitles | 91 | 167 |
+| 日本語 (ja) | Wave Subs：AI 字幕生成・翻訳 | 動画から字幕を生成し自動翻訳 | 53 | 76 |
+| 한국어 (ko) | Wave Subs: AI 자막 생성·번역 | 영상에서 자막 생성, 자동 번역 | 52 | 86 |
+| Français (fr-FR) | Wave Subs : sous-titres par IA | Sous-titres auto-traduits | 93 | 165 |
+| Deutsch (de-DE) | Wave Subs: KI-Untertitel | Untertitel auto-übersetzt | 95 | 163 |
+| Русский (ru) | Wave Subs: субтитры с ИИ | Автоперевод субтитров из видео | 92 | 153 |
+| Bahasa Indonesia (id) | Wave Subs: Subtitle AI | Subtitle video diterjemahkan | 95 | 158 |
+| Bahasa Melayu (ms) | Wave Subs: Sari Kata AI | Sari kata video, diterjemah | 93 | 154 |
+| Tiếng Việt (vi) | Wave Subs: Phụ đề AI | Phụ đề từ video, tự động dịch | 100 | 152 |
+| ไทย (th) | Wave Subs: ซับไตเติล AI | ซับจากวิดีโอ แปลอัตโนมัติ | 85 | 114 |
 
 ## 简体中文 (zh-Hans)
 
 截图：`store/screenshots/zh-Hans/`
 
 **名称（20/30）：** `Wave Subs：AI 字幕生成与翻译`
-**副标题（17/30）：** `看片找不到字幕？本地生成、离线免费`
+**副标题（12/30）：** `从影片生成字幕并自动翻译`
 **关键词（56/100）：** `字幕,SRT,ASS,视频字幕,自动字幕,whisper,语音识别,动漫,电影,日语,英语,批量,MKV,编辑器`
 
 **宣传文本（59/170）：**
@@ -65,7 +65,7 @@
 截图：`store/screenshots/en/`
 
 **名称（28/30）：** `Wave Subs: AI Subtitle Maker`
-**副标题（29/30）：** `Make SRT subtitles from video`
+**副标题（30/30）：** `Auto-translate video subtitles`
 **关键词（91/100）：** `srt,ass,captions,transcribe,whisper,offline,local,video,movie,anime,japanese,batch,mkv,free`
 
 **宣传文本（167/170）：**
@@ -108,7 +108,7 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 截图：`store/screenshots/ja/`
 
 **名称（20/30）：** `Wave Subs：AI 字幕生成・翻訳`
-**副标题（17/30）：** `動画から字幕を作成、オフライン無料`
+**副标题（14/30）：** `動画から字幕を生成し自動翻訳`
 **关键词（53/100）：** `字幕,SRT,ASS,文字起こし,whisper,音声認識,アニメ,映画,英語,韓国語,一括,MKV,編集`
 
 **宣传文本（76/170）：**
@@ -151,7 +151,7 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 截图：`store/screenshots/ko/`
 
 **名称（22/30）：** `Wave Subs: AI 자막 생성·번역`
-**副标题（19/30）：** `영상에서 자막 생성, 오프라인 무료`
+**副标题（17/30）：** `영상에서 자막 생성, 자동 번역`
 **关键词（52/100）：** `자막,SRT,ASS,받아쓰기,whisper,음성인식,애니,영화,일본어,영어,일괄,MKV,편집기`
 
 **宣传文本（86/170）：**
@@ -194,7 +194,7 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 截图：`store/screenshots/fr/`
 
 **名称（30/30）：** `Wave Subs : sous-titres par IA`
-**副标题（25/30）：** `Créer et traduire des SRT`
+**副标题（25/30）：** `Sous-titres auto-traduits`
 **关键词（93/100）：** `srt,ass,transcription,whisper,traduction,hors ligne,vidéo,film,anime,japonais,lot,mkv,gratuit`
 
 **宣传文本（165/170）：**
@@ -237,7 +237,7 @@ Nécessite macOS 12 ou ultérieur sur Apple Silicon. Au premier lancement, un mo
 截图：`store/screenshots/de/`
 
 **名称（24/30）：** `Wave Subs: KI-Untertitel`
-**副标题（28/30）：** `SRT erstellen und übersetzen`
+**副标题（25/30）：** `Untertitel auto-übersetzt`
 **关键词（95/100）：** `untertitel,srt,ass,transkription,whisper,übersetzung,offline,video,film,anime,stapel,mkv,gratis`
 
 **宣传文本（163/170）：**
@@ -280,7 +280,7 @@ Benötigt macOS 12 oder neuer auf Apple Silicon. Beim ersten Start wirst du durc
 截图：`store/screenshots/ru/`
 
 **名称（24/30）：** `Wave Subs: субтитры с ИИ`
-**副标题（25/30）：** `Субтитры из видео, офлайн`
+**副标题（30/30）：** `Автоперевод субтитров из видео`
 **关键词（92/100）：** `субтитры,srt,ass,транскрипция,whisper,перевод,видео,фильм,аниме,японский,пакет,mkv,бесплатно`
 
 **宣传文本（153/170）：**
@@ -323,7 +323,7 @@ Benötigt macOS 12 oder neuer auf Apple Silicon. Beim ersten Start wirst du durc
 截图：`store/screenshots/id/`
 
 **名称（22/30）：** `Wave Subs: Subtitle AI`
-**副标题（28/30）：** `Subtitle dari video, offline`
+**副标题（28/30）：** `Subtitle video diterjemahkan`
 **关键词（95/100）：** `subtitle,srt,ass,transkripsi,whisper,terjemahan,video,film,anime,jepang,batch,mkv,gratis,editor`
 
 **宣传文本（158/170）：**
@@ -366,7 +366,7 @@ Memerlukan macOS 12 atau lebih baru di Apple Silicon. Saat pertama dibuka Anda a
 截图：`store/screenshots/ms/`
 
 **名称（23/30）：** `Wave Subs: Sari Kata AI`
-**副标题（29/30）：** `Sari kata dari video, offline`
+**副标题（27/30）：** `Sari kata video, diterjemah`
 **关键词（93/100）：** `sari kata,srt,ass,transkripsi,whisper,terjemahan,video,filem,anime,jepun,kelompok,mkv,percuma`
 
 **宣传文本（154/170）：**
@@ -409,7 +409,7 @@ Memerlukan macOS 12 atau lebih baharu pada Apple Silicon. Pada pelancaran pertam
 截图：`store/screenshots/vi/`
 
 **名称（20/30）：** `Wave Subs: Phụ đề AI`
-**副标题（26/30）：** `Tạo & dịch phụ đề từ video`
+**副标题（29/30）：** `Phụ đề từ video, tự động dịch`
 **关键词（100/100）：** `phụ đề,srt,ass,chuyển âm,whisper,dịch,ngoại tuyến,video,phim,anime,tiếng nhật,hàng loạt,mkv,miễn phí`
 
 **宣传文本（152/170）：**
@@ -452,7 +452,7 @@ Yêu cầu macOS 12 trở lên trên Apple Silicon. Lần mở đầu tiên sẽ
 截图：`store/screenshots/th/`
 
 **名称（23/30）：** `Wave Subs: ซับไตเติล AI`
-**副标题（23/30）：** `สร้างและแปลซับจากวิดีโอ`
+**副标题（25/30）：** `ซับจากวิดีโอ แปลอัตโนมัติ`
 **关键词（85/100）：** `ซับไตเติล,srt,ass,ถอดเสียง,whisper,แปล,ออฟไลน์,วิดีโอ,หนัง,อนิเมะ,ญี่ปุ่น,ชุด,mkv,ฟรี`
 
 **宣传文本（114/170）：**
