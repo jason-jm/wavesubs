@@ -3,11 +3,21 @@
 # 直接公证 release/mac-arm64 里的 .app、装订，再用 --prepackaged 出 DMG/ZIP，最后公证 DMG。
 set -euo pipefail
 PROFILE="${APPLE_KEYCHAIN_PROFILE:-WAVESUBS_NOTARY}"
+
+# 公证上传对网络抖动很敏感（connectTimeout 见过不止一次），失败就隔 30 秒再试，最多 3 次
+submit_with_retry() {
+  local n
+  for n in 1 2 3; do
+    if xcrun notarytool submit "$1" --keychain-profile "$PROFILE" --wait; then return 0; fi
+    echo "第 $n 次提交失败，30 秒后重试…"; sleep 30
+  done
+  return 1
+}
 APP="release/mac-arm64/Wave Subs.app"
 ZIP="$(mktemp -d)/WaveSubs-notarize.zip"
 echo "打包提交 $APP"
 ditto -c -k --keepParent "$APP" "$ZIP"
-xcrun notarytool submit "$ZIP" --keychain-profile "$PROFILE" --wait
+submit_with_retry "$ZIP"
 xcrun stapler staple "$APP"
 xcrun stapler validate "$APP"
 spctl -a -t exec -vv "$APP" 2>&1 | tail -2
