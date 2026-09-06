@@ -9,3 +9,4 @@ eval/
 *.log
 .DS_Store
 .claude/
+.tmp-*

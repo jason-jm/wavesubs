@@ -144,5 +144,11 @@
       "shortcutName": "Wave Subs",
       "deleteAppDataOnUninstall": false
     }
-  }
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jason-jm/wavesubs.git"
+  },
+  "homepage": "https://jason-jm.github.io/wavesubs/"
 }

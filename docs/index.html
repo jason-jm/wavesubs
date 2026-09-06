@@ -23,9 +23,7 @@
   a{color:var(--accent);text-decoration:none}
   a:hover{text-decoration:underline}
   .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
-  [data-lang]{display:none}
-  html[data-ui="zh"] [data-lang="zh"],html[data-ui="en"] [data-lang="en"]{display:revert}
-  html[data-ui="zh"] span[data-lang="zh"],html[data-ui="en"] span[data-lang="en"]{display:inline}
+  html[data-ui="zh"] [data-lang="en"],html[data-ui="en"] [data-lang="zh"]{display:none !important}
 
   /* ---- 顶栏 ---- */
   header.top{position:sticky;top:0;z-index:10;backdrop-filter:saturate(180%) blur(14px);background:rgba(11,15,23,.72);border-bottom:1px solid var(--line)}
@@ -129,7 +127,9 @@
   </div>
   <p class="note" data-lang="zh">免费 · 无需注册 · 离线可用 · 32 种界面语言</p>
   <p class="note" data-lang="en">Free · No account · Works offline · 32 interface languages</p>
-  <div class="hero-shot"><img src="assets/shots/zh-Hans-dark-editor.jpg" alt="Wave Subs editor with video preview" width="2880" height="1800"></div>
+  <div class="hero-shot"><img src="assets/shots/zh-Hans-dark-editor.jpg" alt="Wave Subs editor with video preview" width="1920" height="1200"></div>
+  <p class="note" style="margin-top:14px" data-lang="zh">编辑器：改文字、调时间，点任意一行直接听这句话——字幕叠加实时反映修改</p>
+  <p class="note" style="margin-top:14px" data-lang="en">The editor: fix text, adjust timing, click any line to hear it — the overlay reflects your edits live</p>
 </div></section>
 
 <section id="features"><div class="wrap">
@@ -161,15 +161,15 @@
 
 <section style="padding-top:0"><div class="wrap">
   <div class="feature">
-    <div class="shot"><img src="assets/shots/zh-Hans-dark-home-done.jpg" alt="Conversion finished with quality report" width="2880" height="1800"></div>
+    <div class="shot"><img src="assets/shots/zh-Hans-dark-home-done.jpg" alt="Conversion finished with quality verdict" width="1920" height="1200"></div>
     <div>
-      <h3 data-lang="zh">编辑器，带视频预览</h3><h3 data-lang="en">An editor with video preview</h3>
-      <p data-lang="zh">改文字、调时间、增删合并、撤销、自动保存。点任意一行，直接听这句话怎么说的——哪怕是 HEVC、DTS 这类浏览器播不了的格式，随包的 ffmpeg 也能解出来。</p>
-      <p data-lang="en">Fix text, adjust timing, insert, delete, merge, undo, autosave. Click any line to hear exactly how it was said — even HEVC or DTS files a browser can't play; the bundled ffmpeg decodes them.</p>
+      <h3 data-lang="zh">跑完就告诉你哪里要看</h3><h3 data-lang="en">When it's done, it tells you where to look</h3>
+      <p data-lang="zh">每个文件完成时附带质检结论：覆盖率、漏段、超长条、语速、缺译、残留原文，逐项对照整片基准判断。绿色就放心用，黄色点进去看。</p>
+      <p data-lang="en">Every finished file carries a quality verdict — coverage, gaps, overlong lines, reading speed, missing or half-done translations — judged against full-film baselines. Green means use it; yellow means take a look.</p>
       <ul>
-        <li data-lang="zh">改过原文的行会标记「译文可能过期」，重译时只补这些行</li><li data-lang="en">Lines whose source you edited are flagged; retranslation touches only those</li>
-        <li data-lang="zh">质检发现可点击，直接跳到对应位置</li><li data-lang="en">Quality findings are clickable and jump to the spot</li>
-        <li data-lang="zh">字幕叠加实时反映你的修改</li><li data-lang="en">The subtitle overlay reflects your edits live</li>
+        <li data-lang="zh">一键进入编辑器，质检发现直接跳到对应行</li><li data-lang="en">One click into the editor; findings jump straight to the line</li>
+        <li data-lang="zh">改文字、调时间、增删合并、撤销、自动保存，点任意一行听这句话怎么说的</li><li data-lang="en">Fix text, adjust timing, insert, merge, undo, autosave — click any line to hear how it was said</li>
+        <li data-lang="zh">HEVC、DTS 这类浏览器播不了的格式，随包 ffmpeg 照样解出来预览</li><li data-lang="en">Even HEVC or DTS files a browser can't play preview fine — the bundled ffmpeg decodes them</li>
       </ul>
     </div>
   </div>

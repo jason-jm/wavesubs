@@ -131,3 +131,8 @@ src/preload/          contextBridge 暴露的类型化 API
 src/renderer/         React UI
 scripts/cli.ts        命令行入口
 ```
+
+## 许可
+
+本项目代码以 [MIT 许可证](./LICENSE) 发布。随包分发的第三方组件（ffmpeg LGPL、whisper.cpp / llama.cpp MIT、
+Whisper 与 Qwen 模型等）各自的许可见 [THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md)。

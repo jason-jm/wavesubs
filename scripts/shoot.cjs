@@ -13,11 +13,11 @@ const { app, BrowserWindow, nativeTheme } = require('electron')
 const fs = require('node:fs')
 const path = require('node:path')
 
-const OUT = path.resolve(process.argv[2] || 'site/assets/shots')
+const OUT = path.resolve(process.argv[2] || 'docs/assets/shots')
 const LOCALE = process.argv[3] || 'zh-Hans'
 const THEME = process.argv[4] || 'dark'
 const BASE = 'http://localhost:5173'
-const STILL = `${BASE}/@fs${path.resolve('site/assets/demo-still.jpg')}`
+const STILL = `${BASE}/@fs${path.resolve('docs/assets/demo-still.jpg')}`
 const ZH = LOCALE.startsWith('zh')
 
 const SHOW = 'Harbor.Lights.S01E03.1080p.BluRay.mkv'
