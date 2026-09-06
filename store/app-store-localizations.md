@@ -30,7 +30,7 @@
 **宣传文本（59/170）：**
 看片找不到字幕？把影片拖进来：本地 AI 识别对白、生成 SRT/ASS 字幕，并翻译成你的语言。无需联网，永久免费。
 
-**版本说明 1.0.1：** 翻译目标语言扩展到 29 种，首次启动默认翻译到系统语言；界面颗粒纹理更细腻。
+**版本说明 1.0.2：** 新增反馈入口：「帮助」菜单和「设置 → 关于」可直接提交反馈、进入讨论区、去 App Store 评价；「关于」显示真实版本号。
 
 **描述：**
 ```text
@@ -74,7 +74,7 @@
 **宣传文本（167/170）：**
 Can't find subtitles? Drop in a video: local AI recognizes the dialogue, generates SRT/ASS subtitles and translates them into your language. No internet, free forever.
 
-**版本说明 1.0.1：** 29 translation target languages; first launch now defaults to your system language; a subtler interface texture.
+**版本说明 1.0.2：** New feedback entries: the Help menu and Settings → About open the feedback form, GitHub Discussions and App Store rating; About now shows the real version number.
 
 **描述：**
 ```text
@@ -118,7 +118,7 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 **宣传文本（76/170）：**
 字幕が見つからない？動画をドロップするだけ。ローカルAIがセリフを認識してSRT/ASS字幕を生成し、あなたの言語に翻訳します。ネット不要、ずっと無料。
 
-**版本说明 1.0.1：** 翻訳先の言語が29言語に。初回起動時はシステム言語へ自動翻訳。画面のテクスチャをより繊細に。
+**版本说明 1.0.2：** フィードバック入口を追加：「ヘルプ」メニューと「設定 → このアプリについて」からフィードバック送信、ディスカッション、App Store での評価へ。バージョン番号の表示を修正。
 
 **描述：**
 ```text
@@ -162,7 +162,7 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 **宣传文本（86/170）：**
 자막을 못 찾겠다면? 영상을 끌어다 놓으세요. 로컬 AI가 대사를 인식해 SRT/ASS 자막을 만들고 내 언어로 번역합니다. 인터넷 불필요, 영원히 무료.
 
-**版本说明 1.0.1：** 번역 대상 언어가 29개로 늘었습니다. 첫 실행 시 시스템 언어로 자동 번역. 더 은은해진 인터페이스 질감.
+**版本说明 1.0.2：** 피드백 입구 추가: 도움말 메뉴와 설정 → 정보에서 피드백 보내기, 토론, App Store 평가로 바로 이동. 정보 화면에 실제 버전 표시.
 
 **描述：**
 ```text
@@ -206,7 +206,7 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 **宣传文本（165/170）：**
 Pas de sous-titres ? Déposez la vidéo : l'IA locale reconnaît les dialogues, crée des SRT/ASS et les traduit dans votre langue. Sans internet, gratuit pour toujours.
 
-**版本说明 1.0.1：** 29 langues cibles pour la traduction ; au premier lancement, traduction vers la langue du système ; texture d'interface plus discrète.
+**版本说明 1.0.2：** Nouveaux accès aux commentaires : le menu Aide et Réglages → À propos ouvrent le formulaire, les discussions et la notation sur l'App Store ; À propos affiche le vrai numéro de version.
 
 **描述：**
 ```text
@@ -250,7 +250,7 @@ Nécessite macOS 12 ou ultérieur sur Apple Silicon. Au premier lancement, un mo
 **宣传文本（163/170）：**
 Keine Untertitel? Video ablegen: Lokale KI erkennt die Dialoge, erstellt SRT/ASS-Untertitel und übersetzt sie in deine Sprache. Ohne Internet, für immer kostenlos.
 
-**版本说明 1.0.1：** 29 Zielsprachen für die Übersetzung; beim ersten Start wird in die Systemsprache übersetzt; dezentere Oberflächentextur.
+**版本说明 1.0.2：** Neue Feedback-Einträge: Hilfe-Menü und Einstellungen → Über öffnen Feedback-Formular, Diskussionen und App-Store-Bewertung; Über zeigt jetzt die echte Versionsnummer.
 
 **描述：**
 ```text
@@ -294,7 +294,7 @@ Benötigt macOS 12 oder neuer auf Apple Silicon. Beim ersten Start wirst du durc
 **宣传文本（153/170）：**
 Нет субтитров? Перетащите видео: локальный ИИ распознает диалоги, создаст субтитры SRT/ASS и переведёт их на ваш язык. Без интернета, бесплатно навсегда.
 
-**版本说明 1.0.1：** 29 языков перевода; при первом запуске перевод на язык системы; более деликатная текстура интерфейса.
+**版本说明 1.0.2：** Новые пункты обратной связи: меню «Справка» и «Настройки → О программе» открывают форму отзыва, обсуждения и оценку в App Store; в «О программе» показывается реальная версия.
 
 **描述：**
 ```text
@@ -338,7 +338,7 @@ Benötigt macOS 12 oder neuer auf Apple Silicon. Beim ersten Start wirst du durc
 **宣传文本（158/170）：**
 Tak ada subtitle? Seret videonya: AI lokal mengenali dialog, membuat subtitle SRT/ASS, lalu menerjemahkannya ke bahasa Anda. Tanpa internet, gratis selamanya.
 
-**版本说明 1.0.1：** 29 bahasa target terjemahan; saat pertama dibuka, terjemahan mengikuti bahasa sistem; tekstur antarmuka lebih halus.
+**版本说明 1.0.2：** Pintu masuk umpan balik baru: menu Bantuan dan Pengaturan → Tentang membuka formulir masukan, diskusi, dan penilaian App Store; Tentang menampilkan versi yang sebenarnya.
 
 **描述：**
 ```text
@@ -382,7 +382,7 @@ Memerlukan macOS 12 atau lebih baru di Apple Silicon. Saat pertama dibuka Anda a
 **宣传文本（154/170）：**
 Tiada sari kata? Seret video: AI tempatan mengecam dialog, menjana sari kata SRT/ASS dan menterjemahnya ke bahasa anda. Tanpa internet, percuma selamanya.
 
-**版本说明 1.0.1：** 29 bahasa sasaran terjemahan; pada pelancaran pertama, terjemahan mengikut bahasa sistem; tekstur antara muka lebih halus.
+**版本说明 1.0.2：** Pintu masuk maklum balas baharu: menu Bantuan dan Tetapan → Perihal membuka borang maklum balas, perbincangan dan penilaian App Store; Perihal memaparkan versi sebenar.
 
 **描述：**
 ```text
@@ -426,7 +426,7 @@ Memerlukan macOS 12 atau lebih baharu pada Apple Silicon. Pada pelancaran pertam
 **宣传文本（152/170）：**
 Không tìm thấy phụ đề? Kéo video vào: AI cục bộ nhận dạng lời thoại, tạo phụ đề SRT/ASS và dịch sang ngôn ngữ của bạn. Không cần mạng, miễn phí mãi mãi.
 
-**版本说明 1.0.1：** 29 ngôn ngữ đích để dịch; lần mở đầu tiên tự dịch sang ngôn ngữ hệ thống; hoạ tiết giao diện dịu hơn.
+**版本说明 1.0.2：** Thêm lối vào góp ý: menu Trợ giúp và Cài đặt → Giới thiệu mở biểu mẫu góp ý, thảo luận và đánh giá trên App Store; Giới thiệu hiển thị đúng số phiên bản.
 
 **描述：**
 ```text
@@ -470,7 +470,7 @@ Yêu cầu macOS 12 trở lên trên Apple Silicon. Lần mở đầu tiên sẽ
 **宣传文本（114/170）：**
 หาซับไม่เจอ? ลากวิดีโอมาวาง AI ในเครื่องจะจับบทพูด สร้างซับ SRT/ASS แล้วแปลเป็นภาษาของคุณ ไม่ต้องต่อเน็ต ฟรีตลอดไป
 
-**版本说明 1.0.1：** ภาษาปลายทางสำหรับแปลเพิ่มเป็น 29 ภาษา เปิดครั้งแรกแปลเป็นภาษาของระบบอัตโนมัติ ลวดลายหน้าจอนุ่มนวลขึ้น
+**版本说明 1.0.2：** เพิ่มช่องทางข้อเสนอแนะ: เมนูช่วยเหลือและการตั้งค่า → เกี่ยวกับ เปิดแบบฟอร์มข้อเสนอแนะ การพูดคุย และให้คะแนนใน App Store; หน้าเกี่ยวกับแสดงเลขเวอร์ชันจริง
 
 **描述：**
 ```text
