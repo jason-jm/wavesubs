@@ -65,7 +65,9 @@ APPLE_KEYCHAIN_PROFILE=WAVESUBS_NOTARY npm run release
 ```
 
 `npm run release` 会依次：编译 → `scripts/bundle-deps.ts` 打包随附二进制并自检依赖 →
-electron-builder 签名（Hardened Runtime + entitlements）、公证、装订、产出 DMG 与 ZIP。
+electron-builder 签名（Hardened Runtime + entitlements）、公证、装订 .app、产出 DMG 与 ZIP →
+`scripts/notarize-dmg.sh` 给 DMG 补签名、公证、装订（electron-builder 不管 DMG，
+不补这步 DMG 本身 `spctl` 会报 "no usable signature"）。
 
 产物在 `release/`。
 
