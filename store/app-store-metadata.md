@@ -1,99 +1,106 @@
-# App Store Connect 填写材料
+# App Store Connect 填写材料（ASO 版，1.0.1）
 
-> 所有文案均可直接粘贴。截图用 `docs/assets/shots/*.png`（2880×1800，App Store 接受的 16:10 尺寸），
-> 中文商店用 `zh-Hans-dark-*.png`，其它地区用 `en-dark-*.png`。建议顺序：editor → batch → home-done → glossary → models。
+> 全部可直接粘贴。截图在 `store/screenshots/<语言>/`（2880×1800，11 种语言各 8 张，App Store 最多传 10 张）。
+> 建议顺序：editor → translate-models → batch → home-done → glossary。
+> ASO 原则：名称与副标题里的词不要在关键词里重复；关键词逗号分隔、不加空格、不用复数重复。
+
+## 名称 / 副标题（每种商店语言分别填）
+
+| 商店语言 | 名称（30 字内） | 副标题（30 字内） |
+|---|---|---|
+| 简体中文 | Wave Subs：AI 字幕生成与翻译 | 看片找不到字幕？本地生成、离线免费 |
+| English (U.S.) | Wave Subs: AI Subtitle Maker | Make & translate SRT from video |
+| 日本語 | Wave Subs：AI 字幕生成・翻訳 | 動画から字幕を作成、オフライン無料 |
+| 한국어 | Wave Subs: AI 자막 생성·번역 | 영상에서 자막 생성, 오프라인 무료 |
+
+## 关键词（100 字符以内，逗号分隔，不含名称/副标题里已有的词）
+
+**简体中文：** `字幕,SRT,ASS,视频字幕,自动字幕,whisper,语音识别,动漫,电影,日语,英语,批量,MKV,编辑器`
+**English：** `srt,ass,captions,transcribe,whisper,offline,local,video,movie,anime,japanese,batch,mkv,free`
+
+## 宣传文本（170 字符，可随时改，不需要审核）
+
+**简体中文：** 看片找不到字幕？把影片拖进来：本地 AI 识别对白、生成 SRT/ASS 字幕，并翻译成你的语言。无需联网，永久免费。
+**English：** Can't find subtitles? Drop in a video: local AI recognizes the dialogue, generates SRT/ASS subtitles and translates them into your language. No internet needed, free forever.
+
+## 描述（4000 字符以内）
+
+### 简体中文
+
+看片找不到字幕？Wave Subs 用本地 AI 直接从影片生成 SRT / ASS 字幕，并自动翻译成你的语言。全部在你自己的 Mac 上完成——无需联网，永久免费。
+
+三步出字幕
+• 拖进影片：MKV、MP4、MOV、TS 都行；影片自带的文本字幕轨会被自动发现并直接使用
+• 本地 AI 识别并对齐：whisper.cpp 在 Apple Silicon 上用 Metal 加速，自动检测语种；时间轴按真实说话时刻精修，参数用六部整片对照官方字幕校准
+• 翻译并导出：导出 SRT 或 ASS，放到影片旁边任何播放器都认；跑完附带质检结论
+
+自动翻译到你的语言
+29 种目标语言：中文简繁、英、日、韩、法、德、西、葡、俄、泰、越、印尼、马来等。默认用本地运行的 Qwen3 模型，免费、不联网；也可以接入任何 OpenAI 兼容接口（费用由服务商收取）。术语表让整季的人名前后一致。
+
+字幕编辑器，带视频预览
+改文字、调时间、增删合并、撤销、自动保存。点任意一行直接听这句话怎么说的——HEVC、DTS 这类格式也能预览。字幕叠加实时反映修改。
+
+质检报告
+每个文件跑完都体检：漏识别的段落、超长条、语速过快、缺译文、译文残留原文，直接告诉你该看哪。
+
+整季批量
+把整个文件夹拖进来，全部文件用同一套设置，个别文件可以单独指定字幕轨、音轨或引擎。
+
+不做重复的活
+识别结果和译文分层缓存：换个导出格式、换个翻译模型重跑只要几秒；换了模型或术语表则严格重翻，绝不混用旧译文。
+
+为什么坚持本地
+在线字幕工具要你上传整部影片、按分钟计费。Wave Subs 没有账号、没有统计、没有服务器，视频从不上传，不限时长。模型下载好之后断网也能用。
+
+系统要求：macOS 12 或更新，Apple Silicon。首次使用会引导下载识别模型（1.6～3 GB）。
+
+### English
+
+Can't find subtitles for a video? Wave Subs generates SRT / ASS subtitles directly from the video using local AI, then auto-translates them into your language. Everything runs on your own Mac — no internet needed, free forever.
+
+Three steps to subtitles
+• Drop in the video: MKV, MP4, MOV, TS — all fine; an embedded text subtitle track is detected and used directly
+• Local AI recognizes and aligns: whisper.cpp with Metal acceleration on Apple Silicon, automatic language detection; timing snapped to when lines are actually spoken, tuned against official subtitles of six full films
+• Translate and export: SRT or ASS next to the video, readable by any player, with a quality verdict attached
+
+Auto-translated into your language
+29 target languages: Chinese (Simplified/Traditional), English, Japanese, Korean, French, German, Spanish, Portuguese, Russian, Thai, Vietnamese, Indonesian, Malay and more. A locally running Qwen3 model by default — free and offline — or any OpenAI-compatible API (billed by the provider). A glossary keeps names consistent across a season.
+
+An editor with video preview
+Fix text, adjust timing, insert, delete, merge, undo, autosave. Click any line to hear exactly how it was said — HEVC and DTS preview too. The overlay reflects your edits live.
+
+Quality report
+Every file gets a health check: missed passages, overlong lines, unreadable speed, missing or half-done translations — it tells you exactly where to look.
+
+Batch a whole season
+Drop in a folder; every file follows the shared settings, and individual files can override the subtitle track, audio track or engine.
+
+Never redo work
+Recognition and translation are cached separately: re-export or retry in seconds; change the model or glossary and it retranslates strictly, never mixing old output in.
+
+Why local
+Online subtitle tools make you upload the whole film and charge per minute. Wave Subs has no account, no analytics, no server; videos are never uploaded and there is no length limit. Once models are downloaded it works with the network off.
+
+Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to download a recognition model (1.6–3 GB).
+
+## 版本说明（What's New）
+
+**1.0.1 简体中文：** 翻译目标语言扩展到 29 种，首次启动默认翻译到系统语言；界面颗粒纹理更细腻。
+**1.0.1 English：** 29 translation target languages; first launch now defaults to your system language; a subtler interface texture.
 
 ## 基本信息
 
 | 字段 | 值 |
 |---|---|
-| 名称 | Wave Subs |
-| 副标题（30 字内） | 本地字幕：识别、翻译、编辑 / Local subtitles: transcribe, translate, edit |
 | Bundle ID | com.wavesubs.desktop |
 | SKU | wavesubs-mac |
 | 类别 | 主类别 视频 (Video)；次类别 效率 (Productivity) |
-| 年龄分级 | 4+（无用户生成内容、无网络交互内容） |
-| 价格 | 免费（若之后收费，在这里改） |
+| 年龄分级 | 4+ |
+| 价格 | 免费 |
 | 版权 | © 2026 Jiesi Ma |
 | 支持网址 | https://github.com/jason-jm/wavesubs/issues |
 | 营销网址 | https://jason-jm.github.io/wavesubs/ |
 | 隐私政策网址 | https://jason-jm.github.io/wavesubs/#privacy |
-
-## 关键词（100 字符以内，逗号分隔）
-
-**中文：** 字幕,翻译,语音识别,Whisper,SRT,ASS,视频字幕,离线,本地,批量,日语,英语,动漫
-**English:** subtitles,srt,ass,whisper,transcribe,translate,offline,local,captions,video,batch,anime,japanese
-
-## 宣传文本（170 字符，可随时改，不需要审核）
-
-**中文：** 在你自己的 Mac 上识别、对齐、翻译、编辑视频字幕。不上传任何文件，离线可用，整季批量处理。
-**English:** Transcribe, align, translate and edit subtitles on your own Mac. Nothing is uploaded, works offline, batch whole seasons.
-
-## 描述（4000 字符以内）
-
-### 中文
-
-Wave Subs 把一个视频变成一份可以直接用的字幕——全部在你自己的电脑上完成。
-
-**三种字幕来源**
-• 本地语音识别：whisper.cpp 在 Apple Silicon 上用 Metal 加速，自动检测语种
-• 视频内嵌字幕轨：MKV/MP4 里的文本字幕直接抽出，按语言自动选轨
-• 外部字幕文件：SRT、ASS、VTT 等 18 种格式，编码自动识别
-
-**时间轴精修**
-语音活动检测加响度分析，把识别出的句子贴回真实的说话时刻。参数用六部整片对照官方字幕反复校准，不是随手拍的。
-
-**翻译，你说了算**
-默认用本地 Qwen3 模型，免费离线；也可以接入任何 OpenAI 兼容的云端接口（费用由服务商收取）。术语表让整季的人名前后一致。
-
-**编辑器，带视频预览**
-改文字、调时间、增删合并、撤销、自动保存。点任意一行，直接听这句话怎么说的——HEVC、DTS 这类格式也能预览。字幕叠加实时反映你的修改。
-
-**质检报告**
-每个文件跑完都体检：漏识别的段落、超长条、语速过快、缺译文、译文残留原文，直接告诉你该看哪。
-
-**批量**
-把整个文件夹拖进来。全部文件用同一套设置，个别文件可以单独指定字幕轨、音轨或引擎。
-
-**不做重复的活**
-识别结果和译文分层缓存：换个导出格式、换个翻译模型重跑只要几秒；换了模型或术语表则严格重翻，绝不混用旧译文。
-
-**隐私**
-没有账号、没有统计、没有服务器。视频文件从不上传。只有当你自己配置了云端翻译，字幕文本才会发给你选择的服务商。
-
-系统要求：macOS 12 或更新，Apple Silicon。首次使用会引导下载识别模型（约 1.6～3 GB）。
-
-### English
-
-Wave Subs turns a video into subtitles you can actually use — entirely on your own Mac.
-
-**Three subtitle sources**
-• Local speech recognition: whisper.cpp with Metal acceleration on Apple Silicon, automatic language detection
-• Embedded subtitle tracks: text tracks inside MKV/MP4 are extracted directly, picked by language
-• External subtitle files: 18 formats including SRT, ASS and VTT, with encoding auto-detected
-
-**Timing refinement**
-Voice activity detection plus loudness analysis snap recognized lines back to when they were actually spoken. Tuned against the official subtitles of six full-length films.
-
-**Translation on your terms**
-A local Qwen3 model by default — free and offline — or any OpenAI-compatible API (billed by the provider). A glossary keeps names consistent across a whole season.
-
-**An editor with video preview**
-Fix text, adjust timing, insert, delete, merge, undo, autosave. Click any line to hear exactly how it was said — HEVC and DTS files preview too. The subtitle overlay reflects your edits live.
-
-**Quality report**
-Every file gets a health check: missed passages, overlong lines, unreadable speed, missing or half-done translations — it tells you exactly where to look.
-
-**Batch**
-Drop in a folder. Every file follows the shared settings; override the subtitle track, audio track or engine only where needed.
-
-**Never redo work**
-Recognition and translation are cached separately: re-export or retry in seconds; change the model or glossary and it retranslates strictly, never mixing old output in.
-
-**Privacy**
-No account, no analytics, no server. Video files are never uploaded. Only when you configure cloud translation yourself is subtitle text sent to the provider you chose.
-
-Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to download a recognition model (about 1.6–3 GB).
 
 ## App 隐私问卷（App Privacy）
 

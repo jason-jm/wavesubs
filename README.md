@@ -1,42 +1,24 @@
 # Wave Subs
 
-[![Release](https://img.shields.io/github/v/release/jason-jm/wavesubs?display_name=tag&include_prereleases)](https://github.com/jason-jm/wavesubs/releases)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![Website](https://img.shields.io/badge/website-jason--jm.github.io%2Fwavesubs-5fd4d0)](https://jason-jm.github.io/wavesubs/)
+**看片找不到字幕？** Wave Subs 用本地 AI 直接从影片生成 SRT / ASS 字幕，并自动翻译到你的语言。识别、对齐、翻译、编辑全部在你自己的电脑上完成——**无需联网，永久免费**。macOS（Apple Silicon）与 Windows。
 
-**Local-first subtitles for your videos** — transcribe with Whisper, refine timing, translate with a local LLM or your own API, edit with video preview, batch whole seasons. Nothing is uploaded. macOS (Apple Silicon) and Windows.
+> **Can't find subtitles for a video?** Wave Subs generates SRT / ASS subtitles from any video with local AI and auto-translates them into your language. Everything runs on your own machine — no internet needed, free forever. macOS (Apple Silicon) and Windows.
 
-[**Download**](https://jason-jm.github.io/wavesubs/#download) · [Website](https://jason-jm.github.io/wavesubs/) · [Changelog](./CHANGELOG.md) · [Third-party licenses](./THIRD-PARTY-LICENSES.md)
+[![Release](https://img.shields.io/github/v/release/jason-jm/wavesubs?label=download)](https://github.com/jason-jm/wavesubs/releases/latest)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![Platforms](https://img.shields.io/badge/macOS%2012%2B%20Apple%20Silicon%20%7C%20Windows%2010%2B-lightgrey)
 
-![Wave Subs editor with video preview](docs/assets/shots/en-dark-editor.jpg)
+**官网 / Website：** https://jason-jm.github.io/wavesubs/ · [English](https://jason-jm.github.io/wavesubs/en/) · [下载 Download](https://github.com/jason-jm/wavesubs/releases/latest) · [更新日志](CHANGELOG.md)
 
-<details>
-<summary><b>English overview</b></summary>
+## 它做什么
 
-- **Three subtitle sources**: local speech recognition (whisper.cpp, Metal), embedded MKV/MP4 text tracks (picked by language), or 18 external subtitle formats with encoding detection.
-- **Timing refinement**: VAD + loudness analysis snap cues to real speech; parameters tuned against official subtitles of six full-length films (see `bench/`).
-- **Translation**: local Qwen3 by default (free, offline) or any OpenAI-compatible endpoint; glossary for consistent names.
-- **Batch**: run a folder with shared settings, override tracks/engine per file.
-- **Editor with preview**: click a line to hear that moment — even HEVC/DTS files a browser can't play (bundled ffmpeg decodes a few seconds of frames + audio).
-- **Quality report** per file: speech coverage, gaps, reading speed, missing or half-done translations.
-- **Strict caching**: recognition and translation cached separately; translation reuse requires an exact match on engine+model, target language, prompt revision and glossary hash.
-- **Privacy**: no account, no analytics; only user-configured cloud translation sends subtitle text anywhere.
+1. **拖进影片** —— MKV / MP4 / MOV / TS 等；影片自带的文本字幕轨会被自动发现并优先使用
+2. **本地 AI 识别并对齐** —— whisper.cpp（Apple Silicon 上 Metal 加速）识别对白、自动检测语种；时间轴按真实说话时刻精修，参数用六部整片对照官方字幕校准
+3. **翻译并导出** —— 29 种目标语言，默认本地 Qwen3 模型（免费离线），也可接任何 OpenAI 兼容接口；导出 SRT / ASS，附带质检结论
 
-Build from source: `npm install && npm run dev`. Release pipeline: see [RELEASE.md](./RELEASE.md).
-</details>
+还有：带视频预览的字幕编辑器（HEVC / DTS 也能预览）、整季批量与逐文件设置、术语表、识别与译文分层缓存（换模型严格重翻）、32 种界面语言。
 
----
-
-
-Mac 与 Windows 桌面应用：导入视频 → 取得原文字幕（本地语音识别 / 内嵌字幕轨 / 外部字幕文件）→ 翻译为目标语言（默认中文）→ 导出 SRT/ASS 字幕。产品定义见 [PRD.md](./PRD.md)。
-
-字幕来源有三种：
-
-- **语音识别**：本地 whisper.cpp，Metal 加速，自动检测语种；
-- **视频内嵌字幕轨**：MKV/MP4 等容器里的 SubRip / ASS / WebVTT / mov_text 轨可直接抽出（PGS、VobSub 等图形字幕需 OCR，会明确标注为不可用）；
-- **外部字幕文件**：SRT / ASS / SSA / WebVTT / SAMI / MicroDVD / SubViewer / MPL2 / VPlayer / JACOsub / RealText / STL / PJS / LRC 由 ffmpeg 归一，TTML / DFXP / SBV 自带解析器；文件编码（UTF-8 / GBK / Big5 / Shift-JIS / EUC-KR 等）自动识别。
-
-翻译引擎可选**本地 Qwen3**（免费离线，默认）或**任意 OpenAI 兼容云端 API**。
+**隐私：** 没有账号、统计、服务器。视频从不上传；只有你自己配置云端翻译时，字幕文本才会发给你选的服务商。
 
 ## 平台支持
 

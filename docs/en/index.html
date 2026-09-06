@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wave Subs — Can&#x27;t find subtitles? Generate SRT/ASS subtitles from any video with local AI, translated, free &amp; offline (Mac / Windows)</title>
+<meta name="description" content="Wave Subs generates SRT / ASS subtitles directly from a video using local AI, then translates them into your language. Runs entirely on your computer — no internet needed, free forever. macOS (Apple Silicon) and Windows.">
+<meta name="keywords" content="generate subtitles from video,AI subtitle generator,auto subtitles,translate subtitles,SRT generator,ASS subtitles,offline subtitle software,local subtitle generator,whisper mac app,movie subtitle generator,anime subtitles,free subtitle maker">
+<link rel="canonical" href="https://jason-jm.github.io/wavesubs/en/">
+<link rel="alternate" hreflang="zh-Hans" href="https://jason-jm.github.io/wavesubs/">
+<link rel="alternate" hreflang="en" href="https://jason-jm.github.io/wavesubs/en/">
+<link rel="alternate" hreflang="x-default" href="https://jason-jm.github.io/wavesubs/en/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Wave Subs">
+<meta property="og:title" content="Wave Subs — Can&#x27;t find subtitles? Let local AI generate and translate them">
+<meta property="og:description" content="Wave Subs generates SRT / ASS subtitles directly from a video using local AI, then translates them into your language. Runs entirely on your computer — no internet needed, free forever. macOS (Apple Silicon) and Windows.">
+<meta property="og:url" content="https://jason-jm.github.io/wavesubs/en/">
+<meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/hero-wave.jpg">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Wave Subs — Can&#x27;t find subtitles? Let local AI generate and translate them">
+<meta name="twitter:description" content="Wave Subs generates SRT / ASS subtitles directly from a video using local AI, then translates them into your language. Runs entirely on your computer — no internet needed, free forever. macOS (Apple Silicon) and Windows.">
+<meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/hero-wave.jpg">
+<link rel="icon" href="../assets/icon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.1", "inLanguage": "en", "description": "Wave Subs generates SRT / ASS subtitles directly from a video using local AI, then translates them into your language. Runs entirely on your computer — no internet needed, free forever. macOS (Apple Silicon) and Windows.", "url": "https://jason-jm.github.io/wavesubs/en/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/en-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Generate SRT / ASS subtitles, Auto-translate into your language (29), Local AI · no internet · free forever"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Which videos can it generate subtitles for?", "acceptedAnswer": {"@type": "Answer", "text": "MKV, MP4, MOV, TS, AVI and other common formats; HEVC, DTS and TrueHD streams a browser can't play are fine too, because the bundled ffmpeg decodes everything. Audio-only files work as well."}}, {"@type": "Question", "name": "Which languages are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Recognition covers the nearly 100 languages whisper supports, with automatic detection; there are 29 translation targets including Chinese (Simplified/Traditional), English, Japanese, Korean, French, German, Spanish, Portuguese, Russian, Thai, Vietnamese, Indonesian and Malay; the interface comes in 32 languages."}}, {"@type": "Question", "name": "Does it really work without internet?", "acceptedAnswer": {"@type": "Answer", "text": "Recognition, alignment, translation, editing and export all run locally. Only two things touch the network: the one-time model download, and cloud translation if you choose to configure it."}}, {"@type": "Question", "name": "How long does a two-hour film take?", "acceptedAnswer": {"@type": "Answer", "text": "Roughly 3–6 minutes with Large v3 Turbo on an M-series chip, plus a few more for local translation. Batch a whole season and let it run."}}, {"@type": "Question", "name": "How accurate are the subtitles?", "acceptedAnswer": {"@type": "Answer", "text": "Recognition uses the whisper large family; timing is snapped to when lines are actually spoken using voice activity detection and loudness analysis, tuned against official subtitles of six full films. Every file gets a quality verdict that points at anything suspicious."}}, {"@type": "Question", "name": "What if the video already has a subtitle track?", "acceptedAnswer": {"@type": "Answer", "text": "Embedded text tracks are detected and preferred, skipping straight to translation — faster and more accurate than recognition. Image-based subtitles (PGS/VobSub) are the exception."}}, {"@type": "Question", "name": "Is there an Intel Mac version?", "acceptedAnswer": {"@type": "Answer", "text": "Not currently. Local recognition relies on Metal acceleration on Apple Silicon; on Intel it would be too slow to be useful."}}, {"@type": "Question", "name": "Windows says \"unknown publisher\"?", "acceptedAnswer": {"@type": "Answer", "text": "The Windows build isn't code-signed yet, so SmartScreen warns about new programs. Click \"More info → Run anyway\"; checksums are on the GitHub Releases page."}}, {"@type": "Question", "name": "How is this different from online subtitle generators?", "acceptedAnswer": {"@type": "Answer", "text": "Online tools make you upload the whole film, charge per minute and cap the length. Wave Subs uploads nothing, costs nothing and has no length limit — speed depends on your machine."}}]}</script>
+<style>
+  :root{
+    --bg:#0b0f17;--bg-2:#111827;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.09);
+    --text:#e8edf5;--text-2:#aab4c5;--text-3:#7b8798;
+    --teal:#5fd4d0;--coral:#ff9a7a;--accent:#7cc7ff;
+    --radius:16px;--max:1120px;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  html[data-ui="zh"] [data-lang="en"],html[data-ui="en"] [data-lang="zh"]{display:none !important}
+
+  /* ---- 顶栏 ---- */
+  header.top{position:sticky;top:0;z-index:10;backdrop-filter:saturate(180%) blur(14px);background:rgba(11,15,23,.72);border-bottom:1px solid var(--line)}
+  .top .wrap{display:flex;align-items:center;gap:20px;height:60px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.2px;color:var(--text)}
+  .brand img{width:26px;height:26px;border-radius:7px}
+  .top nav{margin-left:auto;display:flex;gap:22px;font-size:14px}
+  .top nav a{color:var(--text-2)}
+  .top nav a:hover{color:var(--text);text-decoration:none}
+  .lang-btn{background:var(--panel);border:1px solid var(--line);color:var(--text-2);border-radius:999px;padding:5px 12px;font-size:12.5px;cursor:pointer}
+  .lang-btn:hover{color:var(--text)}
+
+  /* ---- 首屏 ---- */
+  .hero{position:relative;overflow:hidden;padding:96px 0 40px;text-align:center}
+  .hero::before{content:"";position:absolute;inset:0;background:url(assets/hero-wave.jpg) center/cover no-repeat;opacity:.55;mask-image:linear-gradient(to bottom,#000 30%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 30%,transparent 100%)}
+  .hero .wrap{position:relative}
+  .hero h1{font-size:clamp(34px,5.4vw,60px);line-height:1.12;margin:0 0 18px;letter-spacing:-.5px;font-weight:700}
+  .hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--teal),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{font-size:clamp(16px,2vw,20px);color:var(--text-2);max-width:680px;margin:0 auto 34px}
+  .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:12px;font-weight:600;font-size:15px;border:1px solid var(--line);background:var(--panel);color:var(--text);transition:transform .15s,background .15s}
+  .btn:hover{text-decoration:none;background:rgba(255,255,255,.08);transform:translateY(-1px)}
+  .btn.primary{background:linear-gradient(135deg,#5fd4d0,#7cc7ff);color:#08131a;border-color:transparent}
+  .btn.primary:hover{filter:brightness(1.05)}
+  .btn small{font-weight:400;opacity:.75;font-size:12px}
+  .hero .note{margin-top:14px;font-size:12.5px;color:var(--text-3)}
+  .hero-shot{margin:56px auto 0;max-width:1040px;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:0 40px 120px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03) inset;background:#0f1117}
+  .hero-shot img{display:block;width:100%;height:auto}
+
+  /* ---- 章节 ---- */
+  section{padding:88px 0}
+  section h2{font-size:clamp(26px,3.4vw,38px);margin:0 0 10px;letter-spacing:-.3px}
+  section p.sub{color:var(--text-2);font-size:17px;max-width:720px;margin:0 0 36px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 20px}
+  .card h3{margin:0 0 8px;font-size:17px}
+  .card p{margin:0;color:var(--text-2);font-size:14.5px}
+  .card .k{display:inline-block;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,rgba(95,212,208,.25),rgba(124,199,255,.18));margin-bottom:12px;display:grid;place-items:center;color:var(--teal);font-weight:700}
+
+  /* ---- 交替图文 ---- */
+  .feature{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center;padding:36px 0}
+  .feature.flip{grid-template-columns:.85fr 1.15fr}
+  .feature.flip .shot{order:2}
+  .feature .shot{border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 24px 70px rgba(0,0,0,.5);background:#0f1117}
+  .feature .shot img{display:block;width:100%;height:auto}
+  .feature h3{font-size:24px;margin:0 0 10px}
+  .feature p{color:var(--text-2);margin:0 0 10px;font-size:15.5px}
+  .feature ul{margin:12px 0 0;padding-left:18px;color:var(--text-2);font-size:14.5px}
+  .feature li{margin:4px 0}
+  @media (max-width:860px){.feature,.feature.flip{grid-template-columns:1fr}.feature.flip .shot{order:0}}
+
+  /* ---- 隐私 ---- */
+  .privacy{background:linear-gradient(180deg,rgba(95,212,208,.06),transparent);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .privacy .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:24px}
+  .privacy .row div{padding:18px;border-radius:14px;background:var(--panel);border:1px solid var(--line);font-size:14.5px;color:var(--text-2)}
+  .privacy .row strong{display:block;color:var(--text);margin-bottom:6px;font-size:15px}
+
+  /* ---- 下载 ---- */
+  .dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+  .dl .card h3{display:flex;align-items:center;gap:10px}
+  .dl .req{font-size:13px;color:var(--text-3);margin-top:12px;line-height:1.7}
+  .dl .btn{margin-top:14px}
+  .dl code{background:rgba(255,255,255,.07);padding:1px 6px;border-radius:6px;font-size:12.5px}
+
+  /* ---- FAQ ---- */
+  details{border-top:1px solid var(--line);padding:16px 0}
+  details:last-of-type{border-bottom:1px solid var(--line)}
+  summary{cursor:pointer;font-weight:600;font-size:16px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::after{content:"+";color:var(--text-3);font-weight:400;font-size:20px}
+  details[open] summary::after{content:"–"}
+  details p{color:var(--text-2);margin:10px 0 0;font-size:15px}
+
+  footer{padding:40px 0 60px;color:var(--text-3);font-size:13.5px;border-top:1px solid var(--line)}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:18px;align-items:center}
+  footer nav{margin-left:auto;display:flex;gap:18px}
+  footer a{color:var(--text-2)}
+
+  .pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+  .pill{font-size:13px;color:var(--text-2);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
+  a.lang-btn{display:inline-block;text-decoration:none}
+  .feature h2{font-size:26px;margin:0 0 10px}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="../"><img src="../assets/icon.png" alt="Wave Subs"><span>Wave Subs</span></a>
+  <nav>
+    <a href="#how">How it works</a><a href="#translate">Translation</a><a href="#privacy">Privacy</a>
+    <a href="#download">Download</a><a href="#faq">FAQ</a>
+    <a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">GitHub</a>
+    <a class="lang-btn" href="../" hreflang="zh-Hans">中文</a>
+  </nav>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <h1>Can't find subtitles? <em>Let local AI generate them from the video</em></h1>
+  <p class="lead">Wave Subs recognizes the dialogue in a video, generates SRT / ASS subtitles, and translates them into your language. Everything runs on your own computer — no internet needed, completely free.</p>
+  <div class="cta">
+    <a class="btn primary" id="dl-primary" href="#download">Free download for macOS <small>Apple Silicon</small></a>
+    <a class="btn" id="dl-secondary" href="#download">Free download for Windows <small>x64</small></a>
+  </div>
+  <div class="pills"><span class="pill">Generate SRT / ASS subtitles</span><span class="pill">Auto-translate into your language (29)</span><span class="pill">Local AI · no internet · free forever</span></div>
+  <div class="hero-shot"><img src="../assets/shots/en-dark-editor.jpg" alt="Wave Subs subtitle editor: subtitles generated from a video, with preview and translation" width="1920" height="1200" fetchpriority="high"></div>
+  <p class="note">The editor: fix text, adjust timing, click any line to hear it</p>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <h2>From video to subtitles in three steps</h2><p class="sub">No subtitle sites to search, no video to upload, no account to create.</p>
+  <div class="grid"><div class="card"><div class="k">1</div><h3>Drop in the video</h3><p>MKV, MP4, MOV, TS — all fine. If the file already has an embedded subtitle track, it is detected and used directly.</p></div><div class="card"><div class="k">2</div><h3>Local AI recognizes and aligns</h3><p>whisper.cpp recognizes the dialogue on your machine with automatic language detection; timing is refined to when lines are actually spoken, tuned against the official subtitles of six full-length films.</p></div><div class="card"><div class="k">3</div><h3>Translate and export</h3><p>Translated into your language, exported as SRT or ASS next to the video — any player reads it. A quality verdict tells you where to take a look.</p></div></div>
+  <div class="feature" style="padding-top:40px">
+    <div class="shot"><img src="../assets/shots/en-dark-home-done.jpg" alt="Conversion finished: subtitles generated, quality check passed, one click into the editor" width="1920" height="1200" loading="lazy"></div>
+    <div><h3>Translate and export</h3><p>Translated into your language, exported as SRT or ASS next to the video — any player reads it. A quality verdict tells you where to take a look.</p></div>
+  </div>
+</div></section>
+
+<section id="translate" style="padding-top:0"><div class="wrap">
+  <div class="feature flip">
+    <div class="shot"><img src="../assets/shots/en-dark-translate-models.jpg" alt="Local translation models page: Qwen3 models labeled by whether they fit this machine" width="1920" height="1200" loading="lazy"></div>
+    <div><h2>Auto-translated into your language</h2><p>29 target languages: Chinese (Simplified and Traditional), English, Japanese, Korean, French, German, Spanish, Portuguese, Russian, Thai, Vietnamese, Indonesian, Malay and more. A locally running Qwen3 model by default — free and offline — or any OpenAI-compatible API.</p><ul><li>Glossary: pin names and terms so a whole season stays consistent</li><li>Bilingual or translation-only export, your choice</li><li>Changing the model or glossary retranslates strictly — old output is never mixed in</li></ul></div>
+  </div>
+  <div class="feature">
+    <div class="shot"><img src="../assets/shots/en-dark-editor.jpg" alt="Subtitle editor: video preview, subtitle overlay, line-by-line editing" width="1920" height="1200" loading="lazy"></div>
+    <div><h2>An editor with video preview</h2><p>Fix text, adjust timing, insert, delete, merge, undo, autosave. Click any line to hear exactly how it was said — even HEVC or DTS files a browser can&#x27;t play, thanks to the bundled ffmpeg. Quality findings are clickable.</p></div>
+  </div>
+  <div class="feature flip">
+    <div class="shot"><img src="../assets/shots/en-dark-batch.jpg" alt="Batch queue: generating subtitles for several anime episodes at once" width="1920" height="1200" loading="lazy"></div>
+    <div><h2>Run a whole season, tune each episode</h2><p>Drop in a folder. Every file follows the shared settings; override the subtitle track, audio track or engine only where needed. Each finished row carries its quality verdict.</p></div>
+  </div>
+</div></section>
+
+<section class="privacy" id="privacy"><div class="wrap">
+  <h2>Why local</h2><p class="sub">Online subtitle tools ask you to upload the whole film. Wave Subs sends nothing anywhere.</p>
+  <div class="row"><div><strong>No internet needed</strong>Recognition, alignment, translation, editing and export all happen locally. Once models are downloaded, it works with the network off.</div><div><strong>Videos are never uploaded</strong>No account, no analytics, no server. It is a program that runs on your computer.</div><div><strong>Free forever</strong>No quotas, no subscription. Only if you choose to plug in a cloud translation provider does that provider bill you.</div></div>
+</div></section>
+
+<section id="download"><div class="wrap">
+  <h2>Free download</h2><p class="sub">Version 1.0.1. ffmpeg and whisper.cpp are bundled — install and go, nothing else to set up.</p>
+  <div class="dl">
+    <div class="card"><h3>macOS</h3><div class="req">macOS 12 or later · <strong>Apple Silicon only</strong> (M1 and later) · Notarized by Apple</div>
+      <a class="btn primary" data-dl="mac-dmg" href="#">Download DMG</a><div class="req"><a data-dl="mac-zip" href="#">or ZIP archive</a></div></div>
+    <div class="card"><h3>Windows</h3><div class="req">Windows 10 or later · x64 · 16 GB RAM recommended</div>
+      <a class="btn primary" data-dl="win-exe" href="#">Download installer</a><div class="req"><a data-dl="win-zip" href="#">or portable ZIP</a></div></div>
+  </div>
+  <p class="req" style="margin-top:22px;font-size:13.5px;color:var(--text-3)">On first launch you'll be guided to download a recognition model (1.6–3 GB; no network needed after that). Open-source component licenses: <a href="https://github.com/jason-jm/wavesubs/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>.</p>
+</div></section>
+
+<section id="faq" style="padding-top:0"><div class="wrap"><h2>Frequently asked questions</h2><details><summary>Which videos can it generate subtitles for?</summary><p>MKV, MP4, MOV, TS, AVI and other common formats; HEVC, DTS and TrueHD streams a browser can&#x27;t play are fine too, because the bundled ffmpeg decodes everything. Audio-only files work as well.</p></details><details><summary>Which languages are supported?</summary><p>Recognition covers the nearly 100 languages whisper supports, with automatic detection; there are 29 translation targets including Chinese (Simplified/Traditional), English, Japanese, Korean, French, German, Spanish, Portuguese, Russian, Thai, Vietnamese, Indonesian and Malay; the interface comes in 32 languages.</p></details><details><summary>Does it really work without internet?</summary><p>Recognition, alignment, translation, editing and export all run locally. Only two things touch the network: the one-time model download, and cloud translation if you choose to configure it.</p></details><details><summary>How long does a two-hour film take?</summary><p>Roughly 3–6 minutes with Large v3 Turbo on an M-series chip, plus a few more for local translation. Batch a whole season and let it run.</p></details><details><summary>How accurate are the subtitles?</summary><p>Recognition uses the whisper large family; timing is snapped to when lines are actually spoken using voice activity detection and loudness analysis, tuned against official subtitles of six full films. Every file gets a quality verdict that points at anything suspicious.</p></details><details><summary>What if the video already has a subtitle track?</summary><p>Embedded text tracks are detected and preferred, skipping straight to translation — faster and more accurate than recognition. Image-based subtitles (PGS/VobSub) are the exception.</p></details><details><summary>Is there an Intel Mac version?</summary><p>Not currently. Local recognition relies on Metal acceleration on Apple Silicon; on Intel it would be too slow to be useful.</p></details><details><summary>Windows says &quot;unknown publisher&quot;?</summary><p>The Windows build isn&#x27;t code-signed yet, so SmartScreen warns about new programs. Click &quot;More info → Run anyway&quot;; checksums are on the GitHub Releases page.</p></details><details><summary>How is this different from online subtitle generators?</summary><p>Online tools make you upload the whole film, charge per minute and cap the length. Wave Subs uploads nothing, costs nothing and has no length limit — speed depends on your machine.</p></details></div></section>
+
+<footer><div class="wrap">
+  <span>© 2026 Jiesi Ma · Wave Subs</span>
+  <nav><a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/jason-jm/wavesubs/issues" target="_blank" rel="noopener">Report an issue</a><a href="https://github.com/jason-jm/wavesubs/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a></nav>
+</div></footer>
+
+<script>
+  const VERSION = '1.0.1';
+  const BASE = 'https://github.com/jason-jm/wavesubs/releases/download/v' + VERSION + '/';
+  const FILES = { 'mac-dmg': BASE + 'Wave.Subs-' + VERSION + '-arm64.dmg', 'mac-zip': BASE + 'Wave.Subs-' + VERSION + '-arm64-mac.zip',
+    'win-exe': BASE + 'Wave.Subs.Setup.' + VERSION + '.exe', 'win-zip': BASE + 'Wave.Subs-' + VERSION + '-win.zip' };
+  const isWin = /Windows/i.test(navigator.userAgent);
+  const applyLinks = (files) => {
+    document.querySelectorAll('[data-dl]').forEach((a) => { if (files[a.dataset.dl]) a.href = files[a.dataset.dl]; });
+    document.getElementById('dl-primary').href = isWin ? files['win-exe'] : files['mac-dmg'];
+    document.getElementById('dl-secondary').href = isWin ? files['mac-dmg'] : files['win-exe'];
+  };
+  applyLinks(FILES);
+  if (isWin) { const p = document.getElementById('dl-primary'), s = document.getElementById('dl-secondary'); p.parentNode.insertBefore(s, p); }
+  fetch('https://api.github.com/repos/jason-jm/wavesubs/releases/latest', { headers: { Accept: 'application/vnd.github+json' } })
+    .then((r) => (r.ok ? r.json() : null)).then((rel) => {
+      if (!rel || !Array.isArray(rel.assets)) return;
+      const pick = (test) => (rel.assets.find((x) => test(x.name)) || {}).browser_download_url;
+      const files = { 'mac-dmg': pick((n) => n.endsWith('.dmg')), 'mac-zip': pick((n) => n.endsWith('-mac.zip')),
+        'win-exe': pick((n) => n.endsWith('.exe')), 'win-zip': pick((n) => n.endsWith('-win.zip')) };
+      if (files['mac-dmg'] && files['win-exe']) applyLinks(files);
+    }).catch(() => {});
+</script>
+</body>
+</html>
