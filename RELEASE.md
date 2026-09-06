@@ -71,6 +71,9 @@ electron-builder 签名（Hardened Runtime + entitlements）、公证、装订 .
 
 产物在 `release/`。
 
+公证那步失败（典型报错 `No Keychain password item found`，钥匙串瞬时不可读）时**不用重打**：
+`bash scripts/notarize-app.sh` 会公证并装订已签好的 .app，再用 `--prepackaged` 出 DMG/ZIP 并公证 DMG。
+
 ## 发布前必查
 
 ```bash

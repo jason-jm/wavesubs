@@ -21,7 +21,7 @@
     "dist": "npm run build && electron-builder --mac --arm64 -c.mac.identity=null -c.mac.hardenedRuntime=false -c.mac.target=dir && tsx scripts/sign.ts",
     "check-css": "node scripts/check-css.mjs",
     "check-batch": "tsx scripts/check-batch.ts",
-    "release": "npm run build && tsx scripts/bundle-deps.ts && electron-builder --mac --arm64 && bash scripts/notarize-dmg.sh",
+    "release": "bash scripts/preflight-notary.sh && npm run build && tsx scripts/bundle-deps.ts && electron-builder --mac --arm64 && bash scripts/notarize-dmg.sh",
     "bundle-deps": "tsx scripts/bundle-deps.ts",
     "release:win": "npm run build && tsx scripts/bundle-deps-win.ts && electron-builder --win --x64",
     "bundle-deps:win": "tsx scripts/bundle-deps-win.ts",
