@@ -17,6 +17,7 @@
 | 官网 SEO | 完成 | 11 种语言 hreflang、sitemap.xml、robots.txt、JSON-LD（SoftwareApplication + FAQPage）、各语言 title/description/keywords |
 | 官网「命令行安装」 | 完成 | 下载区显示 brew / scoop 命令 |
 | GitHub 仓库社交预览图 | 完成 | 已上传 `docs/assets/social/en.jpg`，仓库链接在 X / 微信 / Slack 展开时带图 |
+| 用户反馈渠道 | 完成 | 官网 11 语反馈表单 wavesubs.com/feedback.html（Netlify Forms）；应用「帮助」菜单与「设置 → 关于」有反馈入口，App Store 版多「在 App Store 评价」；GitHub Discussions 已开启，Bug / 功能建议 issue 模板已加 |
 | Product Hunt 素材 | 完成 | `store/producthunt/`：画廊图 1270×760 ×5、缩略图 240×240；文案见 launch-posts.md |
 
 ## 二、需要你本人做的（按优先级排，每项都注明材料位置）
@@ -34,8 +35,9 @@
    @microsoft-github-policy-service agree
    ```
    微软的机器人会随即标记 CLA 已签，之后验证流水线自动跑；不签这个 PR 不会被合并。
-3. **Show HN**（5 分钟）：文案在 launch-posts.md「Show HN」。最佳时间：美东工作日早上 8–10 点（北京时间晚上 8–10 点），周二到周四。发完前两小时守着回评论，HN 的排名取决于早期互动。
-4. **V2EX 分享创造**（5 分钟）：launch-posts.md「V2EX」。发完回评论。
+3. **Netlify 打开表单收集**（1 分钟，不打开反馈表单收不到内容）：Netlify → 站点 → Site configuration → Forms → **Enable form detection** → 然后 Deploys → Trigger deploy → Deploy site。部署完 Forms 页会出现 `feedback` 表单；再到 Forms → Form notifications → Add notification → Email，填你的邮箱，每条反馈都会发邮件。
+4. **Show HN**（5 分钟）：文案在 launch-posts.md「Show HN」。最佳时间：美东工作日早上 8–10 点（北京时间晚上 8–10 点），周二到周四。发完前两小时守着回评论，HN 的排名取决于早期互动。
+5. **V2EX 分享创造**（5 分钟）：launch-posts.md「V2EX」。发完回评论。
 
 ### 第 2–3 天
 
