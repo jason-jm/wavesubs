@@ -124,3 +124,11 @@ The app bundles ffmpeg (LGPL) and whisper.cpp / llama.cpp (MIT); licenses are in
 3. **Profiles**：新建 *Mac App Store* 类型的 Provisioning Profile，绑定上面的 App ID，下载后放到 `build/WaveSubs_MAS.provisionprofile`
 4. **App Store Connect → 我的 App → +**：平台 macOS，名称 Wave Subs，Bundle ID 选上面注册的，SKU `wavesubs-mac`
 5. 之后 `npm run release:mas` 产出 `.pkg`，用 **Transporter**（App Store 下载）上传，再在 App Store Connect 选构建版本、填以上文案、提交审核
+
+## 当前状态（2026-09-06）
+
+- ✅ `mas` 目标已能完整装配 App（MAS 版 Electron、沙盒 entitlements、随包二进制、Info.plist 的
+  ElectronTeamID / ITSAppUsesNonExemptEncryption 均就位），停在签名一步——等 *Apple Distribution* 证书。
+- ✅ 沙盒行为改造（输出兜底到 ~/Movies/Wave Subs）已在代码里，且已随官网版 1.0.0 发布（非沙盒下不触发）。
+- ⏳ 待你完成：上传桌面上两张 CSR 换证书 → 注册 App ID / App Group / Provisioning Profile → App Store Connect 建 App。
+  证书装进钥匙串、profile 放到 `build/WaveSubs_MAS.provisionprofile` 后，我会自动检测并跑 `release:mas` 出 `.pkg`。
