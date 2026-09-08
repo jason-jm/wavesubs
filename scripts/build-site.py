@@ -107,8 +107,7 @@ T['zh'] = dict(
        ('影片里已经有字幕轨了呢？', '会自动发现内嵌的文本字幕轨并优先使用，直接进入翻译，比识别更快更准。图形字幕（PGS/VobSub）除外。'),
        ('支持 Intel Mac 吗？', '目前不支持。本地识别依赖 Apple Silicon 的 Metal 加速，Intel 机器上慢到不实用。'),
        ('Windows 提示"未知发布者"？', 'Windows 版尚未购买代码签名证书，SmartScreen 会对新程序提示。点"更多信息 → 仍要运行"即可；校验值在 GitHub Releases 页。'),
-       ('和在线字幕生成网站比有什么区别？', '在线工具要你上传整部影片、按分钟计费、通常有时长上限。Wave Subs 不上传、不收费、不限时长，速度取决于你的电脑。')],
-  footer_issue='反馈问题', footer_changelog='更新日志',
+       ('和在线字幕生成网站比有什么区别？', '在线工具要你上传整部影片、按分钟计费、通常有时长上限。Wave Subs 不上传、不收费、不限时长，速度取决于你的电脑。')], footer_changelog='更新日志',
 )
 
 T['en'] = dict(
@@ -166,8 +165,7 @@ T['en'] = dict(
        ('What if the video already has a subtitle track?', 'Embedded text tracks are detected and preferred, skipping straight to translation — faster and more accurate than recognition. Image-based subtitles (PGS/VobSub) are the exception.'),
        ('Is there an Intel Mac version?', 'Not currently. Local recognition relies on Metal acceleration on Apple Silicon; on Intel it would be too slow to be useful.'),
        ('Windows says "unknown publisher"?', "The Windows build isn't code-signed yet, so SmartScreen warns about new programs. Click \"More info → Run anyway\"; checksums are on the GitHub Releases page."),
-       ('How is this different from online subtitle generators?', 'Online tools make you upload the whole film, charge per minute and cap the length. Wave Subs uploads nothing, costs nothing and has no length limit — speed depends on your machine.')],
-  footer_issue='Report an issue', footer_changelog='Changelog',
+       ('How is this different from online subtitle generators?', 'Online tools make you upload the whole film, charge per minute and cap the length. Wave Subs uploads nothing, costs nothing and has no length limit — speed depends on your machine.')], footer_changelog='Changelog',
 )
 
 T['ja'] = dict(
@@ -221,8 +219,7 @@ T['ja'] = dict(
        ('対応言語は？', '認識は whisper が対応する約 100 言語を自動判定。翻訳先は 29 言語、UI は 32 言語。'),
        ('本当にネット不要？', '認識・同期・翻訳・編集・書き出しはすべてローカル。ネットを使うのは初回のモデルダウンロードと、自分で設定した場合のクラウド翻訳だけです。'),
        ('2 時間の映画はどれくらいかかる？', 'M シリーズなら Large v3 Turbo で約 3〜6 分、ローカル翻訳にさらに数分。シーズンまるごと一括処理して放置できます。'),
-       ('Intel Mac は？', '現在非対応です。ローカル認識は Apple Silicon の Metal 加速に依存しており、Intel では実用にならない速度です。')],
-  footer_issue='問題を報告', footer_changelog='更新履歴',
+       ('Intel Mac は？', '現在非対応です。ローカル認識は Apple Silicon の Metal 加速に依存しており、Intel では実用にならない速度です。')], footer_changelog='更新履歴',
 )
 
 T['ko'] = dict(
@@ -276,8 +273,7 @@ T['ko'] = dict(
        ('지원 언어는?', '인식은 whisper가 지원하는 약 100개 언어를 자동 감지. 번역 대상 29개, 인터페이스 32개 언어.'),
        ('정말 인터넷이 필요 없나요?', '인식·정렬·번역·편집·내보내기 모두 로컬. 네트워크는 첫 모델 다운로드와, 직접 설정한 경우의 클라우드 번역에만 씁니다.'),
        ('2시간 영화는 얼마나 걸리나요?', 'M 시리즈 칩에서 Large v3 Turbo로 약 3~6분, 로컬 번역에 몇 분 추가. 시즌 전체를 일괄로 걸어 두세요.'),
-       ('Intel Mac은요?', '현재 미지원. 로컬 인식이 Apple Silicon의 Metal 가속에 의존해 Intel에서는 실용적이지 않습니다.')],
-  footer_issue='문제 신고', footer_changelog='변경 내역',
+       ('Intel Mac은요?', '현재 미지원. 로컬 인식이 Apple Silicon의 Metal 가속에 의존해 Intel에서는 실용적이지 않습니다.')], footer_changelog='변경 내역',
 )
 
 T['fr'] = dict(
@@ -331,8 +327,7 @@ T['fr'] = dict(
        ('Quelles langues ?', 'La reconnaissance couvre la centaine de langues de whisper avec détection automatique ; 29 langues cibles pour la traduction ; interface en 32 langues.'),
        ('Vraiment sans internet ?', 'Tout se fait en local. Seuls le téléchargement initial des modèles et, si vous le configurez, la traduction cloud utilisent le réseau.'),
        ('Combien de temps pour un film de deux heures ?', 'Environ 3 à 6 minutes avec Large v3 Turbo sur puce M, plus quelques minutes de traduction locale. Lancez une saison entière en lot.'),
-       ('Et les Mac Intel ?', 'Pas pour le moment : la reconnaissance locale dépend de l\'accélération Metal des puces Apple ; sur Intel ce serait trop lent.')],
-  footer_issue='Signaler un problème', footer_changelog='Journal des modifications',
+       ('Et les Mac Intel ?', 'Pas pour le moment : la reconnaissance locale dépend de l\'accélération Metal des puces Apple ; sur Intel ce serait trop lent.')], footer_changelog='Journal des modifications',
 )
 
 T['de'] = dict(
@@ -386,8 +381,7 @@ T['de'] = dict(
        ('Welche Sprachen?', 'Die Erkennung deckt die knapp 100 Sprachen von whisper mit automatischer Erkennung ab; 29 Zielsprachen für die Übersetzung; Oberfläche in 32 Sprachen.'),
        ('Wirklich ohne Internet?', 'Alles läuft lokal. Nur der erste Modell-Download und – falls eingerichtet – die Cloud-Übersetzung nutzen das Netz.'),
        ('Wie lange dauert ein zweistündiger Film?', 'Etwa 3–6 Minuten mit Large v3 Turbo auf einem M-Chip, plus einige Minuten lokale Übersetzung. Eine ganze Staffel im Stapel laufen lassen.'),
-       ('Gibt es eine Intel-Mac-Version?', 'Derzeit nicht. Die lokale Erkennung braucht die Metal-Beschleunigung von Apple Silicon; auf Intel wäre es zu langsam.')],
-  footer_issue='Problem melden', footer_changelog='Änderungsprotokoll',
+       ('Gibt es eine Intel-Mac-Version?', 'Derzeit nicht. Die lokale Erkennung braucht die Metal-Beschleunigung von Apple Silicon; auf Intel wäre es zu langsam.')], footer_changelog='Änderungsprotokoll',
 )
 
 T['ru'] = dict(
@@ -441,8 +435,7 @@ T['ru'] = dict(
        ('Какие языки поддерживаются?', 'Распознавание — почти 100 языков whisper с автоопределением; 29 языков перевода; интерфейс на 32 языках.'),
        ('Правда без интернета?', 'Всё локально. Сеть нужна только для первой загрузки моделей и для облачного перевода, если вы сами его настроите.'),
        ('Сколько занимает двухчасовой фильм?', 'Около 3–6 минут с Large v3 Turbo на чипе M плюс несколько минут локального перевода. Запустите сезон пакетом и займитесь своими делами.'),
-       ('А Intel Mac?', 'Пока нет: локальное распознавание опирается на ускорение Metal в Apple Silicon, на Intel это было бы слишком медленно.')],
-  footer_issue='Сообщить о проблеме', footer_changelog='История изменений',
+       ('А Intel Mac?', 'Пока нет: локальное распознавание опирается на ускорение Metal в Apple Silicon, на Intel это было бы слишком медленно.')], footer_changelog='История изменений',
 )
 
 T['id'] = dict(
@@ -496,8 +489,7 @@ T['id'] = dict(
        ('Bahasa apa yang didukung?', 'Pengenalan mencakup hampir 100 bahasa whisper dengan deteksi otomatis; 29 bahasa target terjemahan; antarmuka 32 bahasa.'),
        ('Benar-benar tanpa internet?', 'Semua berjalan lokal. Jaringan hanya dipakai untuk unduhan model pertama kali dan terjemahan cloud jika Anda memasangnya sendiri.'),
        ('Berapa lama film dua jam?', 'Sekitar 3–6 menit dengan Large v3 Turbo di chip seri M, ditambah beberapa menit terjemahan lokal. Jalankan satu musim sekaligus.'),
-       ('Mac Intel?', 'Belum. Pengenalan lokal bergantung pada akselerasi Metal di Apple Silicon; di Intel terlalu lambat.')],
-  footer_issue='Laporkan masalah', footer_changelog='Catatan perubahan',
+       ('Mac Intel?', 'Belum. Pengenalan lokal bergantung pada akselerasi Metal di Apple Silicon; di Intel terlalu lambat.')], footer_changelog='Catatan perubahan',
 )
 
 T['ms'] = dict(
@@ -551,8 +543,7 @@ T['ms'] = dict(
        ('Bahasa apa yang disokong?', 'Pengecaman meliputi hampir 100 bahasa whisper dengan pengesanan automatik; 29 bahasa sasaran terjemahan; antara muka 32 bahasa.'),
        ('Betul-betul tanpa internet?', 'Semuanya tempatan. Rangkaian hanya digunakan untuk muat turun model kali pertama dan terjemahan awan jika anda memasangnya sendiri.'),
        ('Berapa lama filem dua jam?', 'Kira-kira 3–6 minit dengan Large v3 Turbo pada cip siri M, ditambah beberapa minit terjemahan tempatan. Jalankan satu musim sekali gus.'),
-       ('Mac Intel?', 'Belum. Pengecaman tempatan bergantung pada pecutan Metal Apple Silicon; pada Intel terlalu perlahan.')],
-  footer_issue='Laporkan masalah', footer_changelog='Log perubahan',
+       ('Mac Intel?', 'Belum. Pengecaman tempatan bergantung pada pecutan Metal Apple Silicon; pada Intel terlalu perlahan.')], footer_changelog='Log perubahan',
 )
 
 T['vi'] = dict(
@@ -606,8 +597,7 @@ T['vi'] = dict(
        ('Hỗ trợ ngôn ngữ nào?', 'Nhận dạng gần 100 ngôn ngữ của whisper với tự phát hiện; 29 ngôn ngữ đích để dịch; giao diện 32 ngôn ngữ.'),
        ('Thật sự không cần internet?', 'Mọi thứ chạy cục bộ. Mạng chỉ dùng cho lần tải mô hình đầu tiên và dịch đám mây nếu bạn tự cấu hình.'),
        ('Phim hai tiếng mất bao lâu?', 'Khoảng 3–6 phút với Large v3 Turbo trên chip dòng M, cộng vài phút dịch cục bộ. Chạy cả mùa hàng loạt rồi để đó.'),
-       ('Mac Intel thì sao?', 'Hiện chưa. Nhận dạng cục bộ dựa vào tăng tốc Metal của Apple Silicon; trên Intel sẽ quá chậm.')],
-  footer_issue='Báo lỗi', footer_changelog='Nhật ký thay đổi',
+       ('Mac Intel thì sao?', 'Hiện chưa. Nhận dạng cục bộ dựa vào tăng tốc Metal của Apple Silicon; trên Intel sẽ quá chậm.')], footer_changelog='Nhật ký thay đổi',
 )
 
 T['th'] = dict(
@@ -661,8 +651,7 @@ T['th'] = dict(
        ('รองรับภาษาอะไรบ้าง?', 'จับบทพูดได้เกือบ 100 ภาษาที่ whisper รองรับพร้อมตรวจภาษาอัตโนมัติ แปลได้ 29 ภาษา หน้าจอมี 32 ภาษา'),
        ('ไม่ต้องต่อเน็ตจริงเหรอ?', 'ทำในเครื่องทั้งหมด ใช้เน็ตแค่โหลดโมเดลครั้งแรก กับการแปลบนคลาวด์ถ้าคุณตั้งค่าเอง'),
        ('หนังสองชั่วโมงใช้เวลานานไหม?', 'ราว 3–6 นาทีด้วย Large v3 Turbo บนชิปตระกูล M บวกอีกไม่กี่นาทีสำหรับแปลในเครื่อง สั่งทั้งซีซันแล้วปล่อยให้รันได้'),
-       ('Mac Intel ล่ะ?', 'ยังไม่รองรับ การจับบทพูดในเครื่องต้องพึ่งการเร่งด้วย Metal ของ Apple Silicon บน Intel จะช้าเกินกว่าจะใช้งานจริง')],
-  footer_issue='รายงานปัญหา', footer_changelog='บันทึกการเปลี่ยนแปลง',
+       ('Mac Intel ล่ะ?', 'ยังไม่รองรับ การจับบทพูดในเครื่องต้องพึ่งการเร่งด้วย Metal ของ Apple Silicon บน Intel จะช้าเกินกว่าจะใช้งานจริง')], footer_changelog='บันทึกการเปลี่ยนแปลง',
 )
 
 DL_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>'
@@ -894,7 +883,7 @@ def page(k):
 
 <footer><div class="wrap">
   <span>© 2026 Jiesi Ma · Wave Subs</span>
-  <nav><a href="feedback.html">{esc(FB[k]['title'])}</a><a href="{REPO}" target="_blank" rel="noopener">GitHub</a><a href="{REPO}/issues" target="_blank" rel="noopener">{esc(d['footer_issue'])}</a><a href="{REPO}/blob/main/CHANGELOG.md" target="_blank" rel="noopener">{esc(d['footer_changelog'])}</a></nav>
+  <nav><a href="feedback.html">{esc(FB[k]['title'])}</a><a href="{REPO}" target="_blank" rel="noopener">GitHub</a><a href="{REPO}/blob/main/CHANGELOG.md" target="_blank" rel="noopener">{esc(d['footer_changelog'])}</a></nav>
 </div></footer>
 
 <script>
