@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://jason-jm.github.io/wavesubs/fr/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/social/fr.jpg"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:locale" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — Pas de sous-titres ? L&#x27;IA locale les génère et les traduit"><meta name="twitter:description" content="Wave Subs génère des sous-titres SRT / ASS directement à partir d&#x27;une vidéo grâce à une IA locale, puis les traduit dans votre langue. Tout tourne sur votre ordinateur — sans internet, gratuit pour toujours. macOS (Apple Silicon) et Windows."><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/social/fr.jpg">
 <link rel="icon" href="../assets/icon.png?v=b5f064a4">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.3", "inLanguage": "fr", "description": "Wave Subs génère des sous-titres SRT / ASS directement à partir d'une vidéo grâce à une IA locale, puis les traduit dans votre langue. Tout tourne sur votre ordinateur — sans internet, gratuit pour toujours. macOS (Apple Silicon) et Windows.", "url": "https://jason-jm.github.io/wavesubs/fr/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/fr-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Sous-titres SRT / ASS, Traduction automatique dans votre langue (29), IA locale · sans internet"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.4", "inLanguage": "fr", "description": "Wave Subs génère des sous-titres SRT / ASS directement à partir d'une vidéo grâce à une IA locale, puis les traduit dans votre langue. Tout tourne sur votre ordinateur — sans internet, gratuit pour toujours. macOS (Apple Silicon) et Windows.", "url": "https://jason-jm.github.io/wavesubs/fr/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/fr-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Sous-titres SRT / ASS, Traduction automatique dans votre langue (29), IA locale · sans internet"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Quelles vidéos sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "MKV, MP4, MOV, TS, AVI et les formats courants ; HEVC, DTS et TrueHD, que les navigateurs ne lisent pas, passent aussi grâce au ffmpeg intégré. Les fichiers audio seuls fonctionnent."}}, {"@type": "Question", "name": "Quelles langues ?", "acceptedAnswer": {"@type": "Answer", "text": "La reconnaissance couvre la centaine de langues de whisper avec détection automatique ; 29 langues cibles pour la traduction ; interface en 32 langues."}}, {"@type": "Question", "name": "Vraiment sans internet ?", "acceptedAnswer": {"@type": "Answer", "text": "Tout se fait en local. Seuls le téléchargement initial des modèles et, si vous le configurez, la traduction cloud utilisent le réseau."}}, {"@type": "Question", "name": "Combien de temps pour un film de deux heures ?", "acceptedAnswer": {"@type": "Answer", "text": "Environ 3 à 6 minutes avec Large v3 Turbo sur puce M, plus quelques minutes de traduction locale. Lancez une saison entière en lot."}}, {"@type": "Question", "name": "Et les Mac Intel ?", "acceptedAnswer": {"@type": "Answer", "text": "Pas pour le moment : la reconnaissance locale dépend de l'accélération Metal des puces Apple ; sur Intel ce serait trop lent."}}]}</script>
 <style>
   :root{
@@ -170,7 +170,7 @@
   </div>
   <p class="cta-note"><a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">Entièrement open source</a><span>·</span>Entièrement gratuit<span>·</span>Sans achats intégrés</p>
   <div class="pills"><span class="pill">Sous-titres SRT / ASS</span><span class="pill">Traduction automatique dans votre langue (29)</span><span class="pill">IA locale · sans internet</span></div>
-  <div class="hero-shot"><img src="../assets/shots/fr-dark-editor.jpg?v=140fbd11" alt="Un éditeur avec aperçu vidéo" width="1920" height="1200" fetchpriority="high"></div>
+  <div class="hero-shot"><img src="../assets/shots/fr-dark-editor.jpg?v=a3a3e651" alt="Un éditeur avec aperçu vidéo" width="1920" height="1200" fetchpriority="high"></div>
   <p class="note">L&#x27;éditeur : corrigez le texte, ajustez le minutage, cliquez sur une ligne pour l&#x27;écouter</p>
 </div></section>
 
@@ -178,22 +178,22 @@
   <h2>De la vidéo aux sous-titres en trois étapes</h2><p class="sub">Pas de site de sous-titres à fouiller, pas de vidéo à envoyer, pas de compte à créer.</p>
   <div class="grid"><div class="card"><div class="k">1</div><h3>Déposez la vidéo</h3><p>MKV, MP4, MOV, TS. Une piste de sous-titres intégrée est détectée et utilisée directement.</p></div><div class="card"><div class="k">2</div><h3>L&#x27;IA locale reconnaît et synchronise</h3><p>whisper.cpp reconnaît les dialogues sur votre machine, détection automatique de la langue ; le minutage est calé sur le moment où les répliques sont vraiment prononcées (réglé sur les sous-titres officiels de six longs métrages).</p></div><div class="card"><div class="k">3</div><h3>Traduisez et exportez</h3><p>Traduits dans votre langue, exportés en SRT ou ASS à côté de la vidéo — lisibles par tout lecteur. Un verdict de qualité indique où regarder.</p></div></div>
   <div class="feature" style="padding-top:40px">
-    <div class="shot"><img src="../assets/shots/fr-dark-home-done.jpg?v=80f4ca10" alt="Traduisez et exportez" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/fr-dark-home-done.jpg?v=aceef518" alt="Traduisez et exportez" width="1920" height="1200" loading="lazy"></div>
     <div><h3>Traduisez et exportez</h3><p>Traduits dans votre langue, exportés en SRT ou ASS à côté de la vidéo — lisibles par tout lecteur. Un verdict de qualité indique où regarder.</p></div>
   </div>
 </div></section>
 
 <section id="translate" style="padding-top:0"><div class="wrap">
   <div class="feature flip">
-    <div class="shot"><img src="../assets/shots/fr-dark-translate-models.jpg?v=37556201" alt="Traduits automatiquement dans votre langue" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/fr-dark-translate-models.jpg?v=39140645" alt="Traduits automatiquement dans votre langue" width="1920" height="1200" loading="lazy"></div>
     <div><h2>Traduits automatiquement dans votre langue</h2><p>29 langues cibles : français, anglais, chinois (simplifié/traditionnel), japonais, coréen, allemand, espagnol, portugais, russe, thaï, vietnamien, indonésien, malais… Par défaut un modèle Qwen3 local — gratuit et hors ligne — ou toute API compatible OpenAI.</p><ul><li>Glossaire : fixez la traduction des noms pour toute une saison</li><li>Export bilingue ou traduction seule</li><li>Changer de modèle ou de glossaire retraduit strictement, sans mélanger l&#x27;ancien résultat</li></ul></div>
   </div>
   <div class="feature">
-    <div class="shot"><img src="../assets/shots/fr-dark-editor.jpg?v=140fbd11" alt="Un éditeur avec aperçu vidéo" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/fr-dark-editor.jpg?v=a3a3e651" alt="Un éditeur avec aperçu vidéo" width="1920" height="1200" loading="lazy"></div>
     <div><h2>Un éditeur avec aperçu vidéo</h2><p>Corrigez le texte, ajustez le minutage, insérez, supprimez, fusionnez, annulez, sauvegarde automatique. Cliquez sur une ligne pour entendre exactement la réplique — même en HEVC ou DTS, grâce au ffmpeg intégré. Les constats de qualité sont cliquables.</p></div>
   </div>
   <div class="feature flip">
-    <div class="shot"><img src="../assets/shots/fr-dark-batch.jpg?v=3d8f6d48" alt="Une saison entière, chaque épisode réglable" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/fr-dark-batch.jpg?v=808244a5" alt="Une saison entière, chaque épisode réglable" width="1920" height="1200" loading="lazy"></div>
     <div><h2>Une saison entière, chaque épisode réglable</h2><p>Déposez un dossier ; tous les fichiers suivent les mêmes réglages, et chacun peut avoir sa propre piste de sous-titres, piste audio ou moteur. Chaque ligne terminée porte son verdict de qualité.</p></div>
   </div>
 </div></section>
@@ -213,7 +213,7 @@
 </div></section>
 
 <section id="download" style="padding-top:0"><div class="wrap">
-  <h2>Téléchargement</h2><p class="sub">Version 1.0.3. ffmpeg et whisper.cpp sont inclus — rien d&#x27;autre à installer.</p>
+  <h2>Téléchargement</h2><p class="sub">Version 1.0.4. ffmpeg et whisper.cpp sont inclus — rien d&#x27;autre à installer.</p>
   <div class="dl">
     <div class="card"><h3>macOS</h3><div class="req">macOS 12 ou ultérieur · <strong>Apple Silicon uniquement</strong> (M1 et suivants) · Notarisé par Apple</div>
       <a class="btn primary" data-dl="mac-dmg" href="#">Télécharger le DMG</a><div class="req"><a data-dl="mac-zip" href="#">ou l&#x27;archive ZIP</a></div></div>
@@ -236,7 +236,7 @@
 </div></footer>
 
 <script>
-  const VERSION = '1.0.3';
+  const VERSION = '1.0.4';
   const BASE = 'https://github.com/jason-jm/wavesubs/releases/download/v' + VERSION + '/';
   const FILES = { 'mac-dmg': BASE + 'Wave.Subs-' + VERSION + '-arm64.dmg', 'mac-zip': BASE + 'Wave.Subs-' + VERSION + '-arm64-mac.zip',
     'win-exe': BASE + 'Wave.Subs.Setup.' + VERSION + '.exe', 'win-zip': BASE + 'Wave.Subs-' + VERSION + '-win.zip' };

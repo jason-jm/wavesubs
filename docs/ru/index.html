@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://jason-jm.github.io/wavesubs/ru/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/social/ru.jpg"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — Нет субтитров? Локальный ИИ создаст и переведёт их"><meta name="twitter:description" content="Wave Subs создаёт субтитры SRT / ASS прямо из видео с помощью локального ИИ и переводит их на ваш язык. Всё работает на вашем компьютере — без интернета, бесплатно навсегда. macOS (Apple Silicon) и Windows."><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/social/ru.jpg">
 <link rel="icon" href="../assets/icon.png?v=b5f064a4">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.3", "inLanguage": "ru", "description": "Wave Subs создаёт субтитры SRT / ASS прямо из видео с помощью локального ИИ и переводит их на ваш язык. Всё работает на вашем компьютере — без интернета, бесплатно навсегда. macOS (Apple Silicon) и Windows.", "url": "https://jason-jm.github.io/wavesubs/ru/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/ru-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Субтитры SRT / ASS, Автоперевод на ваш язык (29 языков), Локальный ИИ · без интернета"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.4", "inLanguage": "ru", "description": "Wave Subs создаёт субтитры SRT / ASS прямо из видео с помощью локального ИИ и переводит их на ваш язык. Всё работает на вашем компьютере — без интернета, бесплатно навсегда. macOS (Apple Silicon) и Windows.", "url": "https://jason-jm.github.io/wavesubs/ru/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/ru-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Субтитры SRT / ASS, Автоперевод на ваш язык (29 языков), Локальный ИИ · без интернета"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Для каких видео это работает?", "acceptedAnswer": {"@type": "Answer", "text": "MKV, MP4, MOV, TS, AVI и другие распространённые форматы; HEVC, DTS и TrueHD, которые браузер не воспроизводит, тоже подходят — встроенный ffmpeg декодирует всё. Аудиофайлы тоже."}}, {"@type": "Question", "name": "Какие языки поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Распознавание — почти 100 языков whisper с автоопределением; 29 языков перевода; интерфейс на 32 языках."}}, {"@type": "Question", "name": "Правда без интернета?", "acceptedAnswer": {"@type": "Answer", "text": "Всё локально. Сеть нужна только для первой загрузки моделей и для облачного перевода, если вы сами его настроите."}}, {"@type": "Question", "name": "Сколько занимает двухчасовой фильм?", "acceptedAnswer": {"@type": "Answer", "text": "Около 3–6 минут с Large v3 Turbo на чипе M плюс несколько минут локального перевода. Запустите сезон пакетом и займитесь своими делами."}}, {"@type": "Question", "name": "А Intel Mac?", "acceptedAnswer": {"@type": "Answer", "text": "Пока нет: локальное распознавание опирается на ускорение Metal в Apple Silicon, на Intel это было бы слишком медленно."}}]}</script>
 <style>
   :root{
@@ -170,7 +170,7 @@
   </div>
   <p class="cta-note"><a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">Полностью открытый код</a><span>·</span>Полностью бесплатно<span>·</span>Без встроенных покупок</p>
   <div class="pills"><span class="pill">Субтитры SRT / ASS</span><span class="pill">Автоперевод на ваш язык (29 языков)</span><span class="pill">Локальный ИИ · без интернета</span></div>
-  <div class="hero-shot"><img src="../assets/shots/ru-dark-editor.jpg?v=28501814" alt="Редактор с видеопревью" width="1920" height="1200" fetchpriority="high"></div>
+  <div class="hero-shot"><img src="../assets/shots/ru-dark-editor.jpg?v=221b3e6a" alt="Редактор с видеопревью" width="1920" height="1200" fetchpriority="high"></div>
   <p class="note">Редактор: правьте текст и тайминг, нажмите на строку, чтобы услышать её</p>
 </div></section>
 
@@ -178,22 +178,22 @@
   <h2>От видео к субтитрам за три шага</h2><p class="sub">Не нужно искать сайты с субтитрами, загружать видео или создавать аккаунт.</p>
   <div class="grid"><div class="card"><div class="k">1</div><h3>Перетащите видео</h3><p>MKV, MP4, MOV, TS. Встроенная дорожка субтитров обнаруживается и используется напрямую.</p></div><div class="card"><div class="k">2</div><h3>Локальный ИИ распознаёт и выравнивает</h3><p>whisper.cpp распознаёт диалоги на вашем компьютере с автоопределением языка; тайминг подгоняется к моменту реальной речи (настроен по официальным субтитрам шести полнометражных фильмов).</p></div><div class="card"><div class="k">3</div><h3>Переведите и экспортируйте</h3><p>Перевод на ваш язык, экспорт в SRT или ASS рядом с видео — читается любым плеером. Оценка качества подскажет, куда взглянуть.</p></div></div>
   <div class="feature" style="padding-top:40px">
-    <div class="shot"><img src="../assets/shots/ru-dark-home-done.jpg?v=eb2fd578" alt="Переведите и экспортируйте" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/ru-dark-home-done.jpg?v=d3685b35" alt="Переведите и экспортируйте" width="1920" height="1200" loading="lazy"></div>
     <div><h3>Переведите и экспортируйте</h3><p>Перевод на ваш язык, экспорт в SRT или ASS рядом с видео — читается любым плеером. Оценка качества подскажет, куда взглянуть.</p></div>
   </div>
 </div></section>
 
 <section id="translate" style="padding-top:0"><div class="wrap">
   <div class="feature flip">
-    <div class="shot"><img src="../assets/shots/ru-dark-translate-models.jpg?v=4bd9eb13" alt="Автоматический перевод на ваш язык" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/ru-dark-translate-models.jpg?v=cac9b684" alt="Автоматический перевод на ваш язык" width="1920" height="1200" loading="lazy"></div>
     <div><h2>Автоматический перевод на ваш язык</h2><p>29 языков: русский, английский, китайский (упрощённый/традиционный), японский, корейский, французский, немецкий, испанский, португальский, тайский, вьетнамский, индонезийский, малайский… По умолчанию локальная модель Qwen3 — бесплатно и офлайн, либо любой OpenAI-совместимый API.</p><ul><li>Глоссарий: закрепите перевод имён, чтобы весь сезон был единообразным</li><li>Экспорт двуязычный или только перевод</li><li>Смена модели или глоссария — строгий повторный перевод без смешивания старого</li></ul></div>
   </div>
   <div class="feature">
-    <div class="shot"><img src="../assets/shots/ru-dark-editor.jpg?v=28501814" alt="Редактор с видеопревью" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/ru-dark-editor.jpg?v=221b3e6a" alt="Редактор с видеопревью" width="1920" height="1200" loading="lazy"></div>
     <div><h2>Редактор с видеопревью</h2><p>Правка текста, тайминга, вставка, удаление, объединение, отмена, автосохранение. Нажмите на строку, чтобы услышать, как именно она произнесена — даже HEVC и DTS, которые браузер не воспроизводит, благодаря встроенному ffmpeg. Замечания о качестве кликабельны.</p></div>
   </div>
   <div class="feature flip">
-    <div class="shot"><img src="../assets/shots/ru-dark-batch.jpg?v=c57b46a2" alt="Весь сезон пакетом, каждая серия по-своему" width="1920" height="1200" loading="lazy"></div>
+    <div class="shot"><img src="../assets/shots/ru-dark-batch.jpg?v=8f56d553" alt="Весь сезон пакетом, каждая серия по-своему" width="1920" height="1200" loading="lazy"></div>
     <div><h2>Весь сезон пакетом, каждая серия по-своему</h2><p>Перетащите папку; все файлы используют общие настройки, а для отдельных можно задать свою дорожку субтитров, звука или движок. Каждая готовая строка несёт оценку качества.</p></div>
   </div>
 </div></section>
@@ -213,7 +213,7 @@
 </div></section>
 
 <section id="download" style="padding-top:0"><div class="wrap">
-  <h2>Скачать</h2><p class="sub">Версия 1.0.3. ffmpeg и whisper.cpp уже внутри — установите и работайте.</p>
+  <h2>Скачать</h2><p class="sub">Версия 1.0.4. ffmpeg и whisper.cpp уже внутри — установите и работайте.</p>
   <div class="dl">
     <div class="card"><h3>macOS</h3><div class="req">macOS 12 и новее · <strong>только Apple Silicon</strong> (M1 и новее) · нотаризовано Apple</div>
       <a class="btn primary" data-dl="mac-dmg" href="#">Скачать DMG</a><div class="req"><a data-dl="mac-zip" href="#">или ZIP-архив</a></div></div>
@@ -236,7 +236,7 @@
 </div></footer>
 
 <script>
-  const VERSION = '1.0.3';
+  const VERSION = '1.0.4';
   const BASE = 'https://github.com/jason-jm/wavesubs/releases/download/v' + VERSION + '/';
   const FILES = { 'mac-dmg': BASE + 'Wave.Subs-' + VERSION + '-arm64.dmg', 'mac-zip': BASE + 'Wave.Subs-' + VERSION + '-arm64-mac.zip',
     'win-exe': BASE + 'Wave.Subs.Setup.' + VERSION + '.exe', 'win-zip': BASE + 'Wave.Subs-' + VERSION + '-win.zip' };
