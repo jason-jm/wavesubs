@@ -137,10 +137,8 @@
   .hidden{display:none}
 </style></head><body>
 <header class="top"><div class="wrap"><a class="brand" href="../"><img src="../assets/icon.png?v=b5f064a4" alt="Wave Subs"><span>Wave Subs</span></a></div></header>
-<main class="fb"><h1>พบปัญหาหรือมีไอเดีย? บอกเราได้เลย</h1><p class="intro">ไม่ต้องสมัครบัญชี กรอกแบบฟอร์มด้านล่าง หากต้องการคำตอบกลับโปรดใส่อีเมล หรือจะคุยกันใน GitHub Discussions ก็ได้</p>
-<form name="feedback" method="POST" action="feedback-ok.html" data-netlify="true" netlify-honeypot="bot-field">
-  <input type="hidden" name="form-name" value="feedback">
-  <p class="hidden"><label>Do not fill this out: <input name="bot-field"></label></p>
+<main class="fb"><h1>พบปัญหาหรือมีไอเดีย? บอกเราได้เลย</h1><p class="intro">กรอกแล้วกดส่ง จะเปิดหน้า issue บน GitHub ที่กรอกเวอร์ชัน ระบบ และภาษาไว้ให้แล้ว (ต้องมีบัญชี GitHub) หรือจะเขียนในหน้า Discussions ก็ได้</p>
+<form id="fb-form">
   <input type="hidden" name="version" id="f-version"><input type="hidden" name="os" id="f-os"><input type="hidden" name="locale" id="f-locale"><input type="hidden" name="page" value="th">
   <label for="f-kind">ประเภท</label>
   <select name="kind" id="f-kind"><option value="bug">พบปัญหา</option><option value="idea">เสนอฟีเจอร์</option><option value="other">อื่น ๆ</option></select>
@@ -151,8 +149,19 @@
   <button class="btn primary" type="submit">ส่ง</button>
 </form>
 <script>
-  // 应用里的「反馈」入口带上版本/系统/语言：?v=1.0.1&os=darwin&locale=zh-Hans；网页直接打开则留空
+  // 应用里的「反馈」入口带上版本/系统/语言：?v=1.0.2&os=darwin&locale=zh-Hans；网页直接打开则留空
   (function(){ var q = new URLSearchParams(location.search); var g = function(id, key){ var e = document.getElementById(id); if (e) e.value = q.get(key) || ''; };
-    g('f-version','v'); g('f-os','os'); g('f-locale','locale'); })();
+    g('f-version','v'); g('f-os','os'); g('f-locale','locale');
+    // GitHub Pages 是纯静态托管，没有服务端收表单；提交时把内容连同版本/系统/语言预填进 GitHub issue
+    document.getElementById('fb-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var val = function (id) { var el = document.getElementById(id); return el ? el.value : ''; };
+      var kind = val('f-kind') || 'other';
+      var body = val('f-msg') + '\n\n---\nversion: ' + (val('f-version') || '-') + '\nos: ' + (val('f-os') || '-') + '\nlocale: ' + (val('f-locale') || '-') + '\npage: th';
+      var email = val('f-email'); if (email) { body += '\ncontact: ' + email; }
+      var url = 'https://github.com/jason-jm/wavesubs/issues/new?title=' + encodeURIComponent('[' + kind + '] ') + '&body=' + encodeURIComponent(body);
+      window.open(url, '_blank', 'noopener');
+    });
+  })();
 </script>
 <div class="links"><a href="https://github.com/jason-jm/wavesubs/discussions" target="_blank" rel="noopener">GitHub Discussions</a><a href="https://github.com/jason-jm/wavesubs/issues" target="_blank" rel="noopener">GitHub Issues</a><a href="../">กลับไปหน้าเว็บ</a></div></main></body></html>
