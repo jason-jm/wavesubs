@@ -307,6 +307,7 @@ export const zhHans = {
   'error.noAudioTrack': '该文件不含音轨，无法做语音识别',
   'error.noCues': '没有得到任何字幕条目',
   'error.modelDownloading': '该模型正在下载中',
+  'error.modelDownloadFailed': '模型下载失败：无法连接 huggingface.co，也无法连接镜像 hf-mirror.com。请检查网络或代理设置后重试。',
   'error.modelDownloadingCancelFirst': '模型正在下载中，请先取消',
   'error.noAudioOrSubtitle': '该文件既没有音轨也没有字幕轨，无法生成字幕',
   'error.llmLoadTimeout': '本地翻译模型加载超时（3 分钟），模型可能过大或磁盘过慢',

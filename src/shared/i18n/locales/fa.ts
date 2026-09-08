@@ -298,6 +298,7 @@ export const fa: Dict = {
   'error.noAudioTrack': 'این فایل باند صوتی ندارد، بنابراین تشخیص گفتار ممکن نیست',
   'error.noCues': 'هیچ سطر زیرنویسی تولید نشد',
   'error.modelDownloading': 'آن مدل هم\u200cاکنون در حال بارگیری است',
+  'error.modelDownloadFailed': 'دانلود مدل ناموفق بود: نه huggingface.co و نه آینهٔ hf-mirror.com در دسترس نیست. شبکه یا تنظیمات پروکسی را بررسی کنید و دوباره تلاش کنید.',
   'error.modelDownloadingCancelFirst': 'مدل در حال بارگیری است — نخست آن را لغو کنید',
   'error.noAudioOrSubtitle': 'این فایل نه باند صوتی دارد و نه باند زیرنویس، بنابراین ساخت زیرنویس ممکن نیست',
   'error.llmLoadTimeout': 'بارگذاری مدل ترجمهٔ محلی به درازا کشید و متوقف شد (۳ دقیقه)؛ شاید مدل بیش از حد بزرگ یا دیسک کند باشد',

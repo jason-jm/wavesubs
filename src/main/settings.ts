@@ -25,8 +25,24 @@ import { normalizeAnthropicBaseUrl } from './core/translate/anthropic'
  * 老版本 Electron 没这个 API 时退回单个 locale。
  */
 function systemLanguages(): string[] {
-  const preferred = app.getPreferredSystemLanguages?.() ?? []
-  return preferred.length > 0 ? preferred : [app.getLocale()]
+  const seen = new Set<string>()
+  const out: string[] = []
+  const push = (tag: string | null | undefined): void => {
+    if (tag && !seen.has(tag)) {
+      seen.add(tag)
+      out.push(tag)
+    }
+  }
+  for (const tag of app.getPreferredSystemLanguages?.() ?? []) push(tag)
+  // Windows 上偏好语言列表可能为空或不含显示语言；系统区域与 Chromium 的 locale 作为补充来源
+  push(app.getSystemLocale?.())
+  push(app.getLocale())
+  return out
+}
+
+/** 启动时打一行，用户反馈「没跟随系统语言」时能直接对照 */
+export function describeSystemLanguages(): string {
+  return systemLanguages().join(', ')
 }
 
 interface StoredProvider {

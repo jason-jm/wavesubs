@@ -302,6 +302,7 @@ export const nl: Dict = {
   'error.noAudioTrack': 'Dit bestand heeft geen audiospoor, dus spraakherkenning kan niet',
   'error.noCues': 'Er zijn geen ondertitelregels geproduceerd',
   'error.modelDownloading': 'Dat model wordt al gedownload',
+  'error.modelDownloadFailed': 'Modeldownload mislukt: huggingface.co en de mirror hf-mirror.com zijn beide onbereikbaar. Controleer je netwerk- of proxy-instellingen en probeer het opnieuw.',
   'error.modelDownloadingCancelFirst': 'Het model wordt gedownload — annuleer dat eerst',
   'error.noAudioOrSubtitle': 'Dit bestand heeft geen audiospoor en geen ondertitelspoor, dus er kunnen geen ondertitels worden gemaakt',
   'error.llmLoadTimeout': 'Het laden van het lokale vertaalmodel duurde te lang (3 minuten); het is misschien te groot of de schijf te traag',

@@ -302,6 +302,7 @@ export const ms: Dict = {
   'error.noAudioTrack': 'Fail ini tiada trek audio, jadi pengecaman pertuturan tidak boleh dilakukan',
   'error.noCues': 'Tiada baris sari kata dihasilkan',
   'error.modelDownloading': 'Model itu sedang dimuat turun',
+  'error.modelDownloadFailed': 'Muat turun model gagal: huggingface.co dan cermin hf-mirror.com kedua-duanya tidak dapat dihubungi. Semak rangkaian atau tetapan proksi, kemudian cuba lagi.',
   'error.modelDownloadingCancelFirst': 'Model sedang dimuat turun — batalkan dahulu',
   'error.noAudioOrSubtitle': 'Fail ini tiada trek audio mahupun trek sari kata, jadi sari kata tidak boleh dijana',
   'error.llmLoadTimeout': 'Pemuatan model terjemahan setempat tamat masa (3 minit); model mungkin terlalu besar atau cakera terlalu perlahan',

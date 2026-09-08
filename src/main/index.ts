@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, ipcMain, Menu, nativeTheme, protocol, shell } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain, Menu, nativeTheme, net, protocol, shell } from 'electron'
 import type { MenuItemConstructorOptions } from 'electron'
 import { translatorFor } from '../shared/i18n'
 import { APP_STORE_REVIEW_URL, DISCUSSIONS_URL, SITE_URL, feedbackUrl, isAllowedExternalUrl } from '../shared/feedback'
@@ -64,7 +64,7 @@ import { createCloudProvider } from './core/translate/createProvider'
 import type { TranslationProvider } from './core/translate/types'
 import { localizeError } from '../shared/i18n'
 import { migrateLegacyUserData } from './migrate'
-import { SettingsStore } from './settings'
+import { SettingsStore, describeSystemLanguages } from './settings'
 
 /**
  * 侧边栏轨道宽度，必须与 App.css 里 .app 的第一列保持一致。
@@ -675,8 +675,11 @@ void app.whenReady().then(() => {
   nativeTheme.themeSource = settings.appearance
   // 「跟随系统」时用户在系统里切深浅色，这里也要跟着重画窗口按钮
   nativeTheme.on('updated', refreshTitleBarOverlay)
-  asrDownloader = new ModelDownloader(modelsDir())
-  llmDownloader = new ModelDownloader(llmDir())
+  console.log(`[i18n] 系统语言 ${describeSystemLanguages()} → 界面 ${settings.resolvedLanguage}`)
+  // 用 Chromium 网络栈下载：认系统代理（Node 自带的 fetch 不认，开了系统代理也连不上被墙的 huggingface.co）
+  const fetchViaChromium = (input: string, init: RequestInit): Promise<Response> => net.fetch(input, init)
+  asrDownloader = new ModelDownloader(modelsDir(), { fetch: fetchViaChromium })
+  llmDownloader = new ModelDownloader(llmDir(), { fetch: fetchViaChromium })
   registerIpc()
   buildAppMenu()
   createWindow()

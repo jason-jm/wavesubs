@@ -303,6 +303,7 @@ export const pl: Dict = {
   'error.noAudioTrack': 'Ten plik nie ma ścieżki audio, więc rozpoznawanie mowy jest niemożliwe',
   'error.noCues': 'Nie uzyskano żadnego wiersza napisów',
   'error.modelDownloading': 'Ten model już się pobiera',
+  'error.modelDownloadFailed': 'Pobieranie modelu nie powiodło się: ani huggingface.co, ani serwer lustrzany hf-mirror.com nie są osiągalne. Sprawdź sieć lub ustawienia proxy i spróbuj ponownie.',
   'error.modelDownloadingCancelFirst': 'Model jest pobierany — najpierw anuluj',
   'error.noAudioOrSubtitle': 'Ten plik nie ma ani ścieżki audio, ani ścieżki napisów, więc nie da się wygenerować napisów',
   'error.llmLoadTimeout': 'Wczytywanie lokalnego modelu tłumaczenia przekroczyło limit czasu (3 minuty); model może być za duży albo dysk za wolny',

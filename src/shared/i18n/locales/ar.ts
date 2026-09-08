@@ -298,6 +298,7 @@ export const ar: Dict = {
   'error.noAudioTrack': 'هذا الملف لا يحتوي على مسار صوتي، لذا يتعذّر التعرف على الكلام',
   'error.noCues': 'لم يُنتَج أي سطر ترجمة',
   'error.modelDownloading': 'هذا النموذج قيد التنزيل بالفعل',
+  'error.modelDownloadFailed': 'فشل تنزيل النموذج: تعذّر الوصول إلى huggingface.co وإلى المرآة hf-mirror.com. تحقّق من الشبكة أو إعدادات الوكيل ثم أعد المحاولة.',
   'error.modelDownloadingCancelFirst': 'النموذج قيد التنزيل — ألغِ التنزيل أولًا',
   'error.noAudioOrSubtitle': 'هذا الملف لا يحتوي على مسار صوتي ولا مسار ترجمة، لذا يتعذّر إنشاء الترجمة',
   'error.llmLoadTimeout': 'انتهت مهلة تحميل نموذج الترجمة المحلي (3 دقائق)؛ قد يكون النموذج كبيرًا جدًا أو القرص بطيئًا',

@@ -301,6 +301,7 @@ export const nb: Dict = {
   'error.noAudioTrack': 'Denne filen har ikke lydspor, så talegjenkjenning er ikke mulig',
   'error.noCues': 'Det ble ikke laget noen undertekstlinjer',
   'error.modelDownloading': 'Den modellen lastes allerede ned',
+  'error.modelDownloadFailed': 'Nedlasting av modellen mislyktes: verken huggingface.co eller speilet hf-mirror.com kan nås. Sjekk nettverket eller proxyinnstillingene og prøv igjen.',
   'error.modelDownloadingCancelFirst': 'Modellen lastes ned — avbryt først',
   'error.noAudioOrSubtitle': 'Denne filen har verken lydspor eller undertekstspor, så det går ikke an å lage undertekster',
   'error.llmLoadTimeout': 'Innlastingen av den lokale oversettelsesmodellen tok for lang tid (3 minutter); den kan være for stor eller disken for treg',

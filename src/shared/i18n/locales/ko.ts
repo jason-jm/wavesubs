@@ -294,6 +294,7 @@ export const ko: Dict = {
   'error.noAudioTrack': '이 파일에는 오디오 트랙이 없어 음성 인식을 할 수 없습니다',
   'error.noCues': '자막 항목을 하나도 얻지 못했습니다',
   'error.modelDownloading': '해당 모델은 이미 내려받는 중입니다',
+  'error.modelDownloadFailed': '모델 다운로드 실패: huggingface.co와 미러 hf-mirror.com 모두에 연결할 수 없습니다. 네트워크 또는 프록시 설정을 확인한 뒤 다시 시도하세요.',
   'error.modelDownloadingCancelFirst': '모델을 내려받는 중입니다. 먼저 취소해 주세요',
   'error.noAudioOrSubtitle': '이 파일에는 오디오 트랙도 자막 트랙도 없어 자막을 만들 수 없습니다',
   'error.llmLoadTimeout': '로컬 번역 모델을 불러오다 시간이 초과되었습니다(3분). 모델이 너무 크거나 디스크가 느릴 수 있습니다',

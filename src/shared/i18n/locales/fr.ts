@@ -305,6 +305,7 @@ export const fr: Dict = {
   'error.noAudioTrack': 'Ce fichier n’a pas de piste audio : la reconnaissance vocale est impossible',
   'error.noCues': 'Aucune ligne de sous-titre n’a été produite',
   'error.modelDownloading': 'Ce modèle est déjà en cours de téléchargement',
+  'error.modelDownloadFailed': 'Échec du téléchargement du modèle : ni huggingface.co ni le miroir hf-mirror.com ne sont joignables. Vérifiez votre réseau ou vos paramètres de proxy et réessayez.',
   'error.modelDownloadingCancelFirst': 'Le modèle est en cours de téléchargement — annulez-le d’abord',
   'error.noAudioOrSubtitle': 'Ce fichier n’a ni piste audio ni piste de sous-titres : impossible de générer des sous-titres',
   'error.llmLoadTimeout': 'Le chargement du modèle de traduction local a expiré (3 minutes) ; il est peut-être trop gros ou le disque trop lent',

@@ -300,6 +300,7 @@ export const tr: Dict = {
   'error.noAudioTrack': 'Bu dosyada ses izi yok, bu yüzden konuşma tanıma yapılamaz',
   'error.noCues': 'Hiç altyazı satırı üretilmedi',
   'error.modelDownloading': 'O model zaten indiriliyor',
+  'error.modelDownloadFailed': 'Model indirilemedi: ne huggingface.co ne de yansı hf-mirror.com erişilebilir. Ağ veya proxy ayarlarınızı kontrol edip yeniden deneyin.',
   'error.modelDownloadingCancelFirst': 'Model indiriliyor — önce indirmeyi iptal edin',
   'error.noAudioOrSubtitle': 'Bu dosyada ne ses izi ne de altyazı izi var, bu yüzden altyazı üretilemez',
   'error.llmLoadTimeout': 'Yerel çeviri modelinin yüklenmesi zaman aşımına uğradı (3 dakika); model çok büyük ya da disk çok yavaş olabilir',

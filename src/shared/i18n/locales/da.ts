@@ -301,6 +301,7 @@ export const da: Dict = {
   'error.noAudioTrack': 'Dette arkiv har ikke noget lydspor, så talegenkendelse er ikke mulig',
   'error.noCues': 'Der blev ikke lavet nogen undertekstlinjer',
   'error.modelDownloading': 'Den model hentes allerede',
+  'error.modelDownloadFailed': 'Download af modellen mislykkedes: hverken huggingface.co eller spejlet hf-mirror.com kan nås. Tjek netværket eller proxyindstillingerne, og prøv igen.',
   'error.modelDownloadingCancelFirst': 'Modellen hentes — annullér først',
   'error.noAudioOrSubtitle': 'Dette arkiv har hverken lydspor eller undertekstspor, så der kan ikke laves undertekster',
   'error.llmLoadTimeout': 'Indlæsningen af den lokale oversættelsesmodel tog for lang tid (3 minutter); den er måske for stor, eller disken er for langsom',

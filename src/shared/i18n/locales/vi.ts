@@ -301,6 +301,7 @@ export const vi: Dict = {
   'error.noAudioTrack': 'Tệp này không có rãnh âm thanh nên không nhận dạng giọng nói được',
   'error.noCues': 'Không thu được dòng phụ đề nào',
   'error.modelDownloading': 'Mô hình đó đang được tải rồi',
+  'error.modelDownloadFailed': 'Tải mô hình thất bại: không kết nối được huggingface.co lẫn máy chủ dự phòng hf-mirror.com. Hãy kiểm tra mạng hoặc cài đặt proxy rồi thử lại.',
   'error.modelDownloadingCancelFirst': 'Mô hình đang tải — hãy hủy trước đã',
   'error.noAudioOrSubtitle': 'Tệp này không có cả rãnh âm thanh lẫn rãnh phụ đề nên không tạo được phụ đề',
   'error.llmLoadTimeout': 'Nạp mô hình dịch cục bộ quá thời gian chờ (3 phút); có thể mô hình quá lớn hoặc đĩa quá chậm',

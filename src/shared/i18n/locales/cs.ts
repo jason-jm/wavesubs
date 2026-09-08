@@ -301,6 +301,7 @@ export const cs: Dict = {
   'error.noAudioTrack': 'Tento soubor nemá zvukovou stopu, takže rozpoznávání řeči není možné',
   'error.noCues': 'Nevznikl žádný řádek titulků',
   'error.modelDownloading': 'Tento model se už stahuje',
+  'error.modelDownloadFailed': 'Stažení modelu se nezdařilo: huggingface.co ani zrcadlo hf-mirror.com nejsou dostupné. Zkontrolujte síť nebo nastavení proxy a zkuste to znovu.',
   'error.modelDownloadingCancelFirst': 'Model se stahuje — nejdřív stahování zrušte',
   'error.noAudioOrSubtitle': 'Tento soubor nemá ani zvukovou stopu, ani stopu s titulky, takže titulky nelze vytvořit',
   'error.llmLoadTimeout': 'Načítání místního překladového modelu vypršelo (3 minuty); model může být příliš velký nebo disk příliš pomalý',

@@ -296,6 +296,7 @@ export const en: Dict = {
   'error.noAudioTrack': 'This file has no audio track, so speech recognition is not possible',
   'error.noCues': 'No subtitle cues were produced',
   'error.modelDownloading': 'That model is already downloading',
+  'error.modelDownloadFailed': 'Model download failed: neither huggingface.co nor the mirror hf-mirror.com could be reached. Check your network or proxy settings and try again.',
   'error.modelDownloadingCancelFirst': 'The model is downloading — cancel it first',
   'error.noAudioOrSubtitle': 'This file has neither an audio track nor a subtitle track, so no subtitles can be made',
   'error.llmLoadTimeout': 'The local translation model timed out while loading (3 minutes); it may be too large or the disk too slow',

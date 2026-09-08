@@ -297,6 +297,7 @@ export const he: Dict = {
   'error.noAudioTrack': 'לקובץ הזה אין רצועת אודיו, ולכן אי אפשר לבצע זיהוי דיבור',
   'error.noCues': 'לא נוצרה אף שורת כתובית',
   'error.modelDownloading': 'המודל הזה כבר בהורדה',
+  'error.modelDownloadFailed': 'הורדת המודל נכשלה: לא ניתן להגיע ל‑huggingface.co וגם לא לאתר המראה hf-mirror.com. בדקו את הרשת או הגדרות הפרוקסי ונסו שוב.',
   'error.modelDownloadingCancelFirst': 'המודל בהורדה — בטלו אותה קודם',
   'error.noAudioOrSubtitle': 'לקובץ הזה אין רצועת אודיו ואין רצועת כתוביות, ולכן אי אפשר ליצור כתוביות',
   'error.llmLoadTimeout': 'טעינת מודל התרגום המקומי חרגה מהזמן (3 דקות); ייתכן שהוא גדול מדי או שהדיסק איטי מדי',

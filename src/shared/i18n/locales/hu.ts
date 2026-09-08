@@ -301,6 +301,7 @@ export const hu: Dict = {
   'error.noAudioTrack': 'Ebben a fájlban nincs hangsáv, ezért nem lehet beszédfelismerést végezni',
   'error.noCues': 'Egyetlen feliratsor sem keletkezett',
   'error.modelDownloading': 'Ez a modell már letöltés alatt áll',
+  'error.modelDownloadFailed': 'A modell letöltése nem sikerült: sem a huggingface.co, sem a hf-mirror.com tükör nem érhető el. Ellenőrizd a hálózatot vagy a proxybeállításokat, majd próbáld újra.',
   'error.modelDownloadingCancelFirst': 'A modell letöltése folyamatban van — előbb szakítsd meg',
   'error.noAudioOrSubtitle': 'Ebben a fájlban se hangsáv, se feliratsáv nincs, ezért nem készíthető felirat',
   'error.llmLoadTimeout': 'A helyi fordítómodell betöltése túllépte az időkorlátot (3 perc); lehet, hogy túl nagy, vagy a lemez túl lassú',

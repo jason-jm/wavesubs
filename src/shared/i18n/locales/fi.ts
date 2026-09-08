@@ -301,6 +301,7 @@ export const fi: Dict = {
   'error.noAudioTrack': 'Tässä tiedostossa ei ole ääniraitaa, joten puheentunnistus ei onnistu',
   'error.noCues': 'Tekstitysrivejä ei syntynyt lainkaan',
   'error.modelDownloading': 'Kyseistä mallia ladataan jo',
+  'error.modelDownloadFailed': 'Mallin lataus epäonnistui: huggingface.co tai peili hf-mirror.com eivät ole tavoitettavissa. Tarkista verkko- tai välityspalvelinasetukset ja yritä uudelleen.',
   'error.modelDownloadingCancelFirst': 'Mallia ladataan — peru lataus ensin',
   'error.noAudioOrSubtitle': 'Tässä tiedostossa ei ole ääni- eikä tekstitysraitaa, joten tekstitystä ei voi luoda',
   'error.llmLoadTimeout': 'Paikallisen käännösmallin lataus aikakatkaistiin (3 minuuttia); malli voi olla liian suuri tai levy liian hidas',

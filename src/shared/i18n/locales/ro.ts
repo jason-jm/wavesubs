@@ -302,6 +302,7 @@ export const ro: Dict = {
   'error.noAudioTrack': 'Acest fișier nu are pistă audio, deci recunoașterea vocală nu este posibilă',
   'error.noCues': 'Nu a rezultat niciun rând de subtitrare',
   'error.modelDownloading': 'Acel model se descarcă deja',
+  'error.modelDownloadFailed': 'Descărcarea modelului a eșuat: nici huggingface.co, nici oglinda hf-mirror.com nu pot fi accesate. Verifică rețeaua sau setările proxy și încearcă din nou.',
   'error.modelDownloadingCancelFirst': 'Modelul se descarcă — anulează mai întâi',
   'error.noAudioOrSubtitle': 'Acest fișier nu are nici pistă audio, nici pistă de subtitrare, deci nu se pot genera subtitrări',
   'error.llmLoadTimeout': 'Încărcarea modelului local de traducere a depășit timpul alocat (3 minute); poate fi prea mare sau discul prea lent',

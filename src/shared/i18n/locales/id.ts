@@ -301,6 +301,7 @@ export const id: Dict = {
   'error.noAudioTrack': 'Berkas ini tidak punya trek audio, jadi pengenalan suara tidak bisa dilakukan',
   'error.noCues': 'Tidak ada baris takarir yang dihasilkan',
   'error.modelDownloading': 'Model itu sudah sedang diunduh',
+  'error.modelDownloadFailed': 'Unduhan model gagal: huggingface.co maupun cermin hf-mirror.com tidak dapat dijangkau. Periksa jaringan atau pengaturan proxy lalu coba lagi.',
   'error.modelDownloadingCancelFirst': 'Model sedang diunduh — batalkan dulu',
   'error.noAudioOrSubtitle': 'Berkas ini tidak punya trek audio maupun trek takarir, jadi takarir tidak bisa dibuat',
   'error.llmLoadTimeout': 'Pemuatan model terjemahan lokal melewati batas waktu (3 menit); modelnya mungkin terlalu besar atau diska terlalu lambat',

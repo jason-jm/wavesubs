@@ -302,6 +302,7 @@ export const it: Dict = {
   'error.noAudioTrack': 'Questo file non ha una traccia audio, quindi il riconoscimento vocale non è possibile',
   'error.noCues': 'Non è stata prodotta alcuna riga di sottotitolo',
   'error.modelDownloading': 'Quel modello è già in scaricamento',
+  'error.modelDownloadFailed': 'Download del modello non riuscito: né huggingface.co né il mirror hf-mirror.com sono raggiungibili. Controlla la rete o le impostazioni del proxy e riprova.',
   'error.modelDownloadingCancelFirst': 'Il modello è in scaricamento: annullalo prima',
   'error.noAudioOrSubtitle': 'Questo file non ha né traccia audio né traccia di sottotitoli, quindi non si possono generare sottotitoli',
   'error.llmLoadTimeout': 'Il caricamento del modello di traduzione locale è scaduto (3 minuti); potrebbe essere troppo grande o il disco troppo lento',
