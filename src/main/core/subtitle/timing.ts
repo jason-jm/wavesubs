@@ -7,7 +7,7 @@ import type { Cue } from './types'
  * 都要 +1：任务缓存里存着旧版精修结果，靠它判断「重新用缓存的原始转写再精修一遍」，
  * 否则时间轴的改进永远到不了已缓存的文件上。
  */
-export const TIMING_REV = 1
+export const TIMING_REV = 2
 
 const MIN_CUE_MS = 200
 
@@ -16,10 +16,19 @@ const MIN_CUE_MS = 200
  * 同一个词连说三遍以上。正常的拉长音（あーー、Nooo）只有两三个字符，不受影响。
  */
 export function collapseRepetitions(text: string): string {
-  return text
-    .replace(/(.)\1{4,}/gu, '$1$1')
-    .replace(/\b(\S+)(\s+\1\b){2,}/giu, '$1')
-    .trim()
+  return (
+    text
+      .replace(/(.)\1{4,}/gu, '$1$1')
+      /**
+       * 空白/顿号分隔的同一片段连读 ≥3 次 → 留一次。
+       * 原来用 \b 判词界，而 \b 在 CJK 旁边永远不成立，所以「ヤバイ ヤバイ ヤバイ …」这种
+       * 关掉温度回退后最典型的复读（一条里刷了一百多个）从来没被收过。改用显式分隔符。
+       */
+      .replace(/(^|[\s、,，。.!?！？])([^\s、,，。.!?！？]{1,12})(?:[\s、,，]+\2){2,}(?=$|[\s、,，。.!?！？])/giu, '$1$2')
+      /** 无分隔的短语连读 ≥3 次（やばいやばいやばい / 次は次は次は）→ 留两次，保留一点口语感 */
+      .replace(/([^\s]{2,8}?)\1{2,}/gu, '$1$1')
+      .trim()
+  )
 }
 
 /**
