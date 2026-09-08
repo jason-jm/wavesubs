@@ -30,7 +30,7 @@
 **宣传文本（59/170）：**
 看片找不到字幕？把影片拖进来：本地 AI 识别对白、生成 SRT/ASS 字幕，并翻译成你的语言。无需联网，永久免费。
 
-**版本说明 1.0.3：** 中国大陆也能下载模型了：连不上 huggingface.co 时自动切换镜像；下载认系统代理。修复部分 Windows 上中文系统显示英文的问题。
+**版本说明 1.0.4：** 下载模型先显示「正在连接」，官方源与镜像并行择快；Windows 界面语言跟随系统显示语言；顶部统一窗口栏，Windows 窗口按钮不再压在内容上。
 
 **描述：**
 ```text
@@ -74,7 +74,7 @@
 **宣传文本（167/170）：**
 Can't find subtitles? Drop in a video: local AI recognizes the dialogue, generates SRT/ASS subtitles and translates them into your language. No internet, free forever.
 
-**版本说明 1.0.3：** Model downloads now work from mainland China (automatic mirror fallback, honours system proxy). Fixed some Windows setups showing English on a Chinese system.
+**版本说明 1.0.4：** Downloads now show "Connecting…" and race the official host against the mirror; Windows UI language follows the display-language setting; a unified title bar keeps Windows window buttons clear of the content.
 
 **描述：**
 ```text
@@ -118,7 +118,7 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 **宣传文本（76/170）：**
 字幕が見つからない？動画をドロップするだけ。ローカルAIがセリフを認識してSRT/ASS字幕を生成し、あなたの言語に翻訳します。ネット不要、ずっと無料。
 
-**版本说明 1.0.3：** モデルのダウンロードが中国本土でも可能に（ミラーへ自動切替、システムプロキシに対応）。一部の Windows で中国語環境なのに英語表示になる問題を修正。
+**版本说明 1.0.4：** ダウンロード開始時に「接続中」を表示し、公式とミラーを並行して速い方を採用。Windows の表示言語に従うよう修正。共通のタイトルバーで Windows のウィンドウボタンがコンテンツに重ならないように。
 
 **描述：**
 ```text
@@ -162,7 +162,7 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 **宣传文本（86/170）：**
 자막을 못 찾겠다면? 영상을 끌어다 놓으세요. 로컬 AI가 대사를 인식해 SRT/ASS 자막을 만들고 내 언어로 번역합니다. 인터넷 불필요, 영원히 무료.
 
-**版本说明 1.0.3：** 중국 본토에서도 모델 다운로드 가능(미러 자동 전환, 시스템 프록시 지원). 일부 Windows에서 중국어 시스템인데 영어로 표시되던 문제 수정.
+**版本说明 1.0.4：** 다운로드 시 "연결 중" 표시, 공식 서버와 미러를 동시에 시도해 빠른 쪽 사용. Windows 표시 언어를 따르도록 수정. 공통 제목 표시줄로 Windows 창 버튼이 내용과 겹치지 않음.
 
 **描述：**
 ```text
@@ -206,7 +206,7 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 **宣传文本（165/170）：**
 Pas de sous-titres ? Déposez la vidéo : l'IA locale reconnaît les dialogues, crée des SRT/ASS et les traduit dans votre langue. Sans internet, gratuit pour toujours.
 
-**版本说明 1.0.3：** Le téléchargement des modèles fonctionne désormais depuis la Chine continentale (bascule automatique vers un miroir, proxy système pris en charge). Correction de certains PC Windows affichant l'anglais sur un système en chinois.
+**版本说明 1.0.4：** Le téléchargement affiche « Connexion… » et met en concurrence le serveur officiel et le miroir ; la langue suit le réglage d'affichage de Windows ; une barre de titre unifiée évite tout chevauchement des boutons de fenêtre.
 
 **描述：**
 ```text
@@ -250,7 +250,7 @@ Nécessite macOS 12 ou ultérieur sur Apple Silicon. Au premier lancement, un mo
 **宣传文本（163/170）：**
 Keine Untertitel? Video ablegen: Lokale KI erkennt die Dialoge, erstellt SRT/ASS-Untertitel und übersetzt sie in deine Sprache. Ohne Internet, für immer kostenlos.
 
-**版本说明 1.0.3：** Modell-Downloads funktionieren jetzt auch aus Festlandchina (automatischer Spiegel-Fallback, Systemproxy wird beachtet). Behoben: Einige Windows-Systeme zeigten auf Chinesisch Englisch an.
+**版本说明 1.0.4：** Downloads zeigen „Verbindung…“ und lassen offiziellen Host und Spiegel gegeneinander antreten; die Sprache folgt der Windows-Anzeigesprache; eine einheitliche Titelleiste hält die Fensterknöpfe vom Inhalt fern.
 
 **描述：**
 ```text
@@ -294,7 +294,7 @@ Benötigt macOS 12 oder neuer auf Apple Silicon. Beim ersten Start wirst du durc
 **宣传文本（153/170）：**
 Нет субтитров? Перетащите видео: локальный ИИ распознает диалоги, создаст субтитры SRT/ASS и переведёт их на ваш язык. Без интернета, бесплатно навсегда.
 
-**版本说明 1.0.3：** Загрузка моделей теперь работает из материкового Китая (автоматическое переключение на зеркало, учёт системного прокси). Исправлено: на некоторых Windows с китайской системой интерфейс был английским.
+**版本说明 1.0.4：** При загрузке показывается «Подключение…», официальный хост и зеркало пробуются параллельно; язык следует настройке отображения Windows; единая строка заголовка убирает кнопки окна с контента.
 
 **描述：**
 ```text
@@ -338,7 +338,7 @@ Benötigt macOS 12 oder neuer auf Apple Silicon. Beim ersten Start wirst du durc
 **宣传文本（158/170）：**
 Tak ada subtitle? Seret videonya: AI lokal mengenali dialog, membuat subtitle SRT/ASS, lalu menerjemahkannya ke bahasa Anda. Tanpa internet, gratis selamanya.
 
-**版本说明 1.0.3：** Unduhan model kini berfungsi dari Tiongkok daratan (beralih otomatis ke cermin, mendukung proxy sistem). Memperbaiki beberapa Windows yang menampilkan bahasa Inggris pada sistem berbahasa Mandarin.
+**版本说明 1.0.4：** Unduhan menampilkan "Menghubungkan…" dan mengadu host resmi dengan cermin; bahasa mengikuti bahasa tampilan Windows; bilah judul terpadu menjauhkan tombol jendela dari konten.
 
 **描述：**
 ```text
@@ -382,7 +382,7 @@ Memerlukan macOS 12 atau lebih baru di Apple Silicon. Saat pertama dibuka Anda a
 **宣传文本（154/170）：**
 Tiada sari kata? Seret video: AI tempatan mengecam dialog, menjana sari kata SRT/ASS dan menterjemahnya ke bahasa anda. Tanpa internet, percuma selamanya.
 
-**版本说明 1.0.3：** Muat turun model kini berfungsi dari tanah besar China (beralih automatik ke cermin, menyokong proksi sistem). Membetulkan sesetengah Windows yang memaparkan bahasa Inggeris pada sistem berbahasa Cina.
+**版本说明 1.0.4：** Muat turun memaparkan "Menyambung…" dan mengadu hos rasmi dengan cermin; bahasa mengikut bahasa paparan Windows; bar tajuk seragam mengelakkan butang tetingkap menindih kandungan.
 
 **描述：**
 ```text
@@ -426,7 +426,7 @@ Memerlukan macOS 12 atau lebih baharu pada Apple Silicon. Pada pelancaran pertam
 **宣传文本（152/170）：**
 Không tìm thấy phụ đề? Kéo video vào: AI cục bộ nhận dạng lời thoại, tạo phụ đề SRT/ASS và dịch sang ngôn ngữ của bạn. Không cần mạng, miễn phí mãi mãi.
 
-**版本说明 1.0.3：** Tải mô hình đã hoạt động từ Trung Quốc đại lục (tự chuyển sang máy chủ dự phòng, hỗ trợ proxy hệ thống). Sửa lỗi một số máy Windows hiển thị tiếng Anh trên hệ thống tiếng Trung.
+**版本说明 1.0.4：** Tải xuống hiển thị "Đang kết nối…" và chạy đua máy chủ chính với máy chủ dự phòng; ngôn ngữ theo cài đặt hiển thị của Windows; thanh tiêu đề thống nhất giúp nút cửa sổ không đè lên nội dung.
 
 **描述：**
 ```text
@@ -470,7 +470,7 @@ Yêu cầu macOS 12 trở lên trên Apple Silicon. Lần mở đầu tiên sẽ
 **宣传文本（114/170）：**
 หาซับไม่เจอ? ลากวิดีโอมาวาง AI ในเครื่องจะจับบทพูด สร้างซับ SRT/ASS แล้วแปลเป็นภาษาของคุณ ไม่ต้องต่อเน็ต ฟรีตลอดไป
 
-**版本说明 1.0.3：** ดาวน์โหลดโมเดลได้จากจีนแผ่นดินใหญ่แล้ว (สลับไปมิเรอร์อัตโนมัติ รองรับพร็อกซีระบบ) แก้ปัญหา Windows บางเครื่องแสดงภาษาอังกฤษบนระบบภาษาจีน
+**版本说明 1.0.4：** ดาวน์โหลดแสดง "กำลังเชื่อมต่อ…" และลองเซิร์ฟเวอร์หลักกับมิเรอร์พร้อมกัน ภาษาตามการตั้งค่าภาษาแสดงผลของ Windows แถบชื่อเรื่องแบบเดียวกันทำให้ปุ่มหน้าต่างไม่ทับเนื้อหา
 
 **描述：**
 ```text
