@@ -112,7 +112,15 @@ done
 
 ### 依赖准备（升级依赖版本时才需要重跑）
 
-Windows 不自己编译，直接用官方预编译包，下载到 `~/Documents/wavesubs-vendor/win/`：
+Windows 不自己编译，直接用官方预编译包。两种来源：
+
+- **本机发版**：手动下载到 `~/Documents/wavesubs-vendor/win/`（文件名见下表），`npm run release:win` 会用它们。
+- **GitHub Actions**（`.github/workflows/windows.yml`，推 `v*` 标签或手动触发）：`tsx scripts/bundle-deps-win.ts --fetch`
+  按脚本里钉死的官方地址下载并校验 sha256（当前：BtbN ffmpeg n9.0.1 LGPL shared、whisper.cpp v1.9.1、llama.cpp b10865）。
+  升级依赖时改脚本里的 `url` / `sha256`（sha256 可从 GitHub Release 资产的 digest 字段取）。
+  这条流水线是申请 SignPath 开源代码签名的前置条件：签名的二进制必须来自公开可复核的构建。
+
+手动下载时的文件名：
 
 | 文件 | 来源 |
 |---|---|
