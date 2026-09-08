@@ -9,6 +9,8 @@ export interface WhisperOptions {
   modelPath: string
   /** ISO 639-1 语言码，缺省 'auto' 自动检测 */
   language?: string
+  /** 直接追加给 whisper-cli 的额外参数（评测实验 / 高级选项用，例如 --prompt） */
+  extraArgs?: string[]
   threads?: number
   onProgress?: (percent: number) => void
 }
@@ -42,7 +44,8 @@ export async function transcribeWithWhisperCpp(
     '-of', outBase,
     '-pp',
     // 跨窗口不携带文本上下文：显著降低配乐段落里的复读循环风险
-    '-mc', '0'
+    '-mc', '0',
+    ...(opts.extraArgs ?? [])
   ]
   try {
     await new Promise<void>((resolve, reject) => {

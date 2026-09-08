@@ -216,6 +216,12 @@ const LIKELY_HALLUCINATION_PHRASE =
   /^[\s"'「『]*(ご視聴ありがとうございました|ご視聴ありがとう|ご覧いただきありがとうございました|次回予告|お疲れ様でした|谢谢观看|感谢观看|感謝觀看|请订阅|請訂閱|thank you for watching)[\s。.!！、,"'」』]*$/i
 /** Whisper 偶尔吐出 *Gunshot* / *Sigh* 这类音效描述，从不是真台词 */
 const SOUND_EFFECT_ONLY = /^\*[^*]{1,40}\*$/
+/**
+ * 只有音符的条（♪♪ / ♫）：Whisper 在配乐段落里的「有音乐」标记，不是歌词也不是台词。
+ * 40 部整片语料里后处理后仍残留 ♪♪ 这类条，翻译时会被当成一句话送去翻。
+ * 带歌词的 ♪ 行（♪ I know that the spades…）不在此列，那是真唱出来的内容，照旧保留。
+ */
+const MUSIC_MARK_ONLY = /^[\s♪♫♬]+$/
 /** 收缩到末尾时按这个语速折算显示时长（单位/秒） */
 const TAIL_RATE_PER_SEC = 2.5
 
@@ -279,6 +285,7 @@ export function refineCuesWithSpeechRegions(
     if (NEVER_DIALOGUE.test(cue.text)) continue
     // 二级：整条就是那句套话，且此处几乎没人在说话
     if (LIKELY_HALLUCINATION_PHRASE.test(cue.text) && speechMs < duration * 0.5) continue
+    if (MUSIC_MARK_ONLY.test(cue.text)) continue
     if (
       speechMs < HALLUCINATION_MAX_SPEECH_MS &&
       duration >= HALLUCINATION_MIN_DURATION_MS &&

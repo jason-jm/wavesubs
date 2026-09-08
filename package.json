@@ -31,6 +31,7 @@
     "check-editor": "tsx scripts/check-editor.ts",
     "check-preview": "tsx scripts/check-preview.ts",
     "check-download": "tsx scripts/check-download.ts",
+    "check-timing": "tsx scripts/check-timing.ts",
     "check-site": "python3 scripts/build-site.py && electron scripts/check-site.cjs",
     "release:mas": "npm run build && tsx scripts/bundle-deps.ts && electron-builder --mac mas --arm64 --publish never",
     "check-output": "tsx scripts/check-output.ts"
@@ -43,6 +44,8 @@
     "electron": "^38.2.0",
     "electron-builder": "^26.15.3",
     "electron-vite": "^4.0.1",
+    "kuromoji": "^0.1.2",
+    "opencc-js": "^1.4.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "tsx": "^4.20.4",
