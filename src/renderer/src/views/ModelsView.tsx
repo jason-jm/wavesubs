@@ -82,15 +82,22 @@ function ModelRow(props: {
       <div className="model-side">
         {dl ? (
           <div className="dl-wrap">
-            <div className="track" style={{ width: '100%' }}>
-              <div className="track-fill" style={{ width: `${Math.max(0, dl.percent)}%` }} />
+            <div className={dl.phase === 'connecting' ? 'track indeterminate' : 'track'} style={{ width: '100%' }}>
+              <div
+                className="track-fill"
+                style={{ width: dl.phase === 'connecting' ? '40%' : `${Math.max(0, dl.percent)}%` }}
+              />
             </div>
             <div className="dl-foot">
-              <span className="dl-label" dir="ltr">
-                {dl.percent >= 0 ? `${dl.percent}% · ` : ''}
-                {dl.receivedMB}
-                {dl.totalMB > 0 ? ` / ${dl.totalMB}` : ''} MB
-              </span>
+              {dl.phase === 'connecting' ? (
+                <span className="dl-label">{t('models.connecting')}</span>
+              ) : (
+                <span className="dl-label" dir="ltr">
+                  {dl.percent >= 0 ? `${dl.percent}% · ` : ''}
+                  {dl.receivedMB}
+                  {dl.totalMB > 0 ? ` / ${dl.totalMB}` : ''} MB
+                </span>
+              )}
               <button className="btn btn-quiet" onClick={() => onCancel(kind, model.file)}>
                 {t('common.cancel')}
               </button>

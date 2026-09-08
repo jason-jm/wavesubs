@@ -15,6 +15,7 @@ import type {
 } from '../shared/types'
 import type { Translate } from '../shared/i18n'
 import { DEFAULT_THEME, LEGACY_DEFAULT_GRAIN, type ThemeSetting } from '../shared/palettes'
+import { execFileSync } from 'node:child_process'
 import { pickLocale, translatorFor } from '../shared/i18n'
 import { targetForUiLocale } from '../shared/targetLanguages'
 import { normalizeBaseUrl } from './core/translate/openaiCompatible'
@@ -24,6 +25,33 @@ import { normalizeAnthropicBaseUrl } from './core/translate/anthropic'
  * 系统语言优先级列表。macOS 会给出 ['zh-Hans-CN', 'en-US'] 这样的有序数组，
  * 老版本 Electron 没这个 API 时退回单个 locale。
  */
+/**
+ * Windows 的「显示语言」。Electron 的 getPreferredSystemLanguages 在部分机器上只给出
+ * 安装时的语言（如 en-US），而用户在设置里改的显示语言写在这个注册表项里，
+ * 这才是用户眼里的「系统语言」。REG_MULTI_SZ 由 reg.exe 打印成 "zh-CN\\0en-US"。
+ */
+let windowsDisplayLanguagesCache: string[] | null = null
+function windowsDisplayLanguages(): string[] {
+  if (process.platform !== 'win32') return []
+  if (windowsDisplayLanguagesCache) return windowsDisplayLanguagesCache
+  try {
+    const out = execFileSync('reg', ['query', 'HKCU\\Control Panel\\Desktop', '/v', 'PreferredUILanguages'], {
+      encoding: 'utf8',
+      windowsHide: true,
+      timeout: 3000
+    })
+    const line = out.split(/\r?\n/).find((l) => /PreferredUILanguages/i.test(l)) ?? ''
+    const value = line.split(/\s+REG_MULTI_SZ\s+/)[1] ?? ''
+    windowsDisplayLanguagesCache = value
+      .split('\\0')
+      .map((t) => t.trim())
+      .filter(Boolean)
+  } catch {
+    windowsDisplayLanguagesCache = []
+  }
+  return windowsDisplayLanguagesCache
+}
+
 function systemLanguages(): string[] {
   const seen = new Set<string>()
   const out: string[] = []
@@ -33,10 +61,16 @@ function systemLanguages(): string[] {
       out.push(tag)
     }
   }
+  for (const tag of windowsDisplayLanguages()) push(tag)
   for (const tag of app.getPreferredSystemLanguages?.() ?? []) push(tag)
-  // Windows 上偏好语言列表可能为空或不含显示语言；系统区域与 Chromium 的 locale 作为补充来源
+  // 再补上系统区域与 Chromium 的 locale；Node 的 ICU 默认区域反映的是「区域格式」设置
   push(app.getSystemLocale?.())
   push(app.getLocale())
+  try {
+    push(Intl.DateTimeFormat().resolvedOptions().locale)
+  } catch {
+    /* 没有 ICU 数据时跳过 */
+  }
   return out
 }
 
@@ -174,6 +208,7 @@ export class SettingsStore {
       language: this.data.language,
       resolvedLanguage: this.resolvedLanguage,
       systemLanguage: pickLocale('system', systemLanguages()),
+      systemLanguageTags: systemLanguages(),
       translateEnabled: this.data.translateEnabled,
       translation: {
         engine: this.data.translation.engine,

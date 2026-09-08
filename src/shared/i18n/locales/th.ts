@@ -230,6 +230,7 @@ export const th: Dict = {
   'settings.language.hint': 'ภาษาที่ใช้ทั้งหน้าจอ',
   'settings.language.system': 'ตามระบบ',
   'settings.language.systemCurrent': 'ตามระบบ (ตอนนี้คือ {name})',
+  'settings.language.detected': 'ภาษาที่ระบบรายงาน: {tags}',
   'settings.about': 'เกี่ยวกับ',
   'settings.about.privacy': 'การรู้จำและการแปลทำงานที่ไหน',
   'settings.about.privacyHint':
@@ -298,6 +299,7 @@ export const th: Dict = {
   'error.noCues': 'ไม่ได้บรรทัดคำบรรยายเลยสักบรรทัด',
   'error.modelDownloading': 'โมเดลนี้กำลังดาวน์โหลดอยู่แล้ว',
   'error.modelDownloadFailed': 'ดาวน์โหลดโมเดลไม่สำเร็จ: เชื่อมต่อ huggingface.co และมิเรอร์ hf-mirror.com ไม่ได้ทั้งคู่ โปรดตรวจสอบเครือข่ายหรือการตั้งค่าพร็อกซีแล้วลองใหม่',
+  'models.connecting': 'กำลังเชื่อมต่อเซิร์ฟเวอร์…',
   'error.modelDownloadingCancelFirst': 'โมเดลกำลังดาวน์โหลด กรุณายกเลิกก่อน',
   'error.noAudioOrSubtitle': 'ไฟล์นี้ไม่มีทั้งแทร็กเสียงและแทร็กคำบรรยาย จึงสร้างคำบรรยายไม่ได้',
   'error.llmLoadTimeout': 'โหลดโมเดลแปลในเครื่องนานเกินกำหนด (3 นาที) โมเดลอาจใหญ่เกินไปหรือดิสก์ช้าเกินไป',

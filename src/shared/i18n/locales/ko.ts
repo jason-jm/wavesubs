@@ -228,6 +228,7 @@ export const ko: Dict = {
   'settings.language.hint': '화면에 표시할 언어',
   'settings.language.system': '시스템 설정 따르기',
   'settings.language.systemCurrent': '시스템 설정 따르기(현재 {name})',
+  'settings.language.detected': '시스템이 보고한 언어: {tags}',
   'settings.about': '정보',
 
   'settings.about.privacy': '인식과 번역이 실행되는 곳',
@@ -295,6 +296,7 @@ export const ko: Dict = {
   'error.noCues': '자막 항목을 하나도 얻지 못했습니다',
   'error.modelDownloading': '해당 모델은 이미 내려받는 중입니다',
   'error.modelDownloadFailed': '모델 다운로드 실패: huggingface.co와 미러 hf-mirror.com 모두에 연결할 수 없습니다. 네트워크 또는 프록시 설정을 확인한 뒤 다시 시도하세요.',
+  'models.connecting': '서버에 연결하는 중…',
   'error.modelDownloadingCancelFirst': '모델을 내려받는 중입니다. 먼저 취소해 주세요',
   'error.noAudioOrSubtitle': '이 파일에는 오디오 트랙도 자막 트랙도 없어 자막을 만들 수 없습니다',
   'error.llmLoadTimeout': '로컬 번역 모델을 불러오다 시간이 초과되었습니다(3분). 모델이 너무 크거나 디스크가 느릴 수 있습니다',

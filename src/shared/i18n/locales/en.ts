@@ -229,6 +229,7 @@ export const en: Dict = {
   'settings.language.hint': 'Language used throughout the interface',
   'settings.language.system': 'Match system',
   'settings.language.systemCurrent': 'Match system (currently {name})',
+  'settings.language.detected': 'Languages reported by the system: {tags}',
   'settings.about': 'About',
 
   'settings.about.privacy': 'Where recognition and translation run',
@@ -297,6 +298,7 @@ export const en: Dict = {
   'error.noCues': 'No subtitle cues were produced',
   'error.modelDownloading': 'That model is already downloading',
   'error.modelDownloadFailed': 'Model download failed: neither huggingface.co nor the mirror hf-mirror.com could be reached. Check your network or proxy settings and try again.',
+  'models.connecting': 'Connecting to server…',
   'error.modelDownloadingCancelFirst': 'The model is downloading — cancel it first',
   'error.noAudioOrSubtitle': 'This file has neither an audio track nor a subtitle track, so no subtitles can be made',
   'error.llmLoadTimeout': 'The local translation model timed out while loading (3 minutes); it may be too large or the disk too slow',

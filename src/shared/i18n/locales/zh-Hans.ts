@@ -241,6 +241,7 @@ export const zhHans = {
   'settings.language.hint': '界面显示语言',
   'settings.language.system': '跟随系统',
   'settings.language.systemCurrent': '跟随系统（当前 {name}）',
+  'settings.language.detected': '系统报告的语言：{tags}',
   'settings.about': '关于',
 
   // ---------- 模型目录：机型要求 ----------
@@ -308,6 +309,7 @@ export const zhHans = {
   'error.noCues': '没有得到任何字幕条目',
   'error.modelDownloading': '该模型正在下载中',
   'error.modelDownloadFailed': '模型下载失败：无法连接 huggingface.co，也无法连接镜像 hf-mirror.com。请检查网络或代理设置后重试。',
+  'models.connecting': '正在连接服务器…',
   'error.modelDownloadingCancelFirst': '模型正在下载中，请先取消',
   'error.noAudioOrSubtitle': '该文件既没有音轨也没有字幕轨，无法生成字幕',
   'error.llmLoadTimeout': '本地翻译模型加载超时（3 分钟），模型可能过大或磁盘过慢',

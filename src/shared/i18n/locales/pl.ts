@@ -232,6 +232,7 @@ export const pl: Dict = {
   'settings.language.hint': 'Język całego interfejsu',
   'settings.language.system': 'Jak w systemie',
   'settings.language.systemCurrent': 'Jak w systemie (obecnie {name})',
+  'settings.language.detected': 'Języki zgłoszone przez system: {tags}',
   'settings.about': 'Informacje',
   'settings.about.privacy': 'Gdzie działa rozpoznawanie i tłumaczenie',
   'settings.about.privacyHint':
@@ -304,6 +305,7 @@ export const pl: Dict = {
   'error.noCues': 'Nie uzyskano żadnego wiersza napisów',
   'error.modelDownloading': 'Ten model już się pobiera',
   'error.modelDownloadFailed': 'Pobieranie modelu nie powiodło się: ani huggingface.co, ani serwer lustrzany hf-mirror.com nie są osiągalne. Sprawdź sieć lub ustawienia proxy i spróbuj ponownie.',
+  'models.connecting': 'Łączenie z serwerem…',
   'error.modelDownloadingCancelFirst': 'Model jest pobierany — najpierw anuluj',
   'error.noAudioOrSubtitle': 'Ten plik nie ma ani ścieżki audio, ani ścieżki napisów, więc nie da się wygenerować napisów',
   'error.llmLoadTimeout': 'Wczytywanie lokalnego modelu tłumaczenia przekroczyło limit czasu (3 minuty); model może być za duży albo dysk za wolny',

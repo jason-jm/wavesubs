@@ -62,7 +62,7 @@ const cues = TIMES.map(([s, e], i) => ({ index: i + 1, startMs: s, endMs: e, tex
 
 const settings = {
   appearance: THEME, theme: { paletteId: 'seafog', grain: 0.1, intensity: 1 },
-  language: LOCALE, resolvedLanguage: LOCALE, systemLanguage: LOCALE,
+  language: LOCALE, resolvedLanguage: LOCALE, systemLanguage: LOCALE, systemLanguageTags: [LOCALE + '-XX', LOCALE],
   translateEnabled: true,
   translation: {
     engine: 'local', targetLanguage: TARGET, localModel: 'Qwen3-8B-Q4_K_M.gguf',

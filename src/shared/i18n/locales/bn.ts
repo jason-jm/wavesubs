@@ -231,6 +231,7 @@ export const bn: Dict = {
   'settings.language.hint': 'পুরো ইন্টারফেসের ভাষা',
   'settings.language.system': 'সিস্টেম অনুযায়ী',
   'settings.language.systemCurrent': 'সিস্টেম অনুযায়ী (এখন {name})',
+  'settings.language.detected': 'সিস্টেম দ্বারা জানানো ভাষা: {tags}',
   'settings.about': 'পরিচিতি',
   'settings.about.privacy': 'শনাক্তকরণ আর অনুবাদ কোথায় চলে',
   'settings.about.privacyHint':
@@ -301,6 +302,7 @@ export const bn: Dict = {
   'error.noCues': 'একটি সাবটাইটেল লাইনও পাওয়া যায়নি',
   'error.modelDownloading': 'ওই মডেলটি আগে থেকেই নামছে',
   'error.modelDownloadFailed': 'মডেল ডাউনলোড ব্যর্থ: huggingface.co বা মিরর hf-mirror.com কোনোটিতেই সংযোগ করা যায়নি। নেটওয়ার্ক বা প্রক্সি সেটিং পরীক্ষা করে আবার চেষ্টা করুন।',
+  'models.connecting': 'সার্ভারের সাথে সংযোগ করা হচ্ছে…',
   'error.modelDownloadingCancelFirst': 'মডেলটি নামছে — আগে সেটি বাতিল করুন',
   'error.noAudioOrSubtitle': 'এই ফাইলে অডিও ট্র্যাকও নেই, সাবটাইটেল ট্র্যাকও নেই, তাই সাবটাইটেল বানানো যাবে না',
   'error.llmLoadTimeout': 'স্থানীয় অনুবাদ মডেল লোড হতে সময় পেরিয়ে গেছে (৩ মিনিট); মডেলটি হয়তো বড্ড বড় বা ডিস্ক বড্ড ধীর',

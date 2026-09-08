@@ -231,6 +231,7 @@ export const pt: Dict = {
   'settings.language.hint': 'Idioma usado em toda a interface',
   'settings.language.system': 'Seguir o sistema',
   'settings.language.systemCurrent': 'Seguir o sistema (agora {name})',
+  'settings.language.detected': 'Idiomas informados pelo sistema: {tags}',
   'settings.about': 'Sobre',
   'settings.about.privacy': 'Onde o reconhecimento e a tradução são executados',
   'settings.about.privacyHint':
@@ -302,6 +303,7 @@ export const pt: Dict = {
   'error.noCues': 'Nenhuma linha de legenda foi produzida',
   'error.modelDownloading': 'Esse modelo já está sendo baixado',
   'error.modelDownloadFailed': 'Falha ao baixar o modelo: não foi possível acessar huggingface.co nem o espelho hf-mirror.com. Verifique sua rede ou as configurações de proxy e tente novamente.',
+  'models.connecting': 'Conectando ao servidor…',
   'error.modelDownloadingCancelFirst': 'O modelo está sendo baixado — cancele primeiro',
   'error.noAudioOrSubtitle': 'Este arquivo não tem faixa de áudio nem de legenda, então não dá para gerar legendas',
   'error.llmLoadTimeout': 'O modelo de tradução local demorou demais para carregar (3 minutos); pode ser grande demais ou o disco lento demais',

@@ -234,6 +234,7 @@ export const fr: Dict = {
   'settings.language.hint': 'Langue utilisée dans toute l’interface',
   'settings.language.system': 'Comme le système',
   'settings.language.systemCurrent': 'Comme le système (actuellement {name})',
+  'settings.language.detected': 'Langues signalées par le système : {tags}',
   'settings.about': 'À propos',
   'settings.about.privacy': 'Où s’exécutent la reconnaissance et la traduction',
   'settings.about.privacyHint':
@@ -306,6 +307,7 @@ export const fr: Dict = {
   'error.noCues': 'Aucune ligne de sous-titre n’a été produite',
   'error.modelDownloading': 'Ce modèle est déjà en cours de téléchargement',
   'error.modelDownloadFailed': 'Échec du téléchargement du modèle : ni huggingface.co ni le miroir hf-mirror.com ne sont joignables. Vérifiez votre réseau ou vos paramètres de proxy et réessayez.',
+  'models.connecting': 'Connexion au serveur…',
   'error.modelDownloadingCancelFirst': 'Le modèle est en cours de téléchargement — annulez-le d’abord',
   'error.noAudioOrSubtitle': 'Ce fichier n’a ni piste audio ni piste de sous-titres : impossible de générer des sous-titres',
   'error.llmLoadTimeout': 'Le chargement du modèle de traduction local a expiré (3 minutes) ; il est peut-être trop gros ou le disque trop lent',

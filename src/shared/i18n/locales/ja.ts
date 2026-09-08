@@ -229,6 +229,7 @@ export const ja: Dict = {
   'settings.language.hint': '画面表示に使う言語',
   'settings.language.system': 'システムに合わせる',
   'settings.language.systemCurrent': 'システムに合わせる（現在は {name}）',
+  'settings.language.detected': 'システムが報告した言語：{tags}',
   'settings.about': 'このアプリについて',
 
   'settings.about.privacy': '認識と翻訳が動く場所',
@@ -296,6 +297,7 @@ export const ja: Dict = {
   'error.noCues': '字幕が 1 件も得られませんでした',
   'error.modelDownloading': 'そのモデルはすでにダウンロード中です',
   'error.modelDownloadFailed': 'モデルのダウンロードに失敗しました：huggingface.co にもミラーの hf-mirror.com にも接続できません。ネットワークまたはプロキシ設定を確認して再試行してください。',
+  'models.connecting': 'サーバーに接続中…',
   'error.modelDownloadingCancelFirst': 'モデルをダウンロード中です。先に中止してください',
   'error.noAudioOrSubtitle': 'このファイルには音声トラックも字幕トラックもないため、字幕を作成できません',
   'error.llmLoadTimeout': 'ローカル翻訳モデルの読み込みがタイムアウトしました（3 分）。モデルが大きすぎるか、ディスクが遅い可能性があります',

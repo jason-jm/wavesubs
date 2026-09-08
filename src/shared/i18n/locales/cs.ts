@@ -231,6 +231,7 @@ export const cs: Dict = {
   'settings.language.hint': 'Jazyk celého rozhraní',
   'settings.language.system': 'Podle systému',
   'settings.language.systemCurrent': 'Podle systému (nyní {name})',
+  'settings.language.detected': 'Jazyky hlášené systémem: {tags}',
   'settings.about': 'O aplikaci',
   'settings.about.privacy': 'Kde běží rozpoznávání a překlad',
   'settings.about.privacyHint':
@@ -302,6 +303,7 @@ export const cs: Dict = {
   'error.noCues': 'Nevznikl žádný řádek titulků',
   'error.modelDownloading': 'Tento model se už stahuje',
   'error.modelDownloadFailed': 'Stažení modelu se nezdařilo: huggingface.co ani zrcadlo hf-mirror.com nejsou dostupné. Zkontrolujte síť nebo nastavení proxy a zkuste to znovu.',
+  'models.connecting': 'Připojování k serveru…',
   'error.modelDownloadingCancelFirst': 'Model se stahuje — nejdřív stahování zrušte',
   'error.noAudioOrSubtitle': 'Tento soubor nemá ani zvukovou stopu, ani stopu s titulky, takže titulky nelze vytvořit',
   'error.llmLoadTimeout': 'Načítání místního překladového modelu vypršelo (3 minuty); model může být příliš velký nebo disk příliš pomalý',

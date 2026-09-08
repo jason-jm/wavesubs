@@ -232,6 +232,7 @@ export const ms: Dict = {
   'settings.language.hint': 'Bahasa untuk keseluruhan antara muka',
   'settings.language.system': 'Ikut sistem',
   'settings.language.systemCurrent': 'Ikut sistem (kini {name})',
+  'settings.language.detected': 'Bahasa yang dilaporkan sistem: {tags}',
   'settings.about': 'Perihal',
   'settings.about.privacy': 'Di mana pengecaman dan terjemahan berjalan',
   'settings.about.privacyHint':
@@ -303,6 +304,7 @@ export const ms: Dict = {
   'error.noCues': 'Tiada baris sari kata dihasilkan',
   'error.modelDownloading': 'Model itu sedang dimuat turun',
   'error.modelDownloadFailed': 'Muat turun model gagal: huggingface.co dan cermin hf-mirror.com kedua-duanya tidak dapat dihubungi. Semak rangkaian atau tetapan proksi, kemudian cuba lagi.',
+  'models.connecting': 'Menyambung ke pelayan…',
   'error.modelDownloadingCancelFirst': 'Model sedang dimuat turun — batalkan dahulu',
   'error.noAudioOrSubtitle': 'Fail ini tiada trek audio mahupun trek sari kata, jadi sari kata tidak boleh dijana',
   'error.llmLoadTimeout': 'Pemuatan model terjemahan setempat tamat masa (3 minit); model mungkin terlalu besar atau cakera terlalu perlahan',

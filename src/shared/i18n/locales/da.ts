@@ -231,6 +231,7 @@ export const da: Dict = {
   'settings.language.hint': 'Sprog for hele brugerfladen',
   'settings.language.system': 'Som systemet',
   'settings.language.systemCurrent': 'Som systemet (lige nu {name})',
+  'settings.language.detected': 'Sprog rapporteret af systemet: {tags}',
   'settings.about': 'Om',
   'settings.about.privacy': 'Hvor genkendelse og oversættelse kører',
   'settings.about.privacyHint':
@@ -302,6 +303,7 @@ export const da: Dict = {
   'error.noCues': 'Der blev ikke lavet nogen undertekstlinjer',
   'error.modelDownloading': 'Den model hentes allerede',
   'error.modelDownloadFailed': 'Download af modellen mislykkedes: hverken huggingface.co eller spejlet hf-mirror.com kan nås. Tjek netværket eller proxyindstillingerne, og prøv igen.',
+  'models.connecting': 'Opretter forbindelse til serveren…',
   'error.modelDownloadingCancelFirst': 'Modellen hentes — annullér først',
   'error.noAudioOrSubtitle': 'Dette arkiv har hverken lydspor eller undertekstspor, så der kan ikke laves undertekster',
   'error.llmLoadTimeout': 'Indlæsningen af den lokale oversættelsesmodel tog for lang tid (3 minutter); den er måske for stor, eller disken er for langsom',

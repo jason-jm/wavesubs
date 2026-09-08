@@ -243,6 +243,9 @@ export function SettingsPage({ settings, updateSettings }: Props): React.JSX.Ele
             </div>
           </div>
         </div>
+        <p className="section-note">
+          {t('settings.language.detected', { tags: (settings.systemLanguageTags ?? []).join(', ') })}
+        </p>
       </div>
 
       <div className="section">

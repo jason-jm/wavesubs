@@ -232,6 +232,7 @@ export const ro: Dict = {
   'settings.language.hint': 'Limba întregii interfețe',
   'settings.language.system': 'Ca sistemul',
   'settings.language.systemCurrent': 'Ca sistemul (acum {name})',
+  'settings.language.detected': 'Limbi raportate de sistem: {tags}',
   'settings.about': 'Despre',
   'settings.about.privacy': 'Unde rulează recunoașterea și traducerea',
   'settings.about.privacyHint':
@@ -303,6 +304,7 @@ export const ro: Dict = {
   'error.noCues': 'Nu a rezultat niciun rând de subtitrare',
   'error.modelDownloading': 'Acel model se descarcă deja',
   'error.modelDownloadFailed': 'Descărcarea modelului a eșuat: nici huggingface.co, nici oglinda hf-mirror.com nu pot fi accesate. Verifică rețeaua sau setările proxy și încearcă din nou.',
+  'models.connecting': 'Se conectează la server…',
   'error.modelDownloadingCancelFirst': 'Modelul se descarcă — anulează mai întâi',
   'error.noAudioOrSubtitle': 'Acest fișier nu are nici pistă audio, nici pistă de subtitrare, deci nu se pot genera subtitrări',
   'error.llmLoadTimeout': 'Încărcarea modelului local de traducere a depășit timpul alocat (3 minute); poate fi prea mare sau discul prea lent',

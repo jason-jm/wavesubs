@@ -231,6 +231,7 @@ export const tr: Dict = {
   'settings.language.hint': 'Arayüzün tamamında kullanılan dil',
   'settings.language.system': 'Sistemle aynı',
   'settings.language.systemCurrent': 'Sistemle aynı (şu an {name})',
+  'settings.language.detected': 'Sistemin bildirdiği diller: {tags}',
   'settings.about': 'Hakkında',
   'settings.about.privacy': 'Tanıma ve çeviri nerede çalışıyor',
   'settings.about.privacyHint':
@@ -301,6 +302,7 @@ export const tr: Dict = {
   'error.noCues': 'Hiç altyazı satırı üretilmedi',
   'error.modelDownloading': 'O model zaten indiriliyor',
   'error.modelDownloadFailed': 'Model indirilemedi: ne huggingface.co ne de yansı hf-mirror.com erişilebilir. Ağ veya proxy ayarlarınızı kontrol edip yeniden deneyin.',
+  'models.connecting': 'Sunucuya bağlanılıyor…',
   'error.modelDownloadingCancelFirst': 'Model indiriliyor — önce indirmeyi iptal edin',
   'error.noAudioOrSubtitle': 'Bu dosyada ne ses izi ne de altyazı izi var, bu yüzden altyazı üretilemez',
   'error.llmLoadTimeout': 'Yerel çeviri modelinin yüklenmesi zaman aşımına uğradı (3 dakika); model çok büyük ya da disk çok yavaş olabilir',

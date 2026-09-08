@@ -231,6 +231,7 @@ export const id: Dict = {
   'settings.language.hint': 'Bahasa untuk seluruh antarmuka',
   'settings.language.system': 'Ikuti sistem',
   'settings.language.systemCurrent': 'Ikuti sistem (sekarang {name})',
+  'settings.language.detected': 'Bahasa yang dilaporkan sistem: {tags}',
   'settings.about': 'Tentang',
   'settings.about.privacy': 'Di mana pengenalan dan penerjemahan berjalan',
   'settings.about.privacyHint':
@@ -302,6 +303,7 @@ export const id: Dict = {
   'error.noCues': 'Tidak ada baris takarir yang dihasilkan',
   'error.modelDownloading': 'Model itu sudah sedang diunduh',
   'error.modelDownloadFailed': 'Unduhan model gagal: huggingface.co maupun cermin hf-mirror.com tidak dapat dijangkau. Periksa jaringan atau pengaturan proxy lalu coba lagi.',
+  'models.connecting': 'Menghubungkan ke server…',
   'error.modelDownloadingCancelFirst': 'Model sedang diunduh — batalkan dulu',
   'error.noAudioOrSubtitle': 'Berkas ini tidak punya trek audio maupun trek takarir, jadi takarir tidak bisa dibuat',
   'error.llmLoadTimeout': 'Pemuatan model terjemahan lokal melewati batas waktu (3 menit); modelnya mungkin terlalu besar atau diska terlalu lambat',

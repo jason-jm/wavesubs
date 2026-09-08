@@ -231,6 +231,7 @@ export const nl: Dict = {
   'settings.language.hint': 'Taal van de hele interface',
   'settings.language.system': 'Zoals het systeem',
   'settings.language.systemCurrent': 'Zoals het systeem (nu {name})',
+  'settings.language.detected': 'Door het systeem gemelde talen: {tags}',
   'settings.about': 'Over',
   'settings.about.privacy': 'Waar herkenning en vertaling draaien',
   'settings.about.privacyHint':
@@ -303,6 +304,7 @@ export const nl: Dict = {
   'error.noCues': 'Er zijn geen ondertitelregels geproduceerd',
   'error.modelDownloading': 'Dat model wordt al gedownload',
   'error.modelDownloadFailed': 'Modeldownload mislukt: huggingface.co en de mirror hf-mirror.com zijn beide onbereikbaar. Controleer je netwerk- of proxy-instellingen en probeer het opnieuw.',
+  'models.connecting': 'Verbinden met server…',
   'error.modelDownloadingCancelFirst': 'Het model wordt gedownload — annuleer dat eerst',
   'error.noAudioOrSubtitle': 'Dit bestand heeft geen audiospoor en geen ondertitelspoor, dus er kunnen geen ondertitels worden gemaakt',
   'error.llmLoadTimeout': 'Het laden van het lokale vertaalmodel duurde te lang (3 minuten); het is misschien te groot of de schijf te traag',

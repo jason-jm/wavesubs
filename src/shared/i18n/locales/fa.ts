@@ -231,6 +231,7 @@ export const fa: Dict = {
   'settings.language.hint': 'زبان کل رابط کاربری',
   'settings.language.system': 'مطابق سیستم',
   'settings.language.systemCurrent': 'مطابق سیستم (اکنون {name})',
+  'settings.language.detected': 'زبان‌های گزارش‌شده توسط سیستم: {tags}',
   'settings.about': 'درباره',
   'settings.about.privacy': 'تشخیص و ترجمه کجا اجرا می‌شوند',
   'settings.about.privacyHint':
@@ -299,6 +300,7 @@ export const fa: Dict = {
   'error.noCues': 'هیچ سطر زیرنویسی تولید نشد',
   'error.modelDownloading': 'آن مدل هم\u200cاکنون در حال بارگیری است',
   'error.modelDownloadFailed': 'دانلود مدل ناموفق بود: نه huggingface.co و نه آینهٔ hf-mirror.com در دسترس نیست. شبکه یا تنظیمات پروکسی را بررسی کنید و دوباره تلاش کنید.',
+  'models.connecting': 'در حال اتصال به سرور…',
   'error.modelDownloadingCancelFirst': 'مدل در حال بارگیری است — نخست آن را لغو کنید',
   'error.noAudioOrSubtitle': 'این فایل نه باند صوتی دارد و نه باند زیرنویس، بنابراین ساخت زیرنویس ممکن نیست',
   'error.llmLoadTimeout': 'بارگذاری مدل ترجمهٔ محلی به درازا کشید و متوقف شد (۳ دقیقه)؛ شاید مدل بیش از حد بزرگ یا دیسک کند باشد',

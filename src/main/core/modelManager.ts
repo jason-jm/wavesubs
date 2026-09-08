@@ -1,6 +1,6 @@
 import { createWriteStream } from 'node:fs'
 import { once } from 'node:events'
-import { mkdir, rename, rm } from 'node:fs/promises'
+import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import type { ModelDownloadProgress } from '../../shared/types'
 import { LocalizedError } from '../../shared/i18n/core'
@@ -19,19 +19,24 @@ export type FetchLike = (
   init: { signal: AbortSignal; redirect: 'follow' }
 ) => Promise<Response>
 
+type Progress = Omit<ModelDownloadProgress, 'kind'>
+
 /**
  * huggingface.co 在中国大陆不可达，hf-mirror.com 是路径完全一致的镜像。
- * 官方优先，连不上再换镜像；哪个成功了就记住，下一个文件直接从它下，不再每次先等官方超时。
+ * 官方优先；官方 STAGGER_MS 内没回应就并行去连镜像，谁先回来用谁。
+ * 赢过的来源记在内存里并落盘到模型目录：下一个文件、下一次启动都直接从它下，不再先等官方超时。
  */
 const HF_OFFICIAL = 'https://huggingface.co/'
 const HF_MIRRORS = ['https://hf-mirror.com/']
+const HOSTS = [HF_OFFICIAL, ...HF_MIRRORS]
+const PREFERRED_HOST_FILE = '.download-host'
 let preferredHost: string | null = null
 
 /** 一个下载地址展开成按优先级排列的候选列表；非 Hugging Face 的地址原样返回 */
 export function candidateUrls(url: string): string[] {
   if (!url.startsWith(HF_OFFICIAL)) return [url]
   const path = url.slice(HF_OFFICIAL.length)
-  const hosts = [HF_OFFICIAL, ...HF_MIRRORS]
+  const hosts = [...HOSTS]
   if (preferredHost && hosts.includes(preferredHost)) {
     hosts.splice(hosts.indexOf(preferredHost), 1)
     hosts.unshift(preferredHost)
@@ -39,46 +44,49 @@ export function candidateUrls(url: string): string[] {
   return hosts.map((h) => h + path)
 }
 
-/** 仅测试用：清掉记住的镜像偏好 */
+/** 仅测试用：清掉记住的来源偏好 */
 export function resetPreferredHost(): void {
   preferredHost = null
 }
 
-/**
- * 响应头阶段的超时。被墙时 TCP 握手会一直挂着，不设上限就永远切不到镜像。
- * 只管「拿到响应头」这一步；正文动辄几个 GB，不能用同一个超时。
- */
+/** 官方多久没回应就并行发起镜像。被墙时 TCP 握手会一直挂着，不能干等 */
+const STAGGER_MS = 3000
+/** 单次尝试拿到响应头的上限；只管响应头，正文动辄几个 GB 不能用同一个超时 */
 const HEADERS_TIMEOUT_MS = 20_000
 
 export class ModelDownloader {
   private active = new Map<string, AbortController>()
   private readonly fetchImpl: FetchLike
+  private readonly staggerMs: number
+  private hostLoaded = false
 
   constructor(
     private modelsDir: string,
-    opts: { fetch?: FetchLike } = {}
+    opts: { fetch?: FetchLike; staggerMs?: number } = {}
   ) {
     this.fetchImpl = opts.fetch ?? ((input, init) => fetch(input, init))
+    this.staggerMs = opts.staggerMs ?? STAGGER_MS
   }
 
   activeFiles(): string[] {
     return [...this.active.keys()]
   }
 
-  async download(
-    file: string,
-    url: string,
-    onProgress?: (p: Omit<ModelDownloadProgress, 'kind'>) => void
-  ): Promise<void> {
+  async download(file: string, url: string, onProgress?: (p: Progress) => void): Promise<void> {
     if (this.active.has(file)) throw new LocalizedError('error.modelDownloading')
     await mkdir(this.modelsDir, { recursive: true })
+    await this.loadPreferredHost()
     const controller = new AbortController()
     this.active.set(file, controller)
     const partPath = join(this.modelsDir, `${file}.download`)
     const finalPath = join(this.modelsDir, file)
     try {
+      // 先告诉界面「在连」：被墙时官方要等几秒才切镜像，这段时间不能让用户对着 0% 干瞪眼
+      onProgress?.({ file, phase: 'connecting', percent: -1, receivedMB: 0, totalMB: 0 })
       const { res, host } = await this.open(url, controller.signal)
       const total = Number(res.headers.get('content-length') ?? 0)
+      const totalMB = Math.round(total / 1048576)
+      onProgress?.({ file, phase: 'downloading', percent: total > 0 ? 0 : -1, receivedMB: 0, totalMB })
       const out = createWriteStream(partPath)
       let received = 0
       let lastEmit = 0
@@ -91,9 +99,10 @@ export class ModelDownloader {
             lastEmit = now
             onProgress?.({
               file,
+              phase: 'downloading',
               percent: total > 0 ? Math.round((received / total) * 100) : -1,
               receivedMB: Math.round(received / 1048576),
-              totalMB: Math.round(total / 1048576)
+              totalMB
             })
           }
         }
@@ -106,13 +115,8 @@ export class ModelDownloader {
         throw err
       }
       await rename(partPath, finalPath)
-      if (host) preferredHost = host
-      onProgress?.({
-        file,
-        percent: 100,
-        receivedMB: Math.round(received / 1048576),
-        totalMB: Math.round(total / 1048576)
-      })
+      if (host) await this.savePreferredHost(host)
+      onProgress?.({ file, phase: 'downloading', percent: 100, receivedMB: Math.round(received / 1048576), totalMB })
     } catch (err) {
       await rm(partPath, { force: true })
       if (controller.signal.aborted) throw new DownloadCancelledError()
@@ -122,41 +126,105 @@ export class ModelDownloader {
     }
   }
 
-  /**
-   * 逐个候选地址尝试，直到拿到可读的 200 响应。
-   * 每次尝试用独立的 AbortController：响应头超时只掐当前这次；用户取消则一并掐掉。
-   */
-  private async open(url: string, userSignal: AbortSignal): Promise<{ res: Response; host: string | null }> {
-    const candidates = candidateUrls(url)
-    let lastErr: unknown
-    for (const candidate of candidates) {
-      if (userSignal.aborted) throw new DownloadCancelledError()
-      const attempt = new AbortController()
-      const onUserAbort = (): void => attempt.abort()
-      userSignal.addEventListener('abort', onUserAbort, { once: true })
-      const timer = setTimeout(() => attempt.abort(), HEADERS_TIMEOUT_MS)
-      try {
-        const res = await this.fetchImpl(candidate, { signal: attempt.signal, redirect: 'follow' })
-        clearTimeout(timer)
-        if (!res.ok || !res.body) {
-          userSignal.removeEventListener('abort', onUserAbort)
-          lastErr = new Error(`HTTP ${res.status} ${candidate}`)
-          continue
-        }
-        // 成功后 onUserAbort 保持挂着：用户取消时要能中断正文读取
-        const host = [HF_OFFICIAL, ...HF_MIRRORS].find((h) => candidate.startsWith(h)) ?? null
-        return { res, host }
-      } catch (err) {
-        clearTimeout(timer)
-        userSignal.removeEventListener('abort', onUserAbort)
-        if (userSignal.aborted) throw new DownloadCancelledError()
-        lastErr = err
-        console.warn(`[download] ${candidate} 失败，${candidates.length > 1 ? '换下一个来源' : '无备用来源'}：`, (err as Error)?.message ?? err)
-      }
+  private async loadPreferredHost(): Promise<void> {
+    if (this.hostLoaded || preferredHost) return
+    this.hostLoaded = true
+    try {
+      const saved = (await readFile(join(this.modelsDir, PREFERRED_HOST_FILE), 'utf8')).trim()
+      if (HOSTS.includes(saved)) preferredHost = saved
+    } catch {
+      /* 没记过就走默认顺序 */
     }
-    const failed = new LocalizedError('error.modelDownloadFailed')
-    ;(failed as Error & { cause?: unknown }).cause = lastErr
-    throw failed
+  }
+
+  private async savePreferredHost(host: string): Promise<void> {
+    preferredHost = host
+    try {
+      await writeFile(join(this.modelsDir, PREFERRED_HOST_FILE), host)
+    } catch {
+      /* 记不下也不影响本次下载 */
+    }
+  }
+
+  /**
+   * 候选地址错开发起：第一个在 staggerMs 内没回应就并行发起下一个；任何一个失败立刻补发下一个。
+   * 谁先拿到可读的 200 响应谁赢，其余全部中止。全部失败抛本地化错误；用户取消抛 DownloadCancelledError。
+   */
+  private open(url: string, userSignal: AbortSignal): Promise<{ res: Response; host: string | null }> {
+    const candidates = candidateUrls(url)
+    return new Promise((resolve, reject) => {
+      const attempts: AbortController[] = []
+      const timers: NodeJS.Timeout[] = []
+      const errors: unknown[] = []
+      let next = 0
+      let failed = 0
+      let done = false
+
+      const finish = (fn: () => void): void => {
+        if (done) return
+        done = true
+        timers.forEach(clearTimeout)
+        userSignal.removeEventListener('abort', onUserAbort)
+        fn()
+      }
+      const onUserAbort = (): void => {
+        attempts.forEach((a) => a.abort())
+        finish(() => reject(new DownloadCancelledError()))
+      }
+      userSignal.addEventListener('abort', onUserAbort, { once: true })
+
+      const launch = (): void => {
+        if (done || next >= candidates.length) return
+        const candidate = candidates[next++]
+        const ctrl = new AbortController()
+        attempts.push(ctrl)
+        const headersTimer = setTimeout(() => ctrl.abort(), HEADERS_TIMEOUT_MS)
+        timers.push(headersTimer)
+        // 这个还没回应就并行试下一个
+        if (next < candidates.length) timers.push(setTimeout(launch, this.staggerMs))
+
+        const fail = (err: unknown): void => {
+          if (done) return
+          errors.push(err)
+          failed += 1
+          console.warn(`[download] ${candidate} 失败：`, (err as Error)?.message ?? err)
+          if (next < candidates.length) {
+            launch() // 立刻补发下一个，不等错开计时
+          } else if (failed >= candidates.length) {
+            const all = new LocalizedError('error.modelDownloadFailed')
+            ;(all as Error & { cause?: unknown }).cause = errors[errors.length - 1]
+            finish(() => reject(all))
+          }
+        }
+
+        this.fetchImpl(candidate, { signal: ctrl.signal, redirect: 'follow' }).then(
+          (res) => {
+            clearTimeout(headersTimer)
+            if (done) {
+              ctrl.abort() // 别人先赢了，这个响应不要
+              return
+            }
+            if (!res.ok || !res.body) {
+              ctrl.abort()
+              fail(new Error(`HTTP ${res.status} ${candidate}`))
+              return
+            }
+            const host = HOSTS.find((h) => candidate.startsWith(h)) ?? null
+            attempts.filter((a) => a !== ctrl).forEach((a) => a.abort())
+            finish(() => {
+              // 赢家的正文还要读很久，用户取消要能掐断它
+              userSignal.addEventListener('abort', () => ctrl.abort(), { once: true })
+              resolve({ res, host })
+            })
+          },
+          (err) => {
+            clearTimeout(headersTimer)
+            fail(err)
+          }
+        )
+      }
+      launch()
+    })
   }
 
   cancel(file: string): void {

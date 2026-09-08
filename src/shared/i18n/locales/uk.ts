@@ -231,6 +231,7 @@ export const uk: Dict = {
   'settings.language.hint': 'Мова всього інтерфейсу',
   'settings.language.system': 'Як у системі',
   'settings.language.systemCurrent': 'Як у системі (зараз {name})',
+  'settings.language.detected': 'Мови, повідомлені системою: {tags}',
   'settings.about': 'Про програму',
   'settings.about.privacy': 'Де виконуються розпізнавання й переклад',
   'settings.about.privacyHint':
@@ -302,6 +303,7 @@ export const uk: Dict = {
   'error.noCues': 'Не отримано жодного рядка субтитрів',
   'error.modelDownloading': 'Ця модель уже завантажується',
   'error.modelDownloadFailed': 'Не вдалося завантажити модель: недоступні ні huggingface.co, ні дзеркало hf-mirror.com. Перевірте мережу або налаштування проксі й спробуйте ще раз.',
+  'models.connecting': 'З’єднання із сервером…',
   'error.modelDownloadingCancelFirst': 'Модель завантажується — спершу скасуйте',
   'error.noAudioOrSubtitle': 'У цьому файлі немає ані аудіодоріжки, ані доріжки субтитрів, тож створити субтитри не вдасться',
   'error.llmLoadTimeout': 'Завантаження локальної моделі перекладу перевищило час очікування (3 хвилини); модель може бути завеликою або диск надто повільним',

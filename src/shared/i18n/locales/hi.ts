@@ -231,6 +231,7 @@ export const hi: Dict = {
   'settings.language.hint': 'पूरे इंटरफ़ेस की भाषा',
   'settings.language.system': 'सिस्टम के अनुसार',
   'settings.language.systemCurrent': 'सिस्टम के अनुसार (अभी {name})',
+  'settings.language.detected': 'सिस्टम द्वारा बताई गई भाषाएँ: {tags}',
   'settings.about': 'परिचय',
   'settings.about.privacy': 'पहचान और अनुवाद कहाँ चलते हैं',
   'settings.about.privacyHint':
@@ -301,6 +302,7 @@ export const hi: Dict = {
   'error.noCues': 'एक भी उपशीर्षक पंक्ति नहीं बनी',
   'error.modelDownloading': 'वह मॉडल पहले से डाउनलोड हो रहा है',
   'error.modelDownloadFailed': 'मॉडल डाउनलोड विफल: न तो huggingface.co और न ही मिरर hf-mirror.com तक पहुँचा जा सका। नेटवर्क या प्रॉक्सी सेटिंग जाँचकर फिर कोशिश करें।',
+  'models.connecting': 'सर्वर से कनेक्ट हो रहा है…',
   'error.modelDownloadingCancelFirst': 'मॉडल डाउनलोड हो रहा है — पहले उसे रोकें',
   'error.noAudioOrSubtitle': 'इस फ़ाइल में न ऑडियो ट्रैक है न उपशीर्षक ट्रैक, इसलिए उपशीर्षक नहीं बनाए जा सकते',
   'error.llmLoadTimeout': 'स्थानीय अनुवाद मॉडल लोड होने में समय समाप्त हो गया (3 मिनट); मॉडल बहुत बड़ा हो सकता है या डिस्क बहुत धीमी',

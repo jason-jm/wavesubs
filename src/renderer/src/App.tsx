@@ -289,7 +289,7 @@ export default function App(): React.JSX.Element {
       setModelError(null)
       setDownloads((prev) => ({
         ...prev,
-        [file]: { kind, file, percent: 0, receivedMB: 0, totalMB: 0 }
+        [file]: { kind, file, phase: 'connecting', percent: 0, receivedMB: 0, totalMB: 0 }
       }))
       refreshOverview()
       window.waveSubs
@@ -363,10 +363,10 @@ export default function App(): React.JSX.Element {
   return (
     <I18nProvider locale={locale}>
     <div className="app">
+      <div className="titlebar" />
       <aside className="sidebar">
         {/* 给交通灯让位。这里不放应用图标——原生 Mac 应用的侧边栏都不放，
             图标属于程序坞和「关于」，摆进来只会和选中态抢注意力 */}
-        <div className="sidebar-top" />
         <nav className="nav">{NAV.map(navButton)}</nav>
         <nav className="nav nav-bottom">{navButton(SETTINGS_NAV)}</nav>
       </aside>

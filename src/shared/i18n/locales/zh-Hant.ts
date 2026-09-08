@@ -228,6 +228,7 @@ export const zhHant: Dict = {
   'settings.language.hint': '介面顯示語言',
   'settings.language.system': '跟隨系統',
   'settings.language.systemCurrent': '跟隨系統（目前為 {name}）',
+  'settings.language.detected': '系統回報的語言：{tags}',
   'settings.about': '關於',
 
   'settings.about.privacy': '辨識與翻譯在哪執行',
@@ -291,6 +292,7 @@ export const zhHant: Dict = {
   'error.noCues': '沒有得到任何字幕條目',
   'error.modelDownloading': '該模型正在下載中',
   'error.modelDownloadFailed': '模型下載失敗：無法連線 huggingface.co，也無法連線鏡像 hf-mirror.com。請檢查網路或代理設定後重試。',
+  'models.connecting': '正在連線伺服器…',
   'error.modelDownloadingCancelFirst': '模型正在下載中，請先取消',
   'error.noAudioOrSubtitle': '該檔案既沒有音軌也沒有字幕軌，無法產生字幕',
   'error.llmLoadTimeout': '本機翻譯模型載入逾時（3 分鐘），模型可能過大或磁碟過慢',

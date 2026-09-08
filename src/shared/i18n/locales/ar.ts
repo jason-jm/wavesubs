@@ -230,6 +230,7 @@ export const ar: Dict = {
   'settings.language.hint': 'لغة الواجهة بالكامل',
   'settings.language.system': 'حسب النظام',
   'settings.language.systemCurrent': 'حسب النظام (حاليًا {name})',
+  'settings.language.detected': 'اللغات التي أبلغ عنها النظام: {tags}',
   'settings.about': 'حول',
   'settings.about.privacy': 'أين يجري التعرف والترجمة',
   'settings.about.privacyHint':
@@ -299,6 +300,7 @@ export const ar: Dict = {
   'error.noCues': 'لم يُنتَج أي سطر ترجمة',
   'error.modelDownloading': 'هذا النموذج قيد التنزيل بالفعل',
   'error.modelDownloadFailed': 'فشل تنزيل النموذج: تعذّر الوصول إلى huggingface.co وإلى المرآة hf-mirror.com. تحقّق من الشبكة أو إعدادات الوكيل ثم أعد المحاولة.',
+  'models.connecting': 'جارٍ الاتصال بالخادم…',
   'error.modelDownloadingCancelFirst': 'النموذج قيد التنزيل — ألغِ التنزيل أولًا',
   'error.noAudioOrSubtitle': 'هذا الملف لا يحتوي على مسار صوتي ولا مسار ترجمة، لذا يتعذّر إنشاء الترجمة',
   'error.llmLoadTimeout': 'انتهت مهلة تحميل نموذج الترجمة المحلي (3 دقائق)؛ قد يكون النموذج كبيرًا جدًا أو القرص بطيئًا',

@@ -77,8 +77,8 @@ const RAIL_WIDTH = 88
  * Electron 里实测圆点直径 14.3pt、中心间距 23pt，整组 60pt。
  */
 const TRAFFIC_LIGHTS = { width: 60, height: 14 }
-/** 轨道顶部留给交通灯的高度，与 App.css 里 .sidebar-top 一致 */
-const RAIL_HEADER_HEIGHT = 48
+/** 顶部窗口栏高度，与 App.css 里 .app 的 --titlebar-h 一致；交通灯与 Windows 窗口按钮都居中在这一行 */
+const TITLEBAR_HEIGHT = 38
 
 /**
  * 必须在 app ready 之前注册：ready 后再注册特权 scheme 会被 Electron 忽略，
@@ -556,7 +556,7 @@ function titleBarOverlay(): { color: string; symbolColor: string; height: number
   return {
     color: '#00000000',
     symbolColor: nativeTheme.shouldUseDarkColors ? '#e8e9f0' : '#3a3f52',
-    height: RAIL_HEADER_HEIGHT
+    height: TITLEBAR_HEIGHT
   }
 }
 
@@ -607,19 +607,17 @@ function createWindow(): void {
     minHeight: 620,
     title: 'Wave Subs',
     /**
-     * 两个平台都要「无边框 + 内容顶到窗口边缘」，但实现方式不同：
-     * - macOS：hiddenInset 保留交通灯，把它挪进侧边栏顶部那块留白里
-     * - Windows：hidden + titleBarOverlay，让系统把最小化/最大化/关闭画在右上角。
-     *   叠加层背景设成全透明，主题渐变才能透上去；高度对齐 .sidebar-top 的 48px，
-     *   这样两个平台的顶部留白视觉一致。
+     * 两个平台都是「无边框 + 顶部一条 38px 的窗口栏」，窗口按钮画在这条栏里，内容从栏下面开始：
+     * - macOS：hiddenInset 保留交通灯，垂直居中在栏里、水平居中在轨道列上
+     * - Windows：hidden + titleBarOverlay，系统把最小化/最大化/关闭画在栏的右端。
+     *   叠加层背景设成全透明，主题渐变才能透上去；高度与栏一致，按钮就不会压到内容卡片的边框。
      */
     ...(process.platform === 'darwin'
       ? {
           titleBarStyle: 'hiddenInset' as const,
-          // 水平、垂直都在轨道顶部这块区域里居中；轨道变宽窄时跟着自动调整
           trafficLightPosition: {
             x: Math.round((RAIL_WIDTH - TRAFFIC_LIGHTS.width) / 2),
-            y: Math.round((RAIL_HEADER_HEIGHT - TRAFFIC_LIGHTS.height) / 2)
+            y: Math.round((TITLEBAR_HEIGHT - TRAFFIC_LIGHTS.height) / 2)
           }
         }
       : { titleBarStyle: 'hidden' as const, titleBarOverlay: titleBarOverlay() }),

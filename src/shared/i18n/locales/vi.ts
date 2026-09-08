@@ -231,6 +231,7 @@ export const vi: Dict = {
   'settings.language.hint': 'Ngôn ngữ dùng cho toàn bộ giao diện',
   'settings.language.system': 'Theo hệ thống',
   'settings.language.systemCurrent': 'Theo hệ thống (hiện là {name})',
+  'settings.language.detected': 'Ngôn ngữ hệ thống báo cáo: {tags}',
   'settings.about': 'Giới thiệu',
   'settings.about.privacy': 'Nhận dạng và dịch chạy ở đâu',
   'settings.about.privacyHint':
@@ -302,6 +303,7 @@ export const vi: Dict = {
   'error.noCues': 'Không thu được dòng phụ đề nào',
   'error.modelDownloading': 'Mô hình đó đang được tải rồi',
   'error.modelDownloadFailed': 'Tải mô hình thất bại: không kết nối được huggingface.co lẫn máy chủ dự phòng hf-mirror.com. Hãy kiểm tra mạng hoặc cài đặt proxy rồi thử lại.',
+  'models.connecting': 'Đang kết nối máy chủ…',
   'error.modelDownloadingCancelFirst': 'Mô hình đang tải — hãy hủy trước đã',
   'error.noAudioOrSubtitle': 'Tệp này không có cả rãnh âm thanh lẫn rãnh phụ đề nên không tạo được phụ đề',
   'error.llmLoadTimeout': 'Nạp mô hình dịch cục bộ quá thời gian chờ (3 phút); có thể mô hình quá lớn hoặc đĩa quá chậm',

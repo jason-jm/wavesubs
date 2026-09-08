@@ -247,6 +247,8 @@ export interface ModelsOverview {
 export interface ModelDownloadProgress {
   kind: ModelKind
   file: string
+  /** connecting：还在找能连上的来源（官方 / 镜像），此时没有字节数可显示 */
+  phase?: 'connecting' | 'downloading'
   /** 总大小未知时为 -1 */
   percent: number
   receivedMB: number
@@ -312,6 +314,8 @@ export interface SettingsView {
   resolvedLanguage: string
   /** 系统语言匹配到的结果，用于「跟随系统（当前 X）」的提示 */
   systemLanguage: string
+  /** 系统报告的原始语言标签（按优先级），给「跟随系统」结果不对时排查用 */
+  systemLanguageTags: string[]
   translateEnabled: boolean
   translation: TranslationSettingsView
   export: { format: ExportFormat; content: ExportContent }

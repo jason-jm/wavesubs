@@ -231,6 +231,7 @@ export const de: Dict = {
   'settings.language.hint': 'Sprache der gesamten Oberfläche',
   'settings.language.system': 'Wie das System',
   'settings.language.systemCurrent': 'Wie das System (derzeit {name})',
+  'settings.language.detected': 'Vom System gemeldete Sprachen: {tags}',
   'settings.about': 'Über',
   'settings.about.privacy': 'Wo Erkennung und Übersetzung laufen',
   'settings.about.privacyHint':
@@ -303,6 +304,7 @@ export const de: Dict = {
   'error.noCues': 'Es wurden keine Untertitelzeilen erzeugt',
   'error.modelDownloading': 'Dieses Modell wird bereits geladen',
   'error.modelDownloadFailed': 'Modell-Download fehlgeschlagen: Weder huggingface.co noch der Spiegel hf-mirror.com sind erreichbar. Prüfe Netzwerk oder Proxy-Einstellungen und versuche es erneut.',
+  'models.connecting': 'Verbindung zum Server…',
   'error.modelDownloadingCancelFirst': 'Das Modell wird gerade geladen – brich den Vorgang zuerst ab',
   'error.noAudioOrSubtitle': 'Diese Datei hat weder eine Audio- noch eine Untertitelspur, deshalb lassen sich keine Untertitel erzeugen',
   'error.llmLoadTimeout': 'Das Laden des lokalen Übersetzungsmodells hat zu lange gedauert (3 Minuten); es ist womöglich zu groß oder die Festplatte zu langsam',

@@ -1,10 +1,10 @@
 /**
- * 模型下载器自检：镜像回退矩阵 + 用户取消 + 全部失败时的本地化错误。
+ * 模型下载器自检：镜像回退矩阵 + 错开并发 + 来源记忆 + 用户取消 + 全部失败时的本地化错误。
  *
  * 用假 fetch 模拟「官方被墙、镜像正常」：这是中国大陆用户的真实处境，
- * 1.0.2 之前会直接报 "TypeError: fetch failed"。
+ * 1.0.2 之前会直接报 "TypeError: fetch failed"，1.0.3 会先干等官方 20 秒。
  */
-import { mkdtempSync, readFileSync, rmSync, existsSync } from 'node:fs'
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import {
@@ -30,6 +30,8 @@ const eq = (name: string, got: unknown, want: unknown): void => {
 
 const HF = 'https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.bin'
 const MIRROR = 'https://hf-mirror.com/ggerganov/whisper.cpp/resolve/main/ggml-base.bin'
+/** 测试里错开时间缩到 150ms，真实值是 3 秒 */
+const STAGGER = 150
 
 console.log('候选地址：')
 resetPreferredHost()
@@ -52,7 +54,6 @@ function fakeFetch(behaviour: Record<string, 'ok' | 'fail' | 'hang' | '404'>, bo
     const bytes = new TextEncoder().encode(body)
     const stream = new ReadableStream<Uint8Array>({
       start(ctrl) {
-        // 分两块写，验证进度回调与 drain 路径
         ctrl.enqueue(bytes.slice(0, 2))
         ctrl.enqueue(bytes.slice(2))
         ctrl.close()
@@ -63,52 +64,107 @@ function fakeFetch(behaviour: Record<string, 'ok' | 'fail' | 'hang' | '404'>, bo
   return Object.assign(impl, { calls })
 }
 
-const work = mkdtempSync(join(tmpdir(), 'wavesubs-checkdl-'))
-try {
-  console.log('\n官方被墙、镜像正常（大陆用户的处境）：')
+const root = mkdtempSync(join(tmpdir(), 'wavesubs-checkdl-'))
+let n = 0
+/** 每个用例独立目录：来源偏好会落盘，不能串到下一个用例 */
+const fresh = (): string => {
+  const d = join(root, `t${n++}`)
+  mkdirSync(d)
   resetPreferredHost()
-  const f1 = fakeFetch({ 'huggingface.co': 'fail', 'hf-mirror.com': 'ok' })
-  const d1 = new ModelDownloader(work, { fetch: f1 })
-  let last = 0
-  await d1.download('a.bin', HF, (p) => { last = p.percent })
-  eq('先试官方再试镜像', f1.calls, [HF, MIRROR])
-  eq('文件落盘且内容完整', readFileSync(join(work, 'a.bin'), 'utf8'), 'hello')
-  eq('进度最终 100%', last, 100)
-  eq('镜像成功后记住偏好，下一个文件直接用镜像', candidateUrls(HF), [MIRROR, HF])
-  eq('临时 .download 文件已清理', existsSync(join(work, 'a.bin.download')), false)
+  return d
+}
+
+try {
+  console.log('\n官方直接报错、镜像正常：')
+  {
+    const work = fresh()
+    const f = fakeFetch({ 'huggingface.co': 'fail', 'hf-mirror.com': 'ok' })
+    const phases: string[] = []
+    let last = 0
+    await new ModelDownloader(work, { fetch: f, staggerMs: STAGGER }).download('a.bin', HF, (p) => {
+      if (p.phase && phases[phases.length - 1] !== p.phase) phases.push(p.phase)
+      last = p.percent
+    })
+    eq('先试官方，失败立刻补镜像', f.calls, [HF, MIRROR])
+    eq('文件落盘且内容完整', readFileSync(join(work, 'a.bin'), 'utf8'), 'hello')
+    eq('进度阶段 connecting → downloading', phases, ['connecting', 'downloading'])
+    eq('进度最终 100%', last, 100)
+    eq('镜像赢了之后记住：下一个文件先走镜像', candidateUrls(HF), [MIRROR, HF])
+    eq('偏好落盘到模型目录', readFileSync(join(work, '.download-host'), 'utf8'), 'https://hf-mirror.com/')
+    eq('临时 .download 文件已清理', existsSync(join(work, 'a.bin.download')), false)
+  }
+
+  console.log('\n官方挂着不回应（被墙的典型表现）、镜像正常：')
+  {
+    const work = fresh()
+    const f = fakeFetch({ 'huggingface.co': 'hang', 'hf-mirror.com': 'ok' })
+    const t0 = Date.now()
+    await new ModelDownloader(work, { fetch: f, staggerMs: STAGGER }).download('b.bin', HF)
+    const ms = Date.now() - t0
+    eq('错开时间一到就并行发起镜像', f.calls, [HF, MIRROR])
+    eq(`没有等官方超时（耗时 ${ms}ms，应远小于 20s）`, ms < 5000, true)
+  }
+
+  console.log('\n记住的偏好跨实例生效（模拟重启）：')
+  {
+    const work = fresh()
+    const f1 = fakeFetch({ 'huggingface.co': 'hang', 'hf-mirror.com': 'ok' })
+    await new ModelDownloader(work, { fetch: f1, staggerMs: STAGGER }).download('c.bin', HF)
+    resetPreferredHost() // 内存清掉，只剩磁盘上的记录
+    const f2 = fakeFetch({ 'huggingface.co': 'hang', 'hf-mirror.com': 'ok' })
+    await new ModelDownloader(work, { fetch: f2, staggerMs: STAGGER }).download('d.bin', HF)
+    eq('新实例读到落盘偏好，直接从镜像下', f2.calls[0], MIRROR)
+  }
 
   console.log('\n官方 404、镜像正常：')
-  resetPreferredHost()
-  const f2 = fakeFetch({ 'huggingface.co': '404', 'hf-mirror.com': 'ok' })
-  await new ModelDownloader(work, { fetch: f2 }).download('b.bin', HF)
-  eq('404 也算失败、切到镜像', f2.calls, [HF, MIRROR])
+  {
+    const work = fresh()
+    const f = fakeFetch({ 'huggingface.co': '404', 'hf-mirror.com': 'ok' })
+    await new ModelDownloader(work, { fetch: f, staggerMs: STAGGER }).download('e.bin', HF)
+    eq('404 也算失败、切到镜像', f.calls, [HF, MIRROR])
+  }
 
   console.log('\n两边都连不上：')
-  resetPreferredHost()
-  const f3 = fakeFetch({ 'huggingface.co': 'fail', 'hf-mirror.com': 'fail' })
-  let err: unknown
-  try { await new ModelDownloader(work, { fetch: f3 }).download('c.bin', HF) } catch (e) { err = e }
-  eq('抛本地化错误 error.modelDownloadFailed', err instanceof LocalizedError ? err.key : String(err), 'error.modelDownloadFailed')
-  eq('cause 保留原始错误', (err as { cause?: Error })?.cause?.message, 'fetch failed')
-  eq('失败文件不残留', existsSync(join(work, 'c.bin')) || existsSync(join(work, 'c.bin.download')), false)
+  {
+    const work = fresh()
+    const f = fakeFetch({ 'huggingface.co': 'fail', 'hf-mirror.com': 'fail' })
+    let err: unknown
+    try {
+      await new ModelDownloader(work, { fetch: f, staggerMs: STAGGER }).download('f.bin', HF)
+    } catch (e) {
+      err = e
+    }
+    eq('抛本地化错误 error.modelDownloadFailed', err instanceof LocalizedError ? err.key : String(err), 'error.modelDownloadFailed')
+    eq('cause 保留原始错误', (err as { cause?: Error })?.cause?.message, 'fetch failed')
+    eq('失败文件不残留', existsSync(join(work, 'f.bin')) || existsSync(join(work, 'f.bin.download')), false)
+  }
 
   console.log('\n用户取消：')
-  resetPreferredHost()
-  const f4 = fakeFetch({ 'huggingface.co': 'hang' })
-  const d4 = new ModelDownloader(work, { fetch: f4 })
-  const pending = d4.download('d.bin', HF)
-  setTimeout(() => d4.cancel('d.bin'), 50)
-  let cancelErr: unknown
-  try { await pending } catch (e) { cancelErr = e }
-  eq('取消抛 DownloadCancelledError，不会误切镜像', cancelErr instanceof DownloadCancelledError, true)
-  eq('取消时只请求了一次', f4.calls.length, 1)
+  {
+    const work = fresh()
+    const f = fakeFetch({ 'huggingface.co': 'hang', 'hf-mirror.com': 'hang' })
+    const d = new ModelDownloader(work, { fetch: f, staggerMs: STAGGER })
+    const pending = d.download('g.bin', HF)
+    setTimeout(() => d.cancel('g.bin'), 50)
+    let cancelErr: unknown
+    try {
+      await pending
+    } catch (e) {
+      cancelErr = e
+    }
+    eq('取消抛 DownloadCancelledError', cancelErr instanceof DownloadCancelledError, true)
+    eq('取消发生在错开时间之前，只请求了一次', f.calls.length, 1)
+  }
 
   console.log('\n非 HF 地址：')
-  const f5 = fakeFetch({ 'example.com': 'ok' }, 'xyz')
-  await new ModelDownloader(work, { fetch: f5 }).download('e.bin', 'https://example.com/e.bin')
-  eq('没有镜像可换，直接下', f5.calls, ['https://example.com/e.bin'])
+  {
+    const work = fresh()
+    const f = fakeFetch({ 'example.com': 'ok' }, 'xyz')
+    await new ModelDownloader(work, { fetch: f, staggerMs: STAGGER }).download('h.bin', 'https://example.com/h.bin')
+    eq('没有镜像可换，直接下', f.calls, ['https://example.com/h.bin'])
+  }
 } finally {
-  rmSync(work, { recursive: true, force: true })
+  rmSync(root, { recursive: true, force: true })
 }
 
 console.log(bad === 0 ? '\n全部通过' : `\n${bad} 条不符`)

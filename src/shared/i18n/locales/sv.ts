@@ -231,6 +231,7 @@ export const sv: Dict = {
   'settings.language.hint': 'Språk för hela gränssnittet',
   'settings.language.system': 'Som systemet',
   'settings.language.systemCurrent': 'Som systemet (just nu {name})',
+  'settings.language.detected': 'Språk som systemet rapporterar: {tags}',
   'settings.about': 'Om',
   'settings.about.privacy': 'Var igenkänning och översättning körs',
   'settings.about.privacyHint':
@@ -302,6 +303,7 @@ export const sv: Dict = {
   'error.noCues': 'Inga undertextrader skapades',
   'error.modelDownloading': 'Den modellen hämtas redan',
   'error.modelDownloadFailed': 'Modellnedladdningen misslyckades: varken huggingface.co eller spegeln hf-mirror.com kan nås. Kontrollera nätverket eller proxyinställningarna och försök igen.',
+  'models.connecting': 'Ansluter till servern…',
   'error.modelDownloadingCancelFirst': 'Modellen hämtas — avbryt först',
   'error.noAudioOrSubtitle': 'Den här filen har varken ljudspår eller undertextspår, så det går inte att skapa undertexter',
   'error.llmLoadTimeout': 'Inläsningen av den lokala översättningsmodellen tog för lång tid (3 minuter); den kan vara för stor eller disken för långsam',

@@ -231,6 +231,7 @@ export const hu: Dict = {
   'settings.language.hint': 'Az egész felület nyelve',
   'settings.language.system': 'A rendszer szerint',
   'settings.language.systemCurrent': 'A rendszer szerint (most: {name})',
+  'settings.language.detected': 'A rendszer által jelentett nyelvek: {tags}',
   'settings.about': 'Névjegy',
   'settings.about.privacy': 'Hol fut a felismerés és a fordítás',
   'settings.about.privacyHint':
@@ -302,6 +303,7 @@ export const hu: Dict = {
   'error.noCues': 'Egyetlen feliratsor sem keletkezett',
   'error.modelDownloading': 'Ez a modell már letöltés alatt áll',
   'error.modelDownloadFailed': 'A modell letöltése nem sikerült: sem a huggingface.co, sem a hf-mirror.com tükör nem érhető el. Ellenőrizd a hálózatot vagy a proxybeállításokat, majd próbáld újra.',
+  'models.connecting': 'Kapcsolódás a szerverhez…',
   'error.modelDownloadingCancelFirst': 'A modell letöltése folyamatban van — előbb szakítsd meg',
   'error.noAudioOrSubtitle': 'Ebben a fájlban se hangsáv, se feliratsáv nincs, ezért nem készíthető felirat',
   'error.llmLoadTimeout': 'A helyi fordítómodell betöltése túllépte az időkorlátot (3 perc); lehet, hogy túl nagy, vagy a lemez túl lassú',

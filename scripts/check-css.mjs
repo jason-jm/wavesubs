@@ -18,6 +18,8 @@ const css = readFileSync(new URL('../src/renderer/src/App.css', import.meta.url)
 const RULES = [
   ['.app', 'display', 'grid', '外壳是两栏网格'],
   ['.app', 'background-image', 'linear-gradient', '整窗渐变'],
+  ['.titlebar', 'height', '38px', '顶部窗口栏高度与主进程 TITLEBAR_HEIGHT 一致'],
+  ['.content', 'margin-top', '0px', '内容卡片紧贴窗口栏，窗口按钮不会压到卡片边框'],
   ['.content', 'display', 'flex', '内容区纵向排列'],
   ['.content', 'border-radius', '13px', '内容卡片圆角'],
   ['.nav-item', 'flex-direction', 'column', '导航是图标在上文字在下'],
@@ -48,7 +50,7 @@ const RULES = [
 ]
 
 const html = `<!doctype html><meta charset="utf-8"><style>${css}</style>
-<div class="app"><aside class="sidebar"><div class="sidebar-top"></div>
+<div class="app"><div class="titlebar"></div><aside class="sidebar">
 <nav class="nav"><button class="nav-item nav-item-active">
 <svg width="10" height="10"><rect width="10" height="10"/></svg>x</button></nav></aside>
 <main class="content"><header class="toolbar"><h1>t</h1></header>

@@ -230,6 +230,7 @@ export const he: Dict = {
   'settings.language.hint': 'שפת כל הממשק',
   'settings.language.system': 'לפי המערכת',
   'settings.language.systemCurrent': 'לפי המערכת (כרגע {name})',
+  'settings.language.detected': 'שפות שדווחו על ידי המערכת: {tags}',
   'settings.about': 'אודות',
   'settings.about.privacy': 'איפה רצים הזיהוי והתרגום',
   'settings.about.privacyHint':
@@ -298,6 +299,7 @@ export const he: Dict = {
   'error.noCues': 'לא נוצרה אף שורת כתובית',
   'error.modelDownloading': 'המודל הזה כבר בהורדה',
   'error.modelDownloadFailed': 'הורדת המודל נכשלה: לא ניתן להגיע ל‑huggingface.co וגם לא לאתר המראה hf-mirror.com. בדקו את הרשת או הגדרות הפרוקסי ונסו שוב.',
+  'models.connecting': 'מתחבר לשרת…',
   'error.modelDownloadingCancelFirst': 'המודל בהורדה — בטלו אותה קודם',
   'error.noAudioOrSubtitle': 'לקובץ הזה אין רצועת אודיו ואין רצועת כתוביות, ולכן אי אפשר ליצור כתוביות',
   'error.llmLoadTimeout': 'טעינת מודל התרגום המקומי חרגה מהזמן (3 דקות); ייתכן שהוא גדול מדי או שהדיסק איטי מדי',

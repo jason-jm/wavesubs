@@ -231,6 +231,7 @@ export const fi: Dict = {
   'settings.language.hint': 'Koko käyttöliittymän kieli',
   'settings.language.system': 'Kuten järjestelmässä',
   'settings.language.systemCurrent': 'Kuten järjestelmässä (nyt {name})',
+  'settings.language.detected': 'Järjestelmän ilmoittamat kielet: {tags}',
   'settings.about': 'Tietoja',
   'settings.about.privacy': 'Missä tunnistus ja käännös suoritetaan',
   'settings.about.privacyHint':
@@ -302,6 +303,7 @@ export const fi: Dict = {
   'error.noCues': 'Tekstitysrivejä ei syntynyt lainkaan',
   'error.modelDownloading': 'Kyseistä mallia ladataan jo',
   'error.modelDownloadFailed': 'Mallin lataus epäonnistui: huggingface.co tai peili hf-mirror.com eivät ole tavoitettavissa. Tarkista verkko- tai välityspalvelinasetukset ja yritä uudelleen.',
+  'models.connecting': 'Yhdistetään palvelimeen…',
   'error.modelDownloadingCancelFirst': 'Mallia ladataan — peru lataus ensin',
   'error.noAudioOrSubtitle': 'Tässä tiedostossa ei ole ääni- eikä tekstitysraitaa, joten tekstitystä ei voi luoda',
   'error.llmLoadTimeout': 'Paikallisen käännösmallin lataus aikakatkaistiin (3 minuuttia); malli voi olla liian suuri tai levy liian hidas',
