@@ -165,8 +165,8 @@
   <p class="h2sub"><em>로컬 AI가 영상에서 바로 만들어 드립니다</em></p>
   <p class="lead">Wave Subs는 영상의 대사를 인식해 SRT / ASS 자막을 만들고 내 언어로 자동 번역합니다. 모든 작업이 내 컴퓨터 안에서 끝납니다 — 인터넷 불필요, 완전 무료.</p>
   <div class="cta">
-    <a class="btn primary" id="dl-primary" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>macOS용 <small>Apple Silicon</small></a>
-    <a class="btn" id="dl-secondary" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>Windows용 <small>x64</small></a>
+    <a class="btn primary" id="dl-mac" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>macOS용 <small>Apple Silicon</small></a>
+    <a class="btn" id="dl-win" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>Windows용 <small>x64</small></a>
   </div>
   <p class="cta-note"><a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">완전 오픈소스</a><span>·</span>완전 무료<span>·</span>인앱 결제 없음</p>
   <div class="pills"><span class="pill">SRT / ASS 자막 생성</span><span class="pill">내 언어로 자동 번역 (29개)</span><span class="pill">로컬 AI · 인터넷 불필요</span></div>
@@ -218,7 +218,8 @@
     <div class="card"><h3>macOS</h3><div class="req">macOS 12 이상 · <strong>Apple Silicon 전용</strong>(M1 이후) · Apple 공증 완료</div>
       <a class="btn primary" data-dl="mac-dmg" href="#">DMG 다운로드</a><div class="req"><a data-dl="mac-zip" href="#">또는 ZIP</a></div></div>
     <div class="card"><h3>Windows</h3><div class="req">Windows 10 이상 · x64 · 16 GB 메모리 권장</div>
-      <a class="btn primary" data-dl="win-exe" href="#">설치 프로그램 다운로드</a><div class="req"><a data-dl="win-zip" href="#">또는 포터블 ZIP</a></div></div>
+      <a class="btn primary" data-dl="win-exe" href="#">설치 프로그램 다운로드</a><div class="req"><a data-dl="win-zip" href="#">또는 포터블 ZIP</a></div>
+      <div class="req" style="margin-top:14px">처음 실행할 때 &quot;Windows의 PC 보호&quot; 창이 뜨면 &quot;추가 정보&quot; → &quot;실행&quot;을 누르세요. 설치 프로그램에 아직 코드 서명이 없어 SmartScreen이 경고합니다.</div></div>
   </div>
   <div class="cli"><div class="cli-h">명령줄로 설치</div>
     <div><span>macOS · Homebrew</span><code>brew install --cask jason-jm/wavesubs/wavesubs</code></div>
@@ -242,11 +243,12 @@
   const isWin = /Windows/i.test(navigator.userAgent);
   const applyLinks = (files) => {
     document.querySelectorAll('[data-dl]').forEach((a) => { if (files[a.dataset.dl]) a.href = files[a.dataset.dl]; });
-    document.getElementById('dl-primary').href = isWin ? files['win-exe'] : files['mac-dmg'];
-    document.getElementById('dl-secondary').href = isWin ? files['mac-dmg'] : files['win-exe'];
+    document.getElementById('dl-mac').href = files['mac-dmg'];
+    document.getElementById('dl-win').href = files['win-exe'];
   };
   applyLinks(FILES);
-  if (isWin) { const p = document.getElementById('dl-primary'), s = document.getElementById('dl-secondary'); p.parentNode.insertBefore(s, p); }
+  // Windows 访客：把高亮和首位让给 Windows 按钮；链接始终跟着按钮上的标签走
+  if (isWin) { const m = document.getElementById('dl-mac'), w = document.getElementById('dl-win'); m.classList.remove('primary'); w.classList.add('primary'); m.parentNode.insertBefore(w, m); }
   fetch('https://api.github.com/repos/jason-jm/wavesubs/releases/latest', { headers: { Accept: 'application/vnd.github+json' } })
     .then((r) => (r.ok ? r.json() : null)).then((rel) => {
       if (!rel || !Array.isArray(rel.assets)) return;

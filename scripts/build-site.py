@@ -95,6 +95,7 @@ T['zh'] = dict(
   cli_h='命令行安装',
   dl_h2='下载', dl_sub=f'版本 {VERSION}。ffmpeg 与 whisper.cpp 已随包附带，装完就能用，不需要另装任何东西。',
   mac_req='macOS 12 或更新 · <strong>仅 Apple Silicon</strong>（M1 及之后）· 已由 Apple 公证',
+  win_note='首次运行若出现「Windows 已保护你的电脑」，点「更多信息」→「仍要运行」即可。安装包尚未购买代码签名证书，SmartScreen 会对新程序提示。',
   win_req='Windows 10 或更新 · x64 · 建议 16 GB 内存',
   dl_mac='下载 DMG', dl_mac_alt='或者 ZIP 压缩包', dl_win='下载安装程序', dl_win_alt='或者便携版 ZIP',
   dl_note='首次使用会引导下载识别模型（之后不再需要联网）。开源组件许可见 <a href="' + REPO + '/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>。',
@@ -153,6 +154,7 @@ T['en'] = dict(
   cli_h='Install from the command line',
   dl_h2='Download', dl_sub=f'Version {VERSION}. ffmpeg and whisper.cpp are bundled — install and go, nothing else to set up.',
   mac_req='macOS 12 or later · <strong>Apple Silicon only</strong> (M1 and later) · Notarized by Apple',
+  win_note='If Windows shows "Windows protected your PC" on first run, click "More info" → "Run anyway". The installer is not code-signed yet, so SmartScreen warns about new programs.',
   win_req='Windows 10 or later · x64 · 16 GB RAM recommended',
   dl_mac='Download DMG', dl_mac_alt='or ZIP archive', dl_win='Download installer', dl_win_alt='or portable ZIP',
   dl_note="On first launch you'll be guided to download a recognition model (no network needed after that). Open-source component licenses: <a href=\"" + REPO + "/blob/main/THIRD-PARTY-LICENSES.md\">THIRD-PARTY-LICENSES</a>.",
@@ -211,6 +213,7 @@ T['ja'] = dict(
   cli_h='コマンドラインでインストール',
   dl_h2='ダウンロード', dl_sub=f'バージョン {VERSION}。ffmpeg と whisper.cpp は同梱済み。インストールしてすぐ使えます。',
   mac_req='macOS 12 以降 · <strong>Apple Silicon のみ</strong>（M1 以降）· Apple 公証済み',
+  win_note='初回起動時に「Windows によって PC が保護されました」と表示されたら「詳細情報」→「実行」をクリックしてください。インストーラーはまだコード署名されていないため、SmartScreen が警告します。',
   win_req='Windows 10 以降 · x64 · メモリ 16 GB 推奨',
   dl_mac='DMG をダウンロード', dl_mac_alt='または ZIP', dl_win='インストーラをダウンロード', dl_win_alt='またはポータブル版 ZIP',
   dl_note='初回起動時に音声認識モデルのダウンロードを案内します（その後はネット不要）。オープンソースのライセンス：<a href="' + REPO + '/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>。',
@@ -265,6 +268,7 @@ T['ko'] = dict(
   cli_h='명령줄로 설치',
   dl_h2='다운로드', dl_sub=f'버전 {VERSION}. ffmpeg와 whisper.cpp가 내장되어 설치 후 바로 사용.',
   mac_req='macOS 12 이상 · <strong>Apple Silicon 전용</strong>(M1 이후) · Apple 공증 완료',
+  win_note='처음 실행할 때 "Windows의 PC 보호" 창이 뜨면 "추가 정보" → "실행"을 누르세요. 설치 프로그램에 아직 코드 서명이 없어 SmartScreen이 경고합니다.',
   win_req='Windows 10 이상 · x64 · 16 GB 메모리 권장',
   dl_mac='DMG 다운로드', dl_mac_alt='또는 ZIP', dl_win='설치 프로그램 다운로드', dl_win_alt='또는 포터블 ZIP',
   dl_note='첫 실행 시 음성 인식 모델 다운로드를 안내합니다(이후 인터넷 불필요). 오픈소스 라이선스: <a href="' + REPO + '/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>.',
@@ -319,6 +323,7 @@ T['fr'] = dict(
   cli_h='Installation en ligne de commande',
   dl_h2='Téléchargement', dl_sub=f'Version {VERSION}. ffmpeg et whisper.cpp sont inclus — rien d\'autre à installer.',
   mac_req='macOS 12 ou ultérieur · <strong>Apple Silicon uniquement</strong> (M1 et suivants) · Notarisé par Apple',
+  win_note="Si Windows affiche « Windows a protégé votre ordinateur » au premier lancement, cliquez sur « Informations complémentaires » → « Exécuter quand même ». L'installateur n'est pas encore signé, SmartScreen avertit donc pour les nouveaux programmes.",
   win_req='Windows 10 ou ultérieur · x64 · 16 Go de RAM conseillés',
   dl_mac='Télécharger le DMG', dl_mac_alt='ou l\'archive ZIP', dl_win='Télécharger l\'installateur', dl_win_alt='ou le ZIP portable',
   dl_note='Au premier lancement, un modèle de reconnaissance vous est proposé (plus besoin de réseau ensuite). Licences des composants open source : <a href="' + REPO + '/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>.',
@@ -373,6 +378,7 @@ T['de'] = dict(
   cli_h='Installation über die Kommandozeile',
   dl_h2='Download', dl_sub=f'Version {VERSION}. ffmpeg und whisper.cpp sind enthalten — installieren und loslegen.',
   mac_req='macOS 12 oder neuer · <strong>nur Apple Silicon</strong> (ab M1) · von Apple beglaubigt',
+  win_note='Zeigt Windows beim ersten Start „Der Computer wurde durch Windows geschützt“, klicke auf „Weitere Informationen“ → „Trotzdem ausführen“. Der Installer ist noch nicht signiert, daher warnt SmartScreen vor neuen Programmen.',
   win_req='Windows 10 oder neuer · x64 · 16 GB RAM empfohlen',
   dl_mac='DMG laden', dl_mac_alt='oder ZIP-Archiv', dl_win='Installer laden', dl_win_alt='oder portables ZIP',
   dl_note='Beim ersten Start wirst du durch den Download eines Erkennungsmodells geführt (danach kein Netz mehr nötig). Lizenzen der Open-Source-Komponenten: <a href="' + REPO + '/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>.',
@@ -427,6 +433,7 @@ T['ru'] = dict(
   cli_h='Установка из командной строки',
   dl_h2='Скачать', dl_sub=f'Версия {VERSION}. ffmpeg и whisper.cpp уже внутри — установите и работайте.',
   mac_req='macOS 12 и новее · <strong>только Apple Silicon</strong> (M1 и новее) · нотаризовано Apple',
+  win_note='Если при первом запуске Windows покажет «Система Windows защитила ваш компьютер», нажмите «Подробнее» → «Выполнить в любом случае». Установщик пока не подписан, поэтому SmartScreen предупреждает о новых программах.',
   win_req='Windows 10 и новее · x64 · рекомендуется 16 ГБ ОЗУ',
   dl_mac='Скачать DMG', dl_mac_alt='или ZIP-архив', dl_win='Скачать установщик', dl_win_alt='или портативный ZIP',
   dl_note='При первом запуске будет предложено скачать модель распознавания (дальше сеть не нужна). Лицензии открытых компонентов: <a href="' + REPO + '/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>.',
@@ -481,6 +488,7 @@ T['id'] = dict(
   cli_h='Pasang lewat baris perintah',
   dl_h2='Unduh', dl_sub=f'Versi {VERSION}. ffmpeg dan whisper.cpp sudah disertakan — pasang dan langsung pakai.',
   mac_req='macOS 12 atau lebih baru · <strong>hanya Apple Silicon</strong> (M1 ke atas) · dinotarisasi Apple',
+  win_note='Jika Windows menampilkan "Windows protected your PC" saat pertama dijalankan, klik "More info" → "Run anyway". Installer belum ditandatangani, jadi SmartScreen memperingatkan program baru.',
   win_req='Windows 10 atau lebih baru · x64 · RAM 16 GB disarankan',
   dl_mac='Unduh DMG', dl_mac_alt='atau arsip ZIP', dl_win='Unduh installer', dl_win_alt='atau ZIP portabel',
   dl_note='Saat pertama dibuka Anda akan dipandu mengunduh model pengenalan (setelah itu tak perlu jaringan). Lisensi komponen sumber terbuka: <a href="' + REPO + '/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>.',
@@ -535,6 +543,7 @@ T['ms'] = dict(
   cli_h='Pasang melalui baris arahan',
   dl_h2='Muat turun', dl_sub=f'Versi {VERSION}. ffmpeg dan whisper.cpp disertakan — pasang dan terus guna.',
   mac_req='macOS 12 atau lebih baharu · <strong>Apple Silicon sahaja</strong> (M1 ke atas) · dinotari Apple',
+  win_note='Jika Windows memaparkan "Windows protected your PC" pada pelancaran pertama, klik "More info" → "Run anyway". Pemasang belum ditandatangani, jadi SmartScreen memberi amaran untuk program baharu.',
   win_req='Windows 10 atau lebih baharu · x64 · RAM 16 GB disyorkan',
   dl_mac='Muat turun DMG', dl_mac_alt='atau arkib ZIP', dl_win='Muat turun pemasang', dl_win_alt='atau ZIP mudah alih',
   dl_note='Pada pelancaran pertama anda akan dipandu memuat turun model pengecaman (selepas itu tidak perlu rangkaian). Lesen komponen sumber terbuka: <a href="' + REPO + '/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>.',
@@ -589,6 +598,7 @@ T['vi'] = dict(
   cli_h='Cài qua dòng lệnh',
   dl_h2='Tải về', dl_sub=f'Phiên bản {VERSION}. ffmpeg và whisper.cpp đã đi kèm — cài là dùng.',
   mac_req='macOS 12 trở lên · <strong>chỉ Apple Silicon</strong> (M1 trở lên) · đã được Apple công chứng',
+  win_note='Nếu Windows hiện "Windows protected your PC" khi chạy lần đầu, bấm "More info" → "Run anyway". Trình cài đặt chưa được ký số nên SmartScreen cảnh báo với chương trình mới.',
   win_req='Windows 10 trở lên · x64 · khuyến nghị 16 GB RAM',
   dl_mac='Tải DMG', dl_mac_alt='hoặc bản ZIP', dl_win='Tải trình cài đặt', dl_win_alt='hoặc ZIP di động',
   dl_note='Lần mở đầu tiên sẽ hướng dẫn tải mô hình nhận dạng (sau đó không cần mạng). Giấy phép mã nguồn mở: <a href="' + REPO + '/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>.',
@@ -643,6 +653,7 @@ T['th'] = dict(
   cli_h='ติดตั้งผ่านคอมมานด์ไลน์',
   dl_h2='ดาวน์โหลด', dl_sub=f'เวอร์ชัน {VERSION} มี ffmpeg และ whisper.cpp มาพร้อมแล้ว ติดตั้งแล้วใช้ได้เลย',
   mac_req='macOS 12 ขึ้นไป · <strong>เฉพาะ Apple Silicon</strong> (M1 ขึ้นไป) · ผ่านการรับรองจาก Apple',
+  win_note='ถ้า Windows แสดง "Windows protected your PC" ตอนเปิดครั้งแรก ให้กด "More info" → "Run anyway" ตัวติดตั้งยังไม่ได้ลงนามโค้ด SmartScreen จึงเตือนโปรแกรมใหม่',
   win_req='Windows 10 ขึ้นไป · x64 · แนะนำแรม 16 GB',
   dl_mac='ดาวน์โหลด DMG', dl_mac_alt='หรือไฟล์ ZIP', dl_win='ดาวน์โหลดตัวติดตั้ง', dl_win_alt='หรือ ZIP แบบพกพา',
   dl_note='เปิดครั้งแรกจะแนะนำให้ดาวน์โหลดโมเดลจับบทพูด (หลังจากนั้นไม่ต้องใช้เน็ต) สัญญาอนุญาตโอเพนซอร์ส: <a href="' + REPO + '/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>',
@@ -817,8 +828,8 @@ def page(k):
   <p class="h2sub"><em>{esc(d['h2'])}</em></p>
   <p class="lead">{esc(d['lead'])}</p>
   <div class="cta">
-    <a class="btn primary" id="dl-primary" href="#download">{DL_ICON}{esc(d['cta_mac'])} <small>Apple Silicon</small></a>
-    <a class="btn" id="dl-secondary" href="#download">{DL_ICON}{esc(d['cta_win'])} <small>x64</small></a>
+    <a class="btn primary" id="dl-mac" href="#download">{DL_ICON}{esc(d['cta_mac'])} <small>Apple Silicon</small></a>
+    <a class="btn" id="dl-win" href="#download">{DL_ICON}{esc(d['cta_win'])} <small>x64</small></a>
   </div>
   <p class="cta-note"><a href="{REPO}" target="_blank" rel="noopener">{esc(d['cta_note'][0])}</a><span>·</span>{esc(d['cta_note'][1])}<span>·</span>{esc(d['cta_note'][2])}</p>
   <div class="pills">{pills}</div>
@@ -870,7 +881,8 @@ def page(k):
     <div class="card"><h3>macOS</h3><div class="req">{d['mac_req']}</div>
       <a class="btn primary" data-dl="mac-dmg" href="#">{esc(d['dl_mac'])}</a><div class="req"><a data-dl="mac-zip" href="#">{esc(d['dl_mac_alt'])}</a></div></div>
     <div class="card"><h3>Windows</h3><div class="req">{d['win_req']}</div>
-      <a class="btn primary" data-dl="win-exe" href="#">{esc(d['dl_win'])}</a><div class="req"><a data-dl="win-zip" href="#">{esc(d['dl_win_alt'])}</a></div></div>
+      <a class="btn primary" data-dl="win-exe" href="#">{esc(d['dl_win'])}</a><div class="req"><a data-dl="win-zip" href="#">{esc(d['dl_win_alt'])}</a></div>
+      <div class="req" style="margin-top:14px">{esc(d['win_note'])}</div></div>
   </div>
   <div class="cli"><div class="cli-h">{esc(d['cli_h'])}</div>
     <div><span>macOS · Homebrew</span><code>brew install --cask jason-jm/wavesubs/wavesubs</code></div>
@@ -894,11 +906,12 @@ def page(k):
   const isWin = /Windows/i.test(navigator.userAgent);
   const applyLinks = (files) => {{
     document.querySelectorAll('[data-dl]').forEach((a) => {{ if (files[a.dataset.dl]) a.href = files[a.dataset.dl]; }});
-    document.getElementById('dl-primary').href = isWin ? files['win-exe'] : files['mac-dmg'];
-    document.getElementById('dl-secondary').href = isWin ? files['mac-dmg'] : files['win-exe'];
+    document.getElementById('dl-mac').href = files['mac-dmg'];
+    document.getElementById('dl-win').href = files['win-exe'];
   }};
   applyLinks(FILES);
-  if (isWin) {{ const p = document.getElementById('dl-primary'), s = document.getElementById('dl-secondary'); p.parentNode.insertBefore(s, p); }}
+  // Windows 访客：把高亮和首位让给 Windows 按钮；链接始终跟着按钮上的标签走
+  if (isWin) {{ const m = document.getElementById('dl-mac'), w = document.getElementById('dl-win'); m.classList.remove('primary'); w.classList.add('primary'); m.parentNode.insertBefore(w, m); }}
   fetch('https://api.github.com/repos/jason-jm/wavesubs/releases/latest', {{ headers: {{ Accept: 'application/vnd.github+json' }} }})
     .then((r) => (r.ok ? r.json() : null)).then((rel) => {{
       if (!rel || !Array.isArray(rel.assets)) return;

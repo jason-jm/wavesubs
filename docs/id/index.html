@@ -165,8 +165,8 @@
   <p class="h2sub"><em>Biarkan AI lokal membuatnya langsung dari video</em></p>
   <p class="lead">Wave Subs mengenali dialog dalam video, membuat subtitle SRT / ASS, dan menerjemahkannya ke bahasa Anda. Semuanya di komputer Anda sendiri — tanpa internet, sepenuhnya gratis.</p>
   <div class="cta">
-    <a class="btn primary" id="dl-primary" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>macOS <small>Apple Silicon</small></a>
-    <a class="btn" id="dl-secondary" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>Windows <small>x64</small></a>
+    <a class="btn primary" id="dl-mac" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>macOS <small>Apple Silicon</small></a>
+    <a class="btn" id="dl-win" href="#download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>Windows <small>x64</small></a>
   </div>
   <p class="cta-note"><a href="https://github.com/jason-jm/wavesubs" target="_blank" rel="noopener">Sepenuhnya open source</a><span>·</span>Sepenuhnya gratis<span>·</span>Tanpa pembelian dalam aplikasi</p>
   <div class="pills"><span class="pill">Subtitle SRT / ASS</span><span class="pill">Terjemahan otomatis ke bahasa Anda (29)</span><span class="pill">AI lokal · tanpa internet</span></div>
@@ -218,7 +218,8 @@
     <div class="card"><h3>macOS</h3><div class="req">macOS 12 atau lebih baru · <strong>hanya Apple Silicon</strong> (M1 ke atas) · dinotarisasi Apple</div>
       <a class="btn primary" data-dl="mac-dmg" href="#">Unduh DMG</a><div class="req"><a data-dl="mac-zip" href="#">atau arsip ZIP</a></div></div>
     <div class="card"><h3>Windows</h3><div class="req">Windows 10 atau lebih baru · x64 · RAM 16 GB disarankan</div>
-      <a class="btn primary" data-dl="win-exe" href="#">Unduh installer</a><div class="req"><a data-dl="win-zip" href="#">atau ZIP portabel</a></div></div>
+      <a class="btn primary" data-dl="win-exe" href="#">Unduh installer</a><div class="req"><a data-dl="win-zip" href="#">atau ZIP portabel</a></div>
+      <div class="req" style="margin-top:14px">Jika Windows menampilkan &quot;Windows protected your PC&quot; saat pertama dijalankan, klik &quot;More info&quot; → &quot;Run anyway&quot;. Installer belum ditandatangani, jadi SmartScreen memperingatkan program baru.</div></div>
   </div>
   <div class="cli"><div class="cli-h">Pasang lewat baris perintah</div>
     <div><span>macOS · Homebrew</span><code>brew install --cask jason-jm/wavesubs/wavesubs</code></div>
@@ -242,11 +243,12 @@
   const isWin = /Windows/i.test(navigator.userAgent);
   const applyLinks = (files) => {
     document.querySelectorAll('[data-dl]').forEach((a) => { if (files[a.dataset.dl]) a.href = files[a.dataset.dl]; });
-    document.getElementById('dl-primary').href = isWin ? files['win-exe'] : files['mac-dmg'];
-    document.getElementById('dl-secondary').href = isWin ? files['mac-dmg'] : files['win-exe'];
+    document.getElementById('dl-mac').href = files['mac-dmg'];
+    document.getElementById('dl-win').href = files['win-exe'];
   };
   applyLinks(FILES);
-  if (isWin) { const p = document.getElementById('dl-primary'), s = document.getElementById('dl-secondary'); p.parentNode.insertBefore(s, p); }
+  // Windows 访客：把高亮和首位让给 Windows 按钮；链接始终跟着按钮上的标签走
+  if (isWin) { const m = document.getElementById('dl-mac'), w = document.getElementById('dl-win'); m.classList.remove('primary'); w.classList.add('primary'); m.parentNode.insertBefore(w, m); }
   fetch('https://api.github.com/repos/jason-jm/wavesubs/releases/latest', { headers: { Accept: 'application/vnd.github+json' } })
     .then((r) => (r.ok ? r.json() : null)).then((rel) => {
       if (!rel || !Array.isArray(rel.assets)) return;
