@@ -13,7 +13,7 @@ L['zh-Hans'] = dict(asc='简体中文 (zh-Hans)', shots='zh-Hans',
  subtitle='从影片生成字幕并自动翻译',
  keywords='字幕,SRT,ASS,视频字幕,自动字幕,whisper,语音识别,动漫,电影,日语,英语,批量,MKV,编辑器',
  promo='看片找不到字幕？把影片拖进来：本地 AI 识别对白、生成 SRT/ASS 字幕，并翻译成你的语言。无需联网，永久免费。',
- whatsnew='新增反馈入口：「帮助」菜单和「设置 → 关于」可直接提交反馈、进入讨论区、去 App Store 评价；「关于」显示真实版本号。',
+ whatsnew='中国大陆也能下载模型了：连不上 huggingface.co 时自动切换镜像；下载认系统代理。修复部分 Windows 上中文系统显示英文的问题。',
  description='''看片找不到字幕？Wave Subs 用本地 AI 直接从影片生成 SRT / ASS 字幕，并自动翻译成你的语言。全部在你自己的 Mac 上完成——无需联网，永久免费。
 
 三步出字幕
@@ -46,7 +46,7 @@ L['en-US'] = dict(asc='English (U.S.) (en-US)', shots='en',
  subtitle='Auto-translate video subtitles',
  keywords='srt,ass,captions,transcribe,whisper,offline,local,video,movie,anime,japanese,batch,mkv,free',
  promo="Can't find subtitles? Drop in a video: local AI recognizes the dialogue, generates SRT/ASS subtitles and translates them into your language. No internet, free forever.",
- whatsnew='New feedback entries: the Help menu and Settings → About open the feedback form, GitHub Discussions and App Store rating; About now shows the real version number.',
+ whatsnew='Model downloads now work from mainland China (automatic mirror fallback, honours system proxy). Fixed some Windows setups showing English on a Chinese system.',
  description='''Can't find subtitles for a video? Wave Subs generates SRT / ASS subtitles directly from the video using local AI, then auto-translates them into your language. Everything runs on your own Mac — no internet needed, free forever.
 
 Three steps to subtitles
@@ -79,7 +79,7 @@ L['ja'] = dict(asc='日本語 (ja)', shots='ja',
  subtitle='動画から字幕を生成し自動翻訳',
  keywords='字幕,SRT,ASS,文字起こし,whisper,音声認識,アニメ,映画,英語,韓国語,一括,MKV,編集',
  promo='字幕が見つからない？動画をドロップするだけ。ローカルAIがセリフを認識してSRT/ASS字幕を生成し、あなたの言語に翻訳します。ネット不要、ずっと無料。',
- whatsnew='フィードバック入口を追加：「ヘルプ」メニューと「設定 → このアプリについて」からフィードバック送信、ディスカッション、App Store での評価へ。バージョン番号の表示を修正。',
+ whatsnew='モデルのダウンロードが中国本土でも可能に（ミラーへ自動切替、システムプロキシに対応）。一部の Windows で中国語環境なのに英語表示になる問題を修正。',
  description='''字幕が見つからない動画、ありませんか？Wave Subs はローカル AI で動画から直接 SRT / ASS 字幕を生成し、あなたの言語に自動翻訳します。すべてあなたの Mac の中で完結——インターネット不要、ずっと無料です。
 
 3 ステップで字幕ができる
@@ -112,7 +112,7 @@ L['ko'] = dict(asc='한국어 (ko)', shots='ko',
  subtitle='영상에서 자막 생성, 자동 번역',
  keywords='자막,SRT,ASS,받아쓰기,whisper,음성인식,애니,영화,일본어,영어,일괄,MKV,편집기',
  promo='자막을 못 찾겠다면? 영상을 끌어다 놓으세요. 로컬 AI가 대사를 인식해 SRT/ASS 자막을 만들고 내 언어로 번역합니다. 인터넷 불필요, 영원히 무료.',
- whatsnew='피드백 입구 추가: 도움말 메뉴와 설정 → 정보에서 피드백 보내기, 토론, App Store 평가로 바로 이동. 정보 화면에 실제 버전 표시.',
+ whatsnew='중국 본토에서도 모델 다운로드 가능(미러 자동 전환, 시스템 프록시 지원). 일부 Windows에서 중국어 시스템인데 영어로 표시되던 문제 수정.',
  description='''자막을 찾을 수 없는 영상이 있나요? Wave Subs는 로컬 AI로 영상에서 바로 SRT / ASS 자막을 만들고, 내 언어로 자동 번역합니다. 모든 작업이 내 Mac 안에서 끝납니다 — 인터넷 불필요, 영원히 무료.
 
 세 단계로 자막 완성
@@ -145,7 +145,7 @@ L['fr-FR'] = dict(asc='Français (fr-FR)', shots='fr',
  subtitle='Sous-titres auto-traduits',
  keywords='srt,ass,transcription,whisper,traduction,hors ligne,vidéo,film,anime,japonais,lot,mkv,gratuit',
  promo="Pas de sous-titres ? Déposez la vidéo : l'IA locale reconnaît les dialogues, crée des SRT/ASS et les traduit dans votre langue. Sans internet, gratuit pour toujours.",
- whatsnew="Nouveaux accès aux commentaires : le menu Aide et Réglages → À propos ouvrent le formulaire, les discussions et la notation sur l'App Store ; À propos affiche le vrai numéro de version.",
+ whatsnew="Le téléchargement des modèles fonctionne désormais depuis la Chine continentale (bascule automatique vers un miroir, proxy système pris en charge). Correction de certains PC Windows affichant l'anglais sur un système en chinois.",
  description='''Impossible de trouver des sous-titres pour une vidéo ? Wave Subs génère des sous-titres SRT / ASS directement à partir de la vidéo grâce à une IA locale, puis les traduit automatiquement dans votre langue. Tout se passe sur votre Mac — sans internet, gratuit pour toujours.
 
 Des sous-titres en trois étapes
@@ -178,7 +178,7 @@ L['de-DE'] = dict(asc='Deutsch (de-DE)', shots='de',
  subtitle='Untertitel auto-übersetzt',
  keywords='untertitel,srt,ass,transkription,whisper,übersetzung,offline,video,film,anime,stapel,mkv,gratis',
  promo='Keine Untertitel? Video ablegen: Lokale KI erkennt die Dialoge, erstellt SRT/ASS-Untertitel und übersetzt sie in deine Sprache. Ohne Internet, für immer kostenlos.',
- whatsnew='Neue Feedback-Einträge: Hilfe-Menü und Einstellungen → Über öffnen Feedback-Formular, Diskussionen und App-Store-Bewertung; Über zeigt jetzt die echte Versionsnummer.',
+ whatsnew='Modell-Downloads funktionieren jetzt auch aus Festlandchina (automatischer Spiegel-Fallback, Systemproxy wird beachtet). Behoben: Einige Windows-Systeme zeigten auf Chinesisch Englisch an.',
  description='''Keine Untertitel für ein Video gefunden? Wave Subs erstellt SRT / ASS-Untertitel direkt aus dem Video mit lokaler KI und übersetzt sie automatisch in deine Sprache. Alles läuft auf deinem eigenen Mac — ohne Internet, für immer kostenlos.
 
 In drei Schritten zu Untertiteln
@@ -211,7 +211,7 @@ L['ru'] = dict(asc='Русский (ru)', shots='ru',
  subtitle='Автоперевод субтитров из видео',
  keywords='субтитры,srt,ass,транскрипция,whisper,перевод,видео,фильм,аниме,японский,пакет,mkv,бесплатно',
  promo='Нет субтитров? Перетащите видео: локальный ИИ распознает диалоги, создаст субтитры SRT/ASS и переведёт их на ваш язык. Без интернета, бесплатно навсегда.',
- whatsnew='Новые пункты обратной связи: меню «Справка» и «Настройки → О программе» открывают форму отзыва, обсуждения и оценку в App Store; в «О программе» показывается реальная версия.',
+ whatsnew='Загрузка моделей теперь работает из материкового Китая (автоматическое переключение на зеркало, учёт системного прокси). Исправлено: на некоторых Windows с китайской системой интерфейс был английским.',
  description='''Не нашли субтитры к видео? Wave Subs создаёт субтитры SRT / ASS прямо из видео с помощью локального ИИ и автоматически переводит их на ваш язык. Всё происходит на вашем Mac — без интернета, бесплатно навсегда.
 
 Субтитры за три шага
@@ -244,7 +244,7 @@ L['id'] = dict(asc='Bahasa Indonesia (id)', shots='id',
  subtitle='Subtitle video diterjemahkan',
  keywords='subtitle,srt,ass,transkripsi,whisper,terjemahan,video,film,anime,jepang,batch,mkv,gratis,editor',
  promo='Tak ada subtitle? Seret videonya: AI lokal mengenali dialog, membuat subtitle SRT/ASS, lalu menerjemahkannya ke bahasa Anda. Tanpa internet, gratis selamanya.',
- whatsnew='Pintu masuk umpan balik baru: menu Bantuan dan Pengaturan → Tentang membuka formulir masukan, diskusi, dan penilaian App Store; Tentang menampilkan versi yang sebenarnya.',
+ whatsnew='Unduhan model kini berfungsi dari Tiongkok daratan (beralih otomatis ke cermin, mendukung proxy sistem). Memperbaiki beberapa Windows yang menampilkan bahasa Inggris pada sistem berbahasa Mandarin.',
  description='''Tak menemukan subtitle untuk sebuah video? Wave Subs membuat subtitle SRT / ASS langsung dari video dengan AI lokal, lalu menerjemahkannya otomatis ke bahasa Anda. Semuanya berjalan di Mac Anda sendiri — tanpa internet, gratis selamanya.
 
 Tiga langkah menuju subtitle
@@ -277,7 +277,7 @@ L['ms'] = dict(asc='Bahasa Melayu (ms)', shots='ms',
  subtitle='Sari kata video, diterjemah',
  keywords='sari kata,srt,ass,transkripsi,whisper,terjemahan,video,filem,anime,jepun,kelompok,mkv,percuma',
  promo='Tiada sari kata? Seret video: AI tempatan mengecam dialog, menjana sari kata SRT/ASS dan menterjemahnya ke bahasa anda. Tanpa internet, percuma selamanya.',
- whatsnew='Pintu masuk maklum balas baharu: menu Bantuan dan Tetapan → Perihal membuka borang maklum balas, perbincangan dan penilaian App Store; Perihal memaparkan versi sebenar.',
+ whatsnew='Muat turun model kini berfungsi dari tanah besar China (beralih automatik ke cermin, menyokong proksi sistem). Membetulkan sesetengah Windows yang memaparkan bahasa Inggeris pada sistem berbahasa Cina.',
  description='''Tidak jumpa sari kata untuk sesuatu video? Wave Subs menjana sari kata SRT / ASS terus daripada video dengan AI tempatan, kemudian menterjemahnya secara automatik ke bahasa anda. Semuanya berjalan pada Mac anda sendiri — tanpa internet, percuma selamanya.
 
 Tiga langkah ke sari kata
@@ -310,7 +310,7 @@ L['vi'] = dict(asc='Tiếng Việt (vi)', shots='vi',
  subtitle='Phụ đề từ video, tự động dịch',
  keywords='phụ đề,srt,ass,chuyển âm,whisper,dịch,ngoại tuyến,video,phim,anime,tiếng nhật,hàng loạt,mkv,miễn phí',
  promo='Không tìm thấy phụ đề? Kéo video vào: AI cục bộ nhận dạng lời thoại, tạo phụ đề SRT/ASS và dịch sang ngôn ngữ của bạn. Không cần mạng, miễn phí mãi mãi.',
- whatsnew='Thêm lối vào góp ý: menu Trợ giúp và Cài đặt → Giới thiệu mở biểu mẫu góp ý, thảo luận và đánh giá trên App Store; Giới thiệu hiển thị đúng số phiên bản.',
+ whatsnew='Tải mô hình đã hoạt động từ Trung Quốc đại lục (tự chuyển sang máy chủ dự phòng, hỗ trợ proxy hệ thống). Sửa lỗi một số máy Windows hiển thị tiếng Anh trên hệ thống tiếng Trung.',
  description='''Không tìm được phụ đề cho một video? Wave Subs tạo phụ đề SRT / ASS trực tiếp từ video bằng AI cục bộ, rồi tự động dịch sang ngôn ngữ của bạn. Mọi thứ chạy ngay trên máy Mac của bạn — không cần internet, miễn phí mãi mãi.
 
 Ba bước ra phụ đề
@@ -343,7 +343,7 @@ L['th'] = dict(asc='ไทย (th)', shots='th',
  subtitle='ซับจากวิดีโอ แปลอัตโนมัติ',
  keywords='ซับไตเติล,srt,ass,ถอดเสียง,whisper,แปล,ออฟไลน์,วิดีโอ,หนัง,อนิเมะ,ญี่ปุ่น,ชุด,mkv,ฟรี',
  promo='หาซับไม่เจอ? ลากวิดีโอมาวาง AI ในเครื่องจะจับบทพูด สร้างซับ SRT/ASS แล้วแปลเป็นภาษาของคุณ ไม่ต้องต่อเน็ต ฟรีตลอดไป',
- whatsnew='เพิ่มช่องทางข้อเสนอแนะ: เมนูช่วยเหลือและการตั้งค่า → เกี่ยวกับ เปิดแบบฟอร์มข้อเสนอแนะ การพูดคุย และให้คะแนนใน App Store; หน้าเกี่ยวกับแสดงเลขเวอร์ชันจริง',
+ whatsnew='ดาวน์โหลดโมเดลได้จากจีนแผ่นดินใหญ่แล้ว (สลับไปมิเรอร์อัตโนมัติ รองรับพร็อกซีระบบ) แก้ปัญหา Windows บางเครื่องแสดงภาษาอังกฤษบนระบบภาษาจีน',
  description='''หาซับไตเติลของวิดีโอไม่เจอใช่ไหม? Wave Subs สร้างซับไตเติล SRT / ASS จากวิดีโอโดยตรงด้วย AI ในเครื่อง แล้วแปลเป็นภาษาของคุณอัตโนมัติ ทุกอย่างทำงานบน Mac ของคุณเอง — ไม่ต้องต่ออินเทอร์เน็ต ฟรีตลอดไป
 
 สามขั้นตอนได้ซับ
@@ -392,7 +392,7 @@ for code, d in L.items():
             f"**名称（{len(d['name'])}/30）：** `{d['name']}`", f"**副标题（{len(d['subtitle'])}/30）：** `{d['subtitle']}`",
             f"**关键词（{len(d['keywords'])}/100）：** `{d['keywords']}`", '',
             f"**宣传文本（{len(d['promo'])}/170）：**", d['promo'], '',
-            f"**版本说明 1.0.2：** {d['whatsnew']}", '', '**描述：**', '```text', d['description'], '```', '']
+            f"**版本说明 1.0.3：** {d['whatsnew']}", '', '**描述：**', '```text', d['description'], '```', '']
 open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'store', 'app-store-localizations.md'), 'w', encoding='utf-8').write('\n'.join(out))
 print('全部通过字数校验' if bad == 0 else f'{bad} 处超限')
 sys.exit(1 if bad else 0)
