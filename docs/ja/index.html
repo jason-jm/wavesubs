@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://jason-jm.github.io/wavesubs/ja/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/social/ja.jpg"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — 字幕が見つからない？ローカル AI が生成して翻訳"><meta name="twitter:description" content="Wave Subs はローカル AI で動画から直接 SRT / ASS 字幕を生成し、あなたの言語に自動翻訳します。すべてあなたのパソコンで完結、インターネット不要、ずっと無料。macOS（Apple Silicon）と Windows に対応。"><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/social/ja.jpg">
 <link rel="icon" href="../assets/icon.png?v=b5f064a4">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.2", "inLanguage": "ja", "description": "Wave Subs はローカル AI で動画から直接 SRT / ASS 字幕を生成し、あなたの言語に自動翻訳します。すべてあなたのパソコンで完結、インターネット不要、ずっと無料。macOS（Apple Silicon）と Windows に対応。", "url": "https://jason-jm.github.io/wavesubs/ja/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/ja-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "SRT / ASS 字幕を生成, あなたの言語に自動翻訳（29 言語）, ローカル AI · ネット不要"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.3", "inLanguage": "ja", "description": "Wave Subs はローカル AI で動画から直接 SRT / ASS 字幕を生成し、あなたの言語に自動翻訳します。すべてあなたのパソコンで完結、インターネット不要、ずっと無料。macOS（Apple Silicon）と Windows に対応。", "url": "https://jason-jm.github.io/wavesubs/ja/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/ja-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "SRT / ASS 字幕を生成, あなたの言語に自動翻訳（29 言語）, ローカル AI · ネット不要"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "どんな動画に対応していますか？", "acceptedAnswer": {"@type": "Answer", "text": "MKV、MP4、MOV、TS、AVI など一般的な形式に対応。ブラウザで再生できない HEVC、DTS、TrueHD も、同梱の ffmpeg がすべてデコードします。音声のみのファイルも可。"}}, {"@type": "Question", "name": "対応言語は？", "acceptedAnswer": {"@type": "Answer", "text": "認識は whisper が対応する約 100 言語を自動判定。翻訳先は 29 言語、UI は 32 言語。"}}, {"@type": "Question", "name": "本当にネット不要？", "acceptedAnswer": {"@type": "Answer", "text": "認識・同期・翻訳・編集・書き出しはすべてローカル。ネットを使うのは初回のモデルダウンロードと、自分で設定した場合のクラウド翻訳だけです。"}}, {"@type": "Question", "name": "2 時間の映画はどれくらいかかる？", "acceptedAnswer": {"@type": "Answer", "text": "M シリーズなら Large v3 Turbo で約 3〜6 分、ローカル翻訳にさらに数分。シーズンまるごと一括処理して放置できます。"}}, {"@type": "Question", "name": "Intel Mac は？", "acceptedAnswer": {"@type": "Answer", "text": "現在非対応です。ローカル認識は Apple Silicon の Metal 加速に依存しており、Intel では実用にならない速度です。"}}]}</script>
 <style>
   :root{
@@ -213,7 +213,7 @@
 </div></section>
 
 <section id="download" style="padding-top:0"><div class="wrap">
-  <h2>ダウンロード</h2><p class="sub">バージョン 1.0.2。ffmpeg と whisper.cpp は同梱済み。インストールしてすぐ使えます。</p>
+  <h2>ダウンロード</h2><p class="sub">バージョン 1.0.3。ffmpeg と whisper.cpp は同梱済み。インストールしてすぐ使えます。</p>
   <div class="dl">
     <div class="card"><h3>macOS</h3><div class="req">macOS 12 以降 · <strong>Apple Silicon のみ</strong>（M1 以降）· Apple 公証済み</div>
       <a class="btn primary" data-dl="mac-dmg" href="#">DMG をダウンロード</a><div class="req"><a data-dl="mac-zip" href="#">または ZIP</a></div></div>
@@ -236,7 +236,7 @@
 </div></footer>
 
 <script>
-  const VERSION = '1.0.2';
+  const VERSION = '1.0.3';
   const BASE = 'https://github.com/jason-jm/wavesubs/releases/download/v' + VERSION + '/';
   const FILES = { 'mac-dmg': BASE + 'Wave.Subs-' + VERSION + '-arm64.dmg', 'mac-zip': BASE + 'Wave.Subs-' + VERSION + '-arm64-mac.zip',
     'win-exe': BASE + 'Wave.Subs.Setup.' + VERSION + '.exe', 'win-zip': BASE + 'Wave.Subs-' + VERSION + '-win.zip' };
