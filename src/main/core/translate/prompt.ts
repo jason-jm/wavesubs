@@ -25,7 +25,7 @@ export function applicableGlossary(
  * 提示词版本号。措辞实质变化时 +1：翻译缓存按它判断「同一引擎同一目标语言的旧译文
  * 还能不能复用」——提示词变了产出就不同，不 +1 会让旧译文永远盖住新效果。
  */
-export const PROMPT_REV = 1
+export const PROMPT_REV = 2
 
 /** 提示词与结果解析在各协议之间是共用的，只有传输层不同 */
 export function buildSystemPrompt(ctx: TranslateContext): string {
@@ -40,13 +40,28 @@ export function buildSystemPrompt(ctx: TranslateContext): string {
     `同一个词在不同场景意思可能完全不同，选贴合当前情境的那个。\n` +
     `3. 口语自然、简洁易读，符合${target}母语者的说话方式，不要翻译腔。\n` +
     `4. 人名、地名、职衔等专有名词用通用译法，全篇保持一致。\n` +
-    `5. 每条独立成句，不要合并、拆分、增删内容或添加任何解释。\n` +
+    `5. 每条独立成句，不要合并、拆分、增删内容或添加任何解释；` +
+    `如果某条原文只是半句（在句中被切开），译文也只译这半句，不要把它补全成完整的句子。\n` +
     `6. 译文必须完全是${target}，不能残留原文字符。\n` +
     glossarySection(ctx) +
-    `输入是 JSON 数组 [{"i":编号,"t":"原文"}]，只输出对应的 JSON 数组 [{"i":编号,"t":"译文"}]，` +
-    `不要输出任何其它内容。`
+    `输入是 JSON 数组 [{"i":编号,"t":"原文"}]，只输出对应的 JSON 数组 ` +
+    `[{"i":编号,"k":"该条原文开头的前 ${ANCHOR_CHARS} 个字符（原样照抄）","t":"译文"}]。` +
+    `每个 i 的 t 只能是这一条原文的译文，绝不能把内容挪到相邻编号上。不要输出任何其它内容。`
   )
 }
+
+/**
+ * 对齐锚：要求模型在每条译文前先照抄该条原文的开头几个字。
+ *
+ * 评测（9 部双语片、Qwen3-8B）里译文「意思弄反」的一大来源不是翻错，是**错位**：
+ * 模型把第 57 条的译文写到了 58 条上，后面整批跟着错一位；按 i 回填时没人发现。
+ * 让它先抄原文开头再翻，既把注意力钉在本条上，也给了解析端一个可核对的锚：
+ * 锚对不上的行丢掉，走既有的小批重试。
+ */
+export const ANCHOR_CHARS = 4
+
+/** 核对锚时的归一：全角/半角、空白都不算差异 */
+const anchorKey = (text: string): string => text.normalize('NFKC').replace(/\s+/g, '').toLowerCase()
 
 /**
  * 术语表注入段。表为空时返回空串——**没有术语表的用户提示词与旧版逐字节相同**，
@@ -65,7 +80,11 @@ export function buildUserContent(items: BatchItem[], ctx: TranslateContext): str
   return preceding + JSON.stringify(items.map((it) => ({ i: it.index, t: it.text })))
 }
 
-export function parseBatchResponse(content: string): Map<number, string> {
+/**
+ * @param sources 本批各编号的原文；给了就核对每行的锚 k，对不上的行当作没译（由调用方重试）。
+ *   模型没输出 k 的行照常接受——云端模型偶尔不理会格式要求，宁可少一道检查也不能全批作废。
+ */
+export function parseBatchResponse(content: string, sources?: Map<number, string>): Map<number, string> {
   const cleaned = content
     .replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '')
     .trim()
@@ -83,8 +102,14 @@ export function parseBatchResponse(content: string): Map<number, string> {
   const map = new Map<number, string>()
   if (Array.isArray(rows)) {
     for (const row of rows) {
-      const item = row as { i?: unknown; t?: unknown }
+      const item = row as { i?: unknown; k?: unknown; t?: unknown }
       if (typeof item?.i === 'number' && typeof item?.t === 'string' && item.t.trim()) {
+        // 单条批次不可能错位，锚对不上也照收：这是漏译兜底轮的最后一道，宁可要一条可疑译文也不留原文
+        if (sources && sources.size > 1 && typeof item.k === 'string' && item.k.trim()) {
+          const src = sources.get(item.i)
+          const k = anchorKey(item.k)
+          if (src !== undefined && k.length >= 2 && !anchorKey(src).startsWith(k.slice(0, ANCHOR_CHARS))) continue
+        }
         map.set(item.i, item.t.trim())
       }
     }

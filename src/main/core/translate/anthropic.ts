@@ -59,6 +59,6 @@ export class AnthropicProvider implements TranslationProvider {
       .filter((block) => block.type === 'text' && typeof block.text === 'string')
       .map((block) => block.text as string)
       .join('')
-    return parseBatchResponse(text)
+    return parseBatchResponse(text, new Map(items.map((it) => [it.index, it.text])))
   }
 }

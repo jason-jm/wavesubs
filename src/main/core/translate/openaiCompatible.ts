@@ -68,7 +68,7 @@ export class OpenAICompatibleProvider implements TranslationProvider {
     const data = (await postJsonWithRetry(url, headers, body)) as {
       choices?: Array<{ message?: { content?: string } }>
     }
-    return parseBatchResponse(data.choices?.[0]?.message?.content ?? '')
+    return parseBatchResponse(data.choices?.[0]?.message?.content ?? '', new Map(items.map((it) => [it.index, it.text])))
   }
 }
 

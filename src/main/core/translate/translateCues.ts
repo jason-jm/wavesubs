@@ -96,7 +96,9 @@ export async function translateCues(
     await runBatch(needRetry.slice(i, i + RETRY_BATCH_SIZE))
     onProgress?.(Math.round(95 + ((i + RETRY_BATCH_SIZE) / needRetry.length) * 5))
   }
-  // 重译后仍然没翻干净的，保留原样总比空着强
+  // 兜底：小批之后还缺的逐条单独翻。单条批次没有错位可能，解析端也不再核对对齐锚——
+  // 对齐锚会把「模型没照抄原文开头」的行整批丢掉，个别条会连着两轮都过不了，不能让它们留着原文出片
+  for (const cue of cues.filter((c) => !c.translation)) await runBatch([cue])
   onProgress?.(100)
 
   const missingCount = cues.filter((c) => !c.translation).length

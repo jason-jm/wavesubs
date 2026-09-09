@@ -32,6 +32,7 @@
     "check-preview": "tsx scripts/check-preview.ts",
     "check-download": "tsx scripts/check-download.ts",
     "check-timing": "tsx scripts/check-timing.ts",
+    "check-translate": "tsx scripts/check-translate.ts",
     "check-site": "python3 scripts/build-site.py && electron scripts/check-site.cjs",
     "release:mas": "npm run build && tsx scripts/bundle-deps.ts && electron-builder --mac mas --arm64 --publish never",
     "check-output": "tsx scripts/check-output.ts"
