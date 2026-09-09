@@ -82,6 +82,17 @@ npm run cli -- /path/to/movie.chs.ass --translate --target zh
 npm run typecheck
 ```
 
+## Measured quality
+
+Numbers from a 70-film full-length corpus (official subtitle tracks and well-known fansub releases on a NAS as ground truth; 36 Japanese, 21 English, 13 other), September 2026, to help you pick models:
+
+- **Recognition (whisper large-v3)**: English, 19 films, average WER 17.4% (documentaries and interviews about 6%, official series 10–13%). Japanese, 18 films, character error rate 19.1%, reading-level CER 13.8% — about a third of the "errors" are spelling variants (分かった vs わかった). German, Norwegian and Italian official subtitles are condensed rewrites and cannot be scored verbatim.
+- **large-v3-turbo is only 0.8 points worse than large-v3** (12 films) while about 3× faster — safe to use when in a hurry.
+- **Translation (Japanese → Chinese, local Qwen3)**: with the human transcript as input, meaning-preservation accuracy is 8B 93.5%, 14B 94.4%, 32B 93.9% — practically identical, so the 8B default is fine. End to end (recognition → translation) it is about 83–85%; nearly all of the gap comes from recognition errors.
+- **Timing**: frame-level mask F1 81.8%; 57% of cue starts fall within ±250 ms of the human subtitle. Human subtitles from different sources themselves differ by 100–300 ms in lead time.
+
+The evaluation scripts and corpus stay local and are not part of the repository.
+
 ## Packaging and signing
 
 ```bash
