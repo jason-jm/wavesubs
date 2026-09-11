@@ -30,7 +30,7 @@
 **宣传文本（59/170）：**
 看片找不到字幕？把影片拖进来：本地 AI 识别对白、生成 SRT/ASS 字幕，并翻译成你的语言。无需联网，永久免费。
 
-**版本说明 1.0.4：** 下载模型先显示「正在连接」，官方源与镜像并行择快；Windows 界面语言跟随系统显示语言；顶部统一窗口栏，Windows 窗口按钮不再压在内容上。
+**版本说明 1.0.5：** 转换可随时取消；显示预计剩余时间与识别所用设备（GPU/CPU）；模型下载失败时给出原因并可复制地址手动下载，Qwen 翻译模型新增 ModelScope 来源。
 
 **描述：**
 ```text
@@ -74,7 +74,7 @@
 **宣传文本（167/170）：**
 Can't find subtitles? Drop in a video: local AI recognizes the dialogue, generates SRT/ASS subtitles and translates them into your language. No internet, free forever.
 
-**版本说明 1.0.4：** Downloads now show "Connecting…" and race the official host against the mirror; Windows UI language follows the display-language setting; a unified title bar keeps Windows window buttons clear of the content.
+**版本说明 1.0.5：** Jobs can be cancelled at any time; shows estimated time remaining and which device (GPU/CPU) did the recognition; failed model downloads report the cause and list copyable URLs for manual download, with ModelScope added as a source for Qwen translation models.
 
 **描述：**
 ```text
@@ -118,7 +118,7 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 **宣传文本（76/170）：**
 字幕が見つからない？動画をドロップするだけ。ローカルAIがセリフを認識してSRT/ASS字幕を生成し、あなたの言語に翻訳します。ネット不要、ずっと無料。
 
-**版本说明 1.0.4：** ダウンロード開始時に「接続中」を表示し、公式とミラーを並行して速い方を採用。Windows の表示言語に従うよう修正。共通のタイトルバーで Windows のウィンドウボタンがコンテンツに重ならないように。
+**版本说明 1.0.5：** 変換をいつでもキャンセル可能に。残り時間の目安と認識に使ったデバイス（GPU/CPU）を表示。モデルのダウンロード失敗時に原因を表示し、URL をコピーして手動でダウンロード可能に。Qwen 翻訳モデルに ModelScope ソースを追加。
 
 **描述：**
 ```text
@@ -162,7 +162,7 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 **宣传文本（86/170）：**
 자막을 못 찾겠다면? 영상을 끌어다 놓으세요. 로컬 AI가 대사를 인식해 SRT/ASS 자막을 만들고 내 언어로 번역합니다. 인터넷 불필요, 영원히 무료.
 
-**版本说明 1.0.4：** 다운로드 시 "연결 중" 표시, 공식 서버와 미러를 동시에 시도해 빠른 쪽 사용. Windows 표시 언어를 따르도록 수정. 공통 제목 표시줄로 Windows 창 버튼이 내용과 겹치지 않음.
+**版本说明 1.0.5：** 변환을 언제든 취소 가능. 예상 남은 시간과 인식에 사용한 장치(GPU/CPU) 표시. 모델 다운로드 실패 시 원인을 알려 주고 URL을 복사해 수동으로 받을 수 있음. Qwen 번역 모델에 ModelScope 소스 추가.
 
 **描述：**
 ```text
@@ -206,7 +206,7 @@ Requires macOS 12 or later on Apple Silicon. On first launch you'll be guided to
 **宣传文本（165/170）：**
 Pas de sous-titres ? Déposez la vidéo : l'IA locale reconnaît les dialogues, crée des SRT/ASS et les traduit dans votre langue. Sans internet, gratuit pour toujours.
 
-**版本说明 1.0.4：** Le téléchargement affiche « Connexion… » et met en concurrence le serveur officiel et le miroir ; la langue suit le réglage d'affichage de Windows ; une barre de titre unifiée évite tout chevauchement des boutons de fenêtre.
+**版本说明 1.0.5：** Les conversions peuvent être annulées à tout moment ; affichage du temps restant estimé et du périphérique (GPU/CPU) utilisé pour la reconnaissance ; en cas d'échec de téléchargement d'un modèle, la cause est indiquée et les URL peuvent être copiées pour un téléchargement manuel ; ModelScope ajouté comme source pour les modèles de traduction Qwen.
 
 **描述：**
 ```text
@@ -250,7 +250,7 @@ Nécessite macOS 12 ou ultérieur sur Apple Silicon. Au premier lancement, un mo
 **宣传文本（163/170）：**
 Keine Untertitel? Video ablegen: Lokale KI erkennt die Dialoge, erstellt SRT/ASS-Untertitel und übersetzt sie in deine Sprache. Ohne Internet, für immer kostenlos.
 
-**版本说明 1.0.4：** Downloads zeigen „Verbindung…“ und lassen offiziellen Host und Spiegel gegeneinander antreten; die Sprache folgt der Windows-Anzeigesprache; eine einheitliche Titelleiste hält die Fensterknöpfe vom Inhalt fern.
+**版本说明 1.0.5：** Umwandlungen lassen sich jederzeit abbrechen; Anzeige der geschätzten Restzeit und des Geräts (GPU/CPU), das die Erkennung ausgeführt hat; fehlgeschlagene Modell-Downloads nennen die Ursache und listen kopierbare URLs zum manuellen Laden; ModelScope als Quelle für Qwen-Übersetzungsmodelle.
 
 **描述：**
 ```text
@@ -294,7 +294,7 @@ Benötigt macOS 12 oder neuer auf Apple Silicon. Beim ersten Start wirst du durc
 **宣传文本（153/170）：**
 Нет субтитров? Перетащите видео: локальный ИИ распознает диалоги, создаст субтитры SRT/ASS и переведёт их на ваш язык. Без интернета, бесплатно навсегда.
 
-**版本说明 1.0.4：** При загрузке показывается «Подключение…», официальный хост и зеркало пробуются параллельно; язык следует настройке отображения Windows; единая строка заголовка убирает кнопки окна с контента.
+**版本说明 1.0.5：** Преобразование можно отменить в любой момент; показываются оставшееся время и устройство (GPU/CPU), выполнившее распознавание; при сбое загрузки модели указывается причина и даются ссылки для ручной загрузки; для моделей перевода Qwen добавлен источник ModelScope.
 
 **描述：**
 ```text
@@ -338,7 +338,7 @@ Benötigt macOS 12 oder neuer auf Apple Silicon. Beim ersten Start wirst du durc
 **宣传文本（158/170）：**
 Tak ada subtitle? Seret videonya: AI lokal mengenali dialog, membuat subtitle SRT/ASS, lalu menerjemahkannya ke bahasa Anda. Tanpa internet, gratis selamanya.
 
-**版本说明 1.0.4：** Unduhan menampilkan "Menghubungkan…" dan mengadu host resmi dengan cermin; bahasa mengikuti bahasa tampilan Windows; bilah judul terpadu menjauhkan tombol jendela dari konten.
+**版本说明 1.0.5：** Konversi dapat dibatalkan kapan saja; menampilkan perkiraan sisa waktu dan perangkat (GPU/CPU) yang dipakai untuk pengenalan; unduhan model yang gagal menampilkan penyebab dan URL yang bisa disalin untuk unduhan manual; ModelScope ditambahkan sebagai sumber model terjemahan Qwen.
 
 **描述：**
 ```text
@@ -382,7 +382,7 @@ Memerlukan macOS 12 atau lebih baru di Apple Silicon. Saat pertama dibuka Anda a
 **宣传文本（154/170）：**
 Tiada sari kata? Seret video: AI tempatan mengecam dialog, menjana sari kata SRT/ASS dan menterjemahnya ke bahasa anda. Tanpa internet, percuma selamanya.
 
-**版本说明 1.0.4：** Muat turun memaparkan "Menyambung…" dan mengadu hos rasmi dengan cermin; bahasa mengikut bahasa paparan Windows; bar tajuk seragam mengelakkan butang tetingkap menindih kandungan.
+**版本说明 1.0.5：** Penukaran boleh dibatalkan bila-bila masa; memaparkan anggaran masa berbaki dan peranti (GPU/CPU) yang digunakan untuk pengecaman; muat turun model yang gagal menunjukkan puncanya dan URL yang boleh disalin untuk muat turun manual; ModelScope ditambah sebagai sumber model terjemahan Qwen.
 
 **描述：**
 ```text
@@ -426,7 +426,7 @@ Memerlukan macOS 12 atau lebih baharu pada Apple Silicon. Pada pelancaran pertam
 **宣传文本（152/170）：**
 Không tìm thấy phụ đề? Kéo video vào: AI cục bộ nhận dạng lời thoại, tạo phụ đề SRT/ASS và dịch sang ngôn ngữ của bạn. Không cần mạng, miễn phí mãi mãi.
 
-**版本说明 1.0.4：** Tải xuống hiển thị "Đang kết nối…" và chạy đua máy chủ chính với máy chủ dự phòng; ngôn ngữ theo cài đặt hiển thị của Windows; thanh tiêu đề thống nhất giúp nút cửa sổ không đè lên nội dung.
+**版本说明 1.0.5：** Có thể hủy chuyển đổi bất cứ lúc nào; hiển thị thời gian còn lại ước tính và thiết bị (GPU/CPU) đã dùng để nhận dạng; tải mô hình thất bại sẽ báo nguyên nhân và cho sao chép URL để tải thủ công; thêm nguồn ModelScope cho mô hình dịch Qwen.
 
 **描述：**
 ```text
@@ -470,7 +470,7 @@ Yêu cầu macOS 12 trở lên trên Apple Silicon. Lần mở đầu tiên sẽ
 **宣传文本（114/170）：**
 หาซับไม่เจอ? ลากวิดีโอมาวาง AI ในเครื่องจะจับบทพูด สร้างซับ SRT/ASS แล้วแปลเป็นภาษาของคุณ ไม่ต้องต่อเน็ต ฟรีตลอดไป
 
-**版本说明 1.0.4：** ดาวน์โหลดแสดง "กำลังเชื่อมต่อ…" และลองเซิร์ฟเวอร์หลักกับมิเรอร์พร้อมกัน ภาษาตามการตั้งค่าภาษาแสดงผลของ Windows แถบชื่อเรื่องแบบเดียวกันทำให้ปุ่มหน้าต่างไม่ทับเนื้อหา
+**版本说明 1.0.5：** ยกเลิกการแปลงได้ทุกเมื่อ แสดงเวลาที่เหลือโดยประมาณและอุปกรณ์ (GPU/CPU) ที่ใช้รู้จำเสียง เมื่อดาวน์โหลดโมเดลล้มเหลวจะแสดงสาเหตุและให้คัดลอก URL เพื่อดาวน์โหลดเอง เพิ่มแหล่ง ModelScope สำหรับโมเดลแปล Qwen
 
 **描述：**
 ```text

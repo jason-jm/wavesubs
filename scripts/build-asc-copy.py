@@ -13,7 +13,7 @@ L['zh-Hans'] = dict(asc='简体中文 (zh-Hans)', shots='zh-Hans',
  subtitle='从影片生成字幕并自动翻译',
  keywords='字幕,SRT,ASS,视频字幕,自动字幕,whisper,语音识别,动漫,电影,日语,英语,批量,MKV,编辑器',
  promo='看片找不到字幕？把影片拖进来：本地 AI 识别对白、生成 SRT/ASS 字幕，并翻译成你的语言。无需联网，永久免费。',
- whatsnew='下载模型先显示「正在连接」，官方源与镜像并行择快；Windows 界面语言跟随系统显示语言；顶部统一窗口栏，Windows 窗口按钮不再压在内容上。',
+ whatsnew='转换可随时取消；显示预计剩余时间与识别所用设备（GPU/CPU）；模型下载失败时给出原因并可复制地址手动下载，Qwen 翻译模型新增 ModelScope 来源。',
  description='''看片找不到字幕？Wave Subs 用本地 AI 直接从影片生成 SRT / ASS 字幕，并自动翻译成你的语言。全部在你自己的 Mac 上完成——无需联网，永久免费。
 
 三步出字幕
@@ -46,7 +46,7 @@ L['en-US'] = dict(asc='English (U.S.) (en-US)', shots='en',
  subtitle='Auto-translate video subtitles',
  keywords='srt,ass,captions,transcribe,whisper,offline,local,video,movie,anime,japanese,batch,mkv,free',
  promo="Can't find subtitles? Drop in a video: local AI recognizes the dialogue, generates SRT/ASS subtitles and translates them into your language. No internet, free forever.",
- whatsnew='Downloads now show "Connecting…" and race the official host against the mirror; Windows UI language follows the display-language setting; a unified title bar keeps Windows window buttons clear of the content.',
+ whatsnew='Jobs can be cancelled at any time; shows estimated time remaining and which device (GPU/CPU) did the recognition; failed model downloads report the cause and list copyable URLs for manual download, with ModelScope added as a source for Qwen translation models.',
  description='''Can't find subtitles for a video? Wave Subs generates SRT / ASS subtitles directly from the video using local AI, then auto-translates them into your language. Everything runs on your own Mac — no internet needed, free forever.
 
 Three steps to subtitles
@@ -79,7 +79,7 @@ L['ja'] = dict(asc='日本語 (ja)', shots='ja',
  subtitle='動画から字幕を生成し自動翻訳',
  keywords='字幕,SRT,ASS,文字起こし,whisper,音声認識,アニメ,映画,英語,韓国語,一括,MKV,編集',
  promo='字幕が見つからない？動画をドロップするだけ。ローカルAIがセリフを認識してSRT/ASS字幕を生成し、あなたの言語に翻訳します。ネット不要、ずっと無料。',
- whatsnew='ダウンロード開始時に「接続中」を表示し、公式とミラーを並行して速い方を採用。Windows の表示言語に従うよう修正。共通のタイトルバーで Windows のウィンドウボタンがコンテンツに重ならないように。',
+ whatsnew='変換をいつでもキャンセル可能に。残り時間の目安と認識に使ったデバイス（GPU/CPU）を表示。モデルのダウンロード失敗時に原因を表示し、URL をコピーして手動でダウンロード可能に。Qwen 翻訳モデルに ModelScope ソースを追加。',
  description='''字幕が見つからない動画、ありませんか？Wave Subs はローカル AI で動画から直接 SRT / ASS 字幕を生成し、あなたの言語に自動翻訳します。すべてあなたの Mac の中で完結——インターネット不要、ずっと無料です。
 
 3 ステップで字幕ができる
@@ -112,7 +112,7 @@ L['ko'] = dict(asc='한국어 (ko)', shots='ko',
  subtitle='영상에서 자막 생성, 자동 번역',
  keywords='자막,SRT,ASS,받아쓰기,whisper,음성인식,애니,영화,일본어,영어,일괄,MKV,편집기',
  promo='자막을 못 찾겠다면? 영상을 끌어다 놓으세요. 로컬 AI가 대사를 인식해 SRT/ASS 자막을 만들고 내 언어로 번역합니다. 인터넷 불필요, 영원히 무료.',
- whatsnew='다운로드 시 "연결 중" 표시, 공식 서버와 미러를 동시에 시도해 빠른 쪽 사용. Windows 표시 언어를 따르도록 수정. 공통 제목 표시줄로 Windows 창 버튼이 내용과 겹치지 않음.',
+ whatsnew='변환을 언제든 취소 가능. 예상 남은 시간과 인식에 사용한 장치(GPU/CPU) 표시. 모델 다운로드 실패 시 원인을 알려 주고 URL을 복사해 수동으로 받을 수 있음. Qwen 번역 모델에 ModelScope 소스 추가.',
  description='''자막을 찾을 수 없는 영상이 있나요? Wave Subs는 로컬 AI로 영상에서 바로 SRT / ASS 자막을 만들고, 내 언어로 자동 번역합니다. 모든 작업이 내 Mac 안에서 끝납니다 — 인터넷 불필요, 영원히 무료.
 
 세 단계로 자막 완성
@@ -145,7 +145,7 @@ L['fr-FR'] = dict(asc='Français (fr-FR)', shots='fr',
  subtitle='Sous-titres auto-traduits',
  keywords='srt,ass,transcription,whisper,traduction,hors ligne,vidéo,film,anime,japonais,lot,mkv,gratuit',
  promo="Pas de sous-titres ? Déposez la vidéo : l'IA locale reconnaît les dialogues, crée des SRT/ASS et les traduit dans votre langue. Sans internet, gratuit pour toujours.",
- whatsnew="Le téléchargement affiche « Connexion… » et met en concurrence le serveur officiel et le miroir ; la langue suit le réglage d'affichage de Windows ; une barre de titre unifiée évite tout chevauchement des boutons de fenêtre.",
+ whatsnew="Les conversions peuvent être annulées à tout moment ; affichage du temps restant estimé et du périphérique (GPU/CPU) utilisé pour la reconnaissance ; en cas d'échec de téléchargement d'un modèle, la cause est indiquée et les URL peuvent être copiées pour un téléchargement manuel ; ModelScope ajouté comme source pour les modèles de traduction Qwen.",
  description='''Impossible de trouver des sous-titres pour une vidéo ? Wave Subs génère des sous-titres SRT / ASS directement à partir de la vidéo grâce à une IA locale, puis les traduit automatiquement dans votre langue. Tout se passe sur votre Mac — sans internet, gratuit pour toujours.
 
 Des sous-titres en trois étapes
@@ -178,7 +178,7 @@ L['de-DE'] = dict(asc='Deutsch (de-DE)', shots='de',
  subtitle='Untertitel auto-übersetzt',
  keywords='untertitel,srt,ass,transkription,whisper,übersetzung,offline,video,film,anime,stapel,mkv,gratis',
  promo='Keine Untertitel? Video ablegen: Lokale KI erkennt die Dialoge, erstellt SRT/ASS-Untertitel und übersetzt sie in deine Sprache. Ohne Internet, für immer kostenlos.',
- whatsnew='Downloads zeigen „Verbindung…“ und lassen offiziellen Host und Spiegel gegeneinander antreten; die Sprache folgt der Windows-Anzeigesprache; eine einheitliche Titelleiste hält die Fensterknöpfe vom Inhalt fern.',
+ whatsnew='Umwandlungen lassen sich jederzeit abbrechen; Anzeige der geschätzten Restzeit und des Geräts (GPU/CPU), das die Erkennung ausgeführt hat; fehlgeschlagene Modell-Downloads nennen die Ursache und listen kopierbare URLs zum manuellen Laden; ModelScope als Quelle für Qwen-Übersetzungsmodelle.',
  description='''Keine Untertitel für ein Video gefunden? Wave Subs erstellt SRT / ASS-Untertitel direkt aus dem Video mit lokaler KI und übersetzt sie automatisch in deine Sprache. Alles läuft auf deinem eigenen Mac — ohne Internet, für immer kostenlos.
 
 In drei Schritten zu Untertiteln
@@ -211,7 +211,7 @@ L['ru'] = dict(asc='Русский (ru)', shots='ru',
  subtitle='Автоперевод субтитров из видео',
  keywords='субтитры,srt,ass,транскрипция,whisper,перевод,видео,фильм,аниме,японский,пакет,mkv,бесплатно',
  promo='Нет субтитров? Перетащите видео: локальный ИИ распознает диалоги, создаст субтитры SRT/ASS и переведёт их на ваш язык. Без интернета, бесплатно навсегда.',
- whatsnew='При загрузке показывается «Подключение…», официальный хост и зеркало пробуются параллельно; язык следует настройке отображения Windows; единая строка заголовка убирает кнопки окна с контента.',
+ whatsnew='Преобразование можно отменить в любой момент; показываются оставшееся время и устройство (GPU/CPU), выполнившее распознавание; при сбое загрузки модели указывается причина и даются ссылки для ручной загрузки; для моделей перевода Qwen добавлен источник ModelScope.',
  description='''Не нашли субтитры к видео? Wave Subs создаёт субтитры SRT / ASS прямо из видео с помощью локального ИИ и автоматически переводит их на ваш язык. Всё происходит на вашем Mac — без интернета, бесплатно навсегда.
 
 Субтитры за три шага
@@ -244,7 +244,7 @@ L['id'] = dict(asc='Bahasa Indonesia (id)', shots='id',
  subtitle='Subtitle video diterjemahkan',
  keywords='subtitle,srt,ass,transkripsi,whisper,terjemahan,video,film,anime,jepang,batch,mkv,gratis,editor',
  promo='Tak ada subtitle? Seret videonya: AI lokal mengenali dialog, membuat subtitle SRT/ASS, lalu menerjemahkannya ke bahasa Anda. Tanpa internet, gratis selamanya.',
- whatsnew='Unduhan menampilkan "Menghubungkan…" dan mengadu host resmi dengan cermin; bahasa mengikuti bahasa tampilan Windows; bilah judul terpadu menjauhkan tombol jendela dari konten.',
+ whatsnew='Konversi dapat dibatalkan kapan saja; menampilkan perkiraan sisa waktu dan perangkat (GPU/CPU) yang dipakai untuk pengenalan; unduhan model yang gagal menampilkan penyebab dan URL yang bisa disalin untuk unduhan manual; ModelScope ditambahkan sebagai sumber model terjemahan Qwen.',
  description='''Tak menemukan subtitle untuk sebuah video? Wave Subs membuat subtitle SRT / ASS langsung dari video dengan AI lokal, lalu menerjemahkannya otomatis ke bahasa Anda. Semuanya berjalan di Mac Anda sendiri — tanpa internet, gratis selamanya.
 
 Tiga langkah menuju subtitle
@@ -277,7 +277,7 @@ L['ms'] = dict(asc='Bahasa Melayu (ms)', shots='ms',
  subtitle='Sari kata video, diterjemah',
  keywords='sari kata,srt,ass,transkripsi,whisper,terjemahan,video,filem,anime,jepun,kelompok,mkv,percuma',
  promo='Tiada sari kata? Seret video: AI tempatan mengecam dialog, menjana sari kata SRT/ASS dan menterjemahnya ke bahasa anda. Tanpa internet, percuma selamanya.',
- whatsnew='Muat turun memaparkan "Menyambung…" dan mengadu hos rasmi dengan cermin; bahasa mengikut bahasa paparan Windows; bar tajuk seragam mengelakkan butang tetingkap menindih kandungan.',
+ whatsnew='Penukaran boleh dibatalkan bila-bila masa; memaparkan anggaran masa berbaki dan peranti (GPU/CPU) yang digunakan untuk pengecaman; muat turun model yang gagal menunjukkan puncanya dan URL yang boleh disalin untuk muat turun manual; ModelScope ditambah sebagai sumber model terjemahan Qwen.',
  description='''Tidak jumpa sari kata untuk sesuatu video? Wave Subs menjana sari kata SRT / ASS terus daripada video dengan AI tempatan, kemudian menterjemahnya secara automatik ke bahasa anda. Semuanya berjalan pada Mac anda sendiri — tanpa internet, percuma selamanya.
 
 Tiga langkah ke sari kata
@@ -310,7 +310,7 @@ L['vi'] = dict(asc='Tiếng Việt (vi)', shots='vi',
  subtitle='Phụ đề từ video, tự động dịch',
  keywords='phụ đề,srt,ass,chuyển âm,whisper,dịch,ngoại tuyến,video,phim,anime,tiếng nhật,hàng loạt,mkv,miễn phí',
  promo='Không tìm thấy phụ đề? Kéo video vào: AI cục bộ nhận dạng lời thoại, tạo phụ đề SRT/ASS và dịch sang ngôn ngữ của bạn. Không cần mạng, miễn phí mãi mãi.',
- whatsnew='Tải xuống hiển thị "Đang kết nối…" và chạy đua máy chủ chính với máy chủ dự phòng; ngôn ngữ theo cài đặt hiển thị của Windows; thanh tiêu đề thống nhất giúp nút cửa sổ không đè lên nội dung.',
+ whatsnew='Có thể hủy chuyển đổi bất cứ lúc nào; hiển thị thời gian còn lại ước tính và thiết bị (GPU/CPU) đã dùng để nhận dạng; tải mô hình thất bại sẽ báo nguyên nhân và cho sao chép URL để tải thủ công; thêm nguồn ModelScope cho mô hình dịch Qwen.',
  description='''Không tìm được phụ đề cho một video? Wave Subs tạo phụ đề SRT / ASS trực tiếp từ video bằng AI cục bộ, rồi tự động dịch sang ngôn ngữ của bạn. Mọi thứ chạy ngay trên máy Mac của bạn — không cần internet, miễn phí mãi mãi.
 
 Ba bước ra phụ đề
@@ -343,7 +343,7 @@ L['th'] = dict(asc='ไทย (th)', shots='th',
  subtitle='ซับจากวิดีโอ แปลอัตโนมัติ',
  keywords='ซับไตเติล,srt,ass,ถอดเสียง,whisper,แปล,ออฟไลน์,วิดีโอ,หนัง,อนิเมะ,ญี่ปุ่น,ชุด,mkv,ฟรี',
  promo='หาซับไม่เจอ? ลากวิดีโอมาวาง AI ในเครื่องจะจับบทพูด สร้างซับ SRT/ASS แล้วแปลเป็นภาษาของคุณ ไม่ต้องต่อเน็ต ฟรีตลอดไป',
- whatsnew='ดาวน์โหลดแสดง "กำลังเชื่อมต่อ…" และลองเซิร์ฟเวอร์หลักกับมิเรอร์พร้อมกัน ภาษาตามการตั้งค่าภาษาแสดงผลของ Windows แถบชื่อเรื่องแบบเดียวกันทำให้ปุ่มหน้าต่างไม่ทับเนื้อหา',
+ whatsnew='ยกเลิกการแปลงได้ทุกเมื่อ แสดงเวลาที่เหลือโดยประมาณและอุปกรณ์ (GPU/CPU) ที่ใช้รู้จำเสียง เมื่อดาวน์โหลดโมเดลล้มเหลวจะแสดงสาเหตุและให้คัดลอก URL เพื่อดาวน์โหลดเอง เพิ่มแหล่ง ModelScope สำหรับโมเดลแปล Qwen',
  description='''หาซับไตเติลของวิดีโอไม่เจอใช่ไหม? Wave Subs สร้างซับไตเติล SRT / ASS จากวิดีโอโดยตรงด้วย AI ในเครื่อง แล้วแปลเป็นภาษาของคุณอัตโนมัติ ทุกอย่างทำงานบน Mac ของคุณเอง — ไม่ต้องต่ออินเทอร์เน็ต ฟรีตลอดไป
 
 สามขั้นตอนได้ซับ
@@ -392,7 +392,7 @@ for code, d in L.items():
             f"**名称（{len(d['name'])}/30）：** `{d['name']}`", f"**副标题（{len(d['subtitle'])}/30）：** `{d['subtitle']}`",
             f"**关键词（{len(d['keywords'])}/100）：** `{d['keywords']}`", '',
             f"**宣传文本（{len(d['promo'])}/170）：**", d['promo'], '',
-            f"**版本说明 1.0.4：** {d['whatsnew']}", '', '**描述：**', '```text', d['description'], '```', '']
+            f"**版本说明 1.0.5：** {d['whatsnew']}", '', '**描述：**', '```text', d['description'], '```', '']
 open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'store', 'app-store-localizations.md'), 'w', encoding='utf-8').write('\n'.join(out))
 print('全部通过字数校验' if bad == 0 else f'{bad} 处超限')
 sys.exit(1 if bad else 0)

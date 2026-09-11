@@ -40,7 +40,7 @@ ffmpeg 与 whisper.cpp 已随包附带。首次启动会引导下载识别模型
 | 最低版本 | macOS 12 | Windows 10 |
 | 安装包 | DMG | NSIS 安装程序 / 便携 ZIP |
 | 随包依赖 | 自编 LGPL ffmpeg + 静态 whisper/llama | 官方预编译 LGPL ffmpeg + whisper/llama |
-| 加速 | Metal | CPU（BLAS） |
+| 加速 | Metal | 识别在 CPU；翻译用 Vulkan 显卡（没有则回落 CPU） |
 | 签名 | Developer ID + 公证 | Authenticode |
 
 功能完全一致：三种字幕来源、18 种字幕格式、本地/云端翻译、批量队列与单文件独立设置、

@@ -38,7 +38,7 @@ ffmpeg and whisper.cpp are bundled. On first launch you are guided to download a
 | Minimum version | macOS 12 | Windows 10 |
 | Package | DMG | NSIS installer / portable ZIP |
 | Bundled dependencies | self-built LGPL ffmpeg + static whisper/llama | official prebuilt LGPL ffmpeg + whisper/llama |
-| Acceleration | Metal | CPU (BLAS) |
+| Acceleration | Metal | Recognition on CPU; translation on a Vulkan GPU when one is present (CPU fallback) |
 | Signing | Developer ID + notarization | Authenticode (not yet) |
 
 Feature set is identical: three subtitle sources, 18 subtitle formats, local/cloud translation, batch queue with per-file settings, 32 interface languages. The Windows build cross-compiles on macOS without Wine.
