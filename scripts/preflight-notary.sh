@@ -4,8 +4,8 @@
 set -euo pipefail
 PROFILE="${APPLE_KEYCHAIN_PROFILE:-WAVESUBS_NOTARY}"
 if ! xcrun notarytool history --keychain-profile "$PROFILE" >/dev/null 2>&1; then
-  echo "公证凭据 profile「$PROFILE」现在读不到（钥匙串锁定？被撤销？）。"
+  echo "公证凭据 profile「${PROFILE}」现在读不到（钥匙串锁定？被撤销？）。"
   echo "重新存一次：xcrun notarytool store-credentials \"$PROFILE\" --apple-id <Apple ID> --team-id TZ7V6PMGV6"
   exit 1
 fi
-echo "公证凭据可用（$PROFILE）"
+echo "公证凭据可用（${PROFILE}）"

@@ -21,7 +21,7 @@ xcrun stapler validate "$APP" >/dev/null 2>&1 || { echo "App 没有公证票据�
 DMG="$(ls -t release/*.dmg | head -1)"
 IDENTITY="$(security find-identity -v -p codesigning | grep 'Developer ID Application' | head -1 | awk '{print $2}')"
 [ -n "$IDENTITY" ] || { echo "钥匙串里没有 Developer ID Application 身份"; exit 1; }
-echo "签名 $DMG（$IDENTITY）"
+echo "签名 ${DMG}（${IDENTITY}）"
 codesign --force --sign "$IDENTITY" --timestamp "$DMG"
 echo "提交公证…"
 submit_with_retry "$DMG"
