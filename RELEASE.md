@@ -52,7 +52,7 @@ electron-builder（当前 26.15）能直接读这个钥匙串 profile，密码�
 ### 3. 编译随包 ffmpeg（只需一次，除非升级版本）
 
 ```bash
-~/Documents/wavesubs-vendor/build-ffmpeg.sh
+~/Documents/Wave Subs/vendor/build-ffmpeg.sh
 ```
 
 产出最小 LGPL 版本。**不要**改用 Homebrew 的 ffmpeg——那是 GPL v3，随闭源应用分发会违规。
@@ -114,7 +114,7 @@ done
 
 Windows 不自己编译，直接用官方预编译包。两种来源：
 
-- **本机发版**：手动下载到 `~/Documents/wavesubs-vendor/win/`（文件名见下表），`npm run release:win` 会用它们。
+- **本机发版**：手动下载到 `~/Documents/Wave Subs/vendor/win/`（文件名见下表），`npm run release:win` 会用它们。
 - **GitHub Actions**（`.github/workflows/windows.yml`，推 `v*` 标签或手动触发）：`tsx scripts/bundle-deps-win.ts --fetch`
   按脚本里钉死的官方地址下载并校验 sha256（当前：BtbN ffmpeg n9.0.1 LGPL shared、whisper.cpp v1.9.1、llama.cpp b10865）。
   升级依赖时改脚本里的 `url` / `sha256`（sha256 可从 GitHub Release 资产的 digest 字段取）。

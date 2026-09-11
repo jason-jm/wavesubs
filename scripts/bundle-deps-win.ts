@@ -18,7 +18,7 @@
  *    动态链接同时也让 LGPL 的「可替换库」要求天然满足。
  *
  * 用法：
- *   tsx scripts/bundle-deps-win.ts            用 ~/Documents/wavesubs-vendor/win/ 里手动下载的包（本机发版）
+ *   tsx scripts/bundle-deps-win.ts            用 ~/Documents/Wave Subs/vendor/win/ 里手动下载的包（本机发版）
  *   tsx scripts/bundle-deps-win.ts --fetch    按下面钉死的官方地址下载并校验 sha256（GitHub Actions 用）
  *   环境变量 WAVESUBS_VENDOR_WIN 可指定源目录。
  *
@@ -37,7 +37,7 @@ const OUT = join(ROOT, 'vendor-win')
 const FETCH = process.argv.includes('--fetch')
 const SRC =
   process.env.WAVESUBS_VENDOR_WIN ??
-  (FETCH ? join(ROOT, 'vendor-win-src') : join(homedir(), 'Documents/wavesubs-vendor/win'))
+  (FETCH ? join(ROOT, 'vendor-win-src') : join(homedir(), 'Documents/Wave Subs/vendor/win'))
 
 interface Part {
   /** 子目录名，同时也是 tools.ts 里注册的查找目录 */

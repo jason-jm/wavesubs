@@ -9,7 +9,7 @@
  * 引用改成 `@executable_path/../lib/xxx.dylib`，同时把 dylib 自身的 install name
  * 也改掉——只改引用方不改被引用方，dyld 一样找不到。
  *
- * ffmpeg 走静态编译（见 ~/Documents/wavesubs-vendor/build-ffmpeg.sh），单文件无依赖，
+ * ffmpeg 走静态编译（见 ~/Documents/Wave Subs/vendor/build-ffmpeg.sh），单文件无依赖，
  * 所以这里只需要拷过来；whisper / llama 那几个才需要走完整的闭包搬运。
  */
 import { execFileSync } from 'node:child_process'
@@ -30,7 +30,7 @@ const BIN = join(VENDOR, 'bin')
 const LIB = join(VENDOR, 'lib')
 
 
-const VENDOR_SRC = join(process.env.HOME ?? '', 'Documents/wavesubs-vendor')
+const VENDOR_SRC = join(process.env.HOME ?? '', 'Documents/Wave Subs/vendor')
 /** 自编的最小 LGPL ffmpeg */
 const LGPL_FFMPEG = join(VENDOR_SRC, 'ffmpeg-lgpl/bin')
 /** 自编的 whisper / llama（后端静态链入，不依赖运行时 dlopen） */
@@ -173,7 +173,7 @@ if (ffmpegSrc) {
   console.warn(
     '⚠ 没找到自编的 LGPL ffmpeg，退回 Homebrew 版。\n' +
       '  Homebrew 的 ffmpeg 是 --enable-gpl（含 x264/x265），随闭源应用分发会违反 GPL。\n' +
-      '  正式发布前必须先跑 ~/Documents/wavesubs-vendor/build-ffmpeg.sh。'
+      '  正式发布前必须先跑 ~/Documents/Wave Subs/vendor/build-ffmpeg.sh。'
   )
   for (const n of ['ffmpeg', 'ffprobe']) {
     const p = which(n)
@@ -195,7 +195,7 @@ if (!staticTools) {
   console.error(
     '\n✗ 找不到自编的 whisper/llama（' + GGML_TOOLS + '）。\n' +
       '  不能退回 Homebrew 版本：它的 ggml 后端靠运行时 dlopen 一个写死的 Homebrew 路径，\n' +
-      '  在用户机器上会一个后端都加载不到。先跑 ~/Documents/wavesubs-vendor/build-ggml-tools.sh。'
+      '  在用户机器上会一个后端都加载不到。先跑 ~/Documents/Wave Subs/vendor/build-ggml-tools.sh。'
   )
   process.exit(1)
 }
