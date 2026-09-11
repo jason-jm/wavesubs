@@ -1,4 +1,5 @@
 import type { Cue } from '../subtitle/types'
+import { LocalizedError } from '../../../shared/i18n/core'
 import { applicableGlossary } from './prompt'
 import type { TranslateContext, TranslationProvider } from './types'
 import { normalizeLanguageCode, TranslationConfigError } from './types'
@@ -36,8 +37,13 @@ export async function translateCues(
   cues: Cue[],
   provider: TranslationProvider,
   ctx: TranslateContext,
-  onProgress?: (percent: number) => void
+  onProgress?: (percent: number) => void,
+  control?: { signal?: AbortSignal }
 ): Promise<TranslateCuesResult> {
+  // 取消只在批与批之间生效：单批最长几十秒（本地）到 300 秒（云端超时），不去打断进行中的请求
+  const checkCancelled = (): void => {
+    if (control?.signal?.aborted) throw new LocalizedError('error.jobCancelled')
+  }
   const apply = (map: Map<number, string>): void => {
     for (const cue of cues) {
       const t = map.get(cue.index)
@@ -63,6 +69,7 @@ export async function translateCues(
           {
             ...ctx,
             precedingText: precedingOf(batch),
+            signal: control?.signal,
             // 全量表在 ctx 里，这里narrow成本批真正命中的那几条
             glossary: applicableGlossary(ctx.glossary, batch.map((c) => c.text))
           }
@@ -77,6 +84,7 @@ export async function translateCues(
   const total = cues.length
   let done = 0
   for (let i = 0; i < cues.length; i += BATCH_SIZE) {
+    checkCancelled()
     const batch = cues.slice(i, i + BATCH_SIZE)
     await runBatch(batch)
     done += batch.length
@@ -93,12 +101,16 @@ export async function translateCues(
     }
   }
   for (let i = 0; i < needRetry.length; i += RETRY_BATCH_SIZE) {
+    checkCancelled()
     await runBatch(needRetry.slice(i, i + RETRY_BATCH_SIZE))
     onProgress?.(Math.round(95 + ((i + RETRY_BATCH_SIZE) / needRetry.length) * 5))
   }
   // 兜底：小批之后还缺的逐条单独翻。单条批次没有错位可能，解析端也不再核对对齐锚——
   // 对齐锚会把「模型没照抄原文开头」的行整批丢掉，个别条会连着两轮都过不了，不能让它们留着原文出片
-  for (const cue of cues.filter((c) => !c.translation)) await runBatch([cue])
+  for (const cue of cues.filter((c) => !c.translation)) {
+    checkCancelled()
+    await runBatch([cue])
+  }
   onProgress?.(100)
 
   const missingCount = cues.filter((c) => !c.translation).length

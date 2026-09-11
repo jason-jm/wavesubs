@@ -14,6 +14,12 @@ export const vi: Dict = {
   'tab.cloud': 'Dịch trên đám mây',
 
   'common.cancel': 'Hủy',
+  'error.jobCancelled': "Đã hủy tác vụ",
+  'job.eta': "Còn khoảng {time}",
+  'job.asrDevice': "Thiết bị nhận dạng: {device}",
+  'models.manualDownload': "Bạn cũng có thể tải tệp bằng trình duyệt hoặc trình quản lý tải xuống rồi bỏ vào thư mục mô hình ở trên:",
+  'common.copyLink': "Sao chép liên kết",
+  'common.copied': "Đã sao chép",
   'common.save': 'Lưu',
   'common.add': 'Thêm',
   'common.edit': 'Sửa',

@@ -17,6 +17,8 @@ import { normalizeLanguageTag, SOURCE_LANGUAGES, TARGET_LANGUAGES, targetLanguag
 import { cacheNote } from '../lib/jobSummary'
 import { QC_TAG, qcFindingText } from '../lib/qc'
 import { fileNameOf } from '../lib/paths'
+import { formatDuration } from '../lib/duration'
+import { useStageEta } from '../lib/useStageEta'
 import { defaultSourceKey } from '../lib/source'
 import { audioTrackLabel, subtitleTrackLabel } from '../lib/trackLabels'
 import { Icon } from '../components/Icon'
@@ -45,19 +47,11 @@ interface Props {
   lastInput: string | null
   onEdit: (path: string) => void
   onRun: (input: string, request: JobRequest) => void
+  onCancel: () => void
   updateSettings: (patch: SettingsUpdate) => Promise<void>
   onSelectModel: (file: string) => void
   onSelectLlm: (file: string) => void
   goModels: () => void
-}
-
-function formatDuration(sec: number): string {
-  const total = Math.round(sec)
-  const h = Math.floor(total / 3600)
-  const m = Math.floor((total % 3600) / 60)
-  const s = total % 60
-  const pad = (n: number): string => String(n).padStart(2, '0')
-  return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${m}:${pad(s)}`
 }
 
 
@@ -97,6 +91,7 @@ export function HomeView(props: Props): React.JSX.Element {
   const [audioIndex, setAudioIndex] = useState(0)
 
   const busy = jobState.kind === 'running'
+  const eta = useStageEta(jobState.kind === 'running' ? jobState.progress : null)
   const installedModels = overview?.models.filter((m) => m.installed) ?? []
   const installedLlm = overview?.llmModels.filter((m) => m.installed) ?? []
   const translating = targetLang !== 'none'
@@ -265,9 +260,15 @@ export function HomeView(props: Props): React.JSX.Element {
         <div className="progress-head">
           <div style={{ minWidth: 0 }}>
             <div className="job-title">{fileNameOf(input)}</div>
-            <div className="job-meta">{t(progress.messageKey ?? STAGE_LABELS[progress.stage])}</div>
+            <div className="job-meta">
+              {t(progress.messageKey ?? STAGE_LABELS[progress.stage])}
+              {eta !== null && ` · ${t('job.eta', { time: formatDuration(eta) })}`}
+            </div>
           </div>
           <div className="progress-pct">{progress.percent}%</div>
+          <button className="btn btn-quiet" onClick={props.onCancel}>
+            {t('common.cancel')}
+          </button>
         </div>
         <div className="track">
           <div className="track-fill" style={{ width: `${progress.percent}%` }} />
@@ -570,6 +571,11 @@ export function HomeView(props: Props): React.JSX.Element {
                 })}
             </h3>
             <p className="result-path">{jobState.result.outputPath}</p>
+            {jobState.result.asrDevice && (
+              <p className="result-cache">
+                {t('job.asrDevice', { device: jobState.result.asrDevice })}
+              </p>
+            )}
             {cacheNote(jobState.result, t) && (
               <p className="result-cache">{cacheNote(jobState.result, t)}</p>
             )}

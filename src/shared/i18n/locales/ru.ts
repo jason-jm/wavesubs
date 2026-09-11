@@ -14,6 +14,12 @@ export const ru: Dict = {
   'tab.cloud': 'Облачный перевод',
 
   'common.cancel': 'Отменить',
+  'error.jobCancelled': "Задача отменена",
+  'job.eta': "Осталось около {time}",
+  'job.asrDevice': "Устройство распознавания: {device}",
+  'models.manualDownload': "Можно также скачать файл браузером или менеджером загрузок и положить его в папку моделей выше:",
+  'common.copyLink': "Копировать ссылку",
+  'common.copied': "Скопировано",
   'common.save': 'Сохранить',
   'common.add': 'Добавить',
   'common.edit': 'Изменить',

@@ -44,7 +44,7 @@ import {
 } from './core/asr/catalog'
 import { assessModelFitness, detectHardware } from './core/hardware'
 import { probeMedia } from './core/media'
-import { ModelDownloader } from './core/modelManager'
+import { ModelDownloader, candidateUrls } from './core/modelManager'
 import { runSubtitleJob } from './core/pipeline'
 import {
   isSubtitleFile,
@@ -109,6 +109,7 @@ let asrDownloader: ModelDownloader
 let llmDownloader: ModelDownloader
 const llamaManager = new LlamaServerManager()
 let jobRunning = false
+let jobAbort: AbortController | null = null
 
 async function isFile(path: string): Promise<boolean> {
   return stat(path)
@@ -143,16 +144,18 @@ async function buildModelsOverview(): Promise<ModelsOverview> {
       ...spec,
       requirement: t(spec.requirement),
       detail: t(spec.detail),
+      downloadUrls: candidateUrls(modelDownloadUrl(spec.file)),
       installed: await isFile(join(dir, spec.file)),
       downloading: asrDownloading.has(spec.file),
       fitness: assessModelFitness(spec, hardware)
     }))
   )
   const llmModels: ModelInfo[] = await Promise.all(
-    LOCAL_LLM_MODELS.map(async ({ url: _url, ...spec }) => ({
+    LOCAL_LLM_MODELS.map(async ({ url, ...spec }) => ({
       ...spec,
       requirement: t(spec.requirement),
       detail: t(spec.detail),
+      downloadUrls: candidateUrls(url),
       installed: await isFile(join(ldir, spec.file)),
       downloading: llmDownloading.has(spec.file),
       fitness: assessModelFitness(spec, hardware)
@@ -341,6 +344,10 @@ function registerIpc(): void {
     }
   })
 
+  handle('job:cancel', () => {
+    jobAbort?.abort()
+  })
+
   handle('job:run', async (event, input: string, request: JobRequest) => {
     if (jobRunning) throw new Error(settings.t('error.jobRunning'))
     const source: SubtitleSource = request.source ?? { kind: 'asr' }
@@ -400,8 +407,10 @@ function registerIpc(): void {
     const output = translate ? { format, content } : { format, content: 'original' as const }
 
     jobRunning = true
+    jobAbort = new AbortController()
     try {
       const result = await runSubtitleJob({
+        signal: jobAbort.signal,
         input,
         modelPath,
         language: request.language === 'auto' ? undefined : request.language,
@@ -423,6 +432,7 @@ function registerIpc(): void {
         language: result.language,
         targetLanguage: result.targetLanguage,
         cueCount: result.cueCount,
+        asrDevice: result.asrDevice,
         translated: Boolean(translate),
         translatedCount: result.translatedCount,
         sourceFromCache: result.sourceFromCache,
@@ -433,6 +443,7 @@ function registerIpc(): void {
       }
     } finally {
       jobRunning = false
+      jobAbort = null
     }
   })
 

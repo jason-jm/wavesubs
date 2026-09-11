@@ -71,8 +71,10 @@ const PARTS: Part[] = [
     dir: 'llama',
     zip: 'llama-win.zip',
     exes: ['llama-server.exe'],
-    url: 'https://github.com/ggml-org/llama.cpp/releases/download/b10865/llama-b10865-bin-win-cpu-x64.zip',
-    sha256: 'c78058e6baac37e8b0cd3d1da1407ea9677f8d10c5281b3ba94d6dfa4a0265ae'
+    // Vulkan 版：包里同时带着全部 CPU 后端 DLL（ggml-cpu-*.dll），ggml 启动时按机器挑——有 Vulkan 设备
+    // （NVIDIA / AMD / Intel 核显都行）就用 GPU 翻译，没有或驱动不支持就静默回落 CPU，不需要 CUDA 运行库
+    url: 'https://github.com/ggml-org/llama.cpp/releases/download/b10865/llama-b10865-bin-win-vulkan-x64.zip',
+    sha256: '246346a8aadeb9db7fad4269081a8e5cabf8734f5fea8bfe2257dc139d499000'
   }
 ]
 

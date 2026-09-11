@@ -18,6 +18,8 @@ import { QC_TAG, qcFindingText } from '../lib/qc'
 import { pickDefaultSource } from '../lib/source'
 import { audioTrackLabel, subtitleTrackLabel } from '../lib/trackLabels'
 import { Icon } from '../components/Icon'
+import { formatDuration } from '../lib/duration'
+import { useStageEta } from '../lib/useStageEta'
 
 interface Props {
   settings: SettingsView | null
@@ -33,6 +35,8 @@ interface Props {
   onEdit: (path: string) => void
   onStart: (request: JobRequest) => void
   onStop: () => void
+  /** 立刻取消正在跑的那个文件（退回等待），队列继续处理后面的 */
+  onCancelCurrent: () => void
   updateSettings: (patch: SettingsUpdate) => Promise<void>
   goModels: () => void
 }
@@ -297,7 +301,7 @@ function EntryConfig(props: {
 
 export function BatchView(props: Props): React.JSX.Element {
   const { settings, overview, entries, running, stopping, onAdd, onRemove, onClear } = props
-  const { onOverride, onEdit, onStart, onStop, updateSettings, goModels } = props
+  const { onOverride, onEdit, onStart, onStop, onCancelCurrent, updateSettings, goModels } = props
   const { t, locale } = useI18n()
 
   const [dragOver, setDragOver] = useState(false)
@@ -310,6 +314,8 @@ export function BatchView(props: Props): React.JSX.Element {
   const [service, setService] = useState('local')
   const [content, setContent] = useState<ExportContent>('translated')
   const [format, setFormat] = useState<ExportFormat>('srt')
+  const runningEntry = entries.find((e) => e.status === 'running')
+  const eta = useStageEta(runningEntry?.progress ?? null)
 
   // 首次拿到设置时，用上次用过的偏好填一遍
   useEffect(() => {
@@ -595,6 +601,7 @@ export function BatchView(props: Props): React.JSX.Element {
                             <span>
                               {t(e.progress.messageKey ?? `stage.${e.progress.stage}`)} ·{' '}
                               {e.progress.percent}%
+                              {eta !== null && ` · ${t('job.eta', { time: formatDuration(eta) })}`}
                             </span>
                           </div>
                         </>
@@ -644,6 +651,11 @@ export function BatchView(props: Props): React.JSX.Element {
                             <Icon name="reveal" size={14} />
                           </button>
                         </>
+                      )}
+                      {e.status === 'running' && (
+                        <button className="btn btn-quiet" onClick={onCancelCurrent}>
+                          {t('common.cancel')}
+                        </button>
                       )}
                       {e.status !== 'running' && (
                         <button

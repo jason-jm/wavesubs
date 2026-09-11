@@ -6,6 +6,8 @@ export interface JobProgress {
   stage: PipelineStage
   /** 整个任务的总体进度 0-100 */
   percent: number
+  /** 当前阶段内的进度 0-100：界面按它估算「本阶段还要多久」 */
+  stagePercent?: number
   /** 传键而不是成品文案，由渲染层按当前界面语言翻译 */
   messageKey?: TranslationKey
 }
@@ -166,6 +168,8 @@ export interface PreviewSegment {
 }
 
 export interface JobSummary {
+  /** 识别实际用的计算设备（GPU 名或 CPU），用户反馈「慢」时的第一诊断项 */
+  asrDevice?: string
   outputPath: string
   language: string
   targetLanguage?: string
@@ -230,6 +234,8 @@ export interface ModelInfo {
   installed: boolean
   downloading: boolean
   fitness: ModelFitness
+  /** 全部可用的下载地址（官方在前，镜像在后）：下载失败时给用户手动下载用 */
+  downloadUrls: string[]
 }
 
 export interface ModelsOverview {

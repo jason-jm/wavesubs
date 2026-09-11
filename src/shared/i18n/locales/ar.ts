@@ -15,6 +15,12 @@ export const ar: Dict = {
   'tab.cloud': 'ترجمة سحابية',
 
   'common.cancel': 'إلغاء',
+  'error.jobCancelled': "تم إلغاء المهمة",
+  'job.eta': "يتبقى نحو {time}",
+  'job.asrDevice': "جهاز التعرف: {device}",
+  'models.manualDownload': "يمكنك أيضًا تنزيل الملف بالمتصفح أو بمدير تنزيلات ووضعه في مجلد النماذج أعلاه:",
+  'common.copyLink': "نسخ الرابط",
+  'common.copied': "تم النسخ",
   'common.save': 'حفظ',
   'common.add': 'إضافة',
   'common.edit': 'تعديل',

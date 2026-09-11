@@ -23,6 +23,8 @@ export interface TranslateContext {
    * 这里拿到什么就注入什么——providers 不用再做判断。
    */
   glossary?: Array<{ from: string; to: string }>
+  /** 用户点了「取消」：正在等的请求立刻中断，不再重试 */
+  signal?: AbortSignal
 }
 
 export interface TranslationProvider {

@@ -125,8 +125,8 @@ Windows 不自己编译，直接用官方预编译包。两种来源：
 | 文件 | 来源 |
 |---|---|
 | `ffmpeg-win.zip` | BtbN 的 `ffmpeg-master-latest-win64-lgpl-**shared**.zip` |
-| `whisper-win.zip` | whisper.cpp release `v1.9.1` 的 `whisper-blas-bin-x64.zip` |
-| `llama-win.zip` | llama.cpp release 的 `llama-*-bin-win-cpu-x64.zip` |
+| `whisper-win.zip` | whisper.cpp release `v1.9.1` 的 `whisper-blas-bin-x64.zip`（CPU；上游 Windows 只提供 CUDA 版 GPU 包，677MB，暂不随包） |
+| `llama-win.zip` | llama.cpp release 的 `llama-*-bin-win-vulkan-x64.zip`（自带 CPU 后端，无 Vulkan 设备时自动回落） |
 
 **ffmpeg 必须拿 lgpl 而不是 gpl 版本**，理由和 macOS 一样。
 `scripts/bundle-deps-win.ts` 会在打包时校验这一点，拿错会直接失败。

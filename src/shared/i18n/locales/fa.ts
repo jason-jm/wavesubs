@@ -15,6 +15,12 @@ export const fa: Dict = {
   'tab.cloud': 'ترجمهٔ ابری',
 
   'common.cancel': 'انصراف',
+  'error.jobCancelled': "کار لغو شد",
+  'job.eta': "حدود {time} باقی مانده",
+  'job.asrDevice': "دستگاه تشخیص: {device}",
+  'models.manualDownload': "می‌توانید فایل را با مرورگر یا مدیر دانلود بگیرید و در پوشهٔ مدل‌های بالا قرار دهید:",
+  'common.copyLink': "کپی پیوند",
+  'common.copied': "کپی شد",
   'common.save': 'ذخیره',
   'common.add': 'افزودن',
   'common.edit': 'ویرایش',

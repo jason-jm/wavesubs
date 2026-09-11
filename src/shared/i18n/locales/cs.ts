@@ -14,6 +14,12 @@ export const cs: Dict = {
   'tab.cloud': 'Cloudový překlad',
 
   'common.cancel': 'Zrušit',
+  'error.jobCancelled': "Úloha zrušena",
+  'job.eta': "Zbývá asi {time}",
+  'job.asrDevice': "Zařízení rozpoznávání: {device}",
+  'models.manualDownload': "Soubor můžete také stáhnout prohlížečem nebo správcem stahování a vložit ho do složky modelů výše:",
+  'common.copyLink': "Kopírovat odkaz",
+  'common.copied': "Zkopírováno",
   'common.save': 'Uložit',
   'common.add': 'Přidat',
   'common.edit': 'Upravit',

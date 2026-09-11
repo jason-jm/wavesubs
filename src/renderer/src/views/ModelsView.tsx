@@ -6,7 +6,8 @@ import type {
   SettingsView
 } from '../../../shared/types'
 import type { TranslationKey, Translate } from '../../../shared/i18n'
-import type { ModelTab } from '../App'
+import { useState } from 'react'
+import type { ModelError, ModelTab } from '../App'
 import { useT } from '../i18n'
 import { Icon } from '../components/Icon'
 import { CloudPane } from './CloudPane'
@@ -17,7 +18,7 @@ interface Props {
   overview: ModelsOverview | null
   settings: SettingsView | null
   downloads: Record<string, ModelDownloadProgress>
-  error: string | null
+  error: ModelError | null
   onDownload: (kind: ModelKind, file: string) => void
   onCancel: (kind: ModelKind, file: string) => void
   onDelete: (kind: ModelKind, file: string) => void
@@ -135,18 +136,51 @@ function ModelRow(props: {
 export function ModelsView(props: Props): React.JSX.Element {
   const { tab, overview, settings, downloads, error, onDownload, onCancel, onDelete } = props
   const t = useT()
+  const [copied, setCopied] = useState<string | null>(null)
 
   if (!overview) return <p className="loading">{t('common.loadingModels')}</p>
 
   const list = tab === 'asr' ? overview.models : overview.llmModels
   const dir = tab === 'asr' ? overview.dir : overview.llmDir
+  // 下载失败时把这个模型的全部来源地址列出来：程序连不上的，用户的浏览器或
+  // 下载工具（走系统代理、能断点续传）往往能下，下完放进模型文件夹就能用
+  const failed = error
+    ? [...overview.models, ...overview.llmModels].find((m) => m.file === error.file)
+    : undefined
+  const failedDir = error?.kind === 'asr' ? overview.dir : overview.llmDir
+  const copy = (url: string): void => {
+    void navigator.clipboard.writeText(url).then(() => {
+      setCopied(url)
+      window.setTimeout(() => setCopied((c) => (c === url ? null : c)), 1500)
+    })
+  }
 
   return (
     <div className="rise" key={tab}>
       {error && (
         <div className="notice notice-error">
           <Icon name="warning" />
-          <p>{error}</p>
+          <div className="notice-body">
+            <p>{error.message}</p>
+            {failed && failed.downloadUrls.length > 0 && (
+              <>
+                <p>{t('models.manualDownload')}</p>
+                <ul className="url-list">
+                  {failed.downloadUrls.map((u) => (
+                    <li key={u}>
+                      <code>{u}</code>
+                      <button className="btn" onClick={() => copy(u)}>
+                        {copied === u ? t('common.copied') : t('common.copyLink')}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <button className="btn" onClick={() => window.waveSubs.openPath(failedDir)}>
+                  {t('models.openFinder')}
+                </button>
+              </>
+            )}
+          </div>
         </div>
       )}
 

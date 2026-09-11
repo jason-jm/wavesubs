@@ -33,6 +33,7 @@ const api = {
   probeMedia: (path: string): Promise<MediaProbeInfo> => ipcRenderer.invoke('media:probe', path),
   runJob: (input: string, request: JobRequest): Promise<JobSummary> =>
     ipcRenderer.invoke('job:run', input, request),
+  cancelJob: (): Promise<void> => ipcRenderer.invoke('job:cancel'),
   onJobProgress: (callback: (progress: JobProgress) => void): (() => void) =>
     subscribe('job:progress', callback),
 

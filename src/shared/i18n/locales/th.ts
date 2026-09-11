@@ -14,6 +14,12 @@ export const th: Dict = {
   'tab.cloud': 'แปลบนคลาวด์',
 
   'common.cancel': 'ยกเลิก',
+  'error.jobCancelled': "ยกเลิกงานแล้ว",
+  'job.eta': "เหลืออีกประมาณ {time}",
+  'job.asrDevice': "อุปกรณ์ที่ใช้รู้จำ: {device}",
+  'models.manualDownload': "คุณสามารถดาวน์โหลดไฟล์ด้วยเบราว์เซอร์หรือโปรแกรมช่วยดาวน์โหลด แล้วนำไปวางในโฟลเดอร์โมเดลด้านบนได้เช่นกัน:",
+  'common.copyLink': "คัดลอกลิงก์",
+  'common.copied': "คัดลอกแล้ว",
   'common.save': 'บันทึก',
   'common.add': 'เพิ่ม',
   'common.edit': 'แก้ไข',

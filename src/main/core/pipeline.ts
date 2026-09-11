@@ -59,6 +59,8 @@ export interface JobOptions {
   /** 目标目录写不进去（沙盒/只读卷）时的兜底输出目录；不传则直接报错 */
   fallbackOutputDir?: string
   onProgress?: (progress: JobProgress) => void
+  /** 用户取消：各子进程被杀、翻译在批间停下，任务以 error.jobCancelled 结束 */
+  signal?: AbortSignal
 }
 
 export interface JobResult {
@@ -67,6 +69,7 @@ export interface JobResult {
   targetLanguage?: string
   cueCount: number
   translatedCount?: number
+  asrDevice?: string
   durationSec: number
   cues: Cue[]
   /** 识别/抽取阶段来自缓存 */
@@ -164,6 +167,7 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
     opts.onProgress?.({
       stage,
       percent: Math.round(lo + ((hi - lo) * bounded) / 100),
+      stagePercent: Math.round(bounded),
       messageKey
     })
   }
@@ -191,6 +195,7 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
     let record: JobRecord | null = null
     let sourceFromCache = false
     let qcRegions: SpeechRegion[] | null = null
+    let asrDevice: string | undefined
 
     // ---------- 源阶段：优先吃缓存 ----------
     if (store && !opts.refreshCache) {
@@ -274,24 +279,27 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
             output: wavPath,
             audioIndex: opts.audioIndex ?? 0,
             durationSec: media.durationSec,
+            signal: opts.signal,
             onProgress: (p) => report('extract', p, 'progress.extractAudio')
           })
           report('extract', 100)
 
           report('transcribe', 0, 'progress.transcribing')
           const regionsPromise = opts.vadModelPath
-            ? detectSpeechRegions(vadBinPath(), opts.vadModelPath, wavPath).catch(() => null)
+            ? detectSpeechRegions(vadBinPath(), opts.vadModelPath, wavPath, opts.signal).catch(() => null)
             : Promise.resolve(null)
           const energyPromise = analyzeWavEnergy(wavPath).catch(() => null)
           const asr = await transcribeWithWhisperCpp(whisperCliPath(), {
             audioPath: wavPath,
             modelPath: opts.modelPath,
             language: opts.language,
-            onProgress: (p) => report('transcribe', p, 'progress.transcribing')
+            onProgress: (p) => report('transcribe', p, 'progress.transcribing'),
+            signal: opts.signal
           })
           ;[regions, energy] = await Promise.all([regionsPromise, energyPromise])
           qcRegions = regions
           rawCues = asr.cues
+          asrDevice = asr.device
           cues = refineAsrCues(cloneCues(asr.cues), regions, energy)
           language = asr.language
         }
@@ -320,6 +328,7 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
       }
     }
 
+    if (opts.signal?.aborted) throw new LocalizedError('error.jobCancelled')
     if (cues === null || cues.length === 0) throw new LocalizedError('error.noCues')
 
     // ---------- 翻译阶段：按四元组决定复用还是重翻 ----------
@@ -360,7 +369,8 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
               targetLanguage: opts.translate.targetLanguage,
               glossary: opts.glossary
             },
-            (p) => report('translate', p, 'progress.translating')
+            (p) => report('translate', p, 'progress.translating'),
+            { signal: opts.signal }
           )
         } catch (err) {
           // 部分批次可能已成功：先把已得译文连同元数据存下（partial），下次同参续翻
@@ -422,6 +432,7 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
       targetLanguage: opts.translate?.targetLanguage,
       cueCount: cues.length,
       translatedCount,
+      asrDevice,
       durationSec,
       cues,
       sourceFromCache,

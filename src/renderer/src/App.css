@@ -843,6 +843,46 @@ textarea {
   min-width: 0;
 }
 
+/* 多段内容的提示（下载失败 + 手动下载地址）：整块占满，正文行不再各自撑开 */
+.notice-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.notice-body p {
+  flex: none;
+  align-self: stretch;
+}
+
+.url-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.url-list li {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+  min-width: 0;
+}
+
+.url-list code {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+
 .notice-warn {
   color: var(--orange);
   background: color-mix(in srgb, var(--orange) 12%, transparent);

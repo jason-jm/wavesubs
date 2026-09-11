@@ -15,6 +15,8 @@ export interface BatchRunnerDeps {
   patch: (fn: (prev: BatchEntry[]) => BatchEntry[]) => void
   shouldStop: () => boolean
   toMessage: (err: unknown) => string
+  /** 这次失败是不是用户点了「取消」：是就退回等待，不算失败 */
+  isCancelled?: (err: unknown) => boolean
 }
 
 /**
@@ -82,12 +84,16 @@ export async function runBatchQueue(
         )
       )
     } catch (err) {
+      // 用户取消当前文件：退回「等待中」而不是记成失败——下次点开始还会跑它，
+      // 而且队列继续往下走，取消一个不影响后面的
+      const cancelled = deps.isCancelled?.(err) ?? false
       deps.patch((prev) =>
-        prev.map((e) =>
-          e.id === next.id
-            ? { ...e, status: 'failed', error: deps.toMessage(err), progress: undefined }
-            : e
-        )
+        prev.map((e) => {
+          if (e.id !== next.id) return e
+          return cancelled
+            ? { ...e, status: 'waiting', error: undefined, progress: undefined }
+            : { ...e, status: 'failed', error: deps.toMessage(err), progress: undefined }
+        })
       )
     }
   }

@@ -14,6 +14,12 @@ export const es: Dict = {
   'tab.cloud': 'Traducción en la nube',
 
   'common.cancel': 'Cancelar',
+  'error.jobCancelled': "Tarea cancelada",
+  'job.eta': "Quedan unos {time}",
+  'job.asrDevice': "Dispositivo de reconocimiento: {device}",
+  'models.manualDownload': "También puedes descargar el archivo con un navegador o gestor de descargas y colocarlo en la carpeta de modelos de arriba:",
+  'common.copyLink': "Copiar enlace",
+  'common.copied': "Copiado",
   'common.save': 'Guardar',
   'common.add': 'Añadir',
   'common.edit': 'Editar',

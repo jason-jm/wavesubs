@@ -14,6 +14,12 @@ export const tr: Dict = {
   'tab.cloud': 'Bulut çevirisi',
 
   'common.cancel': 'İptal',
+  'error.jobCancelled': "Görev iptal edildi",
+  'job.eta': "Yaklaşık {time} kaldı",
+  'job.asrDevice': "Tanıma cihazı: {device}",
+  'models.manualDownload': "Dosyayı bir tarayıcı veya indirme yöneticisiyle indirip yukarıdaki model klasörüne de koyabilirsiniz:",
+  'common.copyLink': "Bağlantıyı kopyala",
+  'common.copied': "Kopyalandı",
   'common.save': 'Kaydet',
   'common.add': 'Ekle',
   'common.edit': 'Düzenle',

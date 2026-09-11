@@ -14,6 +14,12 @@ export const nb: Dict = {
   'tab.cloud': 'Skyoversettelse',
 
   'common.cancel': 'Avbryt',
+  'error.jobCancelled': "Oppgave avbrutt",
+  'job.eta': "Omtrent {time} igjen",
+  'job.asrDevice': "Gjenkjenningsenhet: {device}",
+  'models.manualDownload': "Du kan også laste ned filen med en nettleser eller nedlastingsbehandler og legge den i modellmappen over:",
+  'common.copyLink': "Kopier lenke",
+  'common.copied': "Kopiert",
   'common.save': 'Arkiver',
   'common.add': 'Legg til',
   'common.edit': 'Rediger',

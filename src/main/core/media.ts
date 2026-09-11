@@ -98,6 +98,7 @@ export interface ExtractAudioOptions {
   audioIndex?: number
   durationSec?: number
   onProgress?: (percent: number) => void
+  signal?: AbortSignal
 }
 
 /** 抽取指定音轨并重采样为 Whisper 需要的 16kHz 单声道 WAV */
@@ -117,6 +118,9 @@ export async function extractAudio(ffmpeg: string, opts: ExtractAudioOptions): P
   await new Promise<void>((resolve, reject) => {
     const child = spawn(ffmpeg, args)
     let stderrTail = ''
+    const onAbort = (): void => { child.kill() }
+    if (opts.signal?.aborted) onAbort()
+    else opts.signal?.addEventListener('abort', onAbort, { once: true })
     child.stderr.on('data', (chunk: Buffer) => {
       stderrTail = (stderrTail + chunk.toString()).slice(-4000)
     })
@@ -131,7 +135,9 @@ export async function extractAudio(ffmpeg: string, opts: ExtractAudioOptions): P
     })
     child.on('error', reject)
     child.on('close', (code) => {
-      if (code === 0) resolve()
+      opts.signal?.removeEventListener('abort', onAbort)
+      if (opts.signal?.aborted) reject(new LocalizedError('error.jobCancelled'))
+      else if (code === 0) resolve()
       else reject(new Error(`ffmpeg 抽取音频失败（退出码 ${code}）\n${stderrTail}`))
     })
   })

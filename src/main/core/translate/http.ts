@@ -14,16 +14,21 @@ const RETRYABLE_STATUS = new Set([408, 409, 425, 429, 500, 502, 503, 504])
 export async function postJsonWithRetry(
   url: string,
   headers: Record<string, string>,
-  body: string
+  body: string,
+  signal?: AbortSignal
 ): Promise<unknown> {
   let lastError: Error = new Error('翻译请求失败')
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
+    // 用户取消：不发、不等、不重试。本地 llama-server 一批要几十秒，云端超时 300 秒，
+    // 不把取消传到 fetch 的话，点了「取消」还得干等这一批跑完
+    if (signal?.aborted) throw new Error('translation cancelled')
+    const timeout = AbortSignal.timeout(REQUEST_TIMEOUT_MS)
     try {
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'content-type': 'application/json', ...headers },
         body,
-        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS)
+        signal: signal ? AbortSignal.any([timeout, signal]) : timeout
       })
       if (res.ok) return await res.json()
       const text = (await res.text().catch(() => '')).slice(0, 300)
@@ -34,6 +39,7 @@ export async function postJsonWithRetry(
       if (err instanceof TranslationConfigError) throw err
       lastError = err instanceof Error ? err : new Error(String(err))
     }
+    if (signal?.aborted) throw lastError
     if (attempt < MAX_ATTEMPTS - 1) await delay(RETRY_DELAYS_MS[attempt])
   }
   throw lastError

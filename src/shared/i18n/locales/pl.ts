@@ -14,6 +14,12 @@ export const pl: Dict = {
   'tab.cloud': 'Tłumaczenie w chmurze',
 
   'common.cancel': 'Anuluj',
+  'error.jobCancelled': "Zadanie anulowane",
+  'job.eta': "Pozostało około {time}",
+  'job.asrDevice': "Urządzenie rozpoznawania: {device}",
+  'models.manualDownload': "Możesz też pobrać plik przeglądarką lub menedżerem pobierania i umieścić go w powyższym folderze modeli:",
+  'common.copyLink': "Kopiuj link",
+  'common.copied': "Skopiowano",
   'common.save': 'Zapisz',
   'common.add': 'Dodaj',
   'common.edit': 'Edytuj',

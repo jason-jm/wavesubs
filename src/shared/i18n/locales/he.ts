@@ -15,6 +15,12 @@ export const he: Dict = {
   'tab.cloud': 'תרגום בענן',
 
   'common.cancel': 'ביטול',
+  'error.jobCancelled': "המשימה בוטלה",
+  'job.eta': "נותרו כ-{time}",
+  'job.asrDevice': "התקן זיהוי: {device}",
+  'models.manualDownload': "אפשר גם להוריד את הקובץ בדפדפן או במנהל הורדות ולשים אותו בתיקיית המודלים שלמעלה:",
+  'common.copyLink': "העתק קישור",
+  'common.copied': "הועתק",
   'common.save': 'שמירה',
   'common.add': 'הוספה',
   'common.edit': 'עריכה',

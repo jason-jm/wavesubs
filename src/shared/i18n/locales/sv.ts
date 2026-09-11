@@ -14,6 +14,12 @@ export const sv: Dict = {
   'tab.cloud': 'Molnöversättning',
 
   'common.cancel': 'Avbryt',
+  'error.jobCancelled': "Jobbet avbröts",
+  'job.eta': "Cirka {time} kvar",
+  'job.asrDevice': "Igenkänningsenhet: {device}",
+  'models.manualDownload': "Du kan också ladda ner filen med en webbläsare eller nedladdningshanterare och lägga den i modellmappen ovan:",
+  'common.copyLink': "Kopiera länk",
+  'common.copied': "Kopierad",
   'common.save': 'Spara',
   'common.add': 'Lägg till',
   'common.edit': 'Redigera',

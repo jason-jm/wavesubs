@@ -14,6 +14,12 @@ export const bn: Dict = {
   'tab.cloud': 'ক্লাউড অনুবাদ',
 
   'common.cancel': 'বাতিল',
+  'error.jobCancelled': "কাজ বাতিল হয়েছে",
+  'job.eta': "প্রায় {time} বাকি",
+  'job.asrDevice': "শনাক্তকরণ ডিভাইস: {device}",
+  'models.manualDownload': "ব্রাউজার বা ডাউনলোড ম্যানেজার দিয়ে ফাইলটি নামিয়ে উপরের মডেল ফোল্ডারে রাখতেও পারেন:",
+  'common.copyLink': "লিংক কপি করুন",
+  'common.copied': "কপি হয়েছে",
   'common.save': 'সংরক্ষণ',
   'common.add': 'যোগ করুন',
   'common.edit': 'সম্পাদনা',

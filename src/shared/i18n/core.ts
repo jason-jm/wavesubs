@@ -177,6 +177,12 @@ export class LocalizedError extends Error {
 
 /** 把 LocalizedError 翻成当前语言；其它错误原样返回 */
 export function localizeError(err: unknown, t: Translate): Error {
-  if (err instanceof LocalizedError) return new Error(t(err.key, err.vars))
+  if (err instanceof LocalizedError) {
+    // 底层原因（ENOTFOUND / certificate / timeout…）附在括号里：用户截图报错时，这一行就是诊断依据
+    const cause = (err as { cause?: unknown }).cause
+    const raw = cause instanceof Error ? cause.message : typeof cause === 'string' ? cause : ''
+    const detail = raw.split('\n')[0].trim().slice(0, 120)
+    return new Error(detail ? `${t(err.key, err.vars)}（${detail}）` : t(err.key, err.vars))
+  }
   return err instanceof Error ? err : new Error(String(err))
 }

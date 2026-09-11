@@ -14,6 +14,12 @@ export const fi: Dict = {
   'tab.cloud': 'Pilvikäännös',
 
   'common.cancel': 'Kumoa',
+  'error.jobCancelled': "Tehtävä peruttu",
+  'job.eta': "Noin {time} jäljellä",
+  'job.asrDevice': "Tunnistuslaite: {device}",
+  'models.manualDownload': "Voit myös ladata tiedoston selaimella tai latausohjelmalla ja pudottaa sen yllä olevaan mallikansioon:",
+  'common.copyLink': "Kopioi linkki",
+  'common.copied': "Kopioitu",
   'common.save': 'Tallenna',
   'common.add': 'Lisää',
   'common.edit': 'Muokkaa',

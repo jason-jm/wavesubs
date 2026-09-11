@@ -28,7 +28,9 @@ type Progress = Omit<ModelDownloadProgress, 'kind'>
  */
 const HF_OFFICIAL = 'https://huggingface.co/'
 const HF_MIRRORS = ['https://hf-mirror.com/']
-const HOSTS = [HF_OFFICIAL, ...HF_MIRRORS]
+/** ModelScope 镜像了 Qwen 官方 GGUF 仓库（路径规则不同：/models/Qwen/<repo>/resolve/master/<file>）；whisper 的 ggml 它没有 */
+const MODELSCOPE = 'https://modelscope.cn/'
+const HOSTS = [HF_OFFICIAL, ...HF_MIRRORS, MODELSCOPE]
 const PREFERRED_HOST_FILE = '.download-host'
 let preferredHost: string | null = null
 
@@ -36,12 +38,15 @@ let preferredHost: string | null = null
 export function candidateUrls(url: string): string[] {
   if (!url.startsWith(HF_OFFICIAL)) return [url]
   const path = url.slice(HF_OFFICIAL.length)
-  const hosts = [...HOSTS]
-  if (preferredHost && hosts.includes(preferredHost)) {
-    hosts.splice(hosts.indexOf(preferredHost), 1)
-    hosts.unshift(preferredHost)
+  const list = [HF_OFFICIAL + path, ...HF_MIRRORS.map((h) => h + path)]
+  const qwen = /^Qwen\/([^/]+)\/resolve\/main\/(.+)$/.exec(path)
+  if (qwen) list.push(`${MODELSCOPE}models/Qwen/${qwen[1]}/resolve/master/${qwen[2]}`)
+  // 记住的来源排最前：上次谁赢了这次直接从它下
+  if (preferredHost) {
+    const i = list.findIndex((u) => u.startsWith(preferredHost as string))
+    if (i > 0) list.unshift(...list.splice(i, 1))
   }
-  return hosts.map((h) => h + path)
+  return list
 }
 
 /** 仅测试用：清掉记住的来源偏好 */

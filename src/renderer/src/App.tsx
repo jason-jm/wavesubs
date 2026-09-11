@@ -33,6 +33,13 @@ export type JobState =
 
 export type { BatchStatus, BatchEntry } from '../../shared/types'
 
+/** 模型下载失败：记下是哪个文件，模型页才能列出它的下载地址让用户手动下 */
+export interface ModelError {
+  message: string
+  kind: ModelKind
+  file: string
+}
+
 export function stripIpcErrorPrefix(message: string): string {
   return message.replace(/^Error invoking remote method '[^']+': (?:Error: )?/, '')
 }
@@ -73,7 +80,7 @@ export default function App(): React.JSX.Element {
   const [settings, setSettings] = useState<SettingsView | null>(null)
   const [overview, setOverview] = useState<ModelsOverview | null>(null)
   const [downloads, setDownloads] = useState<Record<string, ModelDownloadProgress>>({})
-  const [modelError, setModelError] = useState<string | null>(null)
+  const [modelError, setModelError] = useState<ModelError | null>(null)
   const [jobState, setJobState] = useState<JobState>({ kind: 'idle' })
   /** 单文件页最近一次任务的输入路径——完成卡片的「编辑字幕」要用它定位记录 */
   const [lastInput, setLastInput] = useState<string | null>(null)
@@ -86,6 +93,8 @@ export default function App(): React.JSX.Element {
    */
   const batchRef = useRef<BatchEntry[]>([])
   const stopRef = useRef(false)
+  /** 用户点过「取消」：任务随后的失败不是错误，单文件回到空闲、批量退回等待 */
+  const cancelRef = useRef(false)
   /**
    * 探测串成一条链而不是并发发起：素材多半在网络盘上，同时探十几个文件
    * 只会互相抢带宽，最后每个都慢。
@@ -126,15 +135,26 @@ export default function App(): React.JSX.Element {
   }, [])
 
   const runJob = useCallback(async (input: string, request: JobRequest) => {
+    cancelRef.current = false
     setJobState({ kind: 'running', input, progress: { stage: 'probe', percent: 0 } })
     try {
       setLastInput(input)
       const result = await window.waveSubs.runJob(input, request)
       setJobState({ kind: 'done', result })
     } catch (err) {
+      if (cancelRef.current) {
+        setJobState({ kind: 'idle' })
+        return
+      }
       const message = err instanceof Error ? stripIpcErrorPrefix(err.message) : String(err)
       setJobState({ kind: 'error', message })
     }
+  }, [])
+
+  /** 取消正在跑的任务（单文件或批量里的当前文件）：主进程杀掉子进程，任务以「已取消」失败返回 */
+  const cancelJob = useCallback(() => {
+    cancelRef.current = true
+    void window.waveSubs.cancelJob()
   }, [])
 
   /**
@@ -236,10 +256,14 @@ export default function App(): React.JSX.Element {
       try {
         await runBatchQueue(request, {
           probe: (path) => window.waveSubs.probeMedia(path),
-          run: (path, req) => window.waveSubs.runJob(path, req),
+          run: (path, req) => {
+            cancelRef.current = false
+            return window.waveSubs.runJob(path, req)
+          },
           getEntries: () => batchRef.current,
           patch: patchBatch,
           shouldStop: () => stopRef.current,
+          isCancelled: () => cancelRef.current,
           toMessage: (err) =>
             err instanceof Error ? stripIpcErrorPrefix(err.message) : String(err)
         })
@@ -296,7 +320,7 @@ export default function App(): React.JSX.Element {
         .downloadModel(kind, file)
         .catch((err: unknown) => {
           const message = err instanceof Error ? stripIpcErrorPrefix(err.message) : String(err)
-          if (!message.includes('download cancelled')) setModelError(message)
+          if (!message.includes('download cancelled')) setModelError({ message, kind, file })
         })
         .finally(() => {
           setDownloads((prev) => {
@@ -319,7 +343,8 @@ export default function App(): React.JSX.Element {
       void window.waveSubs
         .deleteModel(kind, file)
         .catch((err: unknown) => {
-          setModelError(err instanceof Error ? stripIpcErrorPrefix(err.message) : String(err))
+          const message = err instanceof Error ? stripIpcErrorPrefix(err.message) : String(err)
+          setModelError({ message, kind, file })
         })
         .then(refreshOverview)
     },
@@ -421,6 +446,7 @@ export default function App(): React.JSX.Element {
               lastInput={lastInput}
               onEdit={(p) => openEditor(p, 'home')}
               onRun={runJob}
+              onCancel={cancelJob}
               updateSettings={updateSettings}
               onSelectModel={(file) => selectModel('asr', file)}
               onSelectLlm={(file) => selectModel('llm', file)}
@@ -447,6 +473,7 @@ export default function App(): React.JSX.Element {
               onEdit={(p) => openEditor(p, 'batch')}
               onStart={startBatch}
               onStop={stopBatch}
+              onCancelCurrent={cancelJob}
               updateSettings={updateSettings}
               goModels={() => setView('models')}
             />

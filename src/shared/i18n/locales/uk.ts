@@ -14,6 +14,12 @@ export const uk: Dict = {
   'tab.cloud': 'Хмарний переклад',
 
   'common.cancel': 'Скасувати',
+  'error.jobCancelled': "Завдання скасовано",
+  'job.eta': "Залишилось близько {time}",
+  'job.asrDevice': "Пристрій розпізнавання: {device}",
+  'models.manualDownload': "Можна також завантажити файл браузером або менеджером завантажень і покласти його в теку моделей вище:",
+  'common.copyLink': "Копіювати посилання",
+  'common.copied': "Скопійовано",
   'common.save': 'Зберегти',
   'common.add': 'Додати',
   'common.edit': 'Змінити',

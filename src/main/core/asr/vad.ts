@@ -33,12 +33,16 @@ const VAD_TUNING = ['-vsd', '60', '-vt', '0.35', '-vp', '10']
 export async function detectSpeechRegions(
   vadBin: string,
   vadModelPath: string,
-  wavPath: string
+  wavPath: string,
+  signal?: AbortSignal
 ): Promise<SpeechRegion[]> {
   const stdout = await new Promise<string>((resolve, reject) => {
     const child = spawn(vadBin, ['-vm', vadModelPath, '-f', wavPath, ...VAD_TUNING])
     let out = ''
     let errTail = ''
+    const onAbort = (): void => { child.kill() }
+    if (signal?.aborted) onAbort()
+    else signal?.addEventListener('abort', onAbort, { once: true })
     child.stdout.on('data', (chunk: Buffer) => {
       out += chunk.toString()
     })
@@ -47,7 +51,9 @@ export async function detectSpeechRegions(
     })
     child.on('error', reject)
     child.on('close', (code) => {
-      if (code === 0) resolve(out)
+      signal?.removeEventListener('abort', onAbort)
+      if (signal?.aborted) reject(new Error('VAD cancelled'))
+      else if (code === 0) resolve(out)
       else reject(new Error(`VAD 检测失败（退出码 ${code}）\n${errTail}`))
     })
   })

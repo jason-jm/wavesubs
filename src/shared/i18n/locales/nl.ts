@@ -14,6 +14,12 @@ export const nl: Dict = {
   'tab.cloud': 'Cloudvertaling',
 
   'common.cancel': 'Annuleer',
+  'error.jobCancelled': "Taak geannuleerd",
+  'job.eta': "Nog ongeveer {time}",
+  'job.asrDevice': "Herkenningsapparaat: {device}",
+  'models.manualDownload': "Je kunt het bestand ook met een browser of downloadmanager downloaden en in de modelmap hierboven zetten:",
+  'common.copyLink': "Link kopiëren",
+  'common.copied': "Gekopieerd",
   'common.save': 'Bewaar',
   'common.add': 'Voeg toe',
   'common.edit': 'Wijzig',

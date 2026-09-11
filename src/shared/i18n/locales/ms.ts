@@ -14,6 +14,12 @@ export const ms: Dict = {
   'tab.cloud': 'Terjemahan awan',
 
   'common.cancel': 'Batal',
+  'error.jobCancelled': "Tugas dibatalkan",
+  'job.eta': "Kira-kira {time} lagi",
+  'job.asrDevice': "Peranti pengecaman: {device}",
+  'models.manualDownload': "Anda juga boleh memuat turun fail dengan pelayar atau pengurus muat turun, kemudian letakkannya dalam folder model di atas:",
+  'common.copyLink': "Salin pautan",
+  'common.copied': "Disalin",
   'common.save': 'Simpan',
   'common.add': 'Tambah',
   'common.edit': 'Sunting',

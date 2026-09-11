@@ -13,6 +13,12 @@ export const zhHant: Dict = {
   'tab.cloud': '雲端翻譯',
 
   'common.cancel': '取消',
+  'error.jobCancelled': "任務已取消",
+  'job.eta': "預計還需 {time}",
+  'job.asrDevice': "辨識裝置：{device}",
+  'models.manualDownload': "也可以用瀏覽器或下載工具直接下載，再把檔案放進上面的模型資料夾：",
+  'common.copyLink': "複製連結",
+  'common.copied': "已複製",
   'common.save': '儲存',
   'common.add': '新增',
   'common.edit': '編輯',

@@ -14,6 +14,12 @@ export const hi: Dict = {
   'tab.cloud': 'क्लाउड अनुवाद',
 
   'common.cancel': 'रद्द करें',
+  'error.jobCancelled': "कार्य रद्द किया गया",
+  'job.eta': "लगभग {time} बाकी",
+  'job.asrDevice': "पहचान डिवाइस: {device}",
+  'models.manualDownload': "आप फ़ाइल को ब्राउज़र या डाउनलोड मैनेजर से भी डाउनलोड करके ऊपर के मॉडल फ़ोल्डर में रख सकते हैं:",
+  'common.copyLink': "लिंक कॉपी करें",
+  'common.copied': "कॉपी हो गया",
   'common.save': 'सहेजें',
   'common.add': 'जोड़ें',
   'common.edit': 'संपादित करें',

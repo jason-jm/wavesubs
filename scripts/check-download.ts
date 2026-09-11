@@ -37,6 +37,13 @@ console.log('候选地址：')
 resetPreferredHost()
 eq('HF 地址展开为 官方 → 镜像', candidateUrls(HF), [HF, MIRROR])
 eq('非 HF 地址原样', candidateUrls('https://example.com/x.bin'), ['https://example.com/x.bin'])
+const QWEN = 'https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf'
+eq('Qwen 的 GGUF 多一个 ModelScope 来源（路径规则不同）', candidateUrls(QWEN), [
+  QWEN,
+  'https://hf-mirror.com/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf',
+  'https://modelscope.cn/models/Qwen/Qwen3-8B-GGUF/resolve/master/Qwen3-8B-Q4_K_M.gguf'
+])
+eq('whisper 的 ggml 没有 ModelScope 来源', candidateUrls(HF).length, 2)
 
 /** 造一个假 fetch：按主机决定成败；成功时返回一段可流式读取的正文 */
 function fakeFetch(behaviour: Record<string, 'ok' | 'fail' | 'hang' | '404'>, body = 'hello'): FetchLike & { calls: string[] } {

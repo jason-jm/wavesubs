@@ -3,6 +3,7 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { availableParallelism, tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { Cue } from '../subtitle/types'
+import { LocalizedError } from '../../../shared/i18n/core'
 
 export interface WhisperOptions {
   audioPath: string
@@ -13,11 +14,31 @@ export interface WhisperOptions {
   extraArgs?: string[]
   threads?: number
   onProgress?: (percent: number) => void
+  /** 用户取消：杀掉 whisper-cli 子进程并抛 error.jobCancelled */
+  signal?: AbortSignal
 }
 
 export interface AsrResult {
   language: string
   cues: Cue[]
+  /** 识别实际跑在哪：GPU 名（Apple M1 / NVIDIA …）或 'CPU'。给界面显示，用户反馈「慢」时一眼能看出没吃到 GPU */
+  device?: string
+}
+
+/**
+ * 从 whisper.cpp 的日志里认出计算设备。各后端的行不一样：
+ *   Metal   ggml_metal_device_init: GPU name:   MTL0 (Apple M4 Max)
+ *   Vulkan  ggml_vulkan: 0 = NVIDIA GeForce RTX 4070 (NVIDIA) | uma: 0 | …
+ *   CUDA    ggml_cuda_init: found 1 CUDA devices: / Device 0: NVIDIA GeForce RTX 4070, compute capability 8.9
+ */
+export function detectDevice(log: string): string {
+  const metal = /GPU name:\s*(?:MTL\d+\s*)?\(?([^)\n]+)\)?/.exec(log)
+  if (metal) return metal[1].trim()
+  const vulkan = /ggml_vulkan:\s*0\s*=\s*([^|(\n]+)/.exec(log)
+  if (vulkan) return `${vulkan[1].trim()} (Vulkan)`
+  const cuda = /Device 0:\s*([^,\n]+)/.exec(log)
+  if (cuda && /CUDA/.test(log)) return `${cuda[1].trim()} (CUDA)`
+  return 'CPU'
 }
 
 interface WhisperJsonOutput {
@@ -48,12 +69,18 @@ export async function transcribeWithWhisperCpp(
     ...(opts.extraArgs ?? [])
   ]
   try {
+    let deviceLog = ''
     await new Promise<void>((resolve, reject) => {
       const child = spawn(whisperCli, args)
       let stderrTail = ''
+      const onAbort = (): void => { child.kill() }
+      if (opts.signal?.aborted) onAbort()
+      else opts.signal?.addEventListener('abort', onAbort, { once: true })
       child.stderr.on('data', (chunk: Buffer) => {
         const text = chunk.toString()
         stderrTail = (stderrTail + text).slice(-4000)
+        // 设备信息只在启动头几秒打印，单独攒一份，别被后面的进度行冲掉
+        if (deviceLog.length < 20000) deviceLog += text
         for (const match of text.matchAll(/progress\s*=\s*(\d+)%/g)) {
           opts.onProgress?.(Math.min(100, Number(match[1])))
         }
@@ -61,7 +88,9 @@ export async function transcribeWithWhisperCpp(
       child.stdout.resume()
       child.on('error', reject)
       child.on('close', (code) => {
-        if (code === 0) resolve()
+        opts.signal?.removeEventListener('abort', onAbort)
+        if (opts.signal?.aborted) reject(new LocalizedError('error.jobCancelled'))
+        else if (code === 0) resolve()
         else reject(new Error(`whisper-cli 识别失败（退出码 ${code}）\n${stderrTail}`))
       })
     })
@@ -81,7 +110,8 @@ export async function transcribeWithWhisperCpp(
     const detected = raw.result?.language
     return {
       language: detected ?? (language === 'auto' ? 'unknown' : language),
-      cues
+      cues,
+      device: detectDevice(deviceLog)
     }
   } finally {
     await rm(workDir, { recursive: true, force: true })

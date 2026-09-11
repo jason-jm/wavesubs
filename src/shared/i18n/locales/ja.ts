@@ -14,6 +14,12 @@ export const ja: Dict = {
   'tab.cloud': 'クラウド翻訳',
 
   'common.cancel': 'キャンセル',
+  'error.jobCancelled': "タスクをキャンセルしました",
+  'job.eta': "残り約 {time}",
+  'job.asrDevice': "認識デバイス：{device}",
+  'models.manualDownload': "ブラウザやダウンローダーで直接ダウンロードして、上のモデルフォルダに入れることもできます：",
+  'common.copyLink': "リンクをコピー",
+  'common.copied': "コピーしました",
   'common.save': '保存',
   'common.add': '追加',
   'common.edit': '編集',

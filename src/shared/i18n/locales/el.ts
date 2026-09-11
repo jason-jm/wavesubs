@@ -14,6 +14,12 @@ export const el: Dict = {
   'tab.cloud': 'Μετάφραση στο cloud',
 
   'common.cancel': 'Ακύρωση',
+  'error.jobCancelled': "Η εργασία ακυρώθηκε",
+  'job.eta': "Απομένουν περίπου {time}",
+  'job.asrDevice': "Συσκευή αναγνώρισης: {device}",
+  'models.manualDownload': "Μπορείτε επίσης να κατεβάσετε το αρχείο με έναν browser ή διαχειριστή λήψεων και να το βάλετε στον παραπάνω φάκελο μοντέλων:",
+  'common.copyLink': "Αντιγραφή συνδέσμου",
+  'common.copied': "Αντιγράφηκε",
   'common.save': 'Αποθήκευση',
   'common.add': 'Προσθήκη',
   'common.edit': 'Επεξεργασία',

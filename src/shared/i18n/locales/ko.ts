@@ -13,6 +13,12 @@ export const ko: Dict = {
   'tab.cloud': '클라우드 번역',
 
   'common.cancel': '취소',
+  'error.jobCancelled': "작업이 취소되었습니다",
+  'job.eta': "약 {time} 남음",
+  'job.asrDevice': "인식 장치: {device}",
+  'models.manualDownload': "브라우저나 다운로드 도구로 직접 받은 뒤 위의 모델 폴더에 넣어도 됩니다:",
+  'common.copyLink': "링크 복사",
+  'common.copied': "복사됨",
   'common.save': '저장',
   'common.add': '추가',
   'common.edit': '편집',

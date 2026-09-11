@@ -14,6 +14,12 @@ export const ro: Dict = {
   'tab.cloud': 'Traducere în cloud',
 
   'common.cancel': 'Anulează',
+  'error.jobCancelled': "Sarcină anulată",
+  'job.eta': "Mai rămân circa {time}",
+  'job.asrDevice': "Dispozitiv de recunoaștere: {device}",
+  'models.manualDownload': "Poți descărca fișierul și cu un browser sau un manager de descărcări, apoi să-l pui în folderul de modele de mai sus:",
+  'common.copyLink': "Copiază linkul",
+  'common.copied': "Copiat",
   'common.save': 'Salvează',
   'common.add': 'Adaugă',
   'common.edit': 'Editează',

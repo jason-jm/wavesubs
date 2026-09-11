@@ -14,6 +14,12 @@ export const da: Dict = {
   'tab.cloud': 'Skyoversættelse',
 
   'common.cancel': 'Annullér',
+  'error.jobCancelled': "Opgave annulleret",
+  'job.eta': "Cirka {time} tilbage",
+  'job.asrDevice': "Genkendelsesenhed: {device}",
+  'models.manualDownload': "Du kan også hente filen med en browser eller downloadmanager og lægge den i modelmappen ovenfor:",
+  'common.copyLink': "Kopiér link",
+  'common.copied': "Kopieret",
   'common.save': 'Arkivér',
   'common.add': 'Tilføj',
   'common.edit': 'Redigér',

@@ -14,6 +14,12 @@ export const hu: Dict = {
   'tab.cloud': 'Felhőfordítás',
 
   'common.cancel': 'Mégsem',
+  'error.jobCancelled': "Feladat megszakítva",
+  'job.eta': "Kb. {time} van hátra",
+  'job.asrDevice': "Felismerő eszköz: {device}",
+  'models.manualDownload': "A fájlt böngészővel vagy letöltéskezelővel is letöltheted, majd tedd a fenti modellmappába:",
+  'common.copyLink': "Link másolása",
+  'common.copied': "Másolva",
   'common.save': 'Mentés',
   'common.add': 'Hozzáadás',
   'common.edit': 'Szerkesztés',

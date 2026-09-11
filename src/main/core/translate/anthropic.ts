@@ -45,7 +45,8 @@ export class AnthropicProvider implements TranslationProvider {
         'x-api-key': this.config.apiKey,
         'anthropic-version': ANTHROPIC_VERSION
       },
-      body
+      body,
+      ctx.signal
     )) as {
       content?: Array<{ type?: string; text?: string }>
       stop_reason?: string

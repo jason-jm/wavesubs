@@ -17,6 +17,12 @@ export const zhHans = {
   'tab.cloud': '云端翻译',
 
   'common.cancel': '取消',
+  'error.jobCancelled': "任务已取消",
+  'job.eta': "预计还需 {time}",
+  'job.asrDevice': "识别设备：{device}",
+  'models.manualDownload': "也可以用浏览器或下载工具直接下载，再把文件放进上面的模型文件夹：",
+  'common.copyLink': "复制链接",
+  'common.copied': "已复制",
   'common.save': '保存',
   'common.add': '添加',
   'common.edit': '编辑',

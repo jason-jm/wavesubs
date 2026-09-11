@@ -65,7 +65,7 @@ export class OpenAICompatibleProvider implements TranslationProvider {
       ? { 'api-key': this.config.apiKey }
       : { authorization: `Bearer ${this.config.apiKey}` }
 
-    const data = (await postJsonWithRetry(url, headers, body)) as {
+    const data = (await postJsonWithRetry(url, headers, body, ctx.signal)) as {
       choices?: Array<{ message?: { content?: string } }>
     }
     return parseBatchResponse(data.choices?.[0]?.message?.content ?? '', new Map(items.map((it) => [it.index, it.text])))
