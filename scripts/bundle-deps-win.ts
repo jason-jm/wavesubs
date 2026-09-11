@@ -27,7 +27,7 @@
  */
 import { execFileSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
-import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { basename, dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -178,6 +178,9 @@ async function main(): Promise<void> {
     process.exit(1)
   }
 
+  // Silero VAD 模型随包自带，理由同 bundle-deps.ts
+  mkdirSync(join(OUT, 'vad'), { recursive: true })
+  copyFileSync(join(ROOT, 'assets', 'ggml-silero-v5.1.2.bin'), join(OUT, 'vad', 'ggml-silero-v5.1.2.bin'))
   console.log(`\nvendor-win/ 合计 ${dirSizeMB(OUT)} MB  ·  ffmpeg LGPL 校验通过 ✅`)
 }
 

@@ -15,6 +15,7 @@ export const id: Dict = {
 
   'common.cancel': 'Batal',
   'error.jobCancelled': "Tugas dibatalkan",
+  'error.modelChecksum': 'Berkas yang diunduh gagal verifikasi (tidak cocok dengan berkas resmi). Berkas dihapus, silakan coba lagi',
   'job.eta': "Sekitar {time} lagi",
   'job.asrDevice': "Perangkat pengenalan: {device}",
   'models.manualDownload': "Anda juga bisa mengunduh berkas dengan browser atau pengelola unduhan, lalu meletakkannya di folder model di atas:",
@@ -308,7 +309,7 @@ export const id: Dict = {
   'error.noAudioTrack': 'Berkas ini tidak punya trek audio, jadi pengenalan suara tidak bisa dilakukan',
   'error.noCues': 'Tidak ada baris takarir yang dihasilkan',
   'error.modelDownloading': 'Model itu sudah sedang diunduh',
-  'error.modelDownloadFailed': 'Unduhan model gagal: huggingface.co maupun cermin hf-mirror.com tidak dapat dijangkau. Periksa jaringan atau pengaturan proxy lalu coba lagi.',
+  'error.modelDownloadFailed': 'Unduhan model gagal: tidak ada sumber unduhan yang bisa dihubungi',
   'models.connecting': 'Menghubungkan ke server…',
   'error.modelDownloadingCancelFirst': 'Model sedang diunduh — batalkan dulu',
   'error.noAudioOrSubtitle': 'Berkas ini tidak punya trek audio maupun trek takarir, jadi takarir tidak bisa dibuat',

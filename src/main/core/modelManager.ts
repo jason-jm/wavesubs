@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto'
 import { createWriteStream } from 'node:fs'
 import { once } from 'node:events'
 import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
@@ -31,6 +32,17 @@ const HF_MIRRORS = ['https://hf-mirror.com/']
 /** ModelScope 镜像了 Qwen 官方 GGUF 仓库（路径规则不同：/models/Qwen/<repo>/resolve/master/<file>）；whisper 的 ggml 它没有 */
 const MODELSCOPE = 'https://modelscope.cn/'
 const HOSTS = [HF_OFFICIAL, ...HF_MIRRORS, MODELSCOPE]
+/**
+ * ModelScope（魔搭）上与 ggerganov/whisper.cpp 逐字节一致的镜像仓库（六个模型的 sha256 都核对过，
+ * 下载完成后还会按 catalog 里的校验值再验一次）。whisper.cpp 官方没在 ModelScope 建仓，这两个是社区镜像，
+ * 放两个以防其中一个被删。Qwen 的 GGUF 则是 Qwen 官方在 ModelScope 发布的。
+ */
+const MODELSCOPE_WHISPER_REPOS = ['viggocx/whisper.cpp', 'iceCream2025/whisper.cpp']
+/** 大陆环境：huggingface.co 被墙，hf-mirror.com 现在也只是 308 跳回 huggingface.co，ModelScope 要排最前 */
+let preferChina = false
+export function setDownloadRegion(mainlandChina: boolean): void {
+  preferChina = mainlandChina
+}
 const PREFERRED_HOST_FILE = '.download-host'
 let preferredHost: string | null = null
 
@@ -38,9 +50,17 @@ let preferredHost: string | null = null
 export function candidateUrls(url: string): string[] {
   if (!url.startsWith(HF_OFFICIAL)) return [url]
   const path = url.slice(HF_OFFICIAL.length)
-  const list = [HF_OFFICIAL + path, ...HF_MIRRORS.map((h) => h + path)]
+  const hf = [HF_OFFICIAL + path, ...HF_MIRRORS.map((h) => h + path)]
+  const ms: string[] = []
   const qwen = /^Qwen\/([^/]+)\/resolve\/main\/(.+)$/.exec(path)
-  if (qwen) list.push(`${MODELSCOPE}models/Qwen/${qwen[1]}/resolve/master/${qwen[2]}`)
+  if (qwen) ms.push(`${MODELSCOPE}models/Qwen/${qwen[1]}/resolve/master/${qwen[2]}`)
+  const whisper = /^ggerganov\/whisper\.cpp\/resolve\/main\/(.+)$/.exec(path)
+  if (whisper) {
+    for (const repo of MODELSCOPE_WHISPER_REPOS) {
+      ms.push(`${MODELSCOPE}models/${repo}/resolve/master/${whisper[1]}`)
+    }
+  }
+  const list = preferChina ? [...ms, ...hf] : [...hf, ...ms]
   // 记住的来源排最前：上次谁赢了这次直接从它下
   if (preferredHost) {
     const i = list.findIndex((u) => u.startsWith(preferredHost as string))
@@ -77,7 +97,16 @@ export class ModelDownloader {
     return [...this.active.keys()]
   }
 
-  async download(file: string, url: string, onProgress?: (p: Progress) => void): Promise<void> {
+  /**
+   * @param expectedSha256 官方文件的校验值。来源里有社区镜像，下完必须核对；不一致就删掉重来，
+   *   绝不把内容不明的文件当模型用
+   */
+  async download(
+    file: string,
+    url: string,
+    onProgress?: (p: Progress) => void,
+    expectedSha256?: string
+  ): Promise<void> {
     if (this.active.has(file)) throw new LocalizedError('error.modelDownloading')
     await mkdir(this.modelsDir, { recursive: true })
     await this.loadPreferredHost()
@@ -93,11 +122,13 @@ export class ModelDownloader {
       const totalMB = Math.round(total / 1048576)
       onProgress?.({ file, phase: 'downloading', percent: total > 0 ? 0 : -1, receivedMB: 0, totalMB })
       const out = createWriteStream(partPath)
+      const hash = expectedSha256 ? createHash('sha256') : null
       let received = 0
       let lastEmit = 0
       try {
         for await (const chunk of res.body as AsyncIterable<Uint8Array>) {
           received += chunk.length
+          hash?.update(chunk)
           if (!out.write(chunk)) await once(out, 'drain')
           const now = Date.now()
           if (now - lastEmit > 300) {
@@ -118,6 +149,16 @@ export class ModelDownloader {
       } catch (err) {
         out.destroy()
         throw err
+      }
+      if (hash && expectedSha256) {
+        const got = hash.digest('hex')
+        if (got !== expectedSha256.toLowerCase()) {
+          const err = new LocalizedError('error.modelChecksum')
+          ;(err as Error & { cause?: unknown }).cause = new Error(
+            `sha256 ${got.slice(0, 12)}… ≠ ${expectedSha256.slice(0, 12)}…（${host ?? url}）`
+          )
+          throw err
+        }
       }
       await rename(partPath, finalPath)
       if (host) await this.savePreferredHost(host)

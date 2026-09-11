@@ -15,6 +15,7 @@ export const tr: Dict = {
 
   'common.cancel': 'İptal',
   'error.jobCancelled': "Görev iptal edildi",
+  'error.modelChecksum': 'İndirilen dosya doğrulamayı geçemedi (resmi dosyayla eşleşmiyor). Silindi, lütfen tekrar deneyin',
   'job.eta': "Yaklaşık {time} kaldı",
   'job.asrDevice': "Tanıma cihazı: {device}",
   'models.manualDownload': "Dosyayı bir tarayıcı veya indirme yöneticisiyle indirip yukarıdaki model klasörüne de koyabilirsiniz:",
@@ -307,7 +308,7 @@ export const tr: Dict = {
   'error.noAudioTrack': 'Bu dosyada ses izi yok, bu yüzden konuşma tanıma yapılamaz',
   'error.noCues': 'Hiç altyazı satırı üretilmedi',
   'error.modelDownloading': 'O model zaten indiriliyor',
-  'error.modelDownloadFailed': 'Model indirilemedi: ne huggingface.co ne de yansı hf-mirror.com erişilebilir. Ağ veya proxy ayarlarınızı kontrol edip yeniden deneyin.',
+  'error.modelDownloadFailed': 'Model indirilemedi: indirme kaynaklarının hiçbirine ulaşılamıyor',
   'models.connecting': 'Sunucuya bağlanılıyor…',
   'error.modelDownloadingCancelFirst': 'Model indiriliyor — önce indirmeyi iptal edin',
   'error.noAudioOrSubtitle': 'Bu dosyada ne ses izi ne de altyazı izi var, bu yüzden altyazı üretilemez',

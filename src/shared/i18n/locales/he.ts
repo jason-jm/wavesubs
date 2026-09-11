@@ -16,6 +16,7 @@ export const he: Dict = {
 
   'common.cancel': 'ביטול',
   'error.jobCancelled': "המשימה בוטלה",
+  'error.modelChecksum': 'הקובץ שהורד נכשל באימות (אינו תואם לקובץ הרשמי). הוא נמחק, נסו שוב',
   'job.eta': "נותרו כ-{time}",
   'job.asrDevice': "התקן זיהוי: {device}",
   'models.manualDownload': "אפשר גם להוריד את הקובץ בדפדפן או במנהל הורדות ולשים אותו בתיקיית המודלים שלמעלה:",
@@ -304,7 +305,7 @@ export const he: Dict = {
   'error.noAudioTrack': 'לקובץ הזה אין רצועת אודיו, ולכן אי אפשר לבצע זיהוי דיבור',
   'error.noCues': 'לא נוצרה אף שורת כתובית',
   'error.modelDownloading': 'המודל הזה כבר בהורדה',
-  'error.modelDownloadFailed': 'הורדת המודל נכשלה: לא ניתן להגיע ל‑huggingface.co וגם לא לאתר המראה hf-mirror.com. בדקו את הרשת או הגדרות הפרוקסי ונסו שוב.',
+  'error.modelDownloadFailed': 'הורדת המודל נכשלה: לא ניתן להגיע לאף מקור הורדה',
   'models.connecting': 'מתחבר לשרת…',
   'error.modelDownloadingCancelFirst': 'המודל בהורדה — בטלו אותה קודם',
   'error.noAudioOrSubtitle': 'לקובץ הזה אין רצועת אודיו ואין רצועת כתוביות, ולכן אי אפשר ליצור כתוביות',

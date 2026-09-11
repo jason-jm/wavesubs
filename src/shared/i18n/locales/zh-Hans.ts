@@ -18,6 +18,7 @@ export const zhHans = {
 
   'common.cancel': '取消',
   'error.jobCancelled': "任务已取消",
+  'error.modelChecksum': '下载的文件校验失败（内容与官方不一致），已删除，请重试',
   'job.eta': "预计还需 {time}",
   'job.asrDevice': "识别设备：{device}",
   'models.manualDownload': "也可以用浏览器或下载工具直接下载，再把文件放进上面的模型文件夹：",
@@ -314,7 +315,7 @@ export const zhHans = {
   'error.noAudioTrack': '该文件不含音轨，无法做语音识别',
   'error.noCues': '没有得到任何字幕条目',
   'error.modelDownloading': '该模型正在下载中',
-  'error.modelDownloadFailed': '模型下载失败：无法连接 huggingface.co，也无法连接镜像 hf-mirror.com。请检查网络或代理设置后重试。',
+  'error.modelDownloadFailed': '模型下载失败：所有下载来源都连不上',
   'models.connecting': '正在连接服务器…',
   'error.modelDownloadingCancelFirst': '模型正在下载中，请先取消',
   'error.noAudioOrSubtitle': '该文件既没有音轨也没有字幕轨，无法生成字幕',

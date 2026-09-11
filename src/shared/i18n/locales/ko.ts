@@ -14,6 +14,7 @@ export const ko: Dict = {
 
   'common.cancel': '취소',
   'error.jobCancelled': "작업이 취소되었습니다",
+  'error.modelChecksum': '다운로드한 파일 검증 실패(공식 파일과 일치하지 않음). 삭제했습니다. 다시 시도하세요',
   'job.eta': "약 {time} 남음",
   'job.asrDevice': "인식 장치: {device}",
   'models.manualDownload': "브라우저나 다운로드 도구로 직접 받은 뒤 위의 모델 폴더에 넣어도 됩니다:",
@@ -301,7 +302,7 @@ export const ko: Dict = {
   'error.noAudioTrack': '이 파일에는 오디오 트랙이 없어 음성 인식을 할 수 없습니다',
   'error.noCues': '자막 항목을 하나도 얻지 못했습니다',
   'error.modelDownloading': '해당 모델은 이미 내려받는 중입니다',
-  'error.modelDownloadFailed': '모델 다운로드 실패: huggingface.co와 미러 hf-mirror.com 모두에 연결할 수 없습니다. 네트워크 또는 프록시 설정을 확인한 뒤 다시 시도하세요.',
+  'error.modelDownloadFailed': '모델 다운로드 실패: 어떤 다운로드 소스에도 연결할 수 없습니다',
   'models.connecting': '서버에 연결하는 중…',
   'error.modelDownloadingCancelFirst': '모델을 내려받는 중입니다. 먼저 취소해 주세요',
   'error.noAudioOrSubtitle': '이 파일에는 오디오 트랙도 자막 트랙도 없어 자막을 만들 수 없습니다',

@@ -14,6 +14,7 @@ export const zhHant: Dict = {
 
   'common.cancel': '取消',
   'error.jobCancelled': "任務已取消",
+  'error.modelChecksum': '下載的檔案校驗失敗（內容與官方不一致），已刪除，請重試',
   'job.eta': "預計還需 {time}",
   'job.asrDevice': "辨識裝置：{device}",
   'models.manualDownload': "也可以用瀏覽器或下載工具直接下載，再把檔案放進上面的模型資料夾：",
@@ -297,7 +298,7 @@ export const zhHant: Dict = {
   'error.noAudioTrack': '該檔案不含音軌，無法做語音辨識',
   'error.noCues': '沒有得到任何字幕條目',
   'error.modelDownloading': '該模型正在下載中',
-  'error.modelDownloadFailed': '模型下載失敗：無法連線 huggingface.co，也無法連線鏡像 hf-mirror.com。請檢查網路或代理設定後重試。',
+  'error.modelDownloadFailed': '模型下載失敗：所有下載來源都連不上',
   'models.connecting': '正在連線伺服器…',
   'error.modelDownloadingCancelFirst': '模型正在下載中，請先取消',
   'error.noAudioOrSubtitle': '該檔案既沒有音軌也沒有字幕軌，無法產生字幕',

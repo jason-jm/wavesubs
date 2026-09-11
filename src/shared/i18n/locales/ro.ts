@@ -15,6 +15,7 @@ export const ro: Dict = {
 
   'common.cancel': 'Anulează',
   'error.jobCancelled': "Sarcină anulată",
+  'error.modelChecksum': 'Fișierul descărcat nu a trecut verificarea (nu corespunde fișierului oficial). A fost șters; încearcă din nou',
   'job.eta': "Mai rămân circa {time}",
   'job.asrDevice': "Dispozitiv de recunoaștere: {device}",
   'models.manualDownload': "Poți descărca fișierul și cu un browser sau un manager de descărcări, apoi să-l pui în folderul de modele de mai sus:",
@@ -309,7 +310,7 @@ export const ro: Dict = {
   'error.noAudioTrack': 'Acest fișier nu are pistă audio, deci recunoașterea vocală nu este posibilă',
   'error.noCues': 'Nu a rezultat niciun rând de subtitrare',
   'error.modelDownloading': 'Acel model se descarcă deja',
-  'error.modelDownloadFailed': 'Descărcarea modelului a eșuat: nici huggingface.co, nici oglinda hf-mirror.com nu pot fi accesate. Verifică rețeaua sau setările proxy și încearcă din nou.',
+  'error.modelDownloadFailed': 'Descărcarea modelului a eșuat: nicio sursă de descărcare nu este accesibilă',
   'models.connecting': 'Se conectează la server…',
   'error.modelDownloadingCancelFirst': 'Modelul se descarcă — anulează mai întâi',
   'error.noAudioOrSubtitle': 'Acest fișier nu are nici pistă audio, nici pistă de subtitrare, deci nu se pot genera subtitrări',

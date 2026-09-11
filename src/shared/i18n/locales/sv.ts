@@ -15,6 +15,7 @@ export const sv: Dict = {
 
   'common.cancel': 'Avbryt',
   'error.jobCancelled': "Jobbet avbröts",
+  'error.modelChecksum': 'Den nedladdade filen klarade inte verifieringen (den matchar inte den officiella filen). Den togs bort, försök igen',
   'job.eta': "Cirka {time} kvar",
   'job.asrDevice': "Igenkänningsenhet: {device}",
   'models.manualDownload': "Du kan också ladda ner filen med en webbläsare eller nedladdningshanterare och lägga den i modellmappen ovan:",
@@ -308,7 +309,7 @@ export const sv: Dict = {
   'error.noAudioTrack': 'Den här filen har inget ljudspår, så taligenkänning går inte',
   'error.noCues': 'Inga undertextrader skapades',
   'error.modelDownloading': 'Den modellen hämtas redan',
-  'error.modelDownloadFailed': 'Modellnedladdningen misslyckades: varken huggingface.co eller spegeln hf-mirror.com kan nås. Kontrollera nätverket eller proxyinställningarna och försök igen.',
+  'error.modelDownloadFailed': 'Modellnedladdningen misslyckades: ingen av nedladdningskällorna kunde nås',
   'models.connecting': 'Ansluter till servern…',
   'error.modelDownloadingCancelFirst': 'Modellen hämtas — avbryt först',
   'error.noAudioOrSubtitle': 'Den här filen har varken ljudspår eller undertextspår, så det går inte att skapa undertexter',

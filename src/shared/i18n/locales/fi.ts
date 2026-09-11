@@ -15,6 +15,7 @@ export const fi: Dict = {
 
   'common.cancel': 'Kumoa',
   'error.jobCancelled': "Tehtävä peruttu",
+  'error.modelChecksum': 'Ladattu tiedosto ei läpäissyt tarkistusta (se ei vastaa virallista tiedostoa). Se poistettiin, yritä uudelleen',
   'job.eta': "Noin {time} jäljellä",
   'job.asrDevice': "Tunnistuslaite: {device}",
   'models.manualDownload': "Voit myös ladata tiedoston selaimella tai latausohjelmalla ja pudottaa sen yllä olevaan mallikansioon:",
@@ -308,7 +309,7 @@ export const fi: Dict = {
   'error.noAudioTrack': 'Tässä tiedostossa ei ole ääniraitaa, joten puheentunnistus ei onnistu',
   'error.noCues': 'Tekstitysrivejä ei syntynyt lainkaan',
   'error.modelDownloading': 'Kyseistä mallia ladataan jo',
-  'error.modelDownloadFailed': 'Mallin lataus epäonnistui: huggingface.co tai peili hf-mirror.com eivät ole tavoitettavissa. Tarkista verkko- tai välityspalvelinasetukset ja yritä uudelleen.',
+  'error.modelDownloadFailed': 'Mallin lataus epäonnistui: yhteenkään latauslähteeseen ei saatu yhteyttä',
   'models.connecting': 'Yhdistetään palvelimeen…',
   'error.modelDownloadingCancelFirst': 'Mallia ladataan — peru lataus ensin',
   'error.noAudioOrSubtitle': 'Tässä tiedostossa ei ole ääni- eikä tekstitysraitaa, joten tekstitystä ei voi luoda',

@@ -15,6 +15,7 @@ export const de: Dict = {
 
   'common.cancel': 'Abbrechen',
   'error.jobCancelled': "Auftrag abgebrochen",
+  'error.modelChecksum': 'Die heruntergeladene Datei hat die Prüfung nicht bestanden (sie stimmt nicht mit der offiziellen Datei überein). Sie wurde gelöscht, bitte erneut versuchen',
   'job.eta': "Noch etwa {time}",
   'job.asrDevice': "Erkennungsgerät: {device}",
   'models.manualDownload': "Du kannst die Datei auch mit einem Browser oder Download-Manager laden und in den Modellordner oben legen:",
@@ -309,7 +310,7 @@ export const de: Dict = {
   'error.noAudioTrack': 'Diese Datei hat keine Audiospur, deshalb ist keine Spracherkennung möglich',
   'error.noCues': 'Es wurden keine Untertitelzeilen erzeugt',
   'error.modelDownloading': 'Dieses Modell wird bereits geladen',
-  'error.modelDownloadFailed': 'Modell-Download fehlgeschlagen: Weder huggingface.co noch der Spiegel hf-mirror.com sind erreichbar. Prüfe Netzwerk oder Proxy-Einstellungen und versuche es erneut.',
+  'error.modelDownloadFailed': 'Modell-Download fehlgeschlagen: keine der Download-Quellen ist erreichbar',
   'models.connecting': 'Verbindung zum Server…',
   'error.modelDownloadingCancelFirst': 'Das Modell wird gerade geladen – brich den Vorgang zuerst ab',
   'error.noAudioOrSubtitle': 'Diese Datei hat weder eine Audio- noch eine Untertitelspur, deshalb lassen sich keine Untertitel erzeugen',

@@ -15,6 +15,7 @@ export const cs: Dict = {
 
   'common.cancel': 'Zrušit',
   'error.jobCancelled': "Úloha zrušena",
+  'error.modelChecksum': 'Stažený soubor neprošel ověřením (neshoduje se s oficiálním souborem). Byl smazán, zkuste to znovu',
   'job.eta': "Zbývá asi {time}",
   'job.asrDevice': "Zařízení rozpoznávání: {device}",
   'models.manualDownload': "Soubor můžete také stáhnout prohlížečem nebo správcem stahování a vložit ho do složky modelů výše:",
@@ -308,7 +309,7 @@ export const cs: Dict = {
   'error.noAudioTrack': 'Tento soubor nemá zvukovou stopu, takže rozpoznávání řeči není možné',
   'error.noCues': 'Nevznikl žádný řádek titulků',
   'error.modelDownloading': 'Tento model se už stahuje',
-  'error.modelDownloadFailed': 'Stažení modelu se nezdařilo: huggingface.co ani zrcadlo hf-mirror.com nejsou dostupné. Zkontrolujte síť nebo nastavení proxy a zkuste to znovu.',
+  'error.modelDownloadFailed': 'Stažení modelu selhalo: žádný zdroj stahování není dostupný',
   'models.connecting': 'Připojování k serveru…',
   'error.modelDownloadingCancelFirst': 'Model se stahuje — nejdřív stahování zrušte',
   'error.noAudioOrSubtitle': 'Tento soubor nemá ani zvukovou stopu, ani stopu s titulky, takže titulky nelze vytvořit',

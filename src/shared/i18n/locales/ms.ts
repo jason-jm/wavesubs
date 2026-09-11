@@ -15,6 +15,7 @@ export const ms: Dict = {
 
   'common.cancel': 'Batal',
   'error.jobCancelled': "Tugas dibatalkan",
+  'error.modelChecksum': 'Fail yang dimuat turun gagal pengesahan (tidak sepadan dengan fail rasmi). Fail dipadam, sila cuba lagi',
   'job.eta': "Kira-kira {time} lagi",
   'job.asrDevice': "Peranti pengecaman: {device}",
   'models.manualDownload': "Anda juga boleh memuat turun fail dengan pelayar atau pengurus muat turun, kemudian letakkannya dalam folder model di atas:",
@@ -309,7 +310,7 @@ export const ms: Dict = {
   'error.noAudioTrack': 'Fail ini tiada trek audio, jadi pengecaman pertuturan tidak boleh dilakukan',
   'error.noCues': 'Tiada baris sari kata dihasilkan',
   'error.modelDownloading': 'Model itu sedang dimuat turun',
-  'error.modelDownloadFailed': 'Muat turun model gagal: huggingface.co dan cermin hf-mirror.com kedua-duanya tidak dapat dihubungi. Semak rangkaian atau tetapan proksi, kemudian cuba lagi.',
+  'error.modelDownloadFailed': 'Muat turun model gagal: tiada sumber muat turun yang dapat dihubungi',
   'models.connecting': 'Menyambung ke pelayan…',
   'error.modelDownloadingCancelFirst': 'Model sedang dimuat turun — batalkan dahulu',
   'error.noAudioOrSubtitle': 'Fail ini tiada trek audio mahupun trek sari kata, jadi sari kata tidak boleh dijana',

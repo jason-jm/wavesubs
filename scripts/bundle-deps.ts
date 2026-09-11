@@ -23,8 +23,10 @@ import {
   statSync
 } from 'node:fs'
 import { basename, join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const ROOT = resolve(new URL('..', import.meta.url).pathname)
+// 不能用 URL.pathname：路径里的空格会保持 %20，「Wave Subs」就会变成另一个目录
+const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)))
 const VENDOR = join(ROOT, 'vendor')
 const BIN = join(VENDOR, 'bin')
 const LIB = join(VENDOR, 'lib')
@@ -213,6 +215,11 @@ for (const n of ['whisper-cli', 'whisper-vad-speech-segments', 'llama-server']) 
  * 这种错误在开发机上完全看不出来（本地有 /opt/homebrew，照样能跑），
  * 只有用户下载后才炸——所以必须在打包阶段就断掉。
  */
+// Silero VAD 模型随包自带（不到 1MB）：时间校正不再依赖任何下载，大陆用户下不到 huggingface 也不受影响
+const VAD_DIR = join(VENDOR, 'vad')
+mkdirSync(VAD_DIR, { recursive: true })
+copyFileSync(join(ROOT, 'assets', 'ggml-silero-v5.1.2.bin'), join(VAD_DIR, 'ggml-silero-v5.1.2.bin'))
+
 const leftovers: string[] = []
 for (const dir of [BIN, LIB]) {
   for (const f of readdirSync(dir)) {

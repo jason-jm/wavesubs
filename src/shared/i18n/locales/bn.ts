@@ -15,6 +15,7 @@ export const bn: Dict = {
 
   'common.cancel': 'বাতিল',
   'error.jobCancelled': "কাজ বাতিল হয়েছে",
+  'error.modelChecksum': 'ডাউনলোড করা ফাইল যাচাইয়ে ব্যর্থ হয়েছে (অফিসিয়াল ফাইলের সাথে মেলে না)। এটি মুছে ফেলা হয়েছে, আবার চেষ্টা করুন',
   'job.eta': "প্রায় {time} বাকি",
   'job.asrDevice': "শনাক্তকরণ ডিভাইস: {device}",
   'models.manualDownload': "ব্রাউজার বা ডাউনলোড ম্যানেজার দিয়ে ফাইলটি নামিয়ে উপরের মডেল ফোল্ডারে রাখতেও পারেন:",
@@ -307,7 +308,7 @@ export const bn: Dict = {
   'error.noAudioTrack': 'এই ফাইলে অডিও ট্র্যাক নেই, তাই কণ্ঠ শনাক্ত করা যাবে না',
   'error.noCues': 'একটি সাবটাইটেল লাইনও পাওয়া যায়নি',
   'error.modelDownloading': 'ওই মডেলটি আগে থেকেই নামছে',
-  'error.modelDownloadFailed': 'মডেল ডাউনলোড ব্যর্থ: huggingface.co বা মিরর hf-mirror.com কোনোটিতেই সংযোগ করা যায়নি। নেটওয়ার্ক বা প্রক্সি সেটিং পরীক্ষা করে আবার চেষ্টা করুন।',
+  'error.modelDownloadFailed': 'মডেল ডাউনলোড ব্যর্থ: কোনো ডাউনলোড উৎসে সংযোগ করা যায়নি',
   'models.connecting': 'সার্ভারের সাথে সংযোগ করা হচ্ছে…',
   'error.modelDownloadingCancelFirst': 'মডেলটি নামছে — আগে সেটি বাতিল করুন',
   'error.noAudioOrSubtitle': 'এই ফাইলে অডিও ট্র্যাকও নেই, সাবটাইটেল ট্র্যাকও নেই, তাই সাবটাইটেল বানানো যাবে না',

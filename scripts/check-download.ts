@@ -12,6 +12,7 @@ import {
   DownloadCancelledError,
   candidateUrls,
   resetPreferredHost,
+  setDownloadRegion,
   type FetchLike
 } from '../src/main/core/modelManager'
 import { LocalizedError } from '../src/shared/i18n/core'
@@ -35,7 +36,12 @@ const STAGGER = 150
 
 console.log('候选地址：')
 resetPreferredHost()
-eq('HF 地址展开为 官方 → 镜像', candidateUrls(HF), [HF, MIRROR])
+const MS1 = 'https://modelscope.cn/models/viggocx/whisper.cpp/resolve/master/ggml-base.bin'
+const MS2 = 'https://modelscope.cn/models/iceCream2025/whisper.cpp/resolve/master/ggml-base.bin'
+eq('HF 地址展开为 官方 → 镜像 → 两个 ModelScope 镜像仓', candidateUrls(HF), [HF, MIRROR, MS1, MS2])
+setDownloadRegion(true)
+eq('大陆环境：ModelScope 排最前（hf-mirror 现在只是跳回 huggingface）', candidateUrls(HF), [MS1, MS2, HF, MIRROR])
+setDownloadRegion(false)
 eq('非 HF 地址原样', candidateUrls('https://example.com/x.bin'), ['https://example.com/x.bin'])
 const QWEN = 'https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf'
 eq('Qwen 的 GGUF 多一个 ModelScope 来源（路径规则不同）', candidateUrls(QWEN), [
@@ -43,7 +49,6 @@ eq('Qwen 的 GGUF 多一个 ModelScope 来源（路径规则不同）', candidat
   'https://hf-mirror.com/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf',
   'https://modelscope.cn/models/Qwen/Qwen3-8B-GGUF/resolve/master/Qwen3-8B-Q4_K_M.gguf'
 ])
-eq('whisper 的 ggml 没有 ModelScope 来源', candidateUrls(HF).length, 2)
 
 /** 造一个假 fetch：按主机决定成败；成功时返回一段可流式读取的正文 */
 function fakeFetch(behaviour: Record<string, 'ok' | 'fail' | 'hang' | '404'>, body = 'hello'): FetchLike & { calls: string[] } {
@@ -82,6 +87,23 @@ const fresh = (): string => {
 }
 
 try {
+  console.log('\n下载后校验 sha256：')
+  {
+    const work = fresh()
+    const { createHash } = await import('node:crypto')
+    const good = createHash('sha256').update('hello').digest('hex')
+    await new ModelDownloader(work, { fetch: fakeFetch({ 'huggingface.co': 'ok' }), staggerMs: STAGGER }).download('ok.bin', HF, undefined, good)
+    eq('校验值一致：文件落盘', readFileSync(join(work, 'ok.bin'), 'utf8'), 'hello')
+    let err: unknown = null
+    try {
+      await new ModelDownloader(work, { fetch: fakeFetch({ 'huggingface.co': 'ok' }), staggerMs: STAGGER }).download('bad.bin', HF, undefined, 'deadbeef')
+    } catch (e) {
+      err = e
+    }
+    eq('校验不一致：报 error.modelChecksum', err instanceof LocalizedError ? err.key : String(err), 'error.modelChecksum')
+    eq('校验不一致：文件不落盘', existsSync(join(work, 'bad.bin')) || existsSync(join(work, 'bad.bin.download')), false)
+  }
+
   console.log('\n官方直接报错、镜像正常：')
   {
     const work = fresh()
@@ -96,7 +118,7 @@ try {
     eq('文件落盘且内容完整', readFileSync(join(work, 'a.bin'), 'utf8'), 'hello')
     eq('进度阶段 connecting → downloading', phases, ['connecting', 'downloading'])
     eq('进度最终 100%', last, 100)
-    eq('镜像赢了之后记住：下一个文件先走镜像', candidateUrls(HF), [MIRROR, HF])
+    eq('镜像赢了之后记住：下一个文件先走镜像', candidateUrls(HF), [MIRROR, HF, MS1, MS2])
     eq('偏好落盘到模型目录', readFileSync(join(work, '.download-host'), 'utf8'), 'https://hf-mirror.com/')
     eq('临时 .download 文件已清理', existsSync(join(work, 'a.bin.download')), false)
   }

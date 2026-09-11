@@ -15,6 +15,7 @@ export const vi: Dict = {
 
   'common.cancel': 'Hủy',
   'error.jobCancelled': "Đã hủy tác vụ",
+  'error.modelChecksum': 'Tệp đã tải không qua được kiểm tra (không khớp với tệp chính thức). Đã xóa, vui lòng thử lại',
   'job.eta': "Còn khoảng {time}",
   'job.asrDevice': "Thiết bị nhận dạng: {device}",
   'models.manualDownload': "Bạn cũng có thể tải tệp bằng trình duyệt hoặc trình quản lý tải xuống rồi bỏ vào thư mục mô hình ở trên:",
@@ -308,7 +309,7 @@ export const vi: Dict = {
   'error.noAudioTrack': 'Tệp này không có rãnh âm thanh nên không nhận dạng giọng nói được',
   'error.noCues': 'Không thu được dòng phụ đề nào',
   'error.modelDownloading': 'Mô hình đó đang được tải rồi',
-  'error.modelDownloadFailed': 'Tải mô hình thất bại: không kết nối được huggingface.co lẫn máy chủ dự phòng hf-mirror.com. Hãy kiểm tra mạng hoặc cài đặt proxy rồi thử lại.',
+  'error.modelDownloadFailed': 'Tải mô hình thất bại: không kết nối được với bất kỳ nguồn tải nào',
   'models.connecting': 'Đang kết nối máy chủ…',
   'error.modelDownloadingCancelFirst': 'Mô hình đang tải — hãy hủy trước đã',
   'error.noAudioOrSubtitle': 'Tệp này không có cả rãnh âm thanh lẫn rãnh phụ đề nên không tạo được phụ đề',

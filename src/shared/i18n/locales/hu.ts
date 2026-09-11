@@ -15,6 +15,7 @@ export const hu: Dict = {
 
   'common.cancel': 'Mégsem',
   'error.jobCancelled': "Feladat megszakítva",
+  'error.modelChecksum': 'A letöltött fájl nem ment át az ellenőrzésen (nem egyezik a hivatalos fájllal). Törölve lett, próbáld újra',
   'job.eta': "Kb. {time} van hátra",
   'job.asrDevice': "Felismerő eszköz: {device}",
   'models.manualDownload': "A fájlt böngészővel vagy letöltéskezelővel is letöltheted, majd tedd a fenti modellmappába:",
@@ -308,7 +309,7 @@ export const hu: Dict = {
   'error.noAudioTrack': 'Ebben a fájlban nincs hangsáv, ezért nem lehet beszédfelismerést végezni',
   'error.noCues': 'Egyetlen feliratsor sem keletkezett',
   'error.modelDownloading': 'Ez a modell már letöltés alatt áll',
-  'error.modelDownloadFailed': 'A modell letöltése nem sikerült: sem a huggingface.co, sem a hf-mirror.com tükör nem érhető el. Ellenőrizd a hálózatot vagy a proxybeállításokat, majd próbáld újra.',
+  'error.modelDownloadFailed': 'A modell letöltése nem sikerült: egyik letöltési forrás sem érhető el',
   'models.connecting': 'Kapcsolódás a szerverhez…',
   'error.modelDownloadingCancelFirst': 'A modell letöltése folyamatban van — előbb szakítsd meg',
   'error.noAudioOrSubtitle': 'Ebben a fájlban se hangsáv, se feliratsáv nincs, ezért nem készíthető felirat',

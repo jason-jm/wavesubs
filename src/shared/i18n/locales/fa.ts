@@ -16,6 +16,7 @@ export const fa: Dict = {
 
   'common.cancel': 'انصراف',
   'error.jobCancelled': "کار لغو شد",
+  'error.modelChecksum': 'فایل دانلودشده در بررسی رد شد (با فایل رسمی مطابقت ندارد). حذف شد، دوباره تلاش کنید',
   'job.eta': "حدود {time} باقی مانده",
   'job.asrDevice': "دستگاه تشخیص: {device}",
   'models.manualDownload': "می‌توانید فایل را با مرورگر یا مدیر دانلود بگیرید و در پوشهٔ مدل‌های بالا قرار دهید:",
@@ -305,7 +306,7 @@ export const fa: Dict = {
   'error.noAudioTrack': 'این فایل باند صوتی ندارد، بنابراین تشخیص گفتار ممکن نیست',
   'error.noCues': 'هیچ سطر زیرنویسی تولید نشد',
   'error.modelDownloading': 'آن مدل هم\u200cاکنون در حال بارگیری است',
-  'error.modelDownloadFailed': 'دانلود مدل ناموفق بود: نه huggingface.co و نه آینهٔ hf-mirror.com در دسترس نیست. شبکه یا تنظیمات پروکسی را بررسی کنید و دوباره تلاش کنید.',
+  'error.modelDownloadFailed': 'دانلود مدل ناموفق بود: به هیچ‌یک از منابع دانلود دسترسی نیست',
   'models.connecting': 'در حال اتصال به سرور…',
   'error.modelDownloadingCancelFirst': 'مدل در حال بارگیری است — نخست آن را لغو کنید',
   'error.noAudioOrSubtitle': 'این فایل نه باند صوتی دارد و نه باند زیرنویس، بنابراین ساخت زیرنویس ممکن نیست',

@@ -15,6 +15,7 @@ export const en: Dict = {
 
   'common.cancel': 'Cancel',
   'error.jobCancelled': "Job cancelled",
+  'error.modelChecksum': 'The downloaded file failed verification (it does not match the official file). It was deleted; please try again',
   'job.eta': "About {time} left",
   'job.asrDevice': "Recognition device: {device}",
   'models.manualDownload': "You can also download the file with a browser or download manager and drop it into the model folder above:",
@@ -303,7 +304,7 @@ export const en: Dict = {
   'error.noAudioTrack': 'This file has no audio track, so speech recognition is not possible',
   'error.noCues': 'No subtitle cues were produced',
   'error.modelDownloading': 'That model is already downloading',
-  'error.modelDownloadFailed': 'Model download failed: neither huggingface.co nor the mirror hf-mirror.com could be reached. Check your network or proxy settings and try again.',
+  'error.modelDownloadFailed': 'Model download failed: none of the download sources could be reached',
   'models.connecting': 'Connecting to server…',
   'error.modelDownloadingCancelFirst': 'The model is downloading — cancel it first',
   'error.noAudioOrSubtitle': 'This file has neither an audio track nor a subtitle track, so no subtitles can be made',

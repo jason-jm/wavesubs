@@ -2,6 +2,8 @@ import type { TranslationKey } from '../../../shared/i18n/core'
 
 export interface WhisperModelSpec {
   file: string
+  /** 官方文件的 sha256：下载来源含社区镜像，落盘前逐字节核对 */
+  sha256: string
   name: string
   sizeMB: number
   /** 运行时大致需要的空闲内存（GB） */
@@ -19,6 +21,7 @@ export interface WhisperModelSpec {
 export const WHISPER_MODELS: WhisperModelSpec[] = [
   {
     file: 'ggml-tiny.bin',
+    sha256: 'be07e048e1e599ad46341c8d2a135645097a538221678b7acdd1b1919c6e1b21',
     name: 'Tiny',
     sizeMB: 75,
     ramGB: 0.5,
@@ -29,6 +32,7 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
   },
   {
     file: 'ggml-base.bin',
+    sha256: '60ed5bc3dd14eea856493d334349b405782ddcaf0028d4b5df4088345fba2efe',
     name: 'Base',
     sizeMB: 142,
     ramGB: 0.7,
@@ -39,6 +43,7 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
   },
   {
     file: 'ggml-small.bin',
+    sha256: '1be3a9b2063867b937e64e2ec7483364a79917e157fa98c5d94b5c1fffea987b',
     name: 'Small',
     sizeMB: 466,
     ramGB: 1.2,
@@ -49,6 +54,7 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
   },
   {
     file: 'ggml-medium.bin',
+    sha256: '6c14d5adee5f86394037b4e4e8b59f1673b6cee10e3cf0b11bbdbee79c156208',
     name: 'Medium',
     sizeMB: 1536,
     ramGB: 2.6,
@@ -59,6 +65,7 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
   },
   {
     file: 'ggml-large-v3-turbo.bin',
+    sha256: '1fc70f774d38eb169993ac391eea357ef47c88757ef72ee5943879b7e8e2bc69',
     name: 'Large v3 Turbo',
     sizeMB: 1620,
     ramGB: 2.2,
@@ -69,6 +76,7 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
   },
   {
     file: 'ggml-large-v3.bin',
+    sha256: '64d182b440b98d5203c4f9bd541544d84c605196c4f7b845dfa11fb23594d1e2',
     name: 'Large v3',
     sizeMB: 3100,
     ramGB: 4.5,
@@ -86,6 +94,7 @@ export function modelDownloadUrl(file: string): string {
 
 /** Silero VAD 模型：用于字幕时间校正与幻觉剔除（不参与转写） */
 export const VAD_MODEL_FILE = 'ggml-silero-v5.1.2.bin'
+export const VAD_MODEL_SHA256 = '29940d98d42b91fbd05ce489f3ecf7c72f0a42f027e4875919a28fb4c04ea2cf'
 export const VAD_MODEL_URL =
   'https://huggingface.co/ggml-org/whisper-vad/resolve/main/ggml-silero-v5.1.2.bin'
 

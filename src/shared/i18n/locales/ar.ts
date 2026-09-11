@@ -16,6 +16,7 @@ export const ar: Dict = {
 
   'common.cancel': 'إلغاء',
   'error.jobCancelled': "تم إلغاء المهمة",
+  'error.modelChecksum': 'فشل التحقق من الملف الذي تم تنزيله (لا يطابق الملف الرسمي). تم حذفه، يرجى المحاولة مجددًا',
   'job.eta': "يتبقى نحو {time}",
   'job.asrDevice': "جهاز التعرف: {device}",
   'models.manualDownload': "يمكنك أيضًا تنزيل الملف بالمتصفح أو بمدير تنزيلات ووضعه في مجلد النماذج أعلاه:",
@@ -305,7 +306,7 @@ export const ar: Dict = {
   'error.noAudioTrack': 'هذا الملف لا يحتوي على مسار صوتي، لذا يتعذّر التعرف على الكلام',
   'error.noCues': 'لم يُنتَج أي سطر ترجمة',
   'error.modelDownloading': 'هذا النموذج قيد التنزيل بالفعل',
-  'error.modelDownloadFailed': 'فشل تنزيل النموذج: تعذّر الوصول إلى huggingface.co وإلى المرآة hf-mirror.com. تحقّق من الشبكة أو إعدادات الوكيل ثم أعد المحاولة.',
+  'error.modelDownloadFailed': 'فشل تنزيل النموذج: تعذّر الوصول إلى أي مصدر تنزيل',
   'models.connecting': 'جارٍ الاتصال بالخادم…',
   'error.modelDownloadingCancelFirst': 'النموذج قيد التنزيل — ألغِ التنزيل أولًا',
   'error.noAudioOrSubtitle': 'هذا الملف لا يحتوي على مسار صوتي ولا مسار ترجمة، لذا يتعذّر إنشاء الترجمة',

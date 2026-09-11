@@ -4,7 +4,7 @@ import { translatorFor } from '../shared/i18n'
 import { APP_STORE_REVIEW_URL, DISCUSSIONS_URL, SITE_URL, feedbackUrl, isAllowedExternalUrl } from '../shared/feedback'
 import type { IpcMainInvokeEvent } from 'electron'
 import { rmSync } from 'node:fs'
-import { stat } from 'node:fs/promises'
+import { copyFile, mkdir, stat } from 'node:fs/promises'
 import { extname, join } from 'node:path'
 import type {
   AppInfo,
@@ -39,12 +39,13 @@ import {
   modelDownloadUrl,
   pickBestInstalled,
   VAD_MODEL_FILE,
+  VAD_MODEL_SHA256,
   VAD_MODEL_URL,
   WHISPER_MODELS
 } from './core/asr/catalog'
 import { assessModelFitness, detectHardware } from './core/hardware'
 import { probeMedia } from './core/media'
-import { ModelDownloader, candidateUrls } from './core/modelManager'
+import { ModelDownloader, candidateUrls, setDownloadRegion } from './core/modelManager'
 import { runSubtitleJob } from './core/pipeline'
 import {
   isSubtitleFile,
@@ -117,16 +118,43 @@ async function isFile(path: string): Promise<boolean> {
     .catch(() => false)
 }
 
-/** VAD 模型不到 1MB，缺失时静默补下；失败则本次不做时间校正，不阻塞任务 */
+/** 随包自带的 Silero VAD 模型（bundle-deps 放进 vendor/vad/；开发态直接读仓库里的 assets/） */
+function bundledVadModelPath(): string {
+  return app.isPackaged
+    ? join(process.resourcesPath, 'vendor', 'vad', VAD_MODEL_FILE)
+    : join(app.getAppPath(), 'assets', VAD_MODEL_FILE)
+}
+
+/**
+ * VAD 模型不到 1MB：优先从随包副本复制，没有再下载（带校验）；都不成就本次不做时间校正，不阻塞任务。
+ * 以前只靠下载，大陆用户连不上 huggingface 时会悄悄丢掉时间校正，字幕明显变差却看不出原因。
+ */
 async function ensureVadModel(): Promise<string | undefined> {
   const path = join(modelsDir(), VAD_MODEL_FILE)
   if (await isFile(path)) return path
+  const bundled = bundledVadModelPath()
+  if (await isFile(bundled)) {
+    await mkdir(modelsDir(), { recursive: true })
+    await copyFile(bundled, path)
+    return path
+  }
   try {
-    await asrDownloader.download(VAD_MODEL_FILE, VAD_MODEL_URL)
+    await asrDownloader.download(VAD_MODEL_FILE, VAD_MODEL_URL, undefined, VAD_MODEL_SHA256)
     return path
   } catch {
     return undefined
   }
+}
+
+/**
+ * 是否大概率在中国大陆：系统语言里有 zh-CN，或时区是中国的。判断错了也只是下载来源的先后顺序不同——
+ * 每个来源都会错开并行去试，谁先回应用谁，而且赢过的来源会被记住。
+ */
+function likelyMainlandChina(): boolean {
+  const tags = [app.getSystemLocale?.(), app.getLocale(), ...(app.getPreferredSystemLanguages?.() ?? [])]
+  if (tags.some((t) => /^zh(-hans)?-cn$/i.test(t ?? ''))) return true
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
+  return ['Asia/Shanghai', 'Asia/Chongqing', 'Asia/Harbin', 'Asia/Urumqi', 'PRC'].includes(tz)
 }
 
 async function buildModelsOverview(): Promise<ModelsOverview> {
@@ -178,15 +206,15 @@ async function buildModelsOverview(): Promise<ModelsOverview> {
 function resolveDownload(
   kind: ModelKind,
   file: string
-): { downloader: ModelDownloader; url: string } {
+): { downloader: ModelDownloader; url: string; sha256: string } {
   if (kind === 'asr') {
     const spec = findModelSpec(file)
     if (!spec) throw new Error(settings.t('error.unknownModel', { file }))
-    return { downloader: asrDownloader, url: modelDownloadUrl(file) }
+    return { downloader: asrDownloader, url: modelDownloadUrl(file), sha256: spec.sha256 }
   }
   const spec = findLocalLlmSpec(file)
   if (!spec) throw new Error(settings.t('error.unknownModel', { file }))
-  return { downloader: llmDownloader, url: spec.url }
+  return { downloader: llmDownloader, url: spec.url, sha256: spec.sha256 }
 }
 
 /**
@@ -265,12 +293,17 @@ function registerIpc(): void {
   handle('models:overview', () => buildModelsOverview())
 
   handle('models:download', async (event, kind: ModelKind, file: string) => {
-    const { downloader, url } = resolveDownload(kind, file)
-    await downloader.download(file, url, (p) => {
-      if (!event.sender.isDestroyed()) {
-        event.sender.send('models:downloadProgress', { ...p, kind })
-      }
-    })
+    const { downloader, url, sha256 } = resolveDownload(kind, file)
+    await downloader.download(
+      file,
+      url,
+      (p) => {
+        if (!event.sender.isDestroyed()) {
+          event.sender.send('models:downloadProgress', { ...p, kind })
+        }
+      },
+      sha256
+    )
   })
 
   handle('models:cancelDownload', (_event, kind: ModelKind, file: string) => {
@@ -669,6 +702,7 @@ void app.whenReady().then(() => {
   } else {
     setBundledBinDirs([])
   }
+  setDownloadRegion(likelyMainlandChina())
 
   const moved = migrateLegacyUserData()
   if (moved.migrated) {

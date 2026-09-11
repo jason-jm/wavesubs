@@ -16,6 +16,7 @@ export const fr: Dict = {
 
   'common.cancel': 'Annuler',
   'error.jobCancelled': "Tâche annulée",
+  'error.modelChecksum': 'Le fichier téléchargé n\'a pas passé la vérification (il ne correspond pas au fichier officiel). Il a été supprimé ; réessayez',
   'job.eta': "Environ {time} restantes",
   'job.asrDevice': "Périphérique de reconnaissance : {device}",
   'models.manualDownload': "Vous pouvez aussi télécharger le fichier avec un navigateur ou un gestionnaire de téléchargement, puis le déposer dans le dossier des modèles ci-dessus :",
@@ -312,7 +313,7 @@ export const fr: Dict = {
   'error.noAudioTrack': 'Ce fichier n’a pas de piste audio : la reconnaissance vocale est impossible',
   'error.noCues': 'Aucune ligne de sous-titre n’a été produite',
   'error.modelDownloading': 'Ce modèle est déjà en cours de téléchargement',
-  'error.modelDownloadFailed': 'Échec du téléchargement du modèle : ni huggingface.co ni le miroir hf-mirror.com ne sont joignables. Vérifiez votre réseau ou vos paramètres de proxy et réessayez.',
+  'error.modelDownloadFailed': 'Échec du téléchargement du modèle : aucune source de téléchargement n\'est joignable',
   'models.connecting': 'Connexion au serveur…',
   'error.modelDownloadingCancelFirst': 'Le modèle est en cours de téléchargement — annulez-le d’abord',
   'error.noAudioOrSubtitle': 'Ce fichier n’a ni piste audio ni piste de sous-titres : impossible de générer des sous-titres',

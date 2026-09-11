@@ -15,6 +15,7 @@ export const pl: Dict = {
 
   'common.cancel': 'Anuluj',
   'error.jobCancelled': "Zadanie anulowane",
+  'error.modelChecksum': 'Pobrany plik nie przeszedł weryfikacji (nie zgadza się z plikiem oficjalnym). Został usunięty, spróbuj ponownie',
   'job.eta': "Pozostało około {time}",
   'job.asrDevice': "Urządzenie rozpoznawania: {device}",
   'models.manualDownload': "Możesz też pobrać plik przeglądarką lub menedżerem pobierania i umieścić go w powyższym folderze modeli:",
@@ -310,7 +311,7 @@ export const pl: Dict = {
   'error.noAudioTrack': 'Ten plik nie ma ścieżki audio, więc rozpoznawanie mowy jest niemożliwe',
   'error.noCues': 'Nie uzyskano żadnego wiersza napisów',
   'error.modelDownloading': 'Ten model już się pobiera',
-  'error.modelDownloadFailed': 'Pobieranie modelu nie powiodło się: ani huggingface.co, ani serwer lustrzany hf-mirror.com nie są osiągalne. Sprawdź sieć lub ustawienia proxy i spróbuj ponownie.',
+  'error.modelDownloadFailed': 'Pobieranie modelu nie powiodło się: żadne źródło pobierania nie jest dostępne',
   'models.connecting': 'Łączenie z serwerem…',
   'error.modelDownloadingCancelFirst': 'Model jest pobierany — najpierw anuluj',
   'error.noAudioOrSubtitle': 'Ten plik nie ma ani ścieżki audio, ani ścieżki napisów, więc nie da się wygenerować napisów',

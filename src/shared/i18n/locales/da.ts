@@ -15,6 +15,7 @@ export const da: Dict = {
 
   'common.cancel': 'Annullér',
   'error.jobCancelled': "Opgave annulleret",
+  'error.modelChecksum': 'Den downloadede fil bestod ikke verificeringen (den matcher ikke den officielle fil). Den er slettet; prøv igen',
   'job.eta': "Cirka {time} tilbage",
   'job.asrDevice': "Genkendelsesenhed: {device}",
   'models.manualDownload': "Du kan også hente filen med en browser eller downloadmanager og lægge den i modelmappen ovenfor:",
@@ -308,7 +309,7 @@ export const da: Dict = {
   'error.noAudioTrack': 'Dette arkiv har ikke noget lydspor, så talegenkendelse er ikke mulig',
   'error.noCues': 'Der blev ikke lavet nogen undertekstlinjer',
   'error.modelDownloading': 'Den model hentes allerede',
-  'error.modelDownloadFailed': 'Download af modellen mislykkedes: hverken huggingface.co eller spejlet hf-mirror.com kan nås. Tjek netværket eller proxyindstillingerne, og prøv igen.',
+  'error.modelDownloadFailed': 'Download af model mislykkedes: ingen af downloadkilderne kunne nås',
   'models.connecting': 'Opretter forbindelse til serveren…',
   'error.modelDownloadingCancelFirst': 'Modellen hentes — annullér først',
   'error.noAudioOrSubtitle': 'Dette arkiv har hverken lydspor eller undertekstspor, så der kan ikke laves undertekster',

@@ -15,6 +15,7 @@ export const pt: Dict = {
 
   'common.cancel': 'Cancelar',
   'error.jobCancelled': "Tarefa cancelada",
+  'error.modelChecksum': 'O arquivo baixado falhou na verificação (não corresponde ao arquivo oficial). Ele foi excluído; tente novamente',
   'job.eta': "Faltam cerca de {time}",
   'job.asrDevice': "Dispositivo de reconhecimento: {device}",
   'models.manualDownload': "Você também pode baixar o arquivo com um navegador ou gerenciador de downloads e colocá-lo na pasta de modelos acima:",
@@ -308,7 +309,7 @@ export const pt: Dict = {
   'error.noAudioTrack': 'Este arquivo não tem faixa de áudio, então não dá para fazer reconhecimento de fala',
   'error.noCues': 'Nenhuma linha de legenda foi produzida',
   'error.modelDownloading': 'Esse modelo já está sendo baixado',
-  'error.modelDownloadFailed': 'Falha ao baixar o modelo: não foi possível acessar huggingface.co nem o espelho hf-mirror.com. Verifique sua rede ou as configurações de proxy e tente novamente.',
+  'error.modelDownloadFailed': 'Falha ao baixar o modelo: nenhuma fonte de download pôde ser acessada',
   'models.connecting': 'Conectando ao servidor…',
   'error.modelDownloadingCancelFirst': 'O modelo está sendo baixado — cancele primeiro',
   'error.noAudioOrSubtitle': 'Este arquivo não tem faixa de áudio nem de legenda, então não dá para gerar legendas',

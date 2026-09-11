@@ -15,6 +15,7 @@ export const hi: Dict = {
 
   'common.cancel': 'रद्द करें',
   'error.jobCancelled': "कार्य रद्द किया गया",
+  'error.modelChecksum': 'डाउनलोड की गई फ़ाइल सत्यापन में विफल रही (यह आधिकारिक फ़ाइल से मेल नहीं खाती)। इसे हटा दिया गया है, कृपया पुनः प्रयास करें',
   'job.eta': "लगभग {time} बाकी",
   'job.asrDevice': "पहचान डिवाइस: {device}",
   'models.manualDownload': "आप फ़ाइल को ब्राउज़र या डाउनलोड मैनेजर से भी डाउनलोड करके ऊपर के मॉडल फ़ोल्डर में रख सकते हैं:",
@@ -307,7 +308,7 @@ export const hi: Dict = {
   'error.noAudioTrack': 'इस फ़ाइल में ऑडियो ट्रैक नहीं है, इसलिए वाक् पहचान नहीं हो सकती',
   'error.noCues': 'एक भी उपशीर्षक पंक्ति नहीं बनी',
   'error.modelDownloading': 'वह मॉडल पहले से डाउनलोड हो रहा है',
-  'error.modelDownloadFailed': 'मॉडल डाउनलोड विफल: न तो huggingface.co और न ही मिरर hf-mirror.com तक पहुँचा जा सका। नेटवर्क या प्रॉक्सी सेटिंग जाँचकर फिर कोशिश करें।',
+  'error.modelDownloadFailed': 'मॉडल डाउनलोड विफल: किसी भी डाउनलोड स्रोत से संपर्क नहीं हो सका',
   'models.connecting': 'सर्वर से कनेक्ट हो रहा है…',
   'error.modelDownloadingCancelFirst': 'मॉडल डाउनलोड हो रहा है — पहले उसे रोकें',
   'error.noAudioOrSubtitle': 'इस फ़ाइल में न ऑडियो ट्रैक है न उपशीर्षक ट्रैक, इसलिए उपशीर्षक नहीं बनाए जा सकते',

@@ -15,6 +15,7 @@ export const ja: Dict = {
 
   'common.cancel': 'キャンセル',
   'error.jobCancelled': "タスクをキャンセルしました",
+  'error.modelChecksum': 'ダウンロードしたファイルの検証に失敗しました（公式ファイルと一致しません）。削除しました。もう一度お試しください',
   'job.eta': "残り約 {time}",
   'job.asrDevice': "認識デバイス：{device}",
   'models.manualDownload': "ブラウザやダウンローダーで直接ダウンロードして、上のモデルフォルダに入れることもできます：",
@@ -302,7 +303,7 @@ export const ja: Dict = {
   'error.noAudioTrack': 'このファイルには音声トラックがないため、音声認識できません',
   'error.noCues': '字幕が 1 件も得られませんでした',
   'error.modelDownloading': 'そのモデルはすでにダウンロード中です',
-  'error.modelDownloadFailed': 'モデルのダウンロードに失敗しました：huggingface.co にもミラーの hf-mirror.com にも接続できません。ネットワークまたはプロキシ設定を確認して再試行してください。',
+  'error.modelDownloadFailed': 'モデルのダウンロードに失敗：どのダウンロード元にも接続できません',
   'models.connecting': 'サーバーに接続中…',
   'error.modelDownloadingCancelFirst': 'モデルをダウンロード中です。先に中止してください',
   'error.noAudioOrSubtitle': 'このファイルには音声トラックも字幕トラックもないため、字幕を作成できません',
