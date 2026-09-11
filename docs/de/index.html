@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://jason-jm.github.io/wavesubs/de/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/social/de.jpg"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:locale" content="de_DE">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — Keine Untertitel? Lokale KI erstellt und übersetzt sie"><meta name="twitter:description" content="Wave Subs erstellt SRT / ASS-Untertitel direkt aus einem Video mit lokaler KI und übersetzt sie in deine Sprache. Läuft komplett auf deinem Rechner — ohne Internet, für immer kostenlos. macOS (Apple Silicon) und Windows."><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/social/de.jpg">
 <link rel="icon" href="../assets/icon.png?v=b5f064a4">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.5", "inLanguage": "de", "description": "Wave Subs erstellt SRT / ASS-Untertitel direkt aus einem Video mit lokaler KI und übersetzt sie in deine Sprache. Läuft komplett auf deinem Rechner — ohne Internet, für immer kostenlos. macOS (Apple Silicon) und Windows.", "url": "https://jason-jm.github.io/wavesubs/de/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/de-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "SRT / ASS-Untertitel erstellen, Automatisch in deine Sprache (29), Lokale KI · kein Internet nötig"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.6", "inLanguage": "de", "description": "Wave Subs erstellt SRT / ASS-Untertitel direkt aus einem Video mit lokaler KI und übersetzt sie in deine Sprache. Läuft komplett auf deinem Rechner — ohne Internet, für immer kostenlos. macOS (Apple Silicon) und Windows.", "url": "https://jason-jm.github.io/wavesubs/de/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/de-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "SRT / ASS-Untertitel erstellen, Automatisch in deine Sprache (29), Lokale KI · kein Internet nötig"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Welche Videos gehen?", "acceptedAnswer": {"@type": "Answer", "text": "MKV, MP4, MOV, TS, AVI und andere gängige Formate; auch HEVC, DTS und TrueHD, die Browser nicht abspielen, weil das mitgelieferte ffmpeg alles dekodiert. Reine Audiodateien ebenfalls."}}, {"@type": "Question", "name": "Welche Sprachen?", "acceptedAnswer": {"@type": "Answer", "text": "Die Erkennung deckt die knapp 100 Sprachen von whisper mit automatischer Erkennung ab; 29 Zielsprachen für die Übersetzung; Oberfläche in 32 Sprachen."}}, {"@type": "Question", "name": "Wirklich ohne Internet?", "acceptedAnswer": {"@type": "Answer", "text": "Alles läuft lokal. Nur der erste Modell-Download und – falls eingerichtet – die Cloud-Übersetzung nutzen das Netz."}}, {"@type": "Question", "name": "Wie lange dauert ein zweistündiger Film?", "acceptedAnswer": {"@type": "Answer", "text": "Etwa 3–6 Minuten mit Large v3 Turbo auf einem M-Chip, plus einige Minuten lokale Übersetzung. Eine ganze Staffel im Stapel laufen lassen."}}, {"@type": "Question", "name": "Gibt es eine Intel-Mac-Version?", "acceptedAnswer": {"@type": "Answer", "text": "Derzeit nicht. Die lokale Erkennung braucht die Metal-Beschleunigung von Apple Silicon; auf Intel wäre es zu langsam."}}]}</script>
 <style>
   :root{
@@ -213,7 +213,7 @@
 </div></section>
 
 <section id="download" style="padding-top:0"><div class="wrap">
-  <h2>Download</h2><p class="sub">Version 1.0.5. ffmpeg und whisper.cpp sind enthalten — installieren und loslegen.</p>
+  <h2>Download</h2><p class="sub">Version 1.0.6. ffmpeg und whisper.cpp sind enthalten — installieren und loslegen.</p>
   <div class="dl">
     <div class="card"><h3>macOS</h3><div class="req">macOS 12 oder neuer · <strong>nur Apple Silicon</strong> (ab M1) · von Apple beglaubigt</div>
       <a class="btn primary" data-dl="mac-dmg" href="#">DMG laden</a><div class="req"><a data-dl="mac-zip" href="#">oder ZIP-Archiv</a></div></div>
@@ -236,7 +236,7 @@
 </div></footer>
 
 <script>
-  const VERSION = '1.0.5';
+  const VERSION = '1.0.6';
   const BASE = 'https://github.com/jason-jm/wavesubs/releases/download/v' + VERSION + '/';
   const FILES = { 'mac-dmg': BASE + 'Wave.Subs-' + VERSION + '-arm64.dmg', 'mac-zip': BASE + 'Wave.Subs-' + VERSION + '-arm64-mac.zip',
     'win-exe': BASE + 'Wave.Subs.Setup.' + VERSION + '.exe', 'win-zip': BASE + 'Wave.Subs-' + VERSION + '-win.zip' };

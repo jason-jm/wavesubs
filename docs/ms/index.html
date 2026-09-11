@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://jason-jm.github.io/wavesubs/ms/"><meta property="og:image" content="https://jason-jm.github.io/wavesubs/assets/social/ms.jpg"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:locale" content="ms_MY">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Wave Subs — Tiada sari kata? AI tempatan menjana dan menterjemahnya"><meta name="twitter:description" content="Wave Subs menjana sari kata SRT / ASS terus daripada video dengan AI tempatan, kemudian menterjemahnya ke bahasa anda. Semuanya berjalan pada komputer anda — tanpa internet, percuma selamanya. macOS (Apple Silicon) dan Windows."><meta name="twitter:image" content="https://jason-jm.github.io/wavesubs/assets/social/ms.jpg">
 <link rel="icon" href="../assets/icon.png?v=b5f064a4">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.5", "inLanguage": "ms", "description": "Wave Subs menjana sari kata SRT / ASS terus daripada video dengan AI tempatan, kemudian menterjemahnya ke bahasa anda. Semuanya berjalan pada komputer anda — tanpa internet, percuma selamanya. macOS (Apple Silicon) dan Windows.", "url": "https://jason-jm.github.io/wavesubs/ms/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/ms-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Sari kata SRT / ASS, Terjemahan automatik ke bahasa anda (29), AI tempatan · tanpa internet"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wave Subs", "applicationCategory": "MultimediaApplication", "operatingSystem": "macOS 12+ (Apple Silicon), Windows 10+", "softwareVersion": "1.0.6", "inLanguage": "ms", "description": "Wave Subs menjana sari kata SRT / ASS terus daripada video dengan AI tempatan, kemudian menterjemahnya ke bahasa anda. Semuanya berjalan pada komputer anda — tanpa internet, percuma selamanya. macOS (Apple Silicon) dan Windows.", "url": "https://jason-jm.github.io/wavesubs/ms/", "downloadUrl": "https://github.com/jason-jm/wavesubs/releases/latest", "screenshot": "https://jason-jm.github.io/wavesubs/assets/shots/ms-dark-editor.jpg", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Jiesi Ma"}, "featureList": "Sari kata SRT / ASS, Terjemahan automatik ke bahasa anda (29), AI tempatan · tanpa internet"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Video apa yang boleh?", "acceptedAnswer": {"@type": "Answer", "text": "MKV, MP4, MOV, TS, AVI dan format biasa lain; HEVC, DTS, TrueHD yang pelayar tidak boleh main pun boleh, kerana ffmpeg yang disertakan menyahkod semuanya. Fail audio sahaja juga boleh."}}, {"@type": "Question", "name": "Bahasa apa yang disokong?", "acceptedAnswer": {"@type": "Answer", "text": "Pengecaman meliputi hampir 100 bahasa whisper dengan pengesanan automatik; 29 bahasa sasaran terjemahan; antara muka 32 bahasa."}}, {"@type": "Question", "name": "Betul-betul tanpa internet?", "acceptedAnswer": {"@type": "Answer", "text": "Semuanya tempatan. Rangkaian hanya digunakan untuk muat turun model kali pertama dan terjemahan awan jika anda memasangnya sendiri."}}, {"@type": "Question", "name": "Berapa lama filem dua jam?", "acceptedAnswer": {"@type": "Answer", "text": "Kira-kira 3–6 minit dengan Large v3 Turbo pada cip siri M, ditambah beberapa minit terjemahan tempatan. Jalankan satu musim sekali gus."}}, {"@type": "Question", "name": "Mac Intel?", "acceptedAnswer": {"@type": "Answer", "text": "Belum. Pengecaman tempatan bergantung pada pecutan Metal Apple Silicon; pada Intel terlalu perlahan."}}]}</script>
 <style>
   :root{
@@ -213,7 +213,7 @@
 </div></section>
 
 <section id="download" style="padding-top:0"><div class="wrap">
-  <h2>Muat turun</h2><p class="sub">Versi 1.0.5. ffmpeg dan whisper.cpp disertakan — pasang dan terus guna.</p>
+  <h2>Muat turun</h2><p class="sub">Versi 1.0.6. ffmpeg dan whisper.cpp disertakan — pasang dan terus guna.</p>
   <div class="dl">
     <div class="card"><h3>macOS</h3><div class="req">macOS 12 atau lebih baharu · <strong>Apple Silicon sahaja</strong> (M1 ke atas) · dinotari Apple</div>
       <a class="btn primary" data-dl="mac-dmg" href="#">Muat turun DMG</a><div class="req"><a data-dl="mac-zip" href="#">atau arkib ZIP</a></div></div>
@@ -236,7 +236,7 @@
 </div></footer>
 
 <script>
-  const VERSION = '1.0.5';
+  const VERSION = '1.0.6';
   const BASE = 'https://github.com/jason-jm/wavesubs/releases/download/v' + VERSION + '/';
   const FILES = { 'mac-dmg': BASE + 'Wave.Subs-' + VERSION + '-arm64.dmg', 'mac-zip': BASE + 'Wave.Subs-' + VERSION + '-arm64-mac.zip',
     'win-exe': BASE + 'Wave.Subs.Setup.' + VERSION + '.exe', 'win-zip': BASE + 'Wave.Subs-' + VERSION + '-win.zip' };
