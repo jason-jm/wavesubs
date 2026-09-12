@@ -37,6 +37,7 @@ interface Props {
   onStop: () => void
   /** 立刻取消正在跑的那个文件（退回等待），队列继续处理后面的 */
   onCancelCurrent: () => void
+  signsSupported: boolean
   updateSettings: (patch: SettingsUpdate) => Promise<void>
   goModels: () => void
 }
@@ -301,7 +302,7 @@ function EntryConfig(props: {
 
 export function BatchView(props: Props): React.JSX.Element {
   const { settings, overview, entries, running, stopping, onAdd, onRemove, onClear } = props
-  const { onOverride, onEdit, onStart, onStop, onCancelCurrent, updateSettings, goModels } = props
+  const { onOverride, onEdit, onStart, onStop, onCancelCurrent, signsSupported, updateSettings, goModels } = props
   const { t, locale } = useI18n()
 
   const [dragOver, setDragOver] = useState(false)
@@ -314,6 +315,7 @@ export function BatchView(props: Props): React.JSX.Element {
   const [service, setService] = useState('local')
   const [content, setContent] = useState<ExportContent>('translated')
   const [format, setFormat] = useState<ExportFormat>('srt')
+  const [signs, setSigns] = useState(false)
   const runningEntry = entries.find((e) => e.status === 'running')
   const eta = useStageEta(runningEntry?.progress ?? null)
 
@@ -321,6 +323,7 @@ export function BatchView(props: Props): React.JSX.Element {
   useEffect(() => {
     if (!settings) return
     setTargetLang(settings.translateEnabled ? settings.translation.targetLanguage : 'none')
+    setSigns(Boolean(settings.signsEnabled))
     const active = settings.translation.activeProviderId
     setService(settings.translation.engine === 'api' && active ? `api:${active}` : 'local')
     setContent(settings.export.content === 'original' ? 'translated' : settings.export.content)
@@ -362,6 +365,7 @@ export function BatchView(props: Props): React.JSX.Element {
   const start = useCallback(() => {
     void updateSettings({
       translateEnabled: translating,
+      signsEnabled: signs,
       ...(translating
         ? {
             translation: {
@@ -380,10 +384,11 @@ export function BatchView(props: Props): React.JSX.Element {
       engine: translating ? (useLocal ? 'local' : 'api') : undefined,
       providerId: translating && !useLocal ? providerId : undefined,
       format,
-      content: translating ? content : 'original'
+      content: translating ? content : 'original',
+      signs: translating && signs
     })
   }, [
-    translating, targetLang, useLocal, providerId, format, content, sourceLang,
+    translating, targetLang, useLocal, providerId, format, content, sourceLang, signs,
     updateSettings, onStart
   ])
 
@@ -455,6 +460,24 @@ export function BatchView(props: Props): React.JSX.Element {
                     </optgroup>
                   )}
                 </Select>
+              </div>
+            </div>
+          )}
+
+          {translating && signsSupported && (
+            <div className="row">
+              <div className="row-label">
+                <strong>{t('home.signs')}</strong>
+                <span>{t('home.signsHint')}</span>
+              </div>
+              <div className="row-control">
+                <button
+                  className={signs ? 'switch switch-on' : 'switch'}
+                  role="switch"
+                  aria-checked={signs}
+                  disabled={running}
+                  onClick={() => setSigns((v) => !v)}
+                />
               </div>
             </div>
           )}

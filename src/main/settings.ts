@@ -106,6 +106,7 @@ interface StoredSettings {
   language: string
   selectedModel?: string
   translateEnabled: boolean
+  signsEnabled?: boolean
   translation: {
     engine: TranslationEngine
     targetLanguage: string
@@ -210,6 +211,7 @@ export class SettingsStore {
       systemLanguage: pickLocale('system', systemLanguages()),
       systemLanguageTags: systemLanguages(),
       translateEnabled: this.data.translateEnabled,
+      signsEnabled: Boolean(this.data.signsEnabled),
       translation: {
         engine: this.data.translation.engine,
         targetLanguage: this.data.translation.targetLanguage,
@@ -239,6 +241,7 @@ export class SettingsStore {
     }
     if (patch.language !== undefined) this.data.language = patch.language
     if (patch.translateEnabled !== undefined) this.data.translateEnabled = patch.translateEnabled
+    if (patch.signsEnabled !== undefined) this.data.signsEnabled = patch.signsEnabled
     if (patch.translation) {
       const t = patch.translation
       if (t.engine !== undefined) this.data.translation.engine = t.engine
@@ -359,6 +362,10 @@ export class SettingsStore {
 
   get translateEnabled(): boolean {
     return this.data.translateEnabled
+  }
+
+  get signsEnabled(): boolean {
+    return Boolean(this.data.signsEnabled)
   }
 
   /** 翻译管线要用的术语表（已清洗）。空表返回 []，调用方不用判空 */

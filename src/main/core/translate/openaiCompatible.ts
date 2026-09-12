@@ -70,6 +70,30 @@ export class OpenAICompatibleProvider implements TranslationProvider {
     }
     return parseBatchResponse(data.choices?.[0]?.message?.content ?? '', new Map(items.map((it) => [it.index, it.text])))
   }
+
+  async chat(system: string, user: string, opts?: { signal?: AbortSignal; maxTokens?: number }): Promise<string> {
+    const isAzure = this.config.protocol === 'azure'
+    const body = JSON.stringify({
+      model: this.config.model,
+      temperature: 0.2,
+      max_tokens: opts?.maxTokens ?? 4000,
+      messages: [
+        { role: 'system', content: system },
+        { role: 'user', content: user }
+      ],
+      ...noThinkingExtras(this.config.baseUrl)
+    })
+    const url = isAzure
+      ? azureUrl(this.config.baseUrl, this.config.model)
+      : `${normalizeBaseUrl(this.config.baseUrl)}/chat/completions`
+    const headers: Record<string, string> = isAzure
+      ? { 'api-key': this.config.apiKey }
+      : { authorization: `Bearer ${this.config.apiKey}` }
+    const data = (await postJsonWithRetry(url, headers, body, opts?.signal)) as {
+      choices?: Array<{ message?: { content?: string } }>
+    }
+    return data.choices?.[0]?.message?.content ?? ''
+  }
 }
 
 export { parseBatchResponse }

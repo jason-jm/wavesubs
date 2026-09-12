@@ -30,6 +30,9 @@ import { PROMPT_REV } from './translate/prompt'
 import { translateCues } from './translate/translateCues'
 import { normalizeLanguageCode } from './translate/types'
 import type { TranslationProvider } from './translate/types'
+import { buildSignBlocks, extractFrames, judgeSigns, ocrLanguagesFor, runVisionOcr, signsToCues, SIGN_FPS, SIGN_FRAME_WIDTH } from './signs'
+import type { OcrFrame } from './signs'
+import { languageName } from './translate/types'
 
 export interface JobOptions {
   input: string
@@ -61,6 +64,8 @@ export interface JobOptions {
   onProgress?: (progress: JobProgress) => void
   /** 用户取消：各子进程被杀、翻译在批间停下，任务以 error.jobCancelled 结束 */
   signal?: AbortSignal
+  /** 画面文字：随包 vision-ocr 的路径；需要 translate，源不能是字幕文件 */
+  signs?: { visionOcr: string; minImportance?: number }
 }
 
 export interface JobResult {
@@ -68,6 +73,8 @@ export interface JobResult {
   language: string
   targetLanguage?: string
   cueCount: number
+  /** 画面文字条数（开启时才有） */
+  signCount?: number
   translatedCount?: number
   asrDevice?: string
   durationSec: number
@@ -83,17 +90,24 @@ export interface JobResult {
 
 function stageSpans(
   fromAsr: boolean,
-  withTranslate: boolean
+  withTranslate: boolean,
+  withSigns: boolean
 ): Record<PipelineStage, [number, number]> {
   if (fromAsr) {
+    if (withTranslate && withSigns) {
+      return { probe: [0, 2], extract: [2, 8], transcribe: [8, 50], translate: [50, 80], signs: [80, 95], write: [95, 100] }
+    }
     return withTranslate
-      ? { probe: [0, 2], extract: [2, 8], transcribe: [8, 55], translate: [55, 95], write: [95, 100] }
-      : { probe: [0, 2], extract: [2, 10], transcribe: [10, 97], translate: [97, 97], write: [97, 100] }
+      ? { probe: [0, 2], extract: [2, 8], transcribe: [8, 55], translate: [55, 95], signs: [95, 95], write: [95, 100] }
+      : { probe: [0, 2], extract: [2, 10], transcribe: [10, 97], translate: [97, 97], signs: [97, 97], write: [97, 100] }
   }
   // 已有字幕：没有识别阶段，抽取/读取很快，主要时间花在翻译
+  if (withTranslate && withSigns) {
+    return { probe: [0, 3], extract: [3, 12], transcribe: [12, 12], translate: [12, 75], signs: [75, 95], write: [95, 100] }
+  }
   return withTranslate
-    ? { probe: [0, 3], extract: [3, 15], transcribe: [15, 15], translate: [15, 97], write: [97, 100] }
-    : { probe: [0, 5], extract: [5, 95], transcribe: [95, 95], translate: [95, 95], write: [95, 100] }
+    ? { probe: [0, 3], extract: [3, 15], transcribe: [15, 15], translate: [15, 97], signs: [97, 97], write: [97, 100] }
+    : { probe: [0, 5], extract: [5, 95], transcribe: [95, 95], translate: [95, 95], signs: [95, 95], write: [95, 100] }
 }
 
 export function serializeCues(cues: Cue[], format: ExportFormat, content: ExportContent): string {
@@ -160,7 +174,9 @@ const cloneCues = (cues: Cue[]): Cue[] => cues.map((c) => ({ ...c }))
 export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
   const source: SubtitleSource = opts.source ?? { kind: 'asr' }
   const fromAsr = source.kind === 'asr'
-  const spans = stageSpans(fromAsr, Boolean(opts.translate))
+  // 画面文字要翻译引擎判别，也要有画面：字幕文件输入没有画面
+  const signsWanted = Boolean(opts.signs && opts.translate && source.kind !== 'file')
+  const spans = stageSpans(fromAsr, Boolean(opts.translate), signsWanted)
   const report = (stage: PipelineStage, stagePercent: number, messageKey?: TranslationKey): void => {
     const [lo, hi] = spans[stage]
     const bounded = Math.min(100, Math.max(0, stagePercent))
@@ -168,7 +184,8 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
       stage,
       percent: Math.round(lo + ((hi - lo) * bounded) / 100),
       stagePercent: Math.round(bounded),
-      messageKey
+      messageKey,
+      signs: signsWanted
     })
   }
 
@@ -196,6 +213,34 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
     let sourceFromCache = false
     let qcRegions: SpeechRegion[] | null = null
     let asrDevice: string | undefined
+    /** 缓存里已有的画面文字（上次开着这个选项跑过） */
+    let cachedSignCues: Cue[] = []
+    /** 抽帧 + OCR 与识别并行：OCR 走 CPU/神经引擎，whisper 走 GPU，互不抢 */
+    let ocrPromise: Promise<OcrFrame[]> | null = null
+    /**
+     * OCR 用哪种语言得等语种确定：抽帧先并行跑，识别语言由 whisper 开头几秒的自动检测给出
+     * （已指定语种或走缓存/字幕轨时立刻就有）。没有这一步时 Vision 只认英文，日文招牌一个都读不出。
+     */
+    let resolveLanguage: (lang: string | undefined) => void = () => undefined
+    const languageKnown = new Promise<string | undefined>((resolve) => { resolveLanguage = resolve })
+    const startOcr = (): void => {
+      if (!signsWanted || ocrPromise || !opts.signs) return
+      const bin = opts.signs.visionOcr
+      ocrPromise = (async () => {
+        const files = await extractFrames(ffmpegPath(), {
+          input: opts.input,
+          outDir: join(workDir, 'frames'),
+          fps: SIGN_FPS,
+          width: SIGN_FRAME_WIDTH,
+          durationSec,
+          signal: opts.signal
+        })
+        const lang = await languageKnown
+        return runVisionOcr(bin, files, ocrLanguagesFor(lang), opts.signal)
+      })()
+      // 失败留到画面文字阶段再抛：识别与翻译的成果先落盘，不因为 OCR 挂了全丢
+      ocrPromise.catch(() => undefined)
+    }
 
     // ---------- 源阶段：优先吃缓存 ----------
     if (store && !opts.refreshCache) {
@@ -212,17 +257,22 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
            * 用户编辑过的记录例外：人修过的时间轴不能被算法覆盖。
            */
           const energy = await store.loadEnergy(opts.input)
+          cachedSignCues = cloneCues(cached.cues.filter((c) => c.kind === 'sign'))
           cues = refineAsrCues(cloneCues(cached.rawCues), cached.regions, energy)
-          cached.cues = cloneCues(cues)
+          cached.cues = [...cloneCues(cues), ...cachedSignCues]
           cached.timingRev = TIMING_REV
           cached.translation = undefined
         } else {
-          cues = cloneCues(cached.cues)
+          // 画面文字存在数组尾部，和语音字幕分开走：翻译计划、时间轴精修都只看语音字幕
+          cachedSignCues = cloneCues(cached.cues.filter((c) => c.kind === 'sign'))
+          cues = cloneCues(cached.cues.filter((c) => c.kind !== 'sign'))
         }
         qcRegions = cached.regions
         report('probe', 100)
         report('extract', 100)
         report('transcribe', 100, 'progress.sourceCached')
+        resolveLanguage(language)
+        if (cachedSignCues.length === 0 || opts.refreshCache) startOcr()
       }
     }
 
@@ -245,6 +295,9 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
         const media = await probeMedia(ffprobePath(), opts.input)
         durationSec = media.durationSec
         report('probe', 100)
+        // 指定了语种就立刻可用；自动检测的等 whisper 报出来（字幕轨的在下面按轨道语言给）
+        if (opts.language) resolveLanguage(opts.language)
+        startOcr()
 
         if (source.kind === 'embedded') {
           const stream = media.subtitleStreams.find(
@@ -268,6 +321,7 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
           if (language === 'unknown' && stream.language) {
             language = normalizeLanguageCode(stream.language)
           }
+          resolveLanguage(language !== 'unknown' ? language : undefined)
           report('extract', 100)
         } else {
           if (!opts.modelPath) throw new LocalizedError('error.noModelPath')
@@ -294,8 +348,11 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
             modelPath: opts.modelPath,
             language: opts.language,
             onProgress: (p) => report('transcribe', p, 'progress.transcribing'),
+            onLanguage: (lang) => resolveLanguage(lang),
             signal: opts.signal
           })
+          // 没检测出来（或没打印）也别让 OCR 干等：识别完了按结果语种给
+          resolveLanguage(asr.language !== 'unknown' ? asr.language : undefined)
           ;[regions, energy] = await Promise.all([regionsPromise, energyPromise])
           qcRegions = regions
           rawCues = asr.cues
@@ -398,6 +455,36 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
       }
     }
 
+    // ---------- 画面文字 ----------
+    let signCues: Cue[] = []
+    if (signsWanted && opts.translate) {
+      if (!ocrPromise) {
+        signCues = cachedSignCues
+        report('signs', 100, 'progress.signsCached')
+      } else {
+        report('signs', 0, 'progress.signs')
+        const frames = await ocrPromise
+        if (opts.signal?.aborted) throw new LocalizedError('error.jobCancelled')
+        const { blocks } = buildSignBlocks(frames, SIGN_FPS, qcRegions)
+        const provider = opts.translate.provider
+        const judged = await judgeSigns(blocks, {
+          chat: (system, user) => provider.chat(system, user, { signal: opts.signal }),
+          cues,
+          sourceLanguageName: language !== 'unknown' ? languageName(language) : 'foreign-language',
+          targetLanguageName: languageName(opts.translate.targetLanguage),
+          signal: opts.signal,
+          onProgress: (p) => report('signs', p, 'progress.signs')
+        })
+        signCues = signsToCues(blocks, judged, { minImportance: opts.signs?.minImportance, startIndex: cues.length + 1 })
+        report('signs', 100)
+      }
+    }
+    const allCues = [...cues, ...signCues]
+    if (store && record) {
+      record.cues = allCues
+      await store.save(record)
+    }
+
     // ---------- 质检 ----------
     const qc = computeQc(cues, qcRegions, {
       translated: Boolean(opts.translate),
@@ -421,7 +508,7 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
     })
     const writtenPath = await writeOutput(
       outputPath,
-      serializeCues(cues, opts.output.format, opts.output.content),
+      serializeCues(allCues, opts.output.format, opts.output.content),
       opts.fallbackOutputDir
     )
     report('write', 100, 'progress.done')
@@ -431,10 +518,11 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
       language,
       targetLanguage: opts.translate?.targetLanguage,
       cueCount: cues.length,
+      signCount: signsWanted ? signCues.length : undefined,
       translatedCount,
       asrDevice,
       durationSec,
-      cues,
+      cues: allCues,
       sourceFromCache,
       translationReuse,
       translationReusedCount,

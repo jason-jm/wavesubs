@@ -99,7 +99,7 @@ export class LocalLlamaProvider implements TranslationProvider {
     private targetLanguage: string
   ) {}
 
-  async translateBatch(items: BatchItem[], ctx: TranslateContext): Promise<Map<number, string>> {
+  private async ensureInner(): Promise<OpenAICompatibleProvider> {
     if (!this.inner) {
       const baseUrl = await this.manager.ensure(this.modelPath)
       this.inner = new OpenAICompatibleProvider({
@@ -111,6 +111,14 @@ export class LocalLlamaProvider implements TranslationProvider {
         targetLanguage: this.targetLanguage
       })
     }
-    return this.inner.translateBatch(items, ctx)
+    return this.inner
+  }
+
+  async translateBatch(items: BatchItem[], ctx: TranslateContext): Promise<Map<number, string>> {
+    return (await this.ensureInner()).translateBatch(items, ctx)
+  }
+
+  async chat(system: string, user: string, opts?: { signal?: AbortSignal; maxTokens?: number }): Promise<string> {
+    return (await this.ensureInner()).chat(system, user, opts)
   }
 }

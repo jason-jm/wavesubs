@@ -14,6 +14,7 @@
     "build": "electron-vite build",
     "preview": "electron-vite preview",
     "cli": "tsx scripts/cli.ts",
+    "build:native": "bash scripts/build-native.sh",
     "typecheck": "tsc --noEmit -p . && tsc --noEmit -p src/renderer",
     "check-i18n": "tsx scripts/check-i18n.ts",
     "gen-i18n": "tsx scripts/gen-i18n-registry.ts",
@@ -35,6 +36,7 @@
     "check-translate": "tsx scripts/check-translate.ts",
     "check-site": "python3 scripts/build-site.py && electron scripts/check-site.cjs",
     "release:mas": "npm run build && tsx scripts/bundle-deps.ts && electron-builder --mac mas --arm64 --publish never",
+    "check-signs": "tsx scripts/check-signs.ts",
     "check-output": "tsx scripts/check-output.ts"
   },
   "devDependencies": {

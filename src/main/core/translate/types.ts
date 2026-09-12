@@ -31,6 +31,8 @@ export interface TranslationProvider {
   name: string
   /** 翻译一批字幕，返回 index → 译文 的映射（允许部分缺失，由调用方重试） */
   translateBatch(items: BatchItem[], ctx: TranslateContext): Promise<Map<number, string>>
+  /** 自由问答（画面文字判别用）：system + user → 模型回复文本 */
+  chat(system: string, user: string, opts?: { signal?: AbortSignal; maxTokens?: number }): Promise<string>
 }
 
 /** 模型返回内容无法解析——可通过重试恢复 */

@@ -18,6 +18,8 @@
 
 Also: a subtitle editor with video preview (HEVC / DTS preview too), batch runs for a whole season with per-file overrides, a glossary, layered caches for recognition and translation (a model change forces a strict retranslation), and a 32-language interface.
 
+**On-screen text (macOS):** optionally reads signs, notes, text messages, notices and titles off the frames with the system Vision OCR, keeps only what matters to the story, translates it and places it next to the original in ASS output (top-anchored in SRT). Burned-in subtitles and credit rolls are detected geometrically and skipped. The editor keeps speech subtitles and on-screen text in two separate tabs.
+
 **Privacy:** no account, no analytics, no server. Videos are never uploaded. Subtitle text leaves your machine only if you configure a cloud translation provider yourself.
 
 ## Install
@@ -127,6 +129,7 @@ All must be green before a release (see RELEASE.md). Each one pins a class of si
 | `check-qc` | QC rules in both directions (report what should be reported, stay quiet otherwise) |
 | `check-editor` | editor operations (time parsing round-trip, merge, stale marks, undo) |
 | `check-preview` | Range parsing + real ffmpeg segment generation (including broken inputs) |
+| `check-signs` | On-screen text: line grouping / tracking / credit windows / burned-in band geometry, judge alignment anchors and read-aloud override, on-screen cap, ASS/SRT output |
 | `check-site` | website: all 11 language pages, assets, language auto-redirect matrix |
 
 ## Code layout

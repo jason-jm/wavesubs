@@ -62,4 +62,25 @@ export class AnthropicProvider implements TranslationProvider {
       .join('')
     return parseBatchResponse(text, new Map(items.map((it) => [it.index, it.text])))
   }
+
+  async chat(system: string, user: string, opts?: { signal?: AbortSignal; maxTokens?: number }): Promise<string> {
+    const body = JSON.stringify({
+      model: this.config.model,
+      max_tokens: opts?.maxTokens ?? 4000,
+      system,
+      messages: [{ role: 'user', content: user }],
+      ...thinkingExtras(this.config.model)
+    })
+    const data = (await postJsonWithRetry(
+      `${normalizeAnthropicBaseUrl(this.config.baseUrl)}/messages`,
+      { 'x-api-key': this.config.apiKey, 'anthropic-version': ANTHROPIC_VERSION },
+      body,
+      opts?.signal
+    )) as { content?: Array<{ type?: string; text?: string }>; stop_reason?: string }
+    if (data.stop_reason === 'refusal') throw new TranslationParseError('模型拒绝处理这一批内容（安全策略）')
+    return (data.content ?? [])
+      .filter((block) => block.type === 'text' && typeof block.text === 'string')
+      .map((block) => block.text as string)
+      .join('')
+  }
 }

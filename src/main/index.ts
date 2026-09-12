@@ -57,7 +57,9 @@ import {
   ffprobePath,
   listLocalLlmModels,
   listWhisperModels,
-  setBundledBinDirs
+  setBundledBinDirs,
+  signsSupported,
+  visionOcrPath
 } from './core/tools'
 import { LlamaServerManager, LocalLlamaProvider } from './core/translate/llamaServer'
 import { findLocalLlmSpec, LOCAL_LLM_MODELS, pickBestInstalledLlm } from './core/translate/localCatalog'
@@ -456,6 +458,7 @@ function registerIpc(): void {
         fallbackOutputDir: fallbackOutputDir(),
         refreshCache: request.refreshCache,
         glossary: settings.glossary,
+        signs: (request.signs ?? settings.signsEnabled) && translate && signsSupported() ? { visionOcr: visionOcrPath() } : undefined,
         onProgress: (p) => {
           if (!event.sender.isDestroyed()) event.sender.send('job:progress', p)
         }
@@ -465,6 +468,7 @@ function registerIpc(): void {
         language: result.language,
         targetLanguage: result.targetLanguage,
         cueCount: result.cueCount,
+        signCount: result.signCount,
         asrDevice: result.asrDevice,
         translated: Boolean(translate),
         translatedCount: result.translatedCount,
@@ -501,7 +505,11 @@ function registerIpc(): void {
         endMs: c.endMs,
         text: c.text,
         translation: c.translation,
-        srcEdited: c.srcEdited
+        srcEdited: c.srcEdited,
+        kind: c.kind,
+        pos: c.pos,
+        layout: c.layout,
+        importance: c.importance
       })),
       hasTranslation: Boolean(rec.translation),
       targetLanguage: rec.translation?.targetLanguage,
@@ -527,11 +535,12 @@ function registerIpc(): void {
         endMs: Math.max(1, Math.round(c.endMs)),
         text: c.text,
         ...(c.translation ? { translation: c.translation } : {}),
-        ...(c.srcEdited ? { srcEdited: true } : {})
+        ...(c.srcEdited ? { srcEdited: true } : {}),
+        ...(c.kind === 'sign' ? { kind: 'sign' as const, pos: c.pos, layout: c.layout, importance: c.importance } : {})
       }))
       rec.edited = true
       // 编辑之后质检结论会过期（改了时长/文本），就地重算保持诚实
-      rec.qc = computeQc(rec.cues, rec.regions, {
+      rec.qc = computeQc(rec.cues.filter((c) => c.kind !== 'sign'), rec.regions, {
         translated: Boolean(rec.translation),
         targetLanguage: rec.translation?.targetLanguage
       })
@@ -613,7 +622,7 @@ function refreshTitleBarOverlay(): void {
 }
 
 function appInfo(): AppInfo {
-  return { version: app.getVersion(), platform: process.platform, mas: Boolean(process.mas), locale: settings.resolvedLanguage }
+  return { version: app.getVersion(), platform: process.platform, mas: Boolean(process.mas), locale: settings.resolvedLanguage, signsSupported: signsSupported() }
 }
 
 /**
@@ -700,7 +709,8 @@ void app.whenReady().then(() => {
         : [join(vendor, 'bin')]
     )
   } else {
-    setBundledBinDirs([])
+    // 开发态：随包工具走 PATH，自编的 vision-ocr 在仓库里的 native/*/build
+    setBundledBinDirs([join(app.getAppPath(), 'native', 'vision-ocr', 'build')])
   }
   setDownloadRegion(likelyMainlandChina())
 

@@ -68,6 +68,8 @@ export function EditorView(props: Props): React.JSX.Element {
    * 探测顺序：先试 direct，onError 永久降级到 segment（一个文件只探一次）。
    */
   const [previewCue, setPreviewCue] = useState<number | null>(null)
+  /** 语音字幕与画面文字分开编辑：两类各自连续存放（画面文字在尾部），切换只是换一层筛选 */
+  const [tab, setTab] = useState<'speech' | 'signs'>('speech')
   const [segment, setSegment] = useState<
     | { state: 'loading' }
     | { state: 'ready'; frames: string[]; audio: string | null; fps: number; offsetMs: number; durationMs: number }
@@ -235,7 +237,14 @@ export function EditorView(props: Props): React.JSX.Element {
   const overlayCue =
     playheadMs === null
       ? null
-      : (cues.find((c) => c.startMs <= playheadMs && playheadMs < c.endMs) ?? null)
+      : (cues.find((c) => c.kind !== 'sign' && c.startMs <= playheadMs && playheadMs < c.endMs) ?? null)
+  const overlaySigns =
+    playheadMs === null
+      ? []
+      : cues.filter((c) => c.kind === 'sign' && c.startMs <= playheadMs && playheadMs < c.endMs).slice(0, 3)
+  const speechCount = cues.filter((c) => c.kind !== 'sign').length
+  const signCount = cues.length - speechCount
+  const rows = cues.map((cue, i) => ({ cue, i })).filter(({ cue }) => (cue.kind === 'sign') === (tab === 'signs'))
 
   const doExport = useCallback(() => {
     // 导出前把未落盘的编辑冲下去，否则导出的是上一版
@@ -345,6 +354,22 @@ export function EditorView(props: Props): React.JSX.Element {
               <span className="editor-overlay-src">{overlayCue.text}</span>
             </div>
           )}
+          {overlaySigns.map((s, k) => {
+            const pos = s.pos ?? { x: 0.1, y: 0.05, w: 0.8, h: 0.05 }
+            const layout = s.layout ?? 'below'
+            const cx = `${(pos.x + pos.w / 2) * 100}%`
+            const style =
+              layout === 'top'
+                ? { left: cx, top: '4%', transform: 'translate(-50%, 0)' }
+                : layout === 'box'
+                  ? { left: cx, top: `${(pos.y + pos.h / 2) * 100}%`, transform: 'translate(-50%, -50%)' }
+                  : { left: cx, top: `${(pos.y + pos.h) * 100}%`, transform: 'translate(-50%, 0)' }
+            return (
+              <div key={k} className={layout === 'box' ? 'editor-sign-overlay editor-sign-box' : 'editor-sign-overlay'} style={style}>
+                {s.translation || s.text}
+              </div>
+            )
+          })}
           <audio
             ref={audioRef}
             hidden
@@ -362,8 +387,18 @@ export function EditorView(props: Props): React.JSX.Element {
         </div>
       )}
 
+      <div className="segmented editor-tabs">
+        <button className={tab === 'speech' ? 'segmented-on' : ''} onClick={() => setTab('speech')}>
+          {t('editor.tab.speech')} · {speechCount}
+        </button>
+        <button className={tab === 'signs' ? 'segmented-on' : ''} onClick={() => setTab('signs')}>
+          {t('editor.tab.signs')} · {signCount}
+        </button>
+      </div>
+
       <div className="card editor-list" ref={listRef}>
-        {cues.map((cue, i) => (
+        {tab === 'signs' && signCount === 0 && <p className="editor-empty-hint">{t('editor.signsEmpty')}</p>}
+        {rows.map(({ cue, i }) => (
           <div key={`${i}-${cue.startMs}`} className="editor-row" data-row={i}>
             <span className="editor-index">{cue.index}</span>
             <div className="editor-times">
@@ -406,14 +441,21 @@ export function EditorView(props: Props): React.JSX.Element {
               <button
                 className="btn btn-quiet"
                 title={t('editor.addBelow')}
-                onClick={() => apply((prev) => insertAfter(prev, i))}
+                onClick={() =>
+                  apply((prev) => {
+                    const next = insertAfter(prev, i)
+                    // 画面文字页里新增的也是画面文字，位置沿用上一条
+                    if (cue.kind === 'sign') next[i + 1] = { ...next[i + 1], kind: 'sign', pos: cue.pos, layout: cue.layout, importance: cue.importance }
+                    return next
+                  })
+                }
               >
                 <Icon name="plus" size={13} />
               </button>
               <button
                 className="btn btn-quiet"
                 title={t('editor.merge')}
-                disabled={i === cues.length - 1}
+                disabled={i === cues.length - 1 || (cues[i + 1].kind === 'sign') !== (cue.kind === 'sign')}
                 onClick={() => apply((prev) => mergeWithNext(prev, i))}
               >
                 <Icon name="merge" size={13} />

@@ -14,6 +14,8 @@ export interface WhisperOptions {
   extraArgs?: string[]
   threads?: number
   onProgress?: (percent: number) => void
+  /** 自动检测出语种时立刻回调（识别开始后几秒内）：画面文字 OCR 等着它选识别语言，不用等整段识别完 */
+  onLanguage?: (language: string) => void
   /** 用户取消：杀掉 whisper-cli 子进程并抛 error.jobCancelled */
   signal?: AbortSignal
 }
@@ -70,6 +72,7 @@ export async function transcribeWithWhisperCpp(
   ]
   try {
     let deviceLog = ''
+    let languageReported = false
     await new Promise<void>((resolve, reject) => {
       const child = spawn(whisperCli, args)
       let stderrTail = ''
@@ -83,6 +86,13 @@ export async function transcribeWithWhisperCpp(
         if (deviceLog.length < 20000) deviceLog += text
         for (const match of text.matchAll(/progress\s*=\s*(\d+)%/g)) {
           opts.onProgress?.(Math.min(100, Number(match[1])))
+        }
+        if (!languageReported) {
+          const m = /auto-detected language:\s*([a-z]{2,3})/.exec(text)
+          if (m) {
+            languageReported = true
+            opts.onLanguage?.(m[1])
+          }
         }
       })
       child.stdout.resume()

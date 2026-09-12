@@ -51,6 +51,15 @@ export const zhHans = {
   'stage.transcribe': '识别',
   'stage.translate': '翻译',
   'stage.write': '写出',
+  'stage.signs': "画面文字",
+  'progress.signs': "正在识别画面文字…",
+  'progress.signsCached': "画面文字来自缓存",
+  'home.signs': "翻译画面中的文字",
+  'home.signsHint': "招牌、便签、短信、告示等；需要开启翻译，约多花两三分钟",
+  'home.result.signs': "，另有 {n} 条画面文字",
+  'editor.tab.speech': "语音字幕",
+  'editor.tab.signs': "画面文字",
+  'editor.signsEmpty': "这部片没有画面文字。转换时勾选「翻译画面中的文字」即可识别",
 
   // ---------- 轨道与文件信息 ----------
   'track.audio': '音轨 {n}',

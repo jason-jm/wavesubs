@@ -24,12 +24,13 @@ import { audioTrackLabel, subtitleTrackLabel } from '../lib/trackLabels'
 import { Icon } from '../components/Icon'
 
 
-const STAGE_ORDER: PipelineStage[] = ['probe', 'extract', 'transcribe', 'translate', 'write']
+const STAGE_ORDER: PipelineStage[] = ['probe', 'extract', 'transcribe', 'translate', 'signs', 'write']
 const STAGE_LABELS: Record<PipelineStage, TranslationKey> = {
   probe: 'stage.probe',
   extract: 'stage.extract',
   transcribe: 'stage.transcribe',
   translate: 'stage.translate',
+  signs: 'stage.signs',
   write: 'stage.write'
 }
 
@@ -48,6 +49,7 @@ interface Props {
   onEdit: (path: string) => void
   onRun: (input: string, request: JobRequest) => void
   onCancel: () => void
+  signsSupported: boolean
   updateSettings: (patch: SettingsUpdate) => Promise<void>
   onSelectModel: (file: string) => void
   onSelectLlm: (file: string) => void
@@ -89,6 +91,7 @@ export function HomeView(props: Props): React.JSX.Element {
   const [content, setContent] = useState<ExportContent>('translated')
   const [format, setFormat] = useState<ExportFormat>('srt')
   const [audioIndex, setAudioIndex] = useState(0)
+  const [signs, setSigns] = useState(false)
 
   const busy = jobState.kind === 'running'
   const eta = useStageEta(jobState.kind === 'running' ? jobState.progress : null)
@@ -108,6 +111,7 @@ export function HomeView(props: Props): React.JSX.Element {
     (path: string) => {
       if (settings) {
         setTargetLang(settings.translateEnabled ? settings.translation.targetLanguage : 'none')
+        setSigns(Boolean(settings.signsEnabled))
         const active = settings.translation.activeProviderId
         setService(settings.translation.engine === 'api' && active ? `api:${active}` : 'local')
         setContent(settings.export.content === 'original' ? 'translated' : settings.export.content)
@@ -179,6 +183,7 @@ export function HomeView(props: Props): React.JSX.Element {
         : { kind: 'asr' }
     void updateSettings({
       translateEnabled: translating,
+      signsEnabled: signs,
       ...(translating
         ? {
             translation: {
@@ -199,13 +204,15 @@ export function HomeView(props: Props): React.JSX.Element {
       engine: translating ? (useLocal ? 'local' : 'api') : undefined,
       providerId: translating && !useLocal ? providerId : undefined,
       format,
-      content: translating ? content : 'original'
+      content: translating ? content : 'original',
+      signs: translating && signs
     })
     setPending(null)
   }, [
     pending,
     sourceKey,
     translating,
+    signs,
     targetLang,
     useLocal,
     providerId,
@@ -254,7 +261,9 @@ export function HomeView(props: Props): React.JSX.Element {
   /* ------------------------------ 运行中 ------------------------------ */
   if (busy) {
     const { progress, input } = jobState
-    const nowIndex = STAGE_ORDER.indexOf(progress.stage)
+    // 没开画面文字的任务不显示那一格
+    const stages = STAGE_ORDER.filter((s) => s !== 'signs' || progress.signs)
+    const nowIndex = stages.indexOf(progress.stage)
     return (
       <div className="card progress-card rise">
         <div className="progress-head">
@@ -274,7 +283,7 @@ export function HomeView(props: Props): React.JSX.Element {
           <div className="track-fill" style={{ width: `${progress.percent}%` }} />
         </div>
         <div className="stages">
-          {STAGE_ORDER.map((s, i) => (
+          {stages.map((s, i) => (
             <div
               key={s}
               className={`stage ${i === nowIndex ? 'stage-now' : ''} ${i < nowIndex ? 'stage-done' : ''}`}
@@ -391,6 +400,23 @@ export function HomeView(props: Props): React.JSX.Element {
                   </Select>
                 </div>
               </div>
+
+              {props.signsSupported && (
+                <div className="row">
+                  <div className="row-label">
+                    <strong>{t('home.signs')}</strong>
+                    <span>{t('home.signsHint')}</span>
+                  </div>
+                  <div className="row-control">
+                    <button
+                      className={signs ? 'switch switch-on' : 'switch'}
+                      role="switch"
+                      aria-checked={signs}
+                      onClick={() => setSigns((v) => !v)}
+                    />
+                  </div>
+                </div>
+              )}
 
               {useLocal && installedLlm.length > 0 && (
                 <div className="row">
@@ -565,6 +591,7 @@ export function HomeView(props: Props): React.JSX.Element {
           <div className="result-body">
             <h3>
               {t('home.result.title', { n: jobState.result.cueCount })}
+              {jobState.result.signCount ? t('home.result.signs', { n: jobState.result.signCount }) : ''}
               {jobState.result.translated &&
                 t('home.result.translated', {
                   n: jobState.result.translatedCount ?? jobState.result.cueCount

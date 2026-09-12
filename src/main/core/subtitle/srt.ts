@@ -12,13 +12,20 @@ export function formatSrtTimestamp(ms: number): string {
 
 export type CueTextSelector = (cue: Cue) => string
 
+/** 画面文字存在数组尾部（编辑器按类分开操作），写文件时按时间排回去 */
+export function orderForOutput(cues: Cue[]): Cue[] {
+  return [...cues].sort((a, b) => a.startMs - b.startMs || (a.kind === 'sign' ? 1 : 0) - (b.kind === 'sign' ? 1 : 0))
+}
+
 export function cuesToSrt(cues: Cue[], selectText: CueTextSelector = (c) => c.text): string {
   const blocks: string[] = []
   let n = 1
-  for (const cue of cues) {
+  for (const cue of orderForOutput(cues)) {
     const text = selectText(cue).trim()
     if (!text) continue
-    blocks.push(`${n}\n${formatSrtTimestamp(cue.startMs)} --> ${formatSrtTimestamp(cue.endMs)}\n${text}`)
+    // SRT 没有定位能力：画面文字放顶部（多数播放器认 {\an8}），把底部留给对白
+    const body = cue.kind === 'sign' ? `{\\an8}${text}` : text
+    blocks.push(`${n}\n${formatSrtTimestamp(cue.startMs)} --> ${formatSrtTimestamp(cue.endMs)}\n${body}`)
     n += 1
   }
   return blocks.join('\n\n') + '\n'

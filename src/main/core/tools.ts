@@ -62,6 +62,17 @@ export function findTool(name: string, envVar: string, installHint: string): str
 }
 
 export const ffmpegPath = (): string => findTool('ffmpeg', 'WAVESUBS_FFMPEG', 'brew install ffmpeg')
+export const visionOcrPath = (): string => findTool('vision-ocr', 'WAVESUBS_VISION_OCR', 'npm run build:native')
+/** 画面文字识别目前只有 macOS（系统 Vision 框架，零模型下载）；Windows 待接系统 OCR */
+export function signsSupported(): boolean {
+  if (process.platform !== 'darwin') return false
+  try {
+    visionOcrPath()
+    return true
+  } catch {
+    return false
+  }
+}
 export const ffprobePath = (): string => findTool('ffprobe', 'WAVESUBS_FFPROBE', 'brew install ffmpeg')
 export const whisperCliPath = (): string =>
   findTool('whisper-cli', 'WAVESUBS_WHISPER', 'brew install whisper-cpp')

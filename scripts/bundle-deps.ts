@@ -215,6 +215,15 @@ for (const n of ['whisper-cli', 'whisper-vad-speech-segments', 'llama-server']) 
  * 这种错误在开发机上完全看不出来（本地有 /opt/homebrew，照样能跑），
  * 只有用户下载后才炸——所以必须在打包阶段就断掉。
  */
+// 画面文字识别：macOS Vision 的小工具，源码在仓库里，打包时现编（需要 Xcode 命令行工具）
+{
+  const src = join(ROOT, 'native', 'vision-ocr', 'vision-ocr.swift')
+  const out = join(BIN, 'vision-ocr')
+  sh('xcrun', ['swiftc', '-O', '-o', out, src])
+  chmodSync(out, 0o755)
+  console.log('  vision-ocr 已编译（macOS Vision）')
+}
+
 // Silero VAD 模型随包自带（不到 1MB）：时间校正不再依赖任何下载，大陆用户下不到 huggingface 也不受影响
 const VAD_DIR = join(VENDOR, 'vad')
 mkdirSync(VAD_DIR, { recursive: true })

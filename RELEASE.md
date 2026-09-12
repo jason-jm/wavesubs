@@ -59,8 +59,10 @@ electron-builder（当前 26.15）能直接读这个钥匙串 profile，密码�
 
 ## 每次发布
 
+`scripts/bundle-deps.ts` 会用 `xcrun swiftc` 现编随包的 `vision-ocr`（画面文字识别，macOS Vision），发布机需要装 Xcode 命令行工具。
+
 ```bash
-npm run check-i18n && npm run check-css && npm run check-batch && npm run check-cache && npm run check-glossary && npm run check-qc && npm run check-editor && npm run check-preview && npm run check-output && npm run typecheck
+npm run check-i18n && npm run check-css && npm run check-batch && npm run check-cache && npm run check-glossary && npm run check-qc && npm run check-editor && npm run check-preview && npm run check-output && npm run check-signs && npm run typecheck
 APPLE_KEYCHAIN_PROFILE=WAVESUBS_NOTARY npm run release
 ```
 

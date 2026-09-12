@@ -82,6 +82,11 @@ export default function App(): React.JSX.Element {
   const [downloads, setDownloads] = useState<Record<string, ModelDownloadProgress>>({})
   const [modelError, setModelError] = useState<ModelError | null>(null)
   const [jobState, setJobState] = useState<JobState>({ kind: 'idle' })
+  /** 画面文字识别可用（macOS 且随包工具在）；决定转换页显不显示那个开关 */
+  const [signsSupported, setSignsSupported] = useState(false)
+  useEffect(() => {
+    void window.waveSubs.appInfo().then((info) => setSignsSupported(Boolean(info.signsSupported)))
+  }, [])
   /** 单文件页最近一次任务的输入路径——完成卡片的「编辑字幕」要用它定位记录 */
   const [lastInput, setLastInput] = useState<string | null>(null)
   const [batch, setBatch] = useState<BatchEntry[]>([])
@@ -447,6 +452,7 @@ export default function App(): React.JSX.Element {
               onEdit={(p) => openEditor(p, 'home')}
               onRun={runJob}
               onCancel={cancelJob}
+              signsSupported={signsSupported}
               updateSettings={updateSettings}
               onSelectModel={(file) => selectModel('asr', file)}
               onSelectLlm={(file) => selectModel('llm', file)}
@@ -474,6 +480,7 @@ export default function App(): React.JSX.Element {
               onStart={startBatch}
               onStop={stopBatch}
               onCancelCurrent={cancelJob}
+              signsSupported={signsSupported}
               updateSettings={updateSettings}
               goModels={() => setView('models')}
             />

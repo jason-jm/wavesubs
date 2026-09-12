@@ -1,6 +1,6 @@
 import type { TranslationKey } from './i18n/core'
 
-export type PipelineStage = 'probe' | 'extract' | 'transcribe' | 'translate' | 'write'
+export type PipelineStage = 'probe' | 'extract' | 'transcribe' | 'translate' | 'signs' | 'write'
 
 export interface JobProgress {
   stage: PipelineStage
@@ -10,6 +10,8 @@ export interface JobProgress {
   stagePercent?: number
   /** 传键而不是成品文案，由渲染层按当前界面语言翻译 */
   messageKey?: TranslationKey
+  /** 本次任务含「画面文字」阶段；界面据此决定阶段条上显不显示它 */
+  signs?: boolean
 }
 
 /** 字幕从哪来：语音识别 / 视频内嵌字幕轨 / 拖入的字幕文件 */
@@ -35,6 +37,8 @@ export interface JobRequest {
   providerId?: string
   format?: ExportFormat
   content?: ExportContent
+  /** 同时识别并翻译画面里的文字（招牌、短信、告示…）；需要开启翻译，目前仅 macOS */
+  signs?: boolean
   /** 忽略已有任务缓存，强制重新识别与翻译（结果仍会写入缓存） */
   refreshCache?: boolean
 }
@@ -150,6 +154,11 @@ export interface RecordView {
     text: string
     translation?: string
     srcEdited?: boolean
+    /** 画面文字（与语音字幕分开编辑） */
+    kind?: 'sign'
+    pos?: { x: number; y: number; w: number; h: number }
+    layout?: 'box' | 'below' | 'top'
+    importance?: number
   }>
   /** 有译文元数据 = 这条记录跑过翻译，编辑器据此决定显不显示译文列 */
   hasTranslation: boolean
@@ -174,6 +183,8 @@ export interface JobSummary {
   language: string
   targetLanguage?: string
   cueCount: number
+  /** 画面文字条数（开启了画面文字时才有） */
+  signCount?: number
   translated: boolean
   translatedCount?: number
   /** 识别/抽取结果来自任务缓存（源文件与参数都没变，跳过了昂贵阶段） */
@@ -323,6 +334,8 @@ export interface SettingsView {
   /** 系统报告的原始语言标签（按优先级），给「跟随系统」结果不对时排查用 */
   systemLanguageTags: string[]
   translateEnabled: boolean
+  /** 上次转换时是否勾了「翻译画面中的文字」 */
+  signsEnabled: boolean
   translation: TranslationSettingsView
   export: { format: ExportFormat; content: ExportContent }
 }
@@ -332,6 +345,7 @@ export interface SettingsUpdate {
   theme?: Partial<ThemeSetting>
   language?: string
   translateEnabled?: boolean
+  signsEnabled?: boolean
   translation?: {
     engine?: TranslationEngine
     targetLanguage?: string
@@ -349,4 +363,6 @@ export interface AppInfo {
   platform: string
   mas: boolean
   locale: string
+  /** 画面文字识别可用（macOS 且随包的 vision-ocr 在） */
+  signsSupported: boolean
 }
