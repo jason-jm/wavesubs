@@ -37,6 +37,7 @@ export function textSimilarity(a: string, b: string): number {
 /** 至少要有一个字母/汉字/假名：纯数字、纯符号（「60」「¥980」「100%」）不值得单独出一条 */
 const HAS_TEXT = /\p{L}/u
 const CJK = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u
+const KANA_ONLY = /^[\p{Script=Hiragana}\p{Script=Katakana}ー・\s]+$/u
 
 /** 同一帧里上下相邻（间距 < 0.8 倍行高）且水平重叠的框并成多行一块：一张便签、一段告示只算一条 */
 export function groupLines(boxes: OcrBox[]): OcrBox[] {
@@ -53,7 +54,10 @@ export function groupLines(boxes: OcrBox[]): OcrBox[] {
     if (g) g.push(b)
     else groups.push([b])
   }
-  return groups.map((g) => {
+  return groups.map((grp) => {
+    // 注音（振り仮名）：紧贴汉字行、只有假名、字高不到主行六成的小字，读出来只会变成「斯克的」这种音译，去掉
+    const maxH = Math.max(...grp.map((b) => b.h))
+    const g = grp.length > 1 ? grp.filter((b) => !(KANA_ONLY.test(b.t.trim()) && b.h < 0.6 * maxH)) : grp
     if (g.length === 1) return g[0]
     const x = Math.min(...g.map((b) => b.x))
     const y = Math.min(...g.map((b) => b.y))
