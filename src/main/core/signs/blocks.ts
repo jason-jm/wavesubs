@@ -41,7 +41,16 @@ const KANA_ONLY = /^[\p{Script=Hiragana}\p{Script=Katakana}ー・\s]+$/u
 
 /** 同一帧里上下相邻（间距 < 0.8 倍行高）且水平重叠的框并成多行一块：一张便签、一段告示只算一条 */
 export function groupLines(boxes: OcrBox[]): OcrBox[] {
-  const sorted = [...boxes].sort((a, b) => a.y - b.y)
+  // 注音（振り仮名）：只有假名、字高不到旁边汉字行六成、紧贴在它上方的小字。读出来只会变成「斯克的」这种音译，先剔掉
+  const isFurigana = (b: OcrBox): boolean =>
+    KANA_ONLY.test(b.t.trim()) &&
+    boxes.some((o) => {
+      if (o === b || b.h >= 0.6 * o.h) return false
+      const xOverlap = Math.min(o.x + o.w, b.x + b.w) - Math.max(o.x, b.x)
+      const gap = o.y - (b.y + b.h)
+      return xOverlap > 0.3 * Math.min(o.w, b.w) && gap > -0.3 * o.h && gap < 0.5 * o.h
+    })
+  const sorted = boxes.filter((b) => !isFurigana(b)).sort((a, b) => a.y - b.y)
   const groups: OcrBox[][] = []
   for (const b of sorted) {
     const g = groups.find((grp) => {
@@ -54,10 +63,7 @@ export function groupLines(boxes: OcrBox[]): OcrBox[] {
     if (g) g.push(b)
     else groups.push([b])
   }
-  return groups.map((grp) => {
-    // 注音（振り仮名）：紧贴汉字行、只有假名、字高不到主行六成的小字，读出来只会变成「斯克的」这种音译，去掉
-    const maxH = Math.max(...grp.map((b) => b.h))
-    const g = grp.length > 1 ? grp.filter((b) => !(KANA_ONLY.test(b.t.trim()) && b.h < 0.6 * maxH)) : grp
+  return groups.map((g) => {
     if (g.length === 1) return g[0]
     const x = Math.min(...g.map((b) => b.x))
     const y = Math.min(...g.map((b) => b.y))
