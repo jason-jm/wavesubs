@@ -56,6 +56,9 @@ console.log('\n名单时段与烧录字幕带：')
   eq('名单块被剔掉', blocks.filter((b) => b.text.includes('監督') && b.drop === 'credits').length > 0, true)
   const sign = blocks.find((b) => b.text === '業務管理室')!
   eq('中部的招牌保留送判别', sign.drop, undefined)
+  // 贴底的字幕：框中心略超 1.0（Vision 的归一化框会溢出一点）也要算在带内
+  const edge = buildSignBlocks([...frames, ...[40, 41, 42].map((i) => ({ i, boxes: [box('贴底的一行字幕', 0.3, 0.965, 0.4, 0.06)] }))], 1, regions)
+  eq('中心略超画面底边的字幕行也剔掉', edge.blocks.find((b) => b.text === '贴底的一行字幕')?.drop, 'subtitle-band')
   eq('人声重叠比例已算出', typeof sign.speech, 'number')
 }
 
