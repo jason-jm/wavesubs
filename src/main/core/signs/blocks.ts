@@ -113,7 +113,15 @@ export function creditWindows(frames: OcrFrame[], fps: number): Array<[number, n
       start = -1
     }
   }
-  return windows
+  // 相隔不到 30 秒的两段并成一段：片尾名单是连续滚动的，中间几秒只出演员名（没有职位词）会把它切开，
+  // 缝里的名字就会被当成画面文字译出来
+  const merged: Array<[number, number]> = []
+  for (const w of windows) {
+    const last = merged[merged.length - 1]
+    if (last && w[0] - last[1] <= 30) last[1] = w[1]
+    else merged.push([...w] as [number, number])
+  }
+  return merged
 }
 
 interface Live extends SignBlock {

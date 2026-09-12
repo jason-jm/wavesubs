@@ -50,6 +50,15 @@ console.log('\n名单时段与烧录字幕带：')
   }
   const credits = creditWindows(frames, 1)
   eq('职位词密集的开头判为名单时段', credits.length === 1 && credits[0][0] === 0 && credits[0][1] >= 14, true)
+  {
+    // 片尾名单：两段职位词之间夹 10 秒只有演员名的帧，应并成一段而不是留出缝
+    const roll: OcrFrame[] = []
+    for (let i = 0; i < 20; i += 1) roll.push({ i, boxes: [box('監督 山田太郎', 0.3, 0.4, 0.4, 0.05)] })
+    for (let i = 20; i < 30; i += 1) roll.push({ i, boxes: [box('Sergei Mezentsev', 0.3, 0.4, 0.4, 0.05)] })
+    for (let i = 30; i < 50; i += 1) roll.push({ i, boxes: [box('音楽 田中一郎', 0.3, 0.4, 0.4, 0.05)] })
+    const w = creditWindows(roll, 1)
+    eq('名单中间只有演员名的一段不会把时段切开', w.length, 1)
+  }
   const regions = [{ startMs: 15000, endMs: 40000 }]
   const { blocks, band } = buildSignBlocks(frames, 1, regions)
   eq('底部居中、与人声重叠的带判为烧录字幕', band.length === 2 && band[0] >= 0.8, true)
