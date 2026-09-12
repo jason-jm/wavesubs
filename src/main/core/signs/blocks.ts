@@ -233,10 +233,12 @@ export function buildSignBlocks(
     }
   }
   if (bandShare < 0.2) band = []
+  // 带一旦判定，带内居中的块一律算烧录字幕。不再要求与人声重叠：枪战片里 Silero VAD 只认出 10% 的人声，
+  // 《硬核亨利》263 条英文烧录字幕就是靠这个条件漏进来的；带本身（≥20%，正常片 ≤8%）已经是足够强的证据
   if (band.length) {
     for (const b of blocks) {
       const cy = b.box.y + b.box.h / 2
-      if (!b.drop && cy >= band[0] - 0.02 && cy < band[1] + 0.02 && Math.abs(b.box.x + b.box.w / 2 - 0.5) < 0.15 && (b.speech ?? 1) > 0.3) {
+      if (!b.drop && cy >= band[0] - 0.02 && cy < band[1] + 0.02 && Math.abs(b.box.x + b.box.w / 2 - 0.5) < 0.15) {
         b.drop = 'subtitle-band'
       }
     }
