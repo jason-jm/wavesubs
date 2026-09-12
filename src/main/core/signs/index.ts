@@ -1,6 +1,6 @@
 export { extractFrames, ocrLanguagesFor, runVisionOcr } from './ocr'
 export { buildSignBlocks, creditWindows, groupLines, textSimilarity, trackBlocks } from './blocks'
-export { judgeSigns } from './judge'
+export { judgeSigns, leftoverScript } from './judge'
 export type { ChatFn, JudgeOptions } from './judge'
 export { layoutOf, signsToCues } from './layout'
 export type { OcrBox, OcrFrame, SignBlock, SignBlocksResult, SignJudgement } from './types'

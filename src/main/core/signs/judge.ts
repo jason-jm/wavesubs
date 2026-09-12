@@ -59,13 +59,18 @@ function parseJsonArray(s: string): Array<Record<string, unknown>> {
 }
 
 const str = (v: unknown): string => (typeof v === 'string' ? v : '')
-const KANA = /[\p{Script=Hiragana}\p{Script=Katakana}]/u
-const HANGUL = /\p{Script=Hangul}/u
-/** 译文里残留源语言文字（目标不是日语却有假名、不是韩语却有谚文）：算没翻 */
-function leftoverScript(tr: string, targetLanguageName: string): boolean {
+const norm = (s: string): string => s.normalize('NFKC').replace(/[\s　]+/g, '').toLowerCase()
+/**
+ * 译文里残留源语言文字：目标不是日语却有大量假名、不是韩语却有大量谚文 ⇒ 没翻。
+ * 按占比判而不是一见就判——「欢迎来到野クル！」这种带片假名专名的译文是对的，整句照抄的才是没翻。
+ */
+export function leftoverScript(tr: string, targetLanguageName: string): boolean {
   const t = targetLanguageName.toLowerCase()
-  if (!t.includes('japanese') && KANA.test(tr)) return true
-  if (!t.includes('korean') && HANGUL.test(tr)) return true
+  const letters = (tr.match(/\p{L}/gu) ?? []).length
+  if (letters === 0) return false
+  const count = (re: RegExp): number => (tr.match(re) ?? []).length
+  if (!t.includes('japanese') && count(/[\p{Script=Hiragana}\p{Script=Katakana}]/gu) / letters >= 0.4) return true
+  if (!t.includes('korean') && count(/\p{Script=Hangul}/gu) / letters >= 0.4) return true
   return false
 }
 
@@ -140,8 +145,8 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
       const fixedRaw = str(j?.fixed).trim()
       const fixed = fixedRaw && textSimilarity(fixedRaw, b.text) >= 0.4 ? fixedRaw : ''
       let tr = str(j?.tr).trim()
-      // 目标语言不是日/韩，译文里却还留着假名/谚文 ⇒ 没翻完，清掉让补译那一轮重来
-      if (tr && leftoverScript(tr, opts.targetLanguageName)) tr = ''
+      // 目标语言不是日/韩，译文里却还留着假名/谚文，或者把原文整个抄了进来 ⇒ 没翻，清掉让补译那一轮重来
+      if (tr && (leftoverScript(tr, opts.targetLanguageName) || (norm(b.text).length >= 4 && norm(tr).includes(norm(b.text))))) tr = ''
       const item: SignJudgement = j
         ? {
             id: b.id,
@@ -160,21 +165,26 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
     opts.onProgress?.(Math.round(((i + batch.length) / Math.max(1, kept.length)) * 90))
   }
 
-  // 补译：判为 sign 却没给译文的（含念读兜底的）
+  // 补译：判为 sign 却没给译文的（含念读兜底的、译文残留源语言被清掉的）
   const missing = judged.filter((j) => j.category === 'sign' && !j.tr.trim())
   if (missing.length > 0) {
     const byId = new Map(kept.map((b) => [b.id, b]))
-    const items = missing.map((j) => ({ id: j.id, text: j.fixed || byId.get(j.id)!.text, ctx: ctxOf(byId.get(j.id)!) }))
+    const items = missing.map((j) => ({ id: j.id, text: j.fixed || byId.get(j.id)!.text, dialogue_nearby: ctxOf(byId.get(j.id)!) }))
     try {
       const out = parseJsonArray(
         await opts.chat(
-          `把下面这些 ${opts.sourceLanguageName} 画面文字翻译成 ${opts.targetLanguageName}，忠实简洁，多行保留换行；ctx 是附近台词，供理解语境。只输出 JSON 数组，每项 {"id":1,"tr":""}。`,
+          `你是影视字幕翻译。把 JSON 里每一条的 text 从 ${opts.sourceLanguageName} 翻译成 ${opts.targetLanguageName}：忠实、简洁，多行保留换行，颜文字原样保留。dialogue_nearby 只是附近台词、供理解语境，不要翻译也不要输出它。只输出 JSON 数组，每项 {"id":1,"tr":"译文"}，tr 里只放译文，不要夹带原文。`,
           JSON.stringify(items)
         )
       )
       for (const o of out) {
         const j = judged.find((x) => x.id === Number(o.id))
-        if (j && !j.tr.trim()) j.tr = str(o.tr)
+        if (!j || j.tr.trim()) continue
+        const src = j.fixed || byId.get(j.id)!.text
+        const tr = str(o.tr).trim()
+        // 还是没翻（残留假名、或把原文/台词抄了进来）就宁可空着出原文，也不出垃圾
+        if (!tr || leftoverScript(tr, opts.targetLanguageName) || (norm(src).length >= 4 && norm(tr).includes(norm(src)))) continue
+        j.tr = tr
       }
     } catch {
       // 补译失败就让这些条留着原文出片，不中断任务

@@ -2,7 +2,7 @@
  * 画面文字模块自检：几何与统计规则（分组 / 跟踪 / 名单时段 / 烧录字幕带）、判别对齐锚、排版取舍、写出格式。
  * 全部用合成数据，不跑 OCR 也不跑模型；判别用假 chat 模拟 8B 的串行毛病。
  */
-import { buildSignBlocks, creditWindows, groupLines, judgeSigns, layoutOf, signsToCues, trackBlocks, textSimilarity } from '../src/main/core/signs'
+import { buildSignBlocks, creditWindows, groupLines, judgeSigns, layoutOf, leftoverScript, signsToCues, trackBlocks, textSimilarity } from '../src/main/core/signs'
 import type { OcrBox, OcrFrame, SignBlock } from '../src/main/core/signs'
 import { cuesToAss } from '../src/main/core/subtitle/ass'
 import { cuesToSrt } from '../src/main/core/subtitle/srt'
@@ -77,6 +77,11 @@ console.log('\n判别对齐锚与念读兜底：')
   eq('SOLO 判 noise', byId.get(2)?.category, 'noise')
   eq('念出来的画面文字即使模型判 noise 也改回 sign、重要度 3', [byId.get(4)?.category, byId.get(4)?.importance], ['sign', 3])
 }
+
+console.log('\n译文残留判定：')
+eq('整句照抄的日文算没翻', leftoverScript('リン 今週はどこ行ってんの', 'Simplified Chinese'), true)
+eq('带片假名专名的中文译文是对的', leftoverScript('欢迎来到野クル！', 'Simplified Chinese'), false)
+eq('目标是日语时不判', leftoverScript('ようこそ', 'Japanese'), false)
 
 console.log('\n排版与取舍：')
 {
