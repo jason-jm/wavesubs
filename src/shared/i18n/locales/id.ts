@@ -296,6 +296,7 @@ export const id: Dict = {
   'progress.extractSubtitle': 'Mengekstrak trek takarir',
   'progress.extractAudio': 'Mengekstrak trek audio',
   'progress.transcribing': 'Mengenali ucapan',
+  'progress.detectLanguage': "Mendeteksi bahasa…",
   'progress.translating': 'Menerjemahkan',
   'progress.writing': 'Menulis berkas takarir',
   'progress.done': 'Selesai',

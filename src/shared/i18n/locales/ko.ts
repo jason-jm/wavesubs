@@ -290,6 +290,7 @@ export const ko: Dict = {
   'progress.extractSubtitle': '자막 트랙 추출 중',
   'progress.extractAudio': '오디오 트랙 추출 중',
   'progress.transcribing': '음성 인식 중',
+  'progress.detectLanguage': "언어 감지 중…",
   'progress.translating': '번역 중',
   'progress.writing': '자막 파일 쓰는 중',
   'progress.done': '완료',

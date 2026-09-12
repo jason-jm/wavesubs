@@ -298,6 +298,7 @@ export const pl: Dict = {
   'progress.extractSubtitle': 'Wyodrębnianie ścieżki napisów',
   'progress.extractAudio': 'Wyodrębnianie ścieżki audio',
   'progress.transcribing': 'Rozpoznawanie mowy',
+  'progress.detectLanguage': "Wykrywanie języka…",
   'progress.translating': 'Tłumaczenie',
   'progress.writing': 'Zapis pliku napisów',
   'progress.done': 'Gotowe',

@@ -297,6 +297,7 @@ export const nl: Dict = {
   'progress.extractSubtitle': 'Ondertitelspoor uitpakken',
   'progress.extractAudio': 'Audiospoor uitpakken',
   'progress.transcribing': 'Spraak herkennen',
+  'progress.detectLanguage': "Taal wordt herkend…",
   'progress.translating': 'Vertalen',
   'progress.writing': 'Ondertitelbestand schrijven',
   'progress.done': 'Klaar',

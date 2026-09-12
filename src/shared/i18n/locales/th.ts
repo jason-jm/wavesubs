@@ -294,6 +294,7 @@ export const th: Dict = {
   'progress.extractSubtitle': 'กำลังดึงแทร็กคำบรรยาย',
   'progress.extractAudio': 'กำลังดึงแทร็กเสียง',
   'progress.transcribing': 'กำลังรู้จำเสียงพูด',
+  'progress.detectLanguage': "กำลังตรวจหาภาษา…",
   'progress.translating': 'กำลังแปล',
   'progress.writing': 'กำลังเขียนไฟล์คำบรรยาย',
   'progress.done': 'เสร็จแล้ว',

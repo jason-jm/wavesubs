@@ -297,6 +297,7 @@ export const ms: Dict = {
   'progress.extractSubtitle': 'Mengeluarkan trek sari kata',
   'progress.extractAudio': 'Mengeluarkan trek audio',
   'progress.transcribing': 'Mengecam pertuturan',
+  'progress.detectLanguage': "Mengesan bahasa…",
   'progress.translating': 'Menterjemah',
   'progress.writing': 'Menulis fail sari kata',
   'progress.done': 'Selesai',

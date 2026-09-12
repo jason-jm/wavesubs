@@ -294,6 +294,7 @@ export const he: Dict = {
   'progress.extractSubtitle': 'מחלץ את רצועת הכתוביות',
   'progress.extractAudio': 'מחלץ את רצועת האודיו',
   'progress.transcribing': 'מזהה דיבור',
+  'progress.detectLanguage': "מזהה שפה…",
   'progress.translating': 'מתרגם',
   'progress.writing': 'כותב את קובץ הכתוביות',
   'progress.done': 'הסתיים',

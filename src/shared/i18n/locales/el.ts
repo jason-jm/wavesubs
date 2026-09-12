@@ -297,6 +297,7 @@ export const el: Dict = {
   'progress.extractSubtitle': 'Εξαγωγή του κομματιού υποτίτλων',
   'progress.extractAudio': 'Εξαγωγή του κομματιού ήχου',
   'progress.transcribing': 'Αναγνώριση ομιλίας',
+  'progress.detectLanguage': "Ανίχνευση γλώσσας…",
   'progress.translating': 'Μετάφραση',
   'progress.writing': 'Εγγραφή του αρχείου υποτίτλων',
   'progress.done': 'Ολοκληρώθηκε',

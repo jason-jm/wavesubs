@@ -127,3 +127,92 @@ export async function transcribeWithWhisperCpp(
     await rm(workDir, { recursive: true, force: true })
   }
 }
+
+/**
+ * 语种采样窗口：在人声最密的地方取几段 20 秒（彼此隔开 ≥2 分钟），而不是只看开头 30 秒。
+ * whisper 自带的检测只看第一段——NHK 剧开头 56 秒是片头音乐，被判成英语后整集识别成英文胡话。
+ */
+export function pickDetectionWindows(
+  regions: Array<{ startMs: number; endMs: number }>,
+  durationSec: number,
+  opts: { windowSec?: number; maxWindows?: number; minGapSec?: number; minSpeechSec?: number } = {}
+): number[] {
+  const win = opts.windowSec ?? 20
+  const maxWindows = opts.maxWindows ?? 5
+  const minGap = opts.minGapSec ?? 120
+  const minSpeech = opts.minSpeechSec ?? 8
+  const scored: Array<{ start: number; speech: number }> = []
+  for (let start = 0; start + win <= durationSec; start += 10) {
+    let speech = 0
+    for (const r of regions) speech += Math.max(0, Math.min(r.endMs / 1000, start + win) - Math.max(r.startMs / 1000, start))
+    if (speech >= minSpeech) scored.push({ start, speech })
+  }
+  scored.sort((a, b) => b.speech - a.speech || a.start - b.start)
+  const picked: number[] = []
+  for (const c of scored) {
+    if (picked.length >= maxWindows) break
+    if (picked.every((p) => Math.abs(p - c.start) >= minGap)) picked.push(c.start)
+  }
+  return picked.sort((a, b) => a - b)
+}
+
+/** 在一段 WAV 上跑 whisper 的语种检测（-dl，只看开头 30 秒就退出），返回语种与概率 */
+async function detectOnSample(whisperCli: string, modelPath: string, wavPath: string, signal?: AbortSignal): Promise<{ language: string; p: number } | null> {
+  return new Promise((resolve) => {
+    const child = spawn(whisperCli, ['-m', modelPath, '-f', wavPath, '-dl', '-l', 'auto', '-t', '4'])
+    const onAbort = (): void => { child.kill() }
+    signal?.addEventListener('abort', onAbort, { once: true })
+    let out = ''
+    child.stderr.on('data', (c: Buffer) => { out += c.toString() })
+    child.stdout.resume()
+    child.on('error', () => resolve(null))
+    child.on('close', () => {
+      signal?.removeEventListener('abort', onAbort)
+      const m = /auto-detected language:\s*([a-z]{2,3})\s*\(p\s*=\s*([\d.]+)\)/.exec(out)
+      resolve(m ? { language: m[1], p: Number(m[2]) } : null)
+    })
+  })
+}
+
+/**
+ * 多点采样判语种：从人声密集处取几段 20 秒各自检测，按概率加权投票。
+ * 返回 undefined 表示没把握（没有足够人声、全部失败或票数太散），调用方退回 whisper 自己的检测。
+ */
+export async function detectLanguageBySampling(opts: {
+  whisperCli: string
+  ffmpeg: string
+  modelPath: string
+  wavPath: string
+  workDir: string
+  regions: Array<{ startMs: number; endMs: number }>
+  durationSec: number
+  signal?: AbortSignal
+}): Promise<{ language: string; votes: Record<string, number>; samples: number } | undefined> {
+  const starts = pickDetectionWindows(opts.regions, opts.durationSec)
+  if (starts.length === 0) return undefined
+  const results = await Promise.all(
+    starts.map(async (start, i) => {
+      const sample = join(opts.workDir, `langdet-${i}.wav`)
+      const ok = await new Promise<boolean>((resolve) => {
+        const child = spawn(opts.ffmpeg, ['-y', '-loglevel', 'error', '-ss', String(start), '-t', '20', '-i', opts.wavPath, '-c:a', 'pcm_s16le', sample])
+        child.on('error', () => resolve(false))
+        child.on('close', (code) => resolve(code === 0))
+      })
+      if (!ok) return null
+      return detectOnSample(opts.whisperCli, opts.modelPath, sample, opts.signal)
+    })
+  )
+  const votes: Record<string, number> = {}
+  let samples = 0
+  for (const r of results) {
+    if (!r) continue
+    samples += 1
+    votes[r.language] = (votes[r.language] ?? 0) + r.p
+  }
+  const ranked = Object.entries(votes).sort((a, b) => b[1] - a[1])
+  if (ranked.length === 0) return undefined
+  const [language, score] = ranked[0]
+  // 至少要么一段很确定（≥0.8），要么两段以上加起来过 1.0，否则不如让 whisper 自己判
+  if (score < 0.8) return undefined
+  return { language, votes, samples }
+}

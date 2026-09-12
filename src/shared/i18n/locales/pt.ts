@@ -296,6 +296,7 @@ export const pt: Dict = {
   'progress.extractSubtitle': 'Extraindo a faixa de legendas',
   'progress.extractAudio': 'Extraindo a faixa de áudio',
   'progress.transcribing': 'Transcrevendo a fala',
+  'progress.detectLanguage': "Detectando o idioma…",
   'progress.translating': 'Traduzindo',
   'progress.writing': 'Gravando o arquivo de legendas',
   'progress.done': 'Concluído',

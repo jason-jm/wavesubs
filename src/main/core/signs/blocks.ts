@@ -200,6 +200,15 @@ export function buildSignBlocks(
     else if (clean.length === 1 && !CJK.test(clean)) b.drop = 'single-char'
   }
 
+  // 台标/水印：同一段字在同一位置累计出现太久（≥ 2 分钟且 ≥ 全片 8%）——电视台 logo、频道水印、播放器 UI
+  const filmSec = Math.max(1, ...frames.map((f) => (f.i + 1) / fps))
+  const total = new Map<string, number>()
+  const keyOf = (b: SignBlock): string => `${norm(b.text)}@${Math.round((b.box.x + b.box.w / 2) * 20)},${Math.round((b.box.y + b.box.h / 2) * 20)}`
+  for (const b of blocks) total.set(keyOf(b), (total.get(keyOf(b)) ?? 0) + (b.endSec - b.startSec))
+  for (const b of blocks) {
+    if (!b.drop && (total.get(keyOf(b)) ?? 0) >= Math.max(120, 0.08 * filmSec)) b.drop = 'watermark'
+  }
+
   if (regions) {
     const rs = regions.map((r) => ({ s: r.startMs / 1000, e: r.endMs / 1000 }))
     for (const b of blocks) {

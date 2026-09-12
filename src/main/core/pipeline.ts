@@ -13,7 +13,7 @@ import type {
 } from '../../shared/types'
 import { detectSpeechRegions } from './asr/vad'
 import type { SpeechRegion } from './asr/vad'
-import { transcribeWithWhisperCpp } from './asr/whisperCpp'
+import { detectLanguageBySampling, transcribeWithWhisperCpp } from './asr/whisperCpp'
 import { extractAudio, probeMedia } from './media'
 import { cuesToAss } from './subtitle/ass'
 import { extractEmbeddedSubtitle, loadSubtitleFile } from './subtitle/import'
@@ -65,7 +65,12 @@ export interface JobOptions {
   /** 用户取消：各子进程被杀、翻译在批间停下，任务以 error.jobCancelled 结束 */
   signal?: AbortSignal
   /** 画面文字：随包 vision-ocr 的路径；需要 translate，源不能是字幕文件 */
-  signs?: { visionOcr: string; minImportance?: number }
+  signs?: {
+    visionOcr: string
+    minImportance?: number
+    /** 诊断回调：名单时段、烧录字幕带、块数——写进日志，用户反馈「漏了/多了」时第一眼看这个 */
+    onDiagnostics?: (info: { band: number[]; credits: Array<[number, number]>; blocks: number; kept: number; signs: number }) => void
+  }
 }
 
 export interface JobResult {
@@ -343,10 +348,29 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
             ? detectSpeechRegions(vadBinPath(), opts.vadModelPath, wavPath, opts.signal).catch(() => null)
             : Promise.resolve(null)
           const energyPromise = analyzeWavEnergy(wavPath).catch(() => null)
+          // 自动语种：别信 whisper 只看开头 30 秒的判断（片头音乐会判成英语，整集识别成英文胡话），
+          // 先等 VAD，在人声最密的几处各采 20 秒投票
+          let askedLanguage = opts.language
+          if (!askedLanguage) {
+            report('transcribe', 0, 'progress.detectLanguage')
+            const earlyRegions = await regionsPromise
+            if (earlyRegions && earlyRegions.length > 0) {
+              const detected = await detectLanguageBySampling({
+                whisperCli: whisperCliPath(), ffmpeg: ffmpegPath(), modelPath: opts.modelPath, wavPath, workDir,
+                regions: earlyRegions, durationSec: media.durationSec, signal: opts.signal
+              }).catch(() => undefined)
+              if (detected) {
+                askedLanguage = detected.language
+                resolveLanguage(detected.language)
+              }
+            }
+            if (opts.signal?.aborted) throw new LocalizedError('error.jobCancelled')
+            report('transcribe', 0, 'progress.transcribing')
+          }
           const asr = await transcribeWithWhisperCpp(whisperCliPath(), {
             audioPath: wavPath,
             modelPath: opts.modelPath,
-            language: opts.language,
+            language: askedLanguage,
             onProgress: (p) => report('transcribe', p, 'progress.transcribing'),
             onLanguage: (lang) => resolveLanguage(lang),
             signal: opts.signal
@@ -465,7 +489,7 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
         report('signs', 0, 'progress.signs')
         const frames = await ocrPromise
         if (opts.signal?.aborted) throw new LocalizedError('error.jobCancelled')
-        const { blocks } = buildSignBlocks(frames, SIGN_FPS, qcRegions)
+        const { blocks, band, credits } = buildSignBlocks(frames, SIGN_FPS, qcRegions)
         const provider = opts.translate.provider
         const judged = await judgeSigns(blocks, {
           chat: (system, user) => provider.chat(system, user, { signal: opts.signal }),
@@ -476,6 +500,7 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
           onProgress: (p) => report('signs', p, 'progress.signs')
         })
         signCues = signsToCues(blocks, judged, { minImportance: opts.signs?.minImportance, startIndex: cues.length + 1 })
+        opts.signs?.onDiagnostics?.({ band, credits, blocks: blocks.length, kept: blocks.filter((b) => !b.drop).length, signs: signCues.length })
         report('signs', 100)
       }
     }

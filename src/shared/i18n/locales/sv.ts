@@ -296,6 +296,7 @@ export const sv: Dict = {
   'progress.extractSubtitle': 'Extraherar undertextspåret',
   'progress.extractAudio': 'Extraherar ljudspåret',
   'progress.transcribing': 'Känner igen tal',
+  'progress.detectLanguage': "Identifierar språk…",
   'progress.translating': 'Översätter',
   'progress.writing': 'Skriver undertextfilen',
   'progress.done': 'Klart',

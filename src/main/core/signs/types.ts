@@ -26,7 +26,7 @@ export interface SignBlock {
   conf: number
   box: { x: number; y: number; w: number; h: number }
   /** 启发式丢弃原因；没有就是送模型判别的 */
-  drop?: 'no-letters' | 'credits' | 'low-conf' | 'tiny' | 'flash' | 'single-char' | 'subtitle-band'
+  drop?: 'no-letters' | 'credits' | 'low-conf' | 'tiny' | 'flash' | 'single-char' | 'subtitle-band' | 'watermark'
   /** 与人声区间重叠的时间占比 0–1 */
   speech?: number
 }

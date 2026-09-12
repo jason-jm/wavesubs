@@ -291,6 +291,7 @@ export const en: Dict = {
   'progress.extractSubtitle': 'Extracting subtitle track',
   'progress.extractAudio': 'Extracting audio track',
   'progress.transcribing': 'Transcribing speech',
+  'progress.detectLanguage': "Detecting language…",
   'progress.translating': 'Translating',
   'progress.writing': 'Writing subtitle file',
   'progress.done': 'Done',

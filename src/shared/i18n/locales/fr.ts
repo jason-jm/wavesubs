@@ -300,6 +300,7 @@ export const fr: Dict = {
   'progress.extractSubtitle': 'Extraction de la piste de sous-titres',
   'progress.extractAudio': 'Extraction de la piste audio',
   'progress.transcribing': 'Transcription de la parole',
+  'progress.detectLanguage': "Détection de la langue…",
   'progress.translating': 'Traduction en cours',
   'progress.writing': 'Écriture du fichier de sous-titres',
   'progress.done': 'Terminé',

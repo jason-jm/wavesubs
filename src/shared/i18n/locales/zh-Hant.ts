@@ -289,6 +289,7 @@ export const zhHant: Dict = {
   'progress.extractSubtitle': '擷取字幕軌',
   'progress.extractAudio': '擷取音軌',
   'progress.transcribing': '語音辨識中',
+  'progress.detectLanguage': "正在判斷語種…",
   'progress.translating': '翻譯中',
   'progress.writing': '寫出字幕檔',
   'progress.done': '完成',

@@ -296,6 +296,7 @@ export const da: Dict = {
   'progress.extractSubtitle': 'Udtrækker undertekstsporet',
   'progress.extractAudio': 'Udtrækker lydsporet',
   'progress.transcribing': 'Genkender tale',
+  'progress.detectLanguage': "Registrerer sprog…",
   'progress.translating': 'Oversætter',
   'progress.writing': 'Skriver undertekstarkivet',
   'progress.done': 'Færdig',

@@ -7,6 +7,7 @@ import type { OcrBox, OcrFrame, SignBlock } from '../src/main/core/signs'
 import { cuesToAss } from '../src/main/core/subtitle/ass'
 import { cuesToSrt } from '../src/main/core/subtitle/srt'
 import type { Cue } from '../src/main/core/subtitle/types'
+import { pickDetectionWindows } from '../src/main/core/asr/whisperCpp'
 
 let bad = 0
 const eq = (name: string, got: unknown, want: unknown): void => {
@@ -56,6 +57,32 @@ console.log('\n名单时段与烧录字幕带：')
   const sign = blocks.find((b) => b.text === '業務管理室')!
   eq('中部的招牌保留送判别', sign.drop, undefined)
   eq('人声重叠比例已算出', typeof sign.speech, 'number')
+}
+
+console.log('\n语种采样窗口：')
+{
+  // 开头 60 秒是片头音乐（无人声），之后每分钟有 40 秒对白
+  const regions: Array<{ startMs: number; endMs: number }> = []
+  for (let m = 1; m < 60; m += 1) regions.push({ startMs: m * 60000, endMs: m * 60000 + 40000 })
+  const starts = pickDetectionWindows(regions, 3600)
+  eq('不会选在片头无人声段', starts.every((s) => s >= 60), true)
+  eq('最多 5 个窗口且彼此隔开 ≥2 分钟', starts.length === 5 && starts.every((s, i) => i === 0 || s - starts[i - 1] >= 120), true)
+  eq('没有人声就没有窗口', pickDetectionWindows([], 3600).length, 0)
+}
+
+console.log('\n台标/水印：')
+{
+  // 30 分钟的片，右上角 WOWOW 一直在（断断续续 20 分钟），中间偶尔有招牌
+  const frames: OcrFrame[] = []
+  for (let i = 0; i < 1800; i += 1) {
+    const boxes: OcrBox[] = []
+    if (i % 3 !== 2) boxes.push(box('WOWOW', 0.9, 0.03, 0.06, 0.03))
+    if (i >= 600 && i < 605) boxes.push(box('営業中', 0.4, 0.4, 0.2, 0.05))
+    frames.push({ i, boxes })
+  }
+  const { blocks } = buildSignBlocks(frames, 1, null)
+  eq('长期停留同一位置的台标全部剔掉', blocks.filter((b) => b.text === 'WOWOW' && b.drop !== 'watermark').length, 0)
+  eq('短暂出现的招牌不受影响', blocks.find((b) => b.text === '営業中')?.drop, undefined)
 }
 
 console.log('\n判别对齐锚与念读兜底：')

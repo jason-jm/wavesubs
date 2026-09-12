@@ -295,6 +295,7 @@ export const hi: Dict = {
   'progress.extractSubtitle': 'उपशीर्षक ट्रैक निकाला जा रहा है',
   'progress.extractAudio': 'ऑडियो ट्रैक निकाला जा रहा है',
   'progress.transcribing': 'बोली पहचानी जा रही है',
+  'progress.detectLanguage': "भाषा पहचानी जा रही है…",
   'progress.translating': 'अनुवाद हो रहा है',
   'progress.writing': 'उपशीर्षक फ़ाइल लिखी जा रही है',
   'progress.done': 'हो गया',

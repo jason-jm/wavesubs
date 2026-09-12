@@ -296,6 +296,7 @@ export const vi: Dict = {
   'progress.extractSubtitle': 'Đang trích rãnh phụ đề',
   'progress.extractAudio': 'Đang trích rãnh âm thanh',
   'progress.transcribing': 'Đang nhận dạng giọng nói',
+  'progress.detectLanguage': "Đang nhận diện ngôn ngữ…",
   'progress.translating': 'Đang dịch',
   'progress.writing': 'Đang ghi tệp phụ đề',
   'progress.done': 'Xong',

@@ -296,6 +296,7 @@ export const cs: Dict = {
   'progress.extractSubtitle': 'Extrakce stopy s titulky',
   'progress.extractAudio': 'Extrakce zvukové stopy',
   'progress.transcribing': 'Rozpoznávání řeči',
+  'progress.detectLanguage': "Zjišťování jazyka…",
   'progress.translating': 'Překládání',
   'progress.writing': 'Zápis souboru s titulky',
   'progress.done': 'Hotovo',

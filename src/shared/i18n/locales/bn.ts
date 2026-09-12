@@ -295,6 +295,7 @@ export const bn: Dict = {
   'progress.extractSubtitle': 'সাবটাইটেল ট্র্যাক বের করা হচ্ছে',
   'progress.extractAudio': 'অডিও ট্র্যাক বের করা হচ্ছে',
   'progress.transcribing': 'কথা শনাক্ত করা হচ্ছে',
+  'progress.detectLanguage': "ভাষা শনাক্ত করা হচ্ছে…",
   'progress.translating': 'অনুবাদ চলছে',
   'progress.writing': 'সাবটাইটেল ফাইল লেখা হচ্ছে',
   'progress.done': 'হয়ে গেছে',

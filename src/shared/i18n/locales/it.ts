@@ -297,6 +297,7 @@ export const it: Dict = {
   'progress.extractSubtitle': 'Estrazione della traccia di sottotitoli',
   'progress.extractAudio': 'Estrazione della traccia audio',
   'progress.transcribing': 'Trascrizione del parlato',
+  'progress.detectLanguage': "Rilevamento della lingua…",
   'progress.translating': 'Traduzione in corso',
   'progress.writing': 'Scrittura del file di sottotitoli',
   'progress.done': 'Fatto',

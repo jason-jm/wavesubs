@@ -294,6 +294,7 @@ export const ar: Dict = {
   'progress.extractSubtitle': 'جارٍ استخراج مسار الترجمة',
   'progress.extractAudio': 'جارٍ استخراج المسار الصوتي',
   'progress.transcribing': 'جارٍ التعرف على الكلام',
+  'progress.detectLanguage': "جارٍ تحديد اللغة…",
   'progress.translating': 'جارٍ الترجمة',
   'progress.writing': 'جارٍ كتابة ملف الترجمة',
   'progress.done': 'تم',

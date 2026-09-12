@@ -296,6 +296,7 @@ export const ru: Dict = {
   'progress.extractSubtitle': 'Извлечение дорожки субтитров',
   'progress.extractAudio': 'Извлечение аудиодорожки',
   'progress.transcribing': 'Распознавание речи',
+  'progress.detectLanguage': "Определение языка…",
   'progress.translating': 'Перевод',
   'progress.writing': 'Запись файла субтитров',
   'progress.done': 'Готово',

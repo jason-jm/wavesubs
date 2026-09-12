@@ -296,6 +296,7 @@ export const hu: Dict = {
   'progress.extractSubtitle': 'Feliratsáv kinyerése',
   'progress.extractAudio': 'Hangsáv kinyerése',
   'progress.transcribing': 'Beszéd felismerése',
+  'progress.detectLanguage': "Nyelv felismerése…",
   'progress.translating': 'Fordítás',
   'progress.writing': 'Feliratfájl írása',
   'progress.done': 'Kész',

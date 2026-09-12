@@ -42,7 +42,15 @@ export function signsToCues(blocks: SignBlock[], judged: SignJudgement[], opts: 
     const swallowed = kept.some((o) => o.startSec < b.endSec && b.startSec < o.endSec && nb.length >= 2 && norm(o.text).includes(nb))
     if (!swallowed) kept.push(b)
   }
-  const ranked = kept.sort((a, b) => (byId.get(b.id)!.importance - byId.get(a.id)!.importance) || (b.box.h - a.box.h))
+  // 空间上被同时出现的更大块包住的小块也丢掉：一屏手机界面里的标题/发件人是整块邮件的一部分，盖字时会被一起盖住
+  const area = (b: SignBlock): number => b.box.w * b.box.h
+  const inside = (small: SignBlock, big: SignBlock): boolean => {
+    const ix = Math.max(0, Math.min(small.box.x + small.box.w, big.box.x + big.box.w) - Math.max(small.box.x, big.box.x))
+    const iy = Math.max(0, Math.min(small.box.y + small.box.h, big.box.y + big.box.h) - Math.max(small.box.y, big.box.y))
+    return area(small) > 0 && (ix * iy) / area(small) >= 0.8 && area(big) >= 2 * area(small)
+  }
+  const spatial = kept.filter((b) => !kept.some((o) => o !== b && o.startSec < b.endSec && b.startSec < o.endSec && inside(b, o)))
+  const ranked = spatial.sort((a, b) => (byId.get(b.id)!.importance - byId.get(a.id)!.importance) || (b.box.h - a.box.h))
   const accepted: SignBlock[] = []
   for (const b of ranked) {
     const overlapping = accepted.filter((o) => o.startSec < b.endSec && b.startSec < o.endSec)

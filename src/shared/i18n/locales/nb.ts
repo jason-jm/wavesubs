@@ -296,6 +296,7 @@ export const nb: Dict = {
   'progress.extractSubtitle': 'Henter ut undertekstsporet',
   'progress.extractAudio': 'Henter ut lydsporet',
   'progress.transcribing': 'Gjenkjenner tale',
+  'progress.detectLanguage': "Gjenkjenner språk…",
   'progress.translating': 'Oversetter',
   'progress.writing': 'Skriver undertekstfilen',
   'progress.done': 'Ferdig',

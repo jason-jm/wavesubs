@@ -295,6 +295,7 @@ export const tr: Dict = {
   'progress.extractSubtitle': 'Altyazı izi çıkarılıyor',
   'progress.extractAudio': 'Ses izi çıkarılıyor',
   'progress.transcribing': 'Konuşma tanınıyor',
+  'progress.detectLanguage': "Dil algılanıyor…",
   'progress.translating': 'Çevriliyor',
   'progress.writing': 'Altyazı dosyası yazılıyor',
   'progress.done': 'Bitti',

@@ -296,6 +296,7 @@ export const uk: Dict = {
   'progress.extractSubtitle': 'Видобування доріжки субтитрів',
   'progress.extractAudio': 'Видобування аудіодоріжки',
   'progress.transcribing': 'Розпізнавання мовлення',
+  'progress.detectLanguage': "Визначення мови…",
   'progress.translating': 'Переклад',
   'progress.writing': 'Запис файлу субтитрів',
   'progress.done': 'Готово',

@@ -291,6 +291,7 @@ export const ja: Dict = {
   'progress.extractSubtitle': '字幕トラックを抽出中',
   'progress.extractAudio': '音声トラックを抽出中',
   'progress.transcribing': '音声を認識中',
+  'progress.detectLanguage': "言語を判定中…",
   'progress.translating': '翻訳中',
   'progress.writing': '字幕ファイルを書き出し中',
   'progress.done': '完了',

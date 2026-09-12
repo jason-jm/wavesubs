@@ -297,6 +297,7 @@ export const ro: Dict = {
   'progress.extractSubtitle': 'Se extrage pista de subtitrare',
   'progress.extractAudio': 'Se extrage pista audio',
   'progress.transcribing': 'Se recunoaște vorbirea',
+  'progress.detectLanguage': "Se detectează limba…",
   'progress.translating': 'Se traduce',
   'progress.writing': 'Se scrie fișierul de subtitrare',
   'progress.done': 'Gata',

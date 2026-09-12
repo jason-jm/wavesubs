@@ -295,6 +295,7 @@ export const fa: Dict = {
   'progress.extractSubtitle': 'در حال استخراج باند زیرنویس',
   'progress.extractAudio': 'در حال استخراج باند صوتی',
   'progress.transcribing': 'در حال تشخیص گفتار',
+  'progress.detectLanguage': "در حال تشخیص زبان…",
   'progress.translating': 'در حال ترجمه',
   'progress.writing': 'در حال نوشتن فایل زیرنویس',
   'progress.done': 'انجام شد',

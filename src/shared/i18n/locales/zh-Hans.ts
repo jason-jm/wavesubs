@@ -305,6 +305,7 @@ export const zhHans = {
   'progress.extractSubtitle': '抽取字幕轨',
   'progress.extractAudio': '抽取音轨',
   'progress.transcribing': '语音识别中',
+  'progress.detectLanguage': "正在判断语种…",
   'progress.translating': '翻译中',
   'progress.writing': '写出字幕文件',
   'progress.done': '完成',

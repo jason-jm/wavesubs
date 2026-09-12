@@ -59,7 +59,7 @@ function signDialogue(cue: Cue, text: string): string {
     fs = Math.min(fs, Math.max(24, Math.floor((pos.w * PLAY_W * 1.1) / longest)))
     return `Dialogue: 1,${formatAssTime(cue.startMs)},${formatAssTime(cue.endMs)},SignBox,,0,0,0,,{\\an5\\pos(${cx},${Math.round(cy * PLAY_H)})\\fs${fs}}${text}`
   }
-  const fs = clamp(Math.round(lineH * 0.9), 28, 56)
+  const fs = clamp(Math.round(lineH * 0.9), 28, 48)
   const tag =
     layout === 'top'
       ? `\\an8\\pos(${cx},${Math.round(PLAY_H * 0.04)})`

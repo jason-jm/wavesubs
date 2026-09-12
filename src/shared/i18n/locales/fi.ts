@@ -296,6 +296,7 @@ export const fi: Dict = {
   'progress.extractSubtitle': 'Puretaan tekstitysraitaa',
   'progress.extractAudio': 'Puretaan ääniraitaa',
   'progress.transcribing': 'Tunnistetaan puhetta',
+  'progress.detectLanguage': "Tunnistetaan kieltä…",
   'progress.translating': 'Käännetään',
   'progress.writing': 'Kirjoitetaan tekstitystiedostoa',
   'progress.done': 'Valmis',
