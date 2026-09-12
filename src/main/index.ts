@@ -509,6 +509,8 @@ function registerIpc(): void {
         kind: c.kind,
         pos: c.pos,
         layout: c.layout,
+        anchor: c.anchor,
+        fontSize: c.fontSize,
         importance: c.importance
       })),
       hasTranslation: Boolean(rec.translation),
@@ -536,7 +538,7 @@ function registerIpc(): void {
         text: c.text,
         ...(c.translation ? { translation: c.translation } : {}),
         ...(c.srcEdited ? { srcEdited: true } : {}),
-        ...(c.kind === 'sign' ? { kind: 'sign' as const, pos: c.pos, layout: c.layout, importance: c.importance } : {})
+        ...(c.kind === 'sign' ? { kind: 'sign' as const, pos: c.pos, layout: c.layout, anchor: c.anchor, fontSize: c.fontSize, importance: c.importance } : {})
       }))
       rec.edited = true
       // 编辑之后质检结论会过期（改了时长/文本），就地重算保持诚实

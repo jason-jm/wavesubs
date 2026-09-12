@@ -499,7 +499,7 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
           signal: opts.signal,
           onProgress: (p) => report('signs', p, 'progress.signs')
         })
-        signCues = signsToCues(blocks, judged, { minImportance: opts.signs?.minImportance, startIndex: cues.length + 1 })
+        signCues = signsToCues(blocks, judged, { minImportance: opts.signs?.minImportance, startIndex: cues.length + 1, speech: cues })
         opts.signs?.onDiagnostics?.({ band, credits, blocks: blocks.length, kept: blocks.filter((b) => !b.drop).length, signs: signCues.length })
         report('signs', 100)
       }

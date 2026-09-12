@@ -1400,6 +1400,8 @@ textarea {
  */
 .editor-preview {
   position: relative;
+  /* 画面文字按 cqh 定字号：预览缩放时译文跟着缩，和播放器里看到的比例一致 */
+  container-type: size;
   display: grid;
   place-items: center;
   height: 240px;
@@ -1456,9 +1458,8 @@ textarea {
 /* 画面文字：按识别框的位置贴在预览画面上（盖字的带半透明底） */
 .editor-sign-overlay {
   position: absolute;
-  max-width: 70%;
+  max-width: 80%;
   padding: 1px 4px;
-  font-size: 13px;
   line-height: 1.3;
   color: #fff;
   text-align: center;

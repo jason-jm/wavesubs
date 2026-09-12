@@ -15,6 +15,10 @@ export interface Cue {
   pos?: { x: number; y: number; w: number; h: number }
   /** 画面文字的排法：盖在原文上 / 贴原文正下方 / 放到顶部 */
   layout?: SignLayout
+  /** 译文中心点（归一化，左上角原点）。排版时一次算好，写 ASS 与预览都用它 */
+  anchor?: { x: number; y: number }
+  /** 译文字号，按 1080p 计 */
+  fontSize?: number
   /** 画面文字重要度 1–3 */
   importance?: number
 }

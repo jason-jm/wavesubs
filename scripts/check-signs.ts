@@ -2,8 +2,8 @@
  * 画面文字模块自检：几何与统计规则（分组 / 跟踪 / 名单时段 / 烧录字幕带）、判别对齐锚、排版取舍、写出格式。
  * 全部用合成数据，不跑 OCR 也不跑模型；判别用假 chat 模拟 8B 的串行毛病。
  */
-import { buildSignBlocks, creditWindows, groupLines, judgeSigns, layoutOf, leftoverScript, signsToCues, trackBlocks, textSimilarity } from '../src/main/core/signs'
-import type { OcrBox, OcrFrame, SignBlock } from '../src/main/core/signs'
+import { buildSignBlocks, creditWindows, dialogueLinesAt, dialogueSafeBottom, groupLines, judgeSigns, leftoverScript, measureText, signsToCues, trackBlocks, textSimilarity } from '../src/main/core/signs'
+import type { OcrBox, OcrFrame, SignBlock, SignJudgement } from '../src/main/core/signs'
 import { cuesToAss } from '../src/main/core/subtitle/ass'
 import { cuesToSrt } from '../src/main/core/subtitle/srt'
 import type { Cue } from '../src/main/core/subtitle/types'
@@ -126,29 +126,81 @@ eq('目标是日语时不判', leftoverScript('ようこそ', 'Japanese'), false
 
 console.log('\n排版与取舍：')
 {
-  const mk = (id: number, text: string, y: number, h: number, start = 0, end = 5): SignBlock => ({ id, text, startSec: start, endSec: end, frames: 5, conf: 0.9, box: { x: 0.3, y, w: 0.3, h } })
-  eq('多行盖字', layoutOf(mk(1, 'a\nb', 0.3, 0.1), 'x'), 'box')
-  eq('底部单行放顶部', layoutOf(mk(1, 'a', 0.85, 0.04), 'x'), 'top')
-  eq('中部单行贴下方', layoutOf(mk(1, 'a', 0.3, 0.04), 'x'), 'below')
-  const blocks = [mk(1, 'A', 0.1, 0.04), mk(2, 'B', 0.2, 0.04), mk(3, 'C', 0.3, 0.04), mk(4, 'D', 0.4, 0.08), mk(5, 'E', 0.5, 0.04, 10, 12)]
-  const judged = [1, 2, 3, 4, 5].map((id) => ({ id, category: 'sign' as const, importance: id === 4 ? 3 : id === 5 ? 1 : 2, fixed: '', tr: `译${id}` }))
-  const cues = signsToCues(blocks, judged, { startIndex: 100 })
-  eq('同屏最多 3 条，重要度高的优先（D 进，A/B/C 里挤掉一条）', cues.filter((c) => c.startMs === 0).length, 3)
-  eq('重要度 1 的默认不出', cues.some((c) => c.text === 'E'), false)
-  eq('index 从指定值接续、带 kind/pos/layout', [cues[0].index, cues[0].kind, typeof cues[0].pos?.x, cues[0].layout], [100, 'sign', 'number', 'below'])
+  function mk(id: number, text: string, y: number, h: number, start = 0, end = 5, w = 0.3): SignBlock {
+    return { id, text, startSec: start, endSec: end, frames: 5, conf: 0.9, box: { x: 0.35, y, w, h } }
+  }
+  function sign(id: number, tr: string, importance = 2): SignJudgement {
+    return { id, category: 'sign', importance, fixed: '', tr }
+  }
+
+  // 单行小招牌：贴在原文正下方
+  {
+    const cues = signsToCues([mk(1, '営業中', 0.3, 0.04)], [sign(1, '营业中')])
+    eq('单行贴下方', [cues[0].layout, cues[0].anchor!.y > 0.34 && cues[0].anchor!.y < 0.42], ['below', true])
+  }
+  // 多行便签：盖在原文上
+  {
+    const cues = signsToCues([mk(1, 'ルール\n守ろう', 0.3, 0.12)], [sign(1, '规则\n要遵守')])
+    eq('多行整块盖字', cues[0].layout, 'box')
+  }
+  // 底部的招牌 + 同时有两行对白：必须避开对白占用的高度
+  {
+    const speech = [{ startMs: 0, endMs: 5000, text: '', translation: '这是一句相当长的对白，长到在一行里放不下，必须折成两行才显示得完的那种程度' }]
+    const cues = signsToCues([mk(1, 'あちら', 0.86, 0.05)], [sign(1, '在那边')], { speech })
+    const safe = dialogueSafeBottom(dialogueLinesAt(speech, 0, 5000))
+    const bottom = cues[0].anchor!.y + measureText('在那边', cues[0].fontSize!).h / 2
+    eq('对白占两行', dialogueLinesAt(speech, 0, 5000), 2)
+    eq('底部的画面文字挪开、不进对白区', [cues[0].layout, bottom <= safe + 1e-6], ['top', true])
+  }
+  // 同样位置、同一时刻没有对白：就地贴下方即可，不必挪走
+  {
+    const cues = signsToCues([mk(1, 'あちら', 0.78, 0.05)], [sign(1, '在那边')])
+    eq('没有对白时下方还放得下就不挪', cues[0].layout, 'below')
+  }
+  // 原文框窄、译文长：缩字号而不是把底框撑到旁边
+  {
+    const cues = signsToCues([mk(1, '和', 0.3, 0.16, 0, 5, 0.06)], [sign(1, '这是一句很长很长的译文占满了整行')])
+    const size = measureText(cues[0].translation!, cues[0].fontSize!)
+    eq('底框不超过原文框的 1.25 倍宽（或到下限字号为止）', size.w <= Math.max(0.06 * 1.25, 0.18) + 1e-6 || cues[0].fontSize === 22, true)
+  }
+  // 同屏多条：不许互相叠
+  {
+    const blocks = [mk(1, 'A', 0.80, 0.05), mk(2, 'B', 0.83, 0.05), mk(3, 'C', 0.86, 0.05)]
+    const judged = [sign(1, '甲', 3), sign(2, '乙', 3), sign(3, '丙', 3)]
+    const speech = [{ startMs: 0, endMs: 5000, text: '', translation: '一句对白' }]
+    const cues = signsToCues(blocks, judged, { speech })
+    const rects = cues.map((c) => {
+      const m = measureText(c.translation!, c.fontSize!)
+      return { x: c.anchor!.x - m.w / 2, y: c.anchor!.y - m.h / 2, w: m.w, h: m.h }
+    })
+    const hit = rects.some((a, i) => rects.some((b, k) => k > i && a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h))
+    eq('同屏三条互不重叠', hit, false)
+    const safe = dialogueSafeBottom(1)
+    eq('三条都不进对白区', rects.every((r) => r.y + r.h <= safe + 1e-6), true)
+  }
+  // 取舍仍然生效
+  {
+    const blocks = [mk(1, 'A', 0.1, 0.04), mk(2, 'B', 0.2, 0.04), mk(3, 'C', 0.3, 0.04), mk(4, 'D', 0.4, 0.08), mk(5, 'E', 0.5, 0.04, 10, 12)]
+    const judged = [sign(1, '译1'), sign(2, '译2'), sign(3, '译3'), sign(4, '译4', 3), sign(5, '译5', 1)]
+    const cues = signsToCues(blocks, judged, { startIndex: 100 })
+    eq('同屏最多 3 条', cues.filter((c) => c.startMs === 0).length, 3)
+    eq('重要度 1 的默认不出', cues.some((c) => c.text === 'E'), false)
+    eq('index 从指定值接续、带 kind/pos/anchor/fontSize', [cues[0].index, cues[0].kind, typeof cues[0].anchor?.x, typeof cues[0].fontSize], [100, 'sign', 'number', 'number'])
+  }
 }
 
 console.log('\n写出：')
 {
   const cues: Cue[] = [
     { index: 1, startMs: 5000, endMs: 7000, text: 'こんにちは', translation: '你好' },
-    { index: 2, startMs: 1000, endMs: 3000, text: '営業中', translation: '营业中', kind: 'sign', pos: { x: 0.6, y: 0.3, w: 0.2, h: 0.05 }, layout: 'below', importance: 2 },
-    { index: 3, startMs: 2000, endMs: 4000, text: 'ルール\n守ろう', translation: '规则\n要遵守', kind: 'sign', pos: { x: 0.1, y: 0.2, w: 0.3, h: 0.1 }, layout: 'box', importance: 3 }
+    { index: 2, startMs: 1000, endMs: 3000, text: '営業中', translation: '营业中', kind: 'sign', pos: { x: 0.6, y: 0.3, w: 0.2, h: 0.05 }, layout: 'below', anchor: { x: 0.7, y: 0.38 }, fontSize: 40, importance: 2 },
+    { index: 3, startMs: 2000, endMs: 4000, text: 'ルール\n守ろう', translation: '规则\n要遵守', kind: 'sign', pos: { x: 0.1, y: 0.2, w: 0.3, h: 0.1 }, layout: 'box', anchor: { x: 0.25, y: 0.25 }, fontSize: 44, importance: 3 }
   ]
   const ass = cuesToAss(cues, 'translated')
   eq('ASS 有 Sign / SignBox 两个样式', [ass.includes('Style: Sign,'), ass.includes('Style: SignBox,')], [true, true])
   eq('画面文字按时间排在对白前面、用 \\pos 定位', ass.indexOf('营业中') < ass.indexOf('你好') && /\\pos\(\d+,\d+\)/.test(ass), true)
   eq('盖字用 SignBox、多行换成 \\N', ass.includes('SignBox,,0,0,0,,{\\an5') && ass.includes('规则\\N要遵守'), true)
+  eq('用排好的 anchor/fontSize 定位', ass.includes('\\pos(1344,410)\\fs40') && ass.includes('\\pos(480,270)\\fs44'), true)
   const srt = cuesToSrt(cues, (c) => c.translation ?? c.text)
   eq('SRT 画面文字放顶部（{\\an8}），并按时间重新编号', srt.startsWith('1\n00:00:01,000 --> 00:00:03,000\n{\\an8}营业中'), true)
   const original = cuesToAss(cues, 'original')

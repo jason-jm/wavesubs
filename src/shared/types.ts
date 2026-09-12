@@ -158,6 +158,8 @@ export interface RecordView {
     kind?: 'sign'
     pos?: { x: number; y: number; w: number; h: number }
     layout?: 'box' | 'below' | 'top'
+    anchor?: { x: number; y: number }
+    fontSize?: number
     importance?: number
   }>
   /** 有译文元数据 = 这条记录跑过翻译，编辑器据此决定显不显示译文列 */

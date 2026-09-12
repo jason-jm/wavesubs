@@ -1,6 +1,7 @@
 import type { ExportContent } from '../../../shared/types'
 import type { Cue } from './types'
 import { orderForOutput } from './srt'
+import { fallbackPlacement } from '../signs/layout'
 
 function formatAssTime(ms: number): string {
   const clamped = Math.max(0, Math.round(ms))
@@ -39,32 +40,18 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
 const PLAY_W = 1920
 const PLAY_H = 1080
-const clamp = (n: number, lo: number, hi: number): number => Math.max(lo, Math.min(hi, n))
 
 /**
- * 画面文字的定位与字号。多行/大块盖在原文上（不透明底框，字号按原文行高，宽度超框再缩），
- * 单行贴在原文正下方，底部的放到顶部把底部留给对白。
+ * 画面文字一条。位置与字号在 core/signs/layout.ts 里排好存在 cue 上，这里只负责写出来；
+ * 老记录没有这两个字段时按原规则兜一个。
  */
 function signDialogue(cue: Cue, text: string): string {
-  const pos = cue.pos ?? { x: 0.1, y: 0.05, w: 0.8, h: 0.05 }
-  const srcLines = cue.text.split('\n').length
-  const lineH = (pos.h * PLAY_H) / srcLines
-  const cx = Math.round((pos.x + pos.w / 2) * PLAY_W)
-  const cy = pos.y + pos.h / 2
-  const outLines = text.split('\\N')
-  const layout = cue.layout ?? 'below'
-  if (layout === 'box') {
-    let fs = clamp(Math.round(lineH * 0.85), 24, 64)
-    const longest = Math.max(1, ...outLines.map((l) => l.length))
-    fs = Math.min(fs, Math.max(24, Math.floor((pos.w * PLAY_W * 1.1) / longest)))
-    return `Dialogue: 1,${formatAssTime(cue.startMs)},${formatAssTime(cue.endMs)},SignBox,,0,0,0,,{\\an5\\pos(${cx},${Math.round(cy * PLAY_H)})\\fs${fs}}${text}`
-  }
-  const fs = clamp(Math.round(lineH * 0.9), 28, 48)
-  const tag =
-    layout === 'top'
-      ? `\\an8\\pos(${cx},${Math.round(PLAY_H * 0.04)})`
-      : `\\an5\\pos(${cx},${Math.min(Math.round(PLAY_H * 0.95), Math.round((pos.y + pos.h) * PLAY_H + fs * 0.7 * outLines.length))})`
-  return `Dialogue: 1,${formatAssTime(cue.startMs)},${formatAssTime(cue.endMs)},Sign,,0,0,0,,{${tag}\\fs${fs}}${text}`
+  const anchor = cue.anchor ?? fallbackPlacement(cue).anchor
+  const fs = cue.fontSize ?? fallbackPlacement(cue).fontSize
+  const style = (cue.layout ?? 'below') === 'box' ? 'SignBox' : 'Sign'
+  const x = Math.round(anchor.x * PLAY_W)
+  const y = Math.round(anchor.y * PLAY_H)
+  return `Dialogue: 1,${formatAssTime(cue.startMs)},${formatAssTime(cue.endMs)},${style},,0,0,0,,{\\an5\\pos(${x},${y})\\fs${fs}}${text}`
 }
 
 export function cuesToAss(cues: Cue[], content: ExportContent): string {

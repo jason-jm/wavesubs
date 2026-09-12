@@ -355,17 +355,17 @@ export function EditorView(props: Props): React.JSX.Element {
             </div>
           )}
           {overlaySigns.map((s, k) => {
+            // 位置与字号是转换时排好的（core/signs/layout.ts），这里照着画，和导出的字幕一致
             const pos = s.pos ?? { x: 0.1, y: 0.05, w: 0.8, h: 0.05 }
-            const layout = s.layout ?? 'below'
-            const cx = `${(pos.x + pos.w / 2) * 100}%`
-            const style =
-              layout === 'top'
-                ? { left: cx, top: '4%', transform: 'translate(-50%, 0)' }
-                : layout === 'box'
-                  ? { left: cx, top: `${(pos.y + pos.h / 2) * 100}%`, transform: 'translate(-50%, -50%)' }
-                  : { left: cx, top: `${(pos.y + pos.h) * 100}%`, transform: 'translate(-50%, 0)' }
+            const anchor = s.anchor ?? { x: pos.x + pos.w / 2, y: pos.y + pos.h + 0.03 }
+            const style = {
+              left: `${anchor.x * 100}%`,
+              top: `${anchor.y * 100}%`,
+              transform: 'translate(-50%, -50%)',
+              fontSize: `${((s.fontSize ?? 40) / 1080) * 100}cqh`
+            }
             return (
-              <div key={k} className={layout === 'box' ? 'editor-sign-overlay editor-sign-box' : 'editor-sign-overlay'} style={style}>
+              <div key={k} className={s.layout === 'box' ? 'editor-sign-overlay editor-sign-box' : 'editor-sign-overlay'} style={style}>
                 {s.translation || s.text}
               </div>
             )
