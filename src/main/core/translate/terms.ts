@@ -156,7 +156,11 @@ export function unifyTerms(cues: Cue[]): Fix[] {
         if (partOfCommonWord(tr, s, freq3)) continue
         variant = s
       }
-      if (variant) pending.push({ cue: c, variant })
+      // 画面文字的位置、字号、折行是按当时那份译文算好存在字幕条上的：
+      // 换成多一个字的写法会撑破算好的框，所以这一类只接受等长替换
+      if (!variant) continue
+      if (c.kind === 'sign' && variant.length !== canonical.length) continue
+      pending.push({ cue: c, variant })
     }
     // 少数写法得真的是少数
     if (pending.length > list.length * MAX_VARIANT_SHARE) continue

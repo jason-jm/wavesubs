@@ -79,5 +79,25 @@ console.log('\n统一译名：')
   eq('少数写法占到三成以上就不动', cues.map((c) => c.translation), before)
 }
 
+{
+  // 画面文字的框是按译文算好的，多一个字会撑破；等长替换才允许
+  const mk = (i: number, text: string, tr: string): Cue => ({
+    ...cue(i, text, tr), kind: 'sign', anchor: { x: 0.5, y: 0.5 }, fontSize: 40,
+    pos: { x: 0.3, y: 0.3, w: 0.3, h: 0.05 }, layout: 'below'
+  })
+  const grow = [
+    mk(1, 'シャーレイと', '莎蕾伊'), mk(2, 'シャーレイの', '莎蕾伊'),
+    mk(3, 'シャーレイが', '莎蕾伊'), mk(4, 'シャーレイを', '莎蕾'), mk(5, 'シャーレイは', '莎蕾伊')
+  ]
+  unifyTerms(grow)
+  eq('画面文字不做会变长的替换', grow[3].translation, '莎蕾')
+  const same = [
+    mk(1, 'スレッタと', '斯雷塔'), mk(2, 'スレッタの', '斯雷塔'),
+    mk(3, 'スレッタが', '斯雷塔'), mk(4, 'スレッタを', '斯莱塔'), mk(5, 'スレッタは', '斯雷塔')
+  ]
+  unifyTerms(same)
+  eq('等长的照样统一', same[3].translation, '斯雷塔')
+}
+
 console.log(bad === 0 ? '\n全部通过' : `\n${bad} 项不符`)
 if (bad > 0) process.exit(1)
