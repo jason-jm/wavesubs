@@ -178,7 +178,7 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
     cues.some((c) => c.endMs / 1000 >= b.startSec - 3 && c.startMs / 1000 <= b.endSec + 3 && textSimilarity(c.text, b.text.replace(/\n/g, '')) >= 0.5)
 
   const judged: SignJudgement[] = []
-  /** 判为没译好、清掉的那份：补译要是也没补上，还是拿它出片，总比整条原文强 */
+  /** 只译了半截被清掉的那份：补译要是也没补上，还是拿它出片，半句好过整条原文 */
   const partial = new Map<number, string>()
   for (let i = 0; i < kept.length; i += BATCH) {
     if (opts.signal?.aborted) throw new LocalizedError('error.jobCancelled')
@@ -250,7 +250,10 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
           looksTruncated(source, tr) ||
           (norm(b.text).length >= 4 && norm(tr).includes(norm(b.text))))
       ) {
-        partial.set(b.id, tr)
+        // 只译了半截的那份还能用作兜底（半句译文好过整条原文）；
+        // 残留源语言、或把原文抄进来的那份不能留——留下来等于绕过判据，
+        // 观众看到的是「TARSIAN → タルシアン」这种一个字都没译的东西
+        if (!leftoverScript(tr, opts.targetLanguageName) && !norm(tr).includes(norm(b.text))) partial.set(b.id, tr)
         tr = ''
       }
       const item: SignJudgement = j

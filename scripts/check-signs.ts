@@ -271,6 +271,18 @@ eq('整句照抄的日文算没翻', leftoverScript('リン 今週はどこ行�
 eq('带片假名专名的中文译文是对的', leftoverScript('欢迎来到野クル！', 'Simplified Chinese'), false)
 eq('连着一串假名没音译算没翻', leftoverScript('确认在12万距离处有タルシアン群体', 'Simplified Chinese'), true)
 eq('谚文一个不该留', leftoverScript('这是제국益闻社', 'Simplified Chinese'), true)
+{
+  // 残留源语言的那份不许留作兜底：留下来等于绕过判据
+  const chat = async (system: string): Promise<string> =>
+    system.includes('"src"')
+      ? JSON.stringify([{ id: 1, src: 'TARSIAN', category: 'sign', importance: 2, fixed: '', tr: 'タルシアン' }])
+      : JSON.stringify([])   // 补译也补不上
+  const out = await judgeSigns(
+    [{ id: 1, text: 'TARSIAN', startSec: 1, endSec: 4, frames: 3, conf: 0.9, box: { x: 0.3, y: 0.3, w: 0.2, h: 0.05 } }],
+    { chat, cues: [], sourceLanguageName: 'Japanese', targetLanguageName: 'Simplified Chinese' }
+  )
+  eq('补译补不上时不拿残留假名的那份顶替', out[0].tr, '')
+}
 eq('目标是日语时不判', leftoverScript('ようこそ', 'Japanese'), false)
 
 console.log('\n译文收尾：')
