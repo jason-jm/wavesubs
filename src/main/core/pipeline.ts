@@ -27,6 +27,7 @@ import { computeQc } from './subtitle/qc'
 import { writeOutput } from './output'
 import type { JobRecord } from './jobstore'
 import { PROMPT_REV } from './translate/prompt'
+import { unifyTerms } from './translate/terms'
 import { translateCues } from './translate/translateCues'
 import { normalizeLanguageCode } from './translate/types'
 import type { TranslationProvider } from './translate/types'
@@ -516,6 +517,9 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
       }
     }
     const allCues = [...cues, ...signCues]
+    // 译名统一：同一个专名被译成两种写法时，把少数那种改成多数那种。
+    // 对白与画面文字放在一起过，两条轨道上的人名才对得上。
+    if (opts.translate) unifyTerms(allCues)
     if (store && record) {
       record.cues = allCues
       await store.save(record)

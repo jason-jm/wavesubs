@@ -37,7 +37,8 @@
     "check-site": "python3 scripts/build-site.py && electron scripts/check-site.cjs",
     "release:mas": "npm run build && tsx scripts/bundle-deps.ts && electron-builder --mac mas --arm64 --publish never",
     "check-signs": "tsx scripts/check-signs.ts",
-    "check-output": "tsx scripts/check-output.ts"
+    "check-output": "tsx scripts/check-output.ts",
+    "check-terms": "tsx scripts/check-terms.ts"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
