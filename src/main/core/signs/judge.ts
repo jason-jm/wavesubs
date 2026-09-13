@@ -273,11 +273,15 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
   // 整屏文字里被漏判的那一两块，跟着同屏的其余块一起出
   promoteLoners(judged, kept)
 
-  // 补译：判为 sign 却没给译文的（含念读兜底的、译文残留源语言被清掉的）
+  // 补译：判为 sign 却没给译文的（含念读兜底的、被判没译好清掉的、整屏里提上来的）。
+  // 和判别一样分批：整片几十条塞进一次请求，输出会被 max_tokens 截断，
+  // 解析失败就整批一条都补不上，那些条最后会因为「译文和原文一样」被丢掉。
   const missing = judged.filter((j) => j.category === 'sign' && !j.tr.trim())
-  if (missing.length > 0) {
-    const byId = new Map(kept.map((b) => [b.id, b]))
-    const items = missing.map((j) => ({ id: j.id, text: j.fixed || byId.get(j.id)!.text, dialogue_nearby: ctxOf(byId.get(j.id)!) }))
+  const byId = new Map(kept.map((b) => [b.id, b]))
+  for (let i = 0; i < missing.length; i += BATCH) {
+    if (opts.signal?.aborted) throw new LocalizedError('error.jobCancelled')
+    const part = missing.slice(i, i + BATCH)
+    const items = part.map((j) => ({ id: j.id, text: j.fixed || byId.get(j.id)!.text, dialogue_nearby: ctxOf(byId.get(j.id)!) }))
     try {
       const out = parseJsonArray(
         await opts.chat(
@@ -295,12 +299,12 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
         j.tr = tr
       }
     } catch {
-      // 补译失败就退回半截译文或原文，不中断任务
+      // 这一批补译失败不影响别的批，也不中断任务
     }
-    // 补译没补上的，把之前那份半截译文还回去
-    for (const j of judged) {
-      if (!j.tr.trim() && partial.has(j.id)) j.tr = partial.get(j.id)!
-    }
+  }
+  // 补译没补上的，把之前那份被清掉的译文还回去
+  for (const j of judged) {
+    if (!j.tr.trim() && partial.has(j.id)) j.tr = partial.get(j.id)!
   }
   opts.onProgress?.(100)
   return judged

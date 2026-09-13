@@ -71,11 +71,18 @@ export class OpenAICompatibleProvider implements TranslationProvider {
     return parseBatchResponse(data.choices?.[0]?.message?.content ?? '', new Map(items.map((it) => [it.index, it.text])))
   }
 
+  /**
+   * 单轮对话。目前只有画面文字的判别在用，所以走贪心解码 + 固定种子：
+   * 判别是分类，同一部片跑两遍必须给同一份答案。带随机性时实测同一集连跑三次
+   * 画面文字是 60 / 65 / 60 条，连哪几块该出都在变，既没法验证改动也不像个工具。
+   */
   async chat(system: string, user: string, opts?: { signal?: AbortSignal; maxTokens?: number }): Promise<string> {
     const isAzure = this.config.protocol === 'azure'
     const body = JSON.stringify({
       model: this.config.model,
-      temperature: 0.2,
+      temperature: 0,
+      top_p: 1,
+      seed: 1,
       max_tokens: opts?.maxTokens ?? 4000,
       messages: [
         { role: 'system', content: system },

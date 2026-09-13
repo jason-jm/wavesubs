@@ -169,6 +169,27 @@ console.log('\n判别对齐锚与念读兜底：')
   eq('街景里的背景杂字不会被带出来', out2.filter((j) => j.category === 'sign').length, 1)
 }
 
+// 补译要分批：整片几十条塞进一次请求会被截断，整批补不上
+{
+  const seen: number[] = []
+  const chat = async (system: string, user: string): Promise<string> => {
+    const items = JSON.parse(user) as Array<{ id: number; text?: string }>
+    if (system.includes('"src"')) {
+      // 判别那一轮：全判 sign 但都不给译文，逼出补译
+      return JSON.stringify(items.map((x) => ({ id: x.id, src: '', category: 'sign', importance: 2, fixed: '', tr: '' })))
+    }
+    seen.push(items.length)
+    return JSON.stringify(items.map((x) => ({ id: x.id, tr: `译${x.id}` })))
+  }
+  const many: SignBlock[] = Array.from({ length: 37 }, (_, i) => ({
+    id: i + 1, text: `看板${i + 1}`, startSec: i * 5, endSec: i * 5 + 3, frames: 3, conf: 0.9,
+    box: { x: 0.3, y: 0.3, w: 0.2, h: 0.05 }
+  }))
+  const out = await judgeSigns(many, { chat, cues: [], sourceLanguageName: 'Japanese', targetLanguageName: 'Simplified Chinese' })
+  eq('补译分批送，每批不超过 15 条', seen.every((n) => n <= 15) && seen.length >= 3, true)
+  eq('37 条全都补上了译文', out.filter((j) => j.tr.trim() !== '').length, 37)
+}
+
 console.log('\n译文残留判定：')
 eq('整句照抄的日文算没翻', leftoverScript('リン 今週はどこ行ってんの', 'Simplified Chinese'), true)
 eq('带片假名专名的中文译文是对的', leftoverScript('欢迎来到野クル！', 'Simplified Chinese'), false)
