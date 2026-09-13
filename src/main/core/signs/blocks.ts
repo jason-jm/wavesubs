@@ -79,8 +79,14 @@ const LATIN_NAME = /^[A-Z][a-z]+(?: [A-Z][a-z]+){1,2}$/
 const ALLCAPS = /^[A-Z][A-Z .'&-]{3,}$/
 /** 日文/中文/韩文的人名写法：姓和名之间留一个空格（「高橋 聰」「入野 自由」），名单里一整排都长这样 */
 const CJK_NAME = /^[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}ー]{1,5}[ 　]+[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}ー]{1,5}$/u
-/** 光秃秃一个名字的样子：两到十二个字，没有数字、没有标点（「→」是 OCR 把「一」读坏的常客） */
-const BARE_NAME = /^[\p{Script=Han}\p{Script=Katakana}\p{Script=Hiragana}\p{Script=Hangul}\p{Script=Latin}ー・·→←\-–—.　 ]{2,12}$/u
+/**
+ * 光秃秃一个名字的样子，没有数字、没有标点（「→」是 OCR 把「一」读坏的常客）。
+ * 中日韩名字两到五个字，十二字足够；西文全名带姓氏和连字符能到二十几
+ *（「Anamaria VARTOLOMEI」19 字），所以纯西文的放宽到 24。
+ */
+const BARE_NAME_CJK = /^[\p{Script=Han}\p{Script=Katakana}\p{Script=Hiragana}\p{Script=Hangul}\p{Script=Latin}ー・·→←\-–—.　 ]{2,12}$/u
+const BARE_NAME_LATIN = /^[\p{Script=Latin}·→←\-–—.' ]{2,24}$/u
+const BARE_NAME = { test: (t: string): boolean => BARE_NAME_LATIN.test(t) || BARE_NAME_CJK.test(t) }
 /** 助词、句末标点：有这些就是一句话，不是名字 */
 const SENTENCE = /(の|は|を|が|に|へ|と|で|も|から|まで|って|です|ます|した)|[。！？、「」『』…]/
 const isNameLine = (t: string): boolean => {
@@ -351,6 +357,48 @@ export function buildSignBlocks(
       for (const b of on) if (area(b) < median * 3) clutter.add(b)
     }
     for (const b of clutter) b.drop = 'clutter'
+  }
+
+  // 布景道具：同一块门牌在不同场景里反复入镜（《帝国的毁灭》地堡走廊的「NOTAUSGANG」
+  // 在 2.5 小时里出现五次，相隔 4～32 分钟）。第一次之后观众已经知道那是什么了，
+  // 再翻五遍只是占地方。台标规则按位置做键，摄影机换角度就拦不住，所以这里只看文字。
+  //
+  // 只算「相隔很远的独立出现」：同一块字随手持镜头移动会被拆成好几条紧挨着的块
+  //（《硬核亨利》的「HENRY」五条间隔 0～2 秒），那是连续的一行字，不能动。
+  //
+  // 而且只管「路过的门牌」：同屏还有两块以上别的字时不算布景——那是一屏文件里的一行
+  //（《摇曳露营》片尾须知卡角上的社团名），不是走廊里反复入镜的告示。
+  const PROP_GAP = 30
+  const PROP_TIMES = 4
+  const PROP_KEEP = 2
+  {
+    const byText = new Map<string, SignBlock[]>()
+    for (const b of blocks) {
+      if (b.drop) continue
+      const k = norm(b.text).slice(0, 6)
+      if (k.length < 2) continue
+      byText.set(k, [...(byText.get(k) ?? []), b])
+    }
+    for (const group of byText.values()) {
+      group.sort((a, b) => a.startSec - b.startSec)
+      // 切成一次次独立出现
+      const runs: SignBlock[][] = []
+      for (const b of group) {
+        const last = runs[runs.length - 1]
+        if (last && b.startSec - last[last.length - 1].endSec <= PROP_GAP) last.push(b)
+        else runs.push([b])
+      }
+      // 独立出现里，只有「孤零零挂在那儿」的才算布景
+      const lonely = runs.filter((run) =>
+        run.every((b) => {
+          const mid = (b.startSec + b.endSec) / 2
+          const others = blocks.filter((o) => o !== b && !o.drop && o.startSec <= mid && mid < o.endSec)
+          return others.length < 2
+        })
+      )
+      if (lonely.length < PROP_TIMES) continue
+      for (const run of lonely.slice(PROP_KEEP)) for (const b of run) b.drop = 'prop'
+    }
   }
 
   // 台标/水印：同一段字在同一位置累计出现太久（≥ 2 分钟且 ≥ 全片 8%）——电视台 logo、频道水印、播放器 UI

@@ -2,7 +2,7 @@
  * 画面文字模块自检：几何与统计规则（分组 / 跟踪 / 名单时段 / 烧录字幕带）、判别对齐锚、排版取舍、写出格式。
  * 全部用合成数据，不跑 OCR 也不跑模型；判别用假 chat 模拟 8B 的串行毛病。
  */
-import { buildSignBlocks, stripKaomoji, creditWindows, dialogueLinesAt, dialogueSafeBottom, groupLines, judgeSigns, leftoverScript, measureText, tidyTranslation, signsToCues, trackBlocks, textSimilarity, wrapToWidth } from '../src/main/core/signs'
+import { buildSignBlocks, stripKaomoji, creditWindows, fuzzyContains, dialogueLinesAt, dialogueSafeBottom, groupLines, judgeSigns, leftoverScript, measureText, tidyTranslation, signsToCues, trackBlocks, textSimilarity, wrapToWidth } from '../src/main/core/signs'
 import type { OcrBox, OcrFrame, SignBlock, SignJudgement } from '../src/main/core/signs'
 import { cuesToAss } from '../src/main/core/subtitle/ass'
 import { cuesToSrt } from '../src/main/core/subtitle/srt'
@@ -99,6 +99,41 @@ console.log('\n语种采样窗口：')
   eq('不会选在片头无人声段', starts.every((s) => s >= 60), true)
   eq('最多 5 个窗口且彼此隔开 ≥2 分钟', starts.length === 5 && starts.every((s, i) => i === 0 || s - starts[i - 1] >= 120), true)
   eq('没有人声就没有窗口', pickDetectionWindows([], 3600).length, 0)
+}
+
+console.log('\n残片与布景道具：')
+{
+  eq('差一个字母也算同一块字', fuzzyContains('zutritt-verboten', 'zutritt-ve'), true)
+  eq('OCR 把 W 读成 V 也认得出', fuzzyContains('wegotswindled', 'vegot'), true)
+  eq('短串不许错', fuzzyContains('abcdef', 'xbcd'), false)
+  eq('压根不像的不算', fuzzyContains('zutrittverboten', 'notausgang'), false)
+
+  // 同一块门牌被读成好几种残片：只留最长的那条
+  const frag = (id: number, text: string): SignBlock =>
+    ({ id, text, startSec: 10, endSec: 14, frames: 4, conf: 0.9, box: { x: 0.3 + id * 0.01, y: 0.3, w: 0.3, h: 0.06 } })
+  const cues = signsToCues(
+    [frag(1, 'ZUTRITT - VERBOTEN'), frag(2, 'ZUTRITT - VE'), frag(3, 'VERBOTE.'), frag(4, 'BOTEN')],
+    [1, 2, 3, 4].map((id) => ({ id, category: 'sign' as const, importance: 2, fixed: '', tr: ['禁止入内', '禁止入', '禁止.', '传令兵'][id - 1] }))
+  )
+  eq('一块门牌的残片只出一条', cues.length, 1)
+  eq('留下的是最完整的那条', cues[0].translation, '禁止入内')
+
+  // 布景道具：同一块门牌在不同场景反复入镜
+  const prop = (i: number, start: number): OcrFrame[] =>
+    Array.from({ length: 3 }, (_, k) => ({ i: start + k, boxes: [box('NOTAUSGANG', 0.2 + i * 0.05, 0.4, 0.15, 0.04)] }))
+  const scattered: OcrFrame[] = []
+  for (let i = 0; i < 6; i += 1) scattered.push(...prop(i, i * 200))
+  for (let i = 0; i <= 1100; i += 1) if (!scattered.some((f) => f.i === i)) scattered.push({ i, boxes: [] })
+  scattered.sort((a, b) => a.i - b.i)
+  const propBlocks = buildSignBlocks(scattered, 1, null).blocks.filter((b) => b.text === 'NOTAUSGANG')
+  eq('反复入镜的门牌只留前两次', propBlocks.filter((b) => !b.drop).length, 2)
+  eq('其余标成布景', propBlocks.filter((b) => b.drop === 'prop').length, 4)
+
+  // 随镜头移动被拆成好几条紧挨着的块：那是连续的一行字，一条都不许丢
+  const moving: OcrFrame[] = []
+  for (let i = 0; i <= 20; i += 1) moving.push({ i, boxes: i < 12 ? [box('HENRY', 0.2 + i * 0.03, 0.3 + i * 0.02, 0.12, 0.05)] : [] })
+  const mv = buildSignBlocks(moving, 1, null).blocks.filter((b) => b.text === 'HENRY')
+  eq('随镜头移动的连续一块不算布景', mv.filter((b) => b.drop === 'prop').length, 0)
 }
 
 console.log('\n密集小字：')
