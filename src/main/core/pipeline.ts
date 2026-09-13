@@ -277,7 +277,17 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
         report('extract', 100)
         report('transcribe', 100, 'progress.sourceCached')
         resolveLanguage(language)
-        if (cachedSignCues.length === 0 || opts.refreshCache) startOcr()
+        // 术语表/引擎/目标语言/提示词变了就连画面文字一起重来：画面文字也照术语表译，
+        // 只重翻对白的话，同一个人名在两条轨道上会对不上
+        const meta = cached.translation
+        const signsStale =
+          opts.translate !== undefined &&
+          (meta === undefined ||
+            meta.engineId !== (opts.translate.engineId ?? 'unknown') ||
+            meta.targetLanguage !== opts.translate.targetLanguage ||
+            meta.promptRev !== PROMPT_REV ||
+            meta.glossaryHash !== glossaryHashOf(opts.glossary ?? []))
+        if (cachedSignCues.length === 0 || opts.refreshCache || signsStale) startOcr()
       }
     }
 
@@ -496,6 +506,7 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
           cues,
           sourceLanguageName: language !== 'unknown' ? languageName(language) : 'foreign-language',
           targetLanguageName: languageName(opts.translate.targetLanguage),
+          glossary: opts.glossary,
           signal: opts.signal,
           onProgress: (p) => report('signs', p, 'progress.signs')
         })

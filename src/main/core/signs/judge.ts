@@ -11,6 +11,7 @@
  *   清掉扔进补译那一轮重来。
  */
 import { LocalizedError } from '../../../shared/i18n/core'
+import { applicableGlossary } from '../translate/prompt'
 import type { Cue } from '../subtitle/types'
 import { textSimilarity } from './blocks'
 import type { SignBlock, SignJudgement } from './types'
@@ -25,6 +26,8 @@ export interface JudgeOptions {
   sourceLanguageName: string
   /** 目标语言名（英文），如 Simplified Chinese */
   targetLanguageName: string
+  /** 用户的术语表：画面文字和对白得用同一套译名，不然同一个人名两条轨道对不上 */
+  glossary?: Array<{ from: string; to: string }>
   signal?: AbortSignal
   onProgress?: (percent: number) => void
 }
@@ -38,7 +41,12 @@ function posLabel(b: SignBlock): string {
   return `${cy < 0.33 ? 'top' : cy < 0.66 ? 'middle' : 'bottom'}-${cx < 0.33 ? 'left' : cx < 0.66 ? 'center' : 'right'}`
 }
 
-function systemPrompt(src: string, target: string): string {
+function glossaryLine(entries: Array<{ from: string; to: string }>): string {
+  if (entries.length === 0) return ''
+  return `\n术语对照（用户指定，优先级高于你的习惯译法，逐条严格遵守）：${entries.map((g) => `「${g.from}」必须译为「${g.to}」`).join('；')}。`
+}
+
+function systemPrompt(src: string, target: string, glossary: Array<{ from: string; to: string }> = []): string {
   return `你是影视字幕组负责「屏幕字」的翻译。下面是从一部 ${src} 影片画面里 OCR 出来的文字（可能有错字、断片；多行用换行分隔），每条带出现时刻、时长（秒）、画面位置、与人声重叠比例、附近台词 ctx（语音识别结果，可能有错）和 read_aloud。本片没有烧录字幕，画面上出现的文字都不是对白字幕。
 请逐条判断类别：
 - sign：观众需要看懂的画面文字——招牌、店名、便签、书信、短信/聊天/邮件、文件、书页、杂志或书的标题、商品标签与价签、告示、路牌、屏幕或界面文字等。**集数与章节标题、下集预告的标题、日期地点字卡、介绍人物姓名与身份的名牌，一律是 sign 且 importance 3**，别把它们当成名单或噪声。一段通顺的句子或短语（哪怕只是半句）几乎总是便签、聊天气泡、书页或告示上的字，应判 sign。read_aloud 为 true 表示这段画面文字正被角色念出来（短信、书信），它一定是 sign 且 importance 3。
@@ -47,7 +55,7 @@ function systemPrompt(src: string, target: string): string {
 sign 再给一个重要度 importance：3 = 不看就不懂剧情（短信、书信、便签、文件内容、标题卡、关键告示）；2 = 有帮助（店名、招牌、路牌、标签、价签、书名）；1 = 可有可无（界面按钮、菜单项、装饰性文字、背景书架杂志封面、商品与包装上的品牌名、剧场海报或书籍封面上成排的演职员姓名、地图上的地名标注）。
 用 ctx 理解语境：例如露营场景里的「ポール」是帐篷杆而不是人名。
 只有 sign 需要翻译成 ${target}：忠实、简洁、像字幕组的屏幕字，专有名词按通行译法，多行保留换行，颜文字与表情符号原样保留。**原文有几行就译几行，每一行都要译完**：整段生平只译出开头的人名、整封邮件只译出日期，都算没译完。原文若被 OCR 打碎或有错字，在 fixed 里写修正后的原文再翻。**译文里不要残留源语言的词**：专有名词、简称、店名也要译出或音译，整条照抄原文等于没翻，这种情况宁可判 noise。
-只输出 JSON 数组，每项形如 {"id":1,"src":"该条 text 的前 12 个字，照抄","category":"sign","importance":2,"fixed":"","tr":""}，src 必须照抄该条 text 的开头（用来核对没有串行），不要任何其它文字。`
+只输出 JSON 数组，每项形如 {"id":1,"src":"该条 text 的前 12 个字，照抄","category":"sign","importance":2,"fixed":"","tr":""}，src 必须照抄该条 text 的开头（用来核对没有串行），不要任何其它文字。${glossaryLine(glossary)}`
 }
 
 function parseJsonArray(s: string): Array<Record<string, unknown>> {
@@ -122,13 +130,18 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
   const readAloud = (b: SignBlock): boolean =>
     cues.some((c) => c.endMs / 1000 >= b.startSec - 3 && c.startMs / 1000 <= b.endSec + 3 && textSimilarity(c.text, b.text.replace(/\n/g, '')) >= 0.5)
 
-  const system = systemPrompt(opts.sourceLanguageName, opts.targetLanguageName)
   const judged: SignJudgement[] = []
   /** 只译了半截被清掉的那份：补译要是也没译好，还是拿它出片，总比整条原文强 */
   const partial = new Map<number, string>()
   for (let i = 0; i < kept.length; i += BATCH) {
     if (opts.signal?.aborted) throw new LocalizedError('error.jobCancelled')
     const batch = kept.slice(i, i + BATCH)
+    // 术语表只注入这一批里真出现的条目：全表塞进去会稀释注意力，也会让模型把没出现的名字带进译文
+    const system = systemPrompt(
+      opts.sourceLanguageName,
+      opts.targetLanguageName,
+      applicableGlossary(opts.glossary, batch.map((b) => b.text))
+    )
     const items = batch.map((b) => ({
       id: b.id,
       time: fmtTime(b.startSec),
@@ -219,7 +232,7 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
     try {
       const out = parseJsonArray(
         await opts.chat(
-          `你是影视字幕翻译。把 JSON 里每一条的 text 从 ${opts.sourceLanguageName} 翻译成 ${opts.targetLanguageName}：忠实、简洁，多行保留换行，颜文字原样保留。**text 有几行就译几行，整条都要译完**，不许只译第一行、只译开头的人名或日期。dialogue_nearby 只是附近台词、供理解语境，不要翻译也不要输出它。只输出 JSON 数组，每项 {"id":1,"tr":"译文"}，tr 里只放译文，不要夹带原文。`,
+          `${glossaryLine(applicableGlossary(opts.glossary, items.map((x) => x.text))).trim()}你是影视字幕翻译。把 JSON 里每一条的 text 从 ${opts.sourceLanguageName} 翻译成 ${opts.targetLanguageName}：忠实、简洁，多行保留换行，颜文字原样保留。**text 有几行就译几行，整条都要译完**，不许只译第一行、只译开头的人名或日期。dialogue_nearby 只是附近台词、供理解语境，不要翻译也不要输出它。只输出 JSON 数组，每项 {"id":1,"tr":"译文"}，tr 里只放译文，不要夹带原文。`,
           JSON.stringify(items)
         )
       )

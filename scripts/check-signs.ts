@@ -119,6 +119,24 @@ console.log('\n判别对齐锚与念读兜底：')
   eq('念出来的画面文字即使模型判 noise 也改回 sign、重要度 3', [byId.get(4)?.category, byId.get(4)?.importance], ['sign', 3])
 }
 
+// 术语表：画面文字和对白得用同一套译名
+{
+  const seen: string[] = []
+  const chat = async (system: string): Promise<string> => {
+    seen.push(system)
+    return JSON.stringify([{ id: 1, src: 'Freddie Mac', category: 'sign', importance: 2, fixed: '', tr: '房地美' }])
+  }
+  const blocks: SignBlock[] = [
+    { id: 1, text: 'Freddie Mac\nAccounting Fraud', startSec: 1, endSec: 5, frames: 4, conf: 0.9, box: { x: 0.3, y: 0.3, w: 0.3, h: 0.08 } }
+  ]
+  await judgeSigns(blocks, {
+    chat, cues: [], sourceLanguageName: 'English', targetLanguageName: 'Simplified Chinese',
+    glossary: [{ from: 'Freddie Mac', to: '房地美' }, { from: 'Lehman Brothers', to: '雷曼兄弟' }]
+  })
+  eq('命中的术语注入判别提示词', seen[0].includes('「Freddie Mac」必须译为「房地美」'), true)
+  eq('这批没出现的术语不注入', seen[0].includes('Lehman'), false)
+}
+
 console.log('\n译文残留判定：')
 eq('整句照抄的日文算没翻', leftoverScript('リン 今週はどこ行ってんの', 'Simplified Chinese'), true)
 eq('带片假名专名的中文译文是对的', leftoverScript('欢迎来到野クル！', 'Simplified Chinese'), false)
