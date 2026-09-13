@@ -87,8 +87,13 @@ const CJK_NAME = /^[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Scrip
 const BARE_NAME_CJK = /^[\p{Script=Han}\p{Script=Katakana}\p{Script=Hiragana}\p{Script=Hangul}\p{Script=Latin}ー・·→←\-–—.　 ]{2,12}$/u
 const BARE_NAME_LATIN = /^[\p{Script=Latin}·→←\-–—.' ]{2,24}$/u
 const BARE_NAME = { test: (t: string): boolean => BARE_NAME_LATIN.test(t) || BARE_NAME_CJK.test(t) }
-/** 助词、句末标点：有这些就是一句话，不是名字 */
-const SENTENCE = /(の|は|を|が|に|へ|と|で|も|から|まで|って|です|ます|した)|[。！？、「」『』…]/
+/**
+ * 助词、虚词、句末标点：有这些就是一句话，不是名字。
+ * 中文那几个是后补的——「贴底的一行字幕」没有日文助词也没有标点，
+ * 光看「短、全汉字」会被当成人名吸进名单时段。
+ */
+const SENTENCE =
+  /(の|は|を|が|に|へ|と|で|も|から|まで|って|です|ます|した)|(的|了|着|吗|呢|吧|把|被|让|从|向|对|给|我|你|他|她|们|这|那|就|很)|[。！？、「」『』…]/
 const isNameLine = (t: string): boolean => {
   const s = t.trim()
   return s !== '' && BARE_NAME.test(s) && !SENTENCE.test(s)
@@ -127,8 +132,9 @@ export function creditWindows(frames: OcrFrame[], fps: number): Array<[number, n
   /**
    * 声優表：片尾里「角色名／声優名」成排出现的那一段，一个职位词都没有，密度规则看不见它。
    * 从已经认出来的名单时段往外一秒一秒长，整帧每一行都是光秃秃的名字才继续。
-   * 中间几秒没字是正常的（名单在换页），最多跨过 GAP_FRAMES 帧空白接着找；
-   * 一碰到带助词或标点的行就停——「次回 正義の在処」「第2回「佐殿の腹」」是要给观众看的预告标题。
+   * 名单和声優表之间常常空着几秒（名单在换页），所以按「整段」吸收而不是逐帧往外长：
+   * 整段每一行都是名字、而且离已认出的名单时段不到 30 秒，就并进去。
+   * 带助词或标点的行不算名字——「次回 正義の在処」「第2回「佐殿の腹」」是要给观众看的预告标题。
    *
    * 只在片头片尾一成五的范围内扩：纪录片的人物名牌写着「Chief Economist」「Managing Director」，
    * 职位词密度规则本来就会在片中误判出一堆名单时段，再往外扩就会把名牌本身吃掉
@@ -141,25 +147,35 @@ export function creditWindows(frames: OcrFrame[], fps: number): Array<[number, n
     const lines = lineOf.get(i) ?? []
     return lines.length > 0 && lines.every(isNameLine)
   }
-  const blankFrame = (i: number): boolean => (lineOf.get(i) ?? []).length === 0
-  const GAP_FRAMES = 6
+  // 紧邻才吸收：30 秒的口子太大，会把片头名单之前的招牌也吃进去
+  //（《摇曳露营》1:11 的社团招牌离片头名单 21 秒）。声優表和制作名单之间通常只空几秒。
+  const GAP = 10
+  const MIN_RUN = 3
   const HEAD_TAIL = 0.15
   const nearEdge = (i: number): boolean => i <= maxI * HEAD_TAIL || i >= maxI * (1 - HEAD_TAIL)
-  for (const edge of [...dense]) {
-    if (!nearEdge(edge)) continue
-    for (const dir of [-1, 1]) {
-      let gap = 0
-      for (let k = edge + dir; k >= 0 && k <= maxI && nearEdge(k); k += dir) {
-        if (castFrame(k)) {
-          gap = 0
-        } else if (blankFrame(k) && gap < GAP_FRAMES) {
-          gap += 1
-        } else {
-          break
-        }
-        dense.add(k)
-      }
+
+  // 把「整帧都是名字」的帧切成一段段，整段整段地吸收：逐帧往外长对空档长度太敏感
+  //（Fate/Zero 的声優表和制作名单之间空了 9 秒，按帧扩就停在那儿了）。
+  // 判据和「相隔不到 30 秒的两段名单并成一段」是同一条。
+  const runs: Array<[number, number]> = []
+  for (let i = 0; i <= maxI; i += 1) {
+    if (!castFrame(i) || dense.has(i)) continue
+    const start = i
+    while (i + 1 <= maxI && castFrame(i + 1)) i += 1
+    runs.push([start, i])
+  }
+  // 只吸收一轮，拿吸收前的时段做判据：允许链式的话，一段吸进来变成名单、
+  // 又把下一段拉进来，《星之声》的片尾时段会从 24:01 一路吃到 21:13，丢掉两分钟正文
+  const before = new Set(dense)
+  for (const [a, b] of runs) {
+    if (b - a + 1 < MIN_RUN) continue
+    if (!nearEdge(a) || !nearEdge(b)) continue
+    let touches = false
+    for (let k = Math.max(0, a - GAP); k <= Math.min(maxI, b + GAP) && !touches; k += 1) {
+      if (before.has(k)) touches = true
     }
+    if (!touches) continue
+    for (let k = a; k <= b; k += 1) dense.add(k)
   }
 
   const windows: Array<[number, number]> = []
