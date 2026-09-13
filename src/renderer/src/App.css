@@ -1476,7 +1476,7 @@ textarea {
 /* 盖字的底板：单独一块，盖住整块原文（位置由排版算好存在字幕条上） */
 .editor-sign-plate {
   position: absolute;
-  background: rgba(16, 16, 16, 0.92);
+  background: rgba(16, 16, 16, 0.97);
   border-radius: 4px;
   pointer-events: none;
 }
