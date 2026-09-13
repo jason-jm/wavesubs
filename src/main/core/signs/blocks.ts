@@ -120,20 +120,32 @@ export function creditWindows(frames: OcrFrame[], fps: number): Array<[number, n
   }
   /**
    * 声優表：片尾里「角色名／声優名」成排出现的那一段，一个职位词都没有，密度规则看不见它。
-   * 从已经认出来的名单时段往外一秒一秒长：这一帧得有字、过半是光秃秃的名字、而且一句话都没有。
-   * 碰到「次回 正義の在処」这种带助词的预告标题就停——预告标题是要给观众看的。
+   * 从已经认出来的名单时段往外一秒一秒长，整帧每一行都是光秃秃的名字才继续。
+   * 中间几秒没字是正常的（名单在换页），最多跨过 GAP_FRAMES 帧空白接着找；
+   * 一碰到带助词或标点的行就停——「次回 正義の在処」「第2回「佐殿の腹」」是要给观众看的预告标题。
    */
   const lineOf = new Map<number, string[]>()
   for (const f of frames) lineOf.set(f.i, f.boxes.flatMap((b) => b.t.split('\n')))
+  /** 整帧每一行都是名字 */
   const castFrame = (i: number): boolean => {
     const lines = lineOf.get(i) ?? []
-    if (lines.length === 0) return false
-    // 得整帧都是名字才算：只要混进一行别的（台词、店名、带数字的标题），就停在这儿
-    return lines.every(isNameLine)
+    return lines.length > 0 && lines.every(isNameLine)
   }
-  for (let pass = 0; pass < 60; pass += 1) {
-    for (const i of [...dense]) {
-      for (const k of [i - 1, i + 1]) if (k >= 0 && k <= maxI && !dense.has(k) && castFrame(k)) dense.add(k)
+  const blankFrame = (i: number): boolean => (lineOf.get(i) ?? []).length === 0
+  const GAP_FRAMES = 6
+  for (const edge of [...dense]) {
+    for (const dir of [-1, 1]) {
+      let gap = 0
+      for (let k = edge + dir; k >= 0 && k <= maxI; k += dir) {
+        if (castFrame(k)) {
+          gap = 0
+        } else if (blankFrame(k) && gap < GAP_FRAMES) {
+          gap += 1
+        } else {
+          break
+        }
+        dense.add(k)
+      }
     }
   }
 
