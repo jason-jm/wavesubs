@@ -148,12 +148,13 @@ console.log('\n判别对齐锚与念读兜底：')
     ])
   const card: SignBlock[] = [
     { id: 1, text: 'キャンプを楽しむときは...', startSec: 1, endSec: 6, frames: 5, conf: 1, box: { x: 0.2, y: 0.05, w: 0.6, h: 0.11 } },
-    { id: 2, text: 'ルールを必ず守り', startSec: 1, endSec: 6, frames: 5, conf: 0.9, box: { x: 0.1, y: 0.3, w: 0.3, h: 0.06 } },
-    { id: 3, text: '冬の野外は寒いので', startSec: 1, endSec: 6, frames: 5, conf: 0.9, box: { x: 0.1, y: 0.65, w: 0.3, h: 0.06 } },
+    { id: 2, text: 'ルールを必ず守り\n火とゴミの後始末を\n忘れないように', startSec: 1, endSec: 6, frames: 5, conf: 0.9, box: { x: 0.1, y: 0.26, w: 0.36, h: 0.30 } },
+    { id: 3, text: '冬の野外は寒いので\nしっかり着込んで\n防寒しましょう', startSec: 1, endSec: 6, frames: 5, conf: 0.9, box: { x: 0.1, y: 0.65, w: 0.3, h: 0.24 } },
     { id: 4, text: '野外活動サークル', startSec: 1, endSec: 6, frames: 5, conf: 0.9, box: { x: 0.75, y: 0.9, w: 0.2, h: 0.05 } }
   ]
   const out = await judgeSigns(card, { chat, cues: [], sourceLanguageName: 'Japanese', targetLanguageName: 'Simplified Chinese' })
   eq('一屏字里被漏判的标题跟着出', out.find((j) => j.id === 1)?.category, 'sign')
+  eq('标题的面积比正文块小也认得出来（按行高比）', card[0].box.w * card[0].box.h < card[1].box.w * card[1].box.h, true)
   // 街景：只有一块招牌，旁边一堆背景杂字，不该把杂字也拉进来
   const street: SignBlock[] = [
     { id: 1, text: '営業中', startSec: 1, endSec: 6, frames: 5, conf: 0.9, box: { x: 0.4, y: 0.3, w: 0.1, h: 0.05 } },

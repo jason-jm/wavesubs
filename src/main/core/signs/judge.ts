@@ -118,9 +118,12 @@ export function looksTruncated(src: string, tr: string): boolean {
  * 露营须知卡上四块字，三块判了 sign，只有最大的标题「キャンプを楽しむときは...」因为带省略号、
  * 看着像半句话被判成噪声——观众看到的是一整屏字里独独标题没译文，只会当成软件坏了。
  * 两个条件一起卡：同时出现的块里过半都是 sign（说明这一屏本来就是给观众读的），
- * 而且这一块比周围的正文还大——一屏字里最大的那块是标题，标题不会是噪声。
+ * 而且这一块的**字**比周围的正文大（按行高比，不是按面积：正文几行合成一块之后面积往往
+ * 比标题还大，但每一行的字比标题小）——一屏字里字最大的那块是标题，标题不会是噪声。
  * 街景里一块招牌配一堆背景杂字（sign 只有一块）、或者和正文一样大的品牌 logo，都不会触发。
  */
+const lineHeight = (b: SignBlock): number => b.box.h / b.text.split('\n').length
+
 function promoteLoners(judged: SignJudgement[], blocks: SignBlock[]): void {
   const byId = new Map(blocks.map((b) => [b.id, b]))
   const isSign = (j: SignJudgement): boolean => j.category === 'sign' && j.importance >= 2
@@ -129,18 +132,18 @@ function promoteLoners(judged: SignJudgement[], blocks: SignBlock[]): void {
     const b = byId.get(j.id)
     if (!b) continue
     let others = 0
-    const signAreas: number[] = []
+    const signLineH: number[] = []
     for (const o of judged) {
       if (o === j) continue
       const ob = byId.get(o.id)
       if (!ob || ob.startSec >= b.endSec || b.startSec >= ob.endSec) continue
       others += 1
-      if (isSign(o)) signAreas.push(ob.box.w * ob.box.h)
+      if (isSign(o)) signLineH.push(lineHeight(ob))
     }
-    if (signAreas.length < 2 || signAreas.length < others / 2) continue
-    const sorted = [...signAreas].sort((x, y) => x - y)
+    if (signLineH.length < 2 || signLineH.length < others / 2) continue
+    const sorted = [...signLineH].sort((x, y) => x - y)
     const median = sorted[Math.floor(sorted.length / 2)]
-    if (b.box.w * b.box.h < median * 1.3) continue
+    if (lineHeight(b) < median * 1.25) continue
     j.category = 'sign'
     j.importance = 2
     j.tr = ''
