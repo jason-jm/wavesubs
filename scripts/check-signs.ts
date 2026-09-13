@@ -138,10 +138,20 @@ console.log('\n排版与取舍：')
     const cues = signsToCues([mk(1, '営業中', 0.3, 0.04)], [sign(1, '营业中')])
     eq('单行贴下方', [cues[0].layout, cues[0].anchor!.y > 0.34 && cues[0].anchor!.y < 0.42], ['below', true])
   }
-  // 多行便签：盖在原文上
+  // 原文占一大块（整屏界面）：盖在原文上
+  {
+    const cues = signsToCues([mk(1, 'ルール\n守ろう', 0.15, 0.5, 0, 5, 0.5)], [sign(1, '规则\n要遵守')])
+    eq('占满一大块才盖字', cues[0].layout, 'box')
+  }
+  // 同样是多行，但只占一小块：贴在旁边，不遮原文
   {
     const cues = signsToCues([mk(1, 'ルール\n守ろう', 0.3, 0.12)], [sign(1, '规则\n要遵守')])
-    eq('多行整块盖字', cues[0].layout, 'box')
+    eq('小块多行不盖字，贴在旁边', cues[0].layout, 'below')
+  }
+  // 译文和原文一样：不出这一条
+  {
+    eq('英文照抄的不出', signsToCues([mk(1, 'OUTDOOR COOKING', 0.3, 0.05)], [sign(1, 'OUTDOOR COOKING')]).length, 0)
+    eq('压根没翻的不出', signsToCues([mk(1, '営業中', 0.3, 0.05)], [sign(1, '')]).length, 0)
   }
   // 底部的招牌 + 同时有两行对白：必须避开对白占用的高度
   {
@@ -157,11 +167,12 @@ console.log('\n排版与取舍：')
     const cues = signsToCues([mk(1, 'あちら', 0.78, 0.05)], [sign(1, '在那边')])
     eq('没有对白时下方还放得下就不挪', cues[0].layout, 'below')
   }
-  // 原文框窄、译文长：缩字号而不是把底框撑到旁边
+  // 盖字时原文框窄、译文长：缩字号而不是把底框撑到旁边
   {
-    const cues = signsToCues([mk(1, '和', 0.3, 0.16, 0, 5, 0.06)], [sign(1, '这是一句很长很长的译文占满了整行')])
+    const cues = signsToCues([mk(1, '和\n和\n和', 0.2, 0.6, 0, 5, 0.3)], [sign(1, '这是一句很长很长的译文占满了整行')])
+    eq('确实走了盖字', cues[0].layout, 'box')
     const size = measureText(cues[0].translation!, cues[0].fontSize!)
-    eq('底框不超过原文框的 1.25 倍宽（或到下限字号为止）', size.w <= Math.max(0.06 * 1.25, 0.18) + 1e-6 || cues[0].fontSize === 22, true)
+    eq('底框不超过原文框的 1.25 倍宽（或到下限字号为止）', size.w <= Math.max(0.3 * 1.25, 0.18) + 1e-6 || cues[0].fontSize === 22, true)
   }
   // 同屏多条：不许互相叠
   {
