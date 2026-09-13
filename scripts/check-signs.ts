@@ -311,13 +311,19 @@ console.log('\n写出：')
   const cues: Cue[] = [
     { index: 1, startMs: 5000, endMs: 7000, text: 'こんにちは', translation: '你好' },
     { index: 2, startMs: 1000, endMs: 3000, text: '営業中', translation: '营业中', kind: 'sign', pos: { x: 0.6, y: 0.3, w: 0.2, h: 0.05 }, layout: 'below', anchor: { x: 0.7, y: 0.38 }, fontSize: 40, importance: 2 },
-    { index: 3, startMs: 2000, endMs: 4000, text: 'ルール\n守ろう', translation: '规则\n要遵守', kind: 'sign', pos: { x: 0.1, y: 0.2, w: 0.3, h: 0.1 }, layout: 'box', anchor: { x: 0.25, y: 0.25 }, fontSize: 44, importance: 3 }
+    { index: 3, startMs: 2000, endMs: 4000, text: 'ルール\n守ろう', translation: '规则\n要遵守', kind: 'sign', pos: { x: 0.1, y: 0.2, w: 0.3, h: 0.1 }, layout: 'box', anchor: { x: 0.25, y: 0.25 }, fontSize: 44, plate: { x: 0.09, y: 0.19, w: 0.32, h: 0.12 }, importance: 3 }
   ]
   const ass = cuesToAss(cues, 'translated')
   eq('ASS 有 Sign / SignBox 两个样式', [ass.includes('Style: Sign,'), ass.includes('Style: SignBox,')], [true, true])
   eq('画面文字按时间排在对白前面、用 \\pos 定位', ass.indexOf('营业中') < ass.indexOf('你好') && /\\pos\(\d+,\d+\)/.test(ass), true)
   eq('盖字用 SignBox、多行换成 \\N', ass.includes('SignBox,,0,0,0,,{\\an5') && ass.includes('规则\\N要遵守'), true)
   eq('用排好的 anchor/fontSize 定位', ass.includes('\\pos(1344,410)\\fs40') && ass.includes('\\pos(480,270)\\fs44'), true)
+  // 盖字底板：单独一条绘图，画在译文那一层下面，尺寸就是排好的 plate
+  const plateLine = ass.split('\n').find((l) => l.includes('SignPlate,,'))!
+  eq('底板是一条 Layer 0 的绘图', plateLine.startsWith('Dialogue: 0,') && plateLine.includes('\\p1}m 0 0 l '), true)
+  eq('底板尺寸与位置照 plate 算', plateLine.includes('\\pos(173,205)') && plateLine.includes('m 0 0 l 614 0 l 614 130 l 0 130'), true)
+  eq('底板排在译文前面（画在底下）', ass.indexOf('SignPlate,,') < ass.indexOf('规则\\N要遵守'), true)
+  eq('不盖字的不出底板', cuesToAss([cues[1]], 'translated').includes('SignPlate,,'), false)
   const srt = cuesToSrt(cues, (c) => c.translation ?? c.text)
   eq('SRT 画面文字放顶部（{\\an8}），并按时间重新编号', srt.startsWith('1\n00:00:01,000 --> 00:00:03,000\n{\\an8}营业中'), true)
   const original = cuesToAss(cues, 'original')
