@@ -122,6 +122,33 @@ export function looksTruncated(src: string, tr: string): boolean {
  * 比标题还大，但每一行的字比标题小）——一屏字里字最大的那块是标题，标题不会是噪声。
  * 街景里一块招牌配一堆背景杂字（sign 只有一块）、或者和正文一样大的品牌 logo，都不会触发。
  */
+/**
+ * 集数标题卡、下集预告的字面标记。提示词里写了「一律是 sign 且 importance 3」，
+ * 但块数一变、条目落进不同批次，模型就可能改口——《86》第 15 集的
+ * 「Episode 15 / おかえりなさい / Welcome Back」和片尾的「次回予告」都这样丢过。
+ * 这两类是观众明确要看的，按字面认出来直接定死，不再交给模型。
+ */
+const EPISODE_CARD =
+  /(第\s*[0-9０-９一二三四五六七八九十百]+\s*[話话回集幕])|(\bEpisode\s*[0-9]+)|(\bEP\.?\s*[0-9]+\b)|(次回(予告)?)|(下集预告)|(\bNext\s+Episode\b)|(最終回)|(最终回)/i
+
+/**
+ * 认出集数/预告标记的那一块，连同同一张卡片上的其余块（标题本身、它的外语对照）
+ * 一起定成 sign 重要度 3。同一张卡片 = 同时出现。
+ */
+function promoteEpisodeCards(judged: SignJudgement[], blocks: SignBlock[]): void {
+  const byId = new Map(blocks.map((b) => [b.id, b]))
+  const marked = blocks.filter((b) => EPISODE_CARD.test(b.text))
+  for (const m of marked) {
+    for (const j of judged) {
+      const b = byId.get(j.id)
+      if (!b || b.startSec >= m.endSec || m.startSec >= b.endSec) continue
+      if (j.category !== 'sign') j.tr = ''
+      j.category = 'sign'
+      j.importance = 3
+    }
+  }
+}
+
 const lineHeight = (b: SignBlock): number => b.box.h / b.text.split('\n').length
 
 function promoteLoners(judged: SignJudgement[], blocks: SignBlock[]): void {
@@ -274,6 +301,8 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
     opts.onProgress?.(Math.round(((i + batch.length) / Math.max(1, kept.length)) * 90))
   }
 
+  // 集数标题与下集预告：不指望模型守规矩，按字面认出来直接定成重要度 3
+  promoteEpisodeCards(judged, kept)
   // 整屏文字里被漏判的那一两块，跟着同屏的其余块一起出
   promoteLoners(judged, kept)
 

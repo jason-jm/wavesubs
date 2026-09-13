@@ -212,6 +212,28 @@ console.log('\n判别对齐锚与念读兜底：')
   eq('这批没出现的术语不注入', seen[0].includes('Lehman'), false)
 }
 
+// 集数标题卡与下集预告：模型判成噪声也要定回重要度 3
+{
+  const chat = async (): Promise<string> =>
+    JSON.stringify([
+      { id: 1, src: 'Episode 15', category: 'noise', importance: 1, fixed: '', tr: '' },
+      { id: 2, src: 'おかえりなさ', category: 'noise', importance: 1, fixed: '', tr: '' },
+      { id: 3, src: '次回予告', category: 'credits', importance: 1, fixed: '', tr: '' },
+      { id: 4, src: '営業中', category: 'noise', importance: 1, fixed: '', tr: '' }
+    ])
+  const card = (id: number, text: string, start: number): SignBlock =>
+    ({ id, text, startSec: start, endSec: start + 4, frames: 4, conf: 0.9, box: { x: 0.3, y: 0.3 + id * 0.02, w: 0.3, h: 0.06 } })
+  const out = await judgeSigns(
+    [card(1, 'Episode 15', 10), card(2, 'おかえりなさい', 10), card(3, '次回予告', 100), card(4, '営業中', 200)],
+    { chat, cues: [], sourceLanguageName: 'Japanese', targetLanguageName: 'Simplified Chinese' }
+  )
+  const by = new Map(out.map((j) => [j.id, j]))
+  eq('集数标记定成重要度 3', [by.get(1)!.category, by.get(1)!.importance], ['sign', 3])
+  eq('同一张卡片上的标题也跟着定', [by.get(2)!.category, by.get(2)!.importance], ['sign', 3])
+  eq('下集预告同样', [by.get(3)!.category, by.get(3)!.importance], ['sign', 3])
+  eq('别处的招牌不受影响', by.get(4)!.category, 'noise')
+}
+
 // 一屏字里被漏判的那一块跟着出
 {
   const chat = async (): Promise<string> =>
