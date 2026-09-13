@@ -320,6 +320,27 @@ export function buildSignBlocks(
     else if (clean.length === 1 && !CJK.test(clean)) b.drop = 'single-char'
   }
 
+  // 密集小字：军用地图上的番号、书架上的一排书脊、报纸版面里的零碎小字——
+  // 一屏上二十来块、块块都很小，那是画面的纹理，不是给观众逐条读的。
+  // 只丢掉和周围一样小的；明显比周围大的那一两块留着（杂物堆里真有一块招牌时不至于连它一起丢）。
+  // 实测：军用地图 29 块 / 中位面积 0.3%，书架 16 块 / 0.9%；
+  // 手机界面 8 块 / 2.4%、菜谱封面 7 块 / 1.9%、聊天气泡都在这条线以上。
+  const CLUTTER_MIN = 10
+  const CLUTTER_AREA = 0.01
+  {
+    const area = (b: SignBlock): number => b.box.w * b.box.h
+    const times = new Set<number>()
+    for (const b of blocks) if (!b.drop) for (let t = Math.floor(b.startSec); t < b.endSec; t += 1) times.add(t)
+    for (const t of times) {
+      const on = blocks.filter((b) => !b.drop && b.startSec <= t && t < b.endSec)
+      if (on.length < CLUTTER_MIN) continue
+      const sorted = on.map(area).sort((x, y) => x - y)
+      const median = sorted[Math.floor(sorted.length / 2)]
+      if (median >= CLUTTER_AREA) continue
+      for (const b of on) if (area(b) < median * 3) b.drop = 'clutter'
+    }
+  }
+
   // 台标/水印：同一段字在同一位置累计出现太久（≥ 2 分钟且 ≥ 全片 8%）——电视台 logo、频道水印、播放器 UI
   const filmSec = Math.max(1, ...frames.map((f) => (f.i + 1) / fps))
   const total = new Map<string, number>()

@@ -97,6 +97,29 @@ console.log('\n语种采样窗口：')
   eq('没有人声就没有窗口', pickDetectionWindows([], 3600).length, 0)
 }
 
+console.log('\n密集小字：')
+{
+  // 军用地图：同屏十几块小标注，整片丢掉；里面真有一块大招牌的话留着
+  const small = (i: number): OcrBox => box(`第${i}大队`, 0.1 + (i % 5) * 0.15, 0.2 + Math.floor(i / 5) * 0.12, 0.06, 0.025)
+  const mapFrames: OcrFrame[] = []
+  for (let f = 0; f < 6; f += 1) {
+    const boxes = Array.from({ length: 14 }, (_, i) => small(i))
+    boxes.push(box('作戦司令部', 0.35, 0.75, 0.3, 0.09))
+    mapFrames.push({ i: f, boxes })
+  }
+  const map = buildSignBlocks(mapFrames, 1, null).blocks
+  eq('地图上的小标注整片丢掉', map.filter((b) => b.drop === 'clutter').length >= 14, true)
+  eq('里面明显更大的那块留着', map.find((b) => b.text === '作戦司令部')?.drop, undefined)
+
+  // 聊天气泡：块数不多、每块都不小，一块都不许丢
+  const chatFrames: OcrFrame[] = []
+  for (let f = 0; f < 6; f += 1) {
+    chatFrames.push({ i: f, boxes: Array.from({ length: 6 }, (_, i) => box(`気泡${i}です`, 0.3, 0.08 + i * 0.13, 0.36, 0.07)) })
+  }
+  const chat = buildSignBlocks(chatFrames, 1, null).blocks
+  eq('聊天气泡不算密集小字', chat.filter((b) => b.drop === 'clutter').length, 0)
+}
+
 console.log('\n台标/水印：')
 {
   // 30 分钟的片，右上角 WOWOW 一直在（断断续续 20 分钟），中间偶尔有招牌
