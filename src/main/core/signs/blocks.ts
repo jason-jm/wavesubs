@@ -79,6 +79,14 @@ const LATIN_NAME = /^[A-Z][a-z]+(?: [A-Z][a-z]+){1,2}$/
 const ALLCAPS = /^[A-Z][A-Z .'&-]{3,}$/
 /** 日文/中文/韩文的人名写法：姓和名之间留一个空格（「高橋 聰」「入野 自由」），名单里一整排都长这样 */
 const CJK_NAME = /^[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}ー]{1,5}[ 　]+[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}ー]{1,5}$/u
+/** 光秃秃一个名字的样子：两到十二个字，没有数字、没有标点（「→」是 OCR 把「一」读坏的常客） */
+const BARE_NAME = /^[\p{Script=Han}\p{Script=Katakana}\p{Script=Hiragana}\p{Script=Hangul}\p{Script=Latin}ー・·→←\-–—.　 ]{2,12}$/u
+/** 助词、句末标点：有这些就是一句话，不是名字 */
+const SENTENCE = /(の|は|を|が|に|へ|と|で|も|から|まで|って|です|ます|した)|[。！？、「」『』…]/
+const isNameLine = (t: string): boolean => {
+  const s = t.trim()
+  return s !== '' && BARE_NAME.test(s) && !SENTENCE.test(s)
+}
 
 /**
  * 名单时段：10 秒滑窗里「含职位词的帧」≥40% 的时段整段算名单（片头名单一次只出一两个名字，
@@ -110,6 +118,25 @@ export function creditWindows(frames: OcrFrame[], fps: number): Array<[number, n
       for (const k of [i - 1, i + 1]) if (k >= 0 && k <= maxI && !dense.has(k) && nameFrame.get(k)) dense.add(k)
     }
   }
+  /**
+   * 声優表：片尾里「角色名／声優名」成排出现的那一段，一个职位词都没有，密度规则看不见它。
+   * 从已经认出来的名单时段往外一秒一秒长：这一帧得有字、过半是光秃秃的名字、而且一句话都没有。
+   * 碰到「次回 正義の在処」这种带助词的预告标题就停——预告标题是要给观众看的。
+   */
+  const lineOf = new Map<number, string[]>()
+  for (const f of frames) lineOf.set(f.i, f.boxes.flatMap((b) => b.t.split('\n')))
+  const castFrame = (i: number): boolean => {
+    const lines = lineOf.get(i) ?? []
+    if (lines.length === 0) return false
+    // 得整帧都是名字才算：只要混进一行别的（台词、店名、带数字的标题），就停在这儿
+    return lines.every(isNameLine)
+  }
+  for (let pass = 0; pass < 60; pass += 1) {
+    for (const i of [...dense]) {
+      for (const k of [i - 1, i + 1]) if (k >= 0 && k <= maxI && !dense.has(k) && castFrame(k)) dense.add(k)
+    }
+  }
+
   const windows: Array<[number, number]> = []
   let start = -1
   for (let i = 0; i <= maxI + 1; i += 1) {
