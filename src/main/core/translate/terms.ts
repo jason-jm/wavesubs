@@ -17,6 +17,12 @@ import type { Cue } from '../subtitle/types'
  */
 const KATAKANA_RUN = /[ァ-ヺー]{4,}/g
 const LATIN_MIDSENTENCE = /(?<=[a-z,]\s)[A-Z][A-Za-z]{3,}\b/g
+/**
+ * 全大写的词也算专名候选，不看位置：纪录片的人物名牌整行都是大写
+ *（「ELIOT SPITZER」），按句中大写找的话一个都找不到。
+ * 常用词偶尔也会全大写（LENDERS、CRISIS），但统一只改「差一个音译字」的写法，够不着它们。
+ */
+const LATIN_ALLCAPS = /\b[A-Z]{4,}\b/g
 /** 译名只认汉字串：夹了标点、数字、假名的都不是一个名字 */
 const HAN_RUN = /[一-鿿]{2,8}/g
 /**
@@ -105,7 +111,11 @@ export function unifyTerms(cues: Cue[]): Fix[] {
   for (const c of cues) {
     const tr = c.translation?.trim()
     if (!tr) continue
-    const terms = new Set([...(c.text.match(KATAKANA_RUN) ?? []), ...(c.text.match(LATIN_MIDSENTENCE) ?? [])])
+    const terms = new Set([
+      ...(c.text.match(KATAKANA_RUN) ?? []),
+      ...(c.text.match(LATIN_MIDSENTENCE) ?? []),
+      ...(c.text.match(LATIN_ALLCAPS) ?? [])
+    ])
     for (const t of terms) {
       const list = byTerm.get(t) ?? []
       list.push(c)

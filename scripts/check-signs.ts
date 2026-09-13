@@ -62,15 +62,19 @@ console.log('\n名单时段与烧录字幕带：')
   {
     // 片尾：声優表在前、几秒空白、然后才是有职位词的制作名单。
     // 空白不该把扩边卡住；再往前的预告标题（带助词、标点）必须停住
+    // 按真实比例排：24 分钟一集，片尾名单在九成处，声優表在它前面、中间隔着换页的空白
     const roll: OcrFrame[] = []
-    for (let i = 0; i < 6; i += 1) roll.push({ i, boxes: [box('次回 正義の在処', 0.3, 0.4, 0.4, 0.05)] })
-    for (let i = 6; i < 14; i += 1) roll.push({ i, boxes: [box('衛宮切嗣\nシャーレイ', 0.3, 0.4, 0.3, 0.09)] })
-    for (let i = 14; i < 20; i += 1) roll.push({ i, boxes: [] })
-    for (let i = 20; i < 40; i += 1) roll.push({ i, boxes: [box('監督 山田太郎', 0.3, 0.4, 0.4, 0.05)] })
+    for (let i = 0; i < 200; i += 1) roll.push({ i, boxes: [] })
+    const put = (a: number, b: number, bx: OcrBox): void => { for (let i = a; i < b; i += 1) roll[i] = { i, boxes: [bx] } }
+    put(60, 70, box('店の看板です', 0.3, 0.4, 0.3, 0.05))          // 片中的招牌，离片尾远
+    put(168, 172, box('次回 正義の在処', 0.3, 0.4, 0.4, 0.05))     // 预告标题，带助词
+    put(172, 178, box('衛宮切嗣\nシャーレイ', 0.3, 0.4, 0.3, 0.09)) // 声優表
+    put(184, 200, box('監督 山田太郎', 0.3, 0.4, 0.4, 0.05))        // 有职位词的制作名单
     const w = creditWindows(roll, 1)
     const covered = (t: number): boolean => w.some(([a, b]) => a <= t && t < b)
-    eq('空白帧不把名单扩边卡住，声優表一并算进名单', covered(8), true)
-    eq('再往前的预告标题停住、不算名单', covered(2), false)
+    eq('空白帧不把名单扩边卡住，声優表一并算进名单', covered(174), true)
+    eq('带助词的预告标题停住、不算名单', covered(169), false)
+    eq('片中的招牌不受影响', covered(65), false)
   }
   const regions = [{ startMs: 15000, endMs: 40000 }]
   const { blocks, band } = buildSignBlocks(frames, 1, regions)

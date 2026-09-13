@@ -123,6 +123,10 @@ export function creditWindows(frames: OcrFrame[], fps: number): Array<[number, n
    * 从已经认出来的名单时段往外一秒一秒长，整帧每一行都是光秃秃的名字才继续。
    * 中间几秒没字是正常的（名单在换页），最多跨过 GAP_FRAMES 帧空白接着找；
    * 一碰到带助词或标点的行就停——「次回 正義の在処」「第2回「佐殿の腹」」是要给观众看的预告标题。
+   *
+   * 只在片头片尾一成五的范围内扩：纪录片的人物名牌写着「Chief Economist」「Managing Director」，
+   * 职位词密度规则本来就会在片中误判出一堆名单时段，再往外扩就会把名牌本身吃掉
+   *（《监守自盗》实测覆盖从 1941 秒涨到 2476 秒，保留块数 1254 → 953）。
    */
   const lineOf = new Map<number, string[]>()
   for (const f of frames) lineOf.set(f.i, f.boxes.flatMap((b) => b.t.split('\n')))
@@ -133,10 +137,13 @@ export function creditWindows(frames: OcrFrame[], fps: number): Array<[number, n
   }
   const blankFrame = (i: number): boolean => (lineOf.get(i) ?? []).length === 0
   const GAP_FRAMES = 6
+  const HEAD_TAIL = 0.15
+  const nearEdge = (i: number): boolean => i <= maxI * HEAD_TAIL || i >= maxI * (1 - HEAD_TAIL)
   for (const edge of [...dense]) {
+    if (!nearEdge(edge)) continue
     for (const dir of [-1, 1]) {
       let gap = 0
-      for (let k = edge + dir; k >= 0 && k <= maxI; k += dir) {
+      for (let k = edge + dir; k >= 0 && k <= maxI && nearEdge(k); k += dir) {
         if (castFrame(k)) {
           gap = 0
         } else if (blankFrame(k) && gap < GAP_FRAMES) {
