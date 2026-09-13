@@ -112,6 +112,41 @@ export function looksTruncated(src: string, tr: string): boolean {
   return su >= 6 && contentUnits(tr) < su * 0.45
 }
 
+/**
+ * 一屏字里被漏判的那一两块，跟着同屏的其余块走。
+ *
+ * 露营须知卡上四块字，三块判了 sign，只有最大的标题「キャンプを楽しむときは...」因为带省略号、
+ * 看着像半句话被判成噪声——观众看到的是一整屏字里独独标题没译文，只会当成软件坏了。
+ * 两个条件一起卡：同时出现的块里过半都是 sign（说明这一屏本来就是给观众读的），
+ * 而且这一块比周围的正文还大——一屏字里最大的那块是标题，标题不会是噪声。
+ * 街景里一块招牌配一堆背景杂字（sign 只有一块）、或者和正文一样大的品牌 logo，都不会触发。
+ */
+function promoteLoners(judged: SignJudgement[], blocks: SignBlock[]): void {
+  const byId = new Map(blocks.map((b) => [b.id, b]))
+  const isSign = (j: SignJudgement): boolean => j.category === 'sign' && j.importance >= 2
+  for (const j of judged) {
+    if (j.category !== 'noise') continue
+    const b = byId.get(j.id)
+    if (!b) continue
+    let others = 0
+    const signAreas: number[] = []
+    for (const o of judged) {
+      if (o === j) continue
+      const ob = byId.get(o.id)
+      if (!ob || ob.startSec >= b.endSec || b.startSec >= ob.endSec) continue
+      others += 1
+      if (isSign(o)) signAreas.push(ob.box.w * ob.box.h)
+    }
+    if (signAreas.length < 2 || signAreas.length < others / 2) continue
+    const sorted = [...signAreas].sort((x, y) => x - y)
+    const median = sorted[Math.floor(sorted.length / 2)]
+    if (b.box.w * b.box.h < median * 1.3) continue
+    j.category = 'sign'
+    j.importance = 2
+    j.tr = ''
+  }
+}
+
 /** 图表上的圆点、箭头被 OCR 当成文字读进来的痕迹 */
 const LEAD_GLYPH = /^[\s•·▪●◦‣▶►▸→←⇒–—\-*+=|]+/
 /**
@@ -231,6 +266,9 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
     }
     opts.onProgress?.(Math.round(((i + batch.length) / Math.max(1, kept.length)) * 90))
   }
+
+  // 整屏文字里被漏判的那一两块，跟着同屏的其余块一起出
+  promoteLoners(judged, kept)
 
   // 补译：判为 sign 却没给译文的（含念读兜底的、译文残留源语言被清掉的）
   const missing = judged.filter((j) => j.category === 'sign' && !j.tr.trim())

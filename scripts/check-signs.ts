@@ -137,6 +137,37 @@ console.log('\n判别对齐锚与念读兜底：')
   eq('这批没出现的术语不注入', seen[0].includes('Lehman'), false)
 }
 
+// 一屏字里被漏判的那一块跟着出
+{
+  const chat = async (): Promise<string> =>
+    JSON.stringify([
+      { id: 1, src: 'キャンプを楽', category: 'noise', importance: 1, fixed: '', tr: '' },
+      { id: 2, src: 'ルールを必ず', category: 'sign', importance: 2, fixed: '', tr: '一定要遵守规则' },
+      { id: 3, src: '冬の野外は寒', category: 'sign', importance: 2, fixed: '', tr: '冬天野外很冷' },
+      { id: 4, src: '野外活動サー', category: 'sign', importance: 2, fixed: '', tr: '户外活动社团' }
+    ])
+  const card: SignBlock[] = [
+    { id: 1, text: 'キャンプを楽しむときは...', startSec: 1, endSec: 6, frames: 5, conf: 1, box: { x: 0.2, y: 0.05, w: 0.6, h: 0.11 } },
+    { id: 2, text: 'ルールを必ず守り', startSec: 1, endSec: 6, frames: 5, conf: 0.9, box: { x: 0.1, y: 0.3, w: 0.3, h: 0.06 } },
+    { id: 3, text: '冬の野外は寒いので', startSec: 1, endSec: 6, frames: 5, conf: 0.9, box: { x: 0.1, y: 0.65, w: 0.3, h: 0.06 } },
+    { id: 4, text: '野外活動サークル', startSec: 1, endSec: 6, frames: 5, conf: 0.9, box: { x: 0.75, y: 0.9, w: 0.2, h: 0.05 } }
+  ]
+  const out = await judgeSigns(card, { chat, cues: [], sourceLanguageName: 'Japanese', targetLanguageName: 'Simplified Chinese' })
+  eq('一屏字里被漏判的标题跟着出', out.find((j) => j.id === 1)?.category, 'sign')
+  // 街景：只有一块招牌，旁边一堆背景杂字，不该把杂字也拉进来
+  const street: SignBlock[] = [
+    { id: 1, text: '営業中', startSec: 1, endSec: 6, frames: 5, conf: 0.9, box: { x: 0.4, y: 0.3, w: 0.1, h: 0.05 } },
+    ...[2, 3, 4, 5].map((id) => ({ id, text: `杂字${id}`, startSec: 1, endSec: 6, frames: 5, conf: 0.5, box: { x: 0.1 * id, y: 0.7, w: 0.06, h: 0.03 } }))
+  ]
+  const streetChat = async (): Promise<string> =>
+    JSON.stringify([
+      { id: 1, src: '営業中', category: 'sign', importance: 2, fixed: '', tr: '营业中' },
+      ...[2, 3, 4, 5].map((id) => ({ id, src: `杂字${id}`, category: 'noise', importance: 1, fixed: '', tr: '' }))
+    ])
+  const out2 = await judgeSigns(street, { chat: streetChat, cues: [], sourceLanguageName: 'Japanese', targetLanguageName: 'Simplified Chinese' })
+  eq('街景里的背景杂字不会被带出来', out2.filter((j) => j.category === 'sign').length, 1)
+}
+
 console.log('\n译文残留判定：')
 eq('整句照抄的日文算没翻', leftoverScript('リン 今週はどこ行ってんの', 'Simplified Chinese'), true)
 eq('带片假名专名的中文译文是对的', leftoverScript('欢迎来到野クル！', 'Simplified Chinese'), false)
