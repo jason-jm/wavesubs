@@ -77,6 +77,8 @@ export function groupLines(boxes: OcrBox[]): OcrBox[] {
 const CREDIT_VOCAB = /監督|演出|作画|撮影|制作|製作|協力|プロデュース|プロデューサー|脚本|音楽|編集|美術|色彩|原作|音響|録音|効果|仕上|背景|設計|デザイン|キャラクター|アニメーション|主題歌|挿入歌|作詞|作曲|編曲|出演|配給|宣伝|著作|©(?=.{4,})|株式会社|Co\.,? ?Ltd|Inc\.|Executive|Producer|Produced|Director|Animation|Studio|Design|Music|Editor|Photography|Sound|Written|Created|Presents|Production|Cast|Starring|Copyright|Screenplay|Composer|Supervis|Opening Theme|Ending Theme|Theme Song|Lyrics|Arrangement|Vocal|Performed|Original Story|Script|Key Animation|Background Art|Color Design|Recording|Mixing|Assistant|Chief|导演|监制|编剧|摄影|剪辑|美术|配乐|制片|出品|发行|主演|领衔主演|友情出演|演员表|감독|각본|촬영|편집|음악|제작|출연/i
 const LATIN_NAME = /^[A-Z][a-z]+(?: [A-Z][a-z]+){1,2}$/
 const ALLCAPS = /^[A-Z][A-Z .'&-]{3,}$/
+/** 日文/中文/韩文的人名写法：姓和名之间留一个空格（「高橋 聰」「入野 自由」），名单里一整排都长这样 */
+const CJK_NAME = /^[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}ー]{1,5}[ 　]+[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}ー]{1,5}$/u
 
 /**
  * 名单时段：10 秒滑窗里「含职位词的帧」≥40% 的时段整段算名单（片头名单一次只出一两个名字，
@@ -88,7 +90,10 @@ export function creditWindows(frames: OcrFrame[], fps: number): Array<[number, n
   const nameFrame = new Map<number, boolean>()
   for (const f of frames) {
     roleFrame.set(f.i, f.boxes.some((b) => CREDIT_VOCAB.test(b.t)))
-    nameFrame.set(f.i, f.boxes.some((b) => LATIN_NAME.test(b.t.trim()) || ALLCAPS.test(b.t.trim())))
+    nameFrame.set(
+      f.i,
+      f.boxes.some((b) => LATIN_NAME.test(b.t.trim()) || ALLCAPS.test(b.t.trim()) || CJK_NAME.test(b.t.trim()))
+    )
   }
   const maxI = Math.max(...frames.map((f) => f.i))
   const win = Math.max(1, Math.round(10 * fps))
@@ -98,7 +103,9 @@ export function creditWindows(frames: OcrFrame[], fps: number): Array<[number, n
     for (let k = i; k < i + win && k <= maxI; k += 1) if (roleFrame.get(k)) c += 1
     if (c >= 0.3 * win) for (let k = i; k < i + win && k <= maxI; k += 1) dense.add(k)
   }
-  for (let pass = 0; pass < 3; pass += 1) {
+  // 一次往外长一帧，长到相邻帧不再是人名为止。名单滚动时职位词会有十几秒的空档（一整屏都是演员名），
+  // 只长三帧的话缝里的名字会被当成画面文字译出来
+  for (let pass = 0; pass < 40; pass += 1) {
     for (const i of [...dense]) {
       for (const k of [i - 1, i + 1]) if (k >= 0 && k <= maxI && !dense.has(k) && nameFrame.get(k)) dense.add(k)
     }
@@ -197,6 +204,24 @@ export function trackBlocks(frames: OcrFrame[], fps: number): SignBlock[] {
 }
 
 /** 整条流水线：分组 → 跟踪 → 名单/置信度/闪现 → 人声重叠 → 烧录字幕带 */
+/**
+ * 去掉颜文字。短信、聊天气泡里的 (´ｪ｀)、(*´ｪ｀)ノシ 被 OCR 读成一串怪符号，
+ * 模型会当成人名硬译出来（「艾莉」「艾莉诺诗」），还带出一堆不配对的括号。
+ * 认括号里带颜文字专用符号的短串——(FOB13)、(金) 这种不带符号的正常括号不动。
+ */
+const KAOMOJI_MARK = /[*＊´｀'’”"^＾~〜ωДд・･ﾟ゚°_;；∀☆★＞＜><\\\/|｜]/
+export function stripKaomoji(text: string): string {
+  const out = text
+    .replace(/[(（][^()（）\n]{0,12}[)）]?[ノシﾉｼっッ~〜ー\s]*/g, (m) => (KAOMOJI_MARK.test(m) ? '' : m))
+    .replace(/[ \t]{2,}/g, ' ')
+  return out
+    .split('\n')
+    .map((l) => l.trim())
+    .filter((l, i, a) => l !== '' || (i > 0 && i < a.length - 1))
+    .join('\n')
+    .trim()
+}
+
 export function buildSignBlocks(
   frames: OcrFrame[],
   fps: number,
@@ -207,6 +232,7 @@ export function buildSignBlocks(
   const blocks = trackBlocks(grouped, fps)
 
   for (const b of blocks) {
+    b.text = stripKaomoji(b.text)
     const clean = norm(b.text)
     const dur = b.endSec - b.startSec
     const inCredits = credits.some(([s, e]) => Math.min(b.endSec, e) - Math.max(b.startSec, s) >= 0.7 * dur)

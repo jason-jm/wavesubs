@@ -32,7 +32,8 @@ Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour,
 Style: Default,PingFang SC,70,&H00FFFFFF,&H000000FF,&H00101010,&H80000000,0,0,0,0,100,100,0,0,1,3,1,2,60,60,45,1
 Style: Orig,Helvetica,46,&H00C8C8C8,&H000000FF,&H00101010,&H80000000,0,0,0,0,100,100,0,0,1,2,1,2,60,60,45,1
 Style: Sign,PingFang SC,40,&H00F5F5F5,&H000000FF,&H00202020,&H80000000,-1,0,0,0,100,100,0,0,1,2,1,5,20,20,20,1
-Style: SignBox,PingFang SC,40,&H00FFFFFF,&H000000FF,&H00000000,&H50000000,-1,0,0,0,100,100,0,0,3,6,0,5,20,20,20,1
+Style: SignBox,PingFang SC,40,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,0,0,5,20,20,20,1
+Style: SignPlate,PingFang SC,40,&H14101010,&H000000FF,&H14101010,&H14101010,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -54,13 +55,32 @@ function signDialogue(cue: Cue, text: string): string {
   return `Dialogue: 1,${formatAssTime(cue.startMs)},${formatAssTime(cue.endMs)},${style},,0,0,0,,{\\an5\\pos(${x},${y})\\fs${fs}}${text}`
 }
 
+/**
+ * 盖字的底板：画一块几乎不透明的深色矩形，把原文整块压住。
+ * 光靠文字自己的背景框只盖得住文字那一小条，原文会从左右露出来（尤其白字黑底的字幕卡）。
+ */
+function signPlate(cue: Cue): string | null {
+  const r = cue.plate
+  if (!r || (cue.layout ?? 'below') !== 'box') return null
+  const w = Math.round(r.w * PLAY_W)
+  const h = Math.round(r.h * PLAY_H)
+  const x = Math.round(r.x * PLAY_W)
+  const y = Math.round(r.y * PLAY_H)
+  const draw = `m 0 0 l ${w} 0 l ${w} ${h} l 0 ${h}`
+  return `Dialogue: 0,${formatAssTime(cue.startMs)},${formatAssTime(cue.endMs)},SignPlate,,0,0,0,,{\\an7\\pos(${x},${y})\\p1}${draw}{\\p0}`
+}
+
 export function cuesToAss(cues: Cue[], content: ExportContent): string {
   const lines: string[] = [ASS_HEADER]
   for (const cue of orderForOutput(cues)) {
     if (cue.kind === 'sign') {
       // 画面文字：原文就在画面上，双语时也只出译文
       const signText = content === 'original' ? escapeAssText(cue.text.trim()) : escapeAssText((cue.translation ?? '').trim()) || escapeAssText(cue.text.trim())
-      if (signText) lines.push(signDialogue(cue, signText))
+      if (signText) {
+        const plate = signPlate(cue)
+        if (plate) lines.push(plate)
+        lines.push(signDialogue(cue, signText))
+      }
       continue
     }
     const original = escapeAssText(cue.text.trim())

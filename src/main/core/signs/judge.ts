@@ -96,6 +96,19 @@ export function looksTruncated(src: string, tr: string): boolean {
   return su >= 6 && contentUnits(tr) < su * 0.45
 }
 
+/** 图表上的圆点、箭头被 OCR 当成文字读进来的痕迹 */
+const LEAD_GLYPH = /^[\s•·▪●◦‣▶►▸→←⇒–—\-*+=|]+/
+/**
+ * 收拾译文里的 OCR 残渣：开头凭空多出来的圆点箭头（原文没有的才去，原文本来就是项目符号的留着）、
+ * 结尾被截断留下的一个孤零零的西文字母。
+ */
+export function tidyTranslation(tr: string, src: string): string {
+  let out = tr
+  if (!LEAD_GLYPH.test(src)) out = out.replace(LEAD_GLYPH, '')
+  out = out.replace(/[，,、。；;：:\s]+[A-Za-z]$/, '')
+  return out.trim()
+}
+
 export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promise<SignJudgement[]> {
   const kept = blocks.filter((b) => !b.drop)
   const cues = opts.cues
@@ -168,7 +181,7 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
       // fixed 只认「修正后的原文」：模型常把译文写进去，与 OCR 文本不像的一律不要
       const fixedRaw = str(j?.fixed).trim()
       const fixed = fixedRaw && textSimilarity(fixedRaw, b.text) >= 0.4 ? fixedRaw : ''
-      let tr = str(j?.tr).trim()
+      let tr = tidyTranslation(str(j?.tr).trim(), b.text)
       // 没翻、只译了开头一截、译文残留源语言、或把原文整个抄了进来 ⇒ 清掉让补译那一轮重来
       const source = fixed || b.text
       if (
@@ -214,7 +227,7 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
         const j = judged.find((x) => x.id === Number(o.id))
         if (!j || j.tr.trim()) continue
         const src = j.fixed || byId.get(j.id)!.text
-        const tr = str(o.tr).trim()
+        const tr = tidyTranslation(str(o.tr).trim(), src)
         // 还是没翻（残留假名、或把原文/台词抄了进来）就宁可空着出原文，也不出垃圾
         if (!tr || leftoverScript(tr, opts.targetLanguageName) || (norm(src).length >= 4 && norm(tr).includes(norm(src)))) continue
         j.tr = tr

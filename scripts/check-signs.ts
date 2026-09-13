@@ -2,7 +2,7 @@
  * 画面文字模块自检：几何与统计规则（分组 / 跟踪 / 名单时段 / 烧录字幕带）、判别对齐锚、排版取舍、写出格式。
  * 全部用合成数据，不跑 OCR 也不跑模型；判别用假 chat 模拟 8B 的串行毛病。
  */
-import { buildSignBlocks, creditWindows, dialogueLinesAt, dialogueSafeBottom, groupLines, judgeSigns, leftoverScript, measureText, signsToCues, trackBlocks, textSimilarity, wrapToWidth } from '../src/main/core/signs'
+import { buildSignBlocks, stripKaomoji, creditWindows, dialogueLinesAt, dialogueSafeBottom, groupLines, judgeSigns, leftoverScript, measureText, tidyTranslation, signsToCues, trackBlocks, textSimilarity, wrapToWidth } from '../src/main/core/signs'
 import type { OcrBox, OcrFrame, SignBlock, SignJudgement } from '../src/main/core/signs'
 import { cuesToAss } from '../src/main/core/subtitle/ass'
 import { cuesToSrt } from '../src/main/core/subtitle/srt'
@@ -124,6 +124,21 @@ eq('整句照抄的日文算没翻', leftoverScript('リン 今週はどこ行�
 eq('带片假名专名的中文译文是对的', leftoverScript('欢迎来到野クル！', 'Simplified Chinese'), false)
 eq('目标是日语时不判', leftoverScript('ようこそ', 'Japanese'), false)
 
+console.log('\n译文收尾：')
+{
+  eq('图表上被读成文字的圆点箭头去掉', tidyTranslation('•–2007 房价 194%', '2007 HOME PRICES 194%'), '2007 房价 194%')
+  eq('原文本来就是项目符号的留着', tidyTranslation('• 仅使用一名评估师', '• Exclusive use of one appraiser'), '• 仅使用一名评估师')
+  eq('结尾被截断的孤零零一个字母去掉', tidyTranslation('AIGFP及一名量化风险专家，M', 'AIGFP and a quantitative risk expert, M'), 'AIGFP及一名量化风险专家')
+}
+
+console.log('\n颜文字：')
+{
+  eq('聊天气泡里的颜文字被去掉', stripKaomoji('撮ったら送ってねー(*´ｪ`)ノシ'), '撮ったら送ってねー')
+  eq('OCR 读坏的颜文字（括号没闭合）也去掉', stripKaomoji('買ってきてねー（*”エリノシ'), '買ってきてねー')
+  eq('正常括号不动', stripKaomoji('ギアーデ連邦 第13号前進基地(FOB13)'), 'ギアーデ連邦 第13号前進基地(FOB13)')
+  eq('日期里的星期不动', stripKaomoji('2048年01月24日（金）'), '2048年01月24日（金）')
+}
+
 console.log('\n排版与取舍：')
 {
   function mk(id: number, text: string, y: number, h: number, start = 0, end = 5, w = 0.3): SignBlock {
@@ -190,6 +205,17 @@ console.log('\n排版与取舍：')
   {
     eq('英文照抄的不出', signsToCues([mk(1, 'OUTDOOR COOKING', 0.3, 0.05)], [sign(1, 'OUTDOOR COOKING')]).length, 0)
     eq('压根没翻的不出', signsToCues([mk(1, '営業中', 0.3, 0.05)], [sign(1, '')]).length, 0)
+    // 日剧人名字幕、中文片源的片名，译过去只是简繁转写：等于把同一行字写两遍
+    eq('只做了简繁转写的不出', signsToCues([mk(1, '北条義時', 0.3, 0.05)], [sign(1, '北条义时')]).length, 0)
+    eq('繁体中文片名不出', signsToCues([mk(1, '赤壁之戰', 0.3, 0.05)], [sign(1, '赤壁之战')]).length, 0)
+    eq('日本新字体不算照抄（営不是汉字）', signsToCues([mk(1, '営業中', 0.3, 0.05)], [sign(1, '营业中')]).length, 1)
+    eq('真译出来的照出', signsToCues([mk(1, '鎌倉殿の13人', 0.3, 0.05)], [sign(1, '镰仓殿的13人')]).length, 1)
+  }
+  // 这段字正被念出来、底下的对白字幕已经写着同一句：画面上不再写一遍
+  {
+    const speech = [{ startMs: 0, endMs: 5000, text: '', translation: '你所在的营地放了熊和老虎' }]
+    eq('和对白重复的画面文字不出', signsToCues([mk(1, '貴様のいるキャンプ場に熊とトラを放った', 0.3, 0.05)], [sign(1, '你所在的营地放了熊和老虎')], { speech }).length, 0)
+    eq('内容不同的照出', signsToCues([mk(1, '営業中', 0.3, 0.05)], [sign(1, '营业中')], { speech }).length, 1)
   }
   // 底部的招牌 + 同时有两行对白：必须避开对白占用的高度
   {

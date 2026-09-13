@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import type { ExportContent, ExportFormat, RecordView } from '../../../shared/types'
 import { useT } from '../i18n'
 import { Icon } from '../components/Icon'
@@ -364,10 +364,20 @@ export function EditorView(props: Props): React.JSX.Element {
               transform: 'translate(-50%, -50%)',
               fontSize: `${((s.fontSize ?? 40) / 1080) * 100}cqh`
             }
+            // 盖字的底板是单独一块，要把整块原文压住，不能只包住译文那一条
+            const plate = s.layout === 'box' && s.plate ? s.plate : null
             return (
-              <div key={k} className={s.layout === 'box' ? 'editor-sign-overlay editor-sign-box' : 'editor-sign-overlay'} style={style}>
-                {s.translation || s.text}
-              </div>
+              <Fragment key={k}>
+                {plate && (
+                  <div
+                    className="editor-sign-plate"
+                    style={{ left: `${plate.x * 100}%`, top: `${plate.y * 100}%`, width: `${plate.w * 100}%`, height: `${plate.h * 100}%` }}
+                  />
+                )}
+                <div className={s.layout === 'box' ? 'editor-sign-overlay editor-sign-box' : 'editor-sign-overlay'} style={style}>
+                  {s.translation || s.text}
+                </div>
+              </Fragment>
             )
           })}
           <audio

@@ -19,6 +19,8 @@ export interface Cue {
   anchor?: { x: number; y: number }
   /** 译文字号，按 1080p 计 */
   fontSize?: number
+  /** 盖字时要铺的底板（归一化）：至少盖住原文那一块，不然原文会从译文旁边露出来 */
+  plate?: { x: number; y: number; w: number; h: number }
   /** 画面文字重要度 1–3 */
   importance?: number
 }
