@@ -155,6 +155,21 @@ console.log('\n颜文字：')
   eq('OCR 读坏的颜文字（括号没闭合）也去掉', stripKaomoji('買ってきてねー（*”エリノシ'), '買ってきてねー')
   eq('正常括号不动', stripKaomoji('ギアーデ連邦 第13号前進基地(FOB13)'), 'ギアーデ連邦 第13号前進基地(FOB13)')
   eq('日期里的星期不动', stripKaomoji('2048年01月24日（金）'), '2048年01月24日（金）')
+  eq('括号里是正经内容的不动', stripKaomoji('PLUTO (dwarf planet)'), 'PLUTO (dwarf planet)')
+}
+
+console.log('\n抖动合并：')
+{
+  // 同一块招牌被 OCR 每帧读得不太一样：跟踪时按相似度卡不住，收尾要并回一块
+  const f = (i: number, t: string, y = 0.30): OcrFrame => ({ i, boxes: [box(t, 0.3, y, 0.3, 0.05)] })
+  const merged = trackBlocks(
+    [f(0, 'СКОРАЯ МЕДИЦИНСКАЯ ПОМОЩЬ'), f(1, 'СКОРАЯ МЕДИЦИНСКАЯ ПОМОЩЬ'), f(2, 'СКОРАЯ МЕДИЦИНСКАЯ'), f(3, 'СКОРАЯ МЕДИЦИНСКАЯ ПОМОЩЬ')],
+    1
+  )
+  eq('读法抖动的并成一块', merged.length, 1)
+  eq('留读得最稳的那份文本', merged[0].text, 'СКОРАЯ МЕДИЦИНСКАЯ ПОМОЩЬ')
+  const apart = trackBlocks([f(0, '営業中'), f(1, '営業中'), f(20, '準備中'), f(21, '準備中')], 1)
+  eq('内容不同的不并', apart.length, 2)
 }
 
 console.log('\n排版与取舍：')

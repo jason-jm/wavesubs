@@ -191,7 +191,7 @@ export function trackBlocks(frames: OcrFrame[], fps: number): SignBlock[] {
     }
   }
   done.push(...live)
-  return done.sort((a, b) => a.startSec - b.startSec).map((L) => {
+  return mergeJitter(done.sort((a, b) => a.startSec - b.startSec).map((L) => {
     const tally = new Map<string, number>()
     for (const o of L.occ) tally.set(o.t, (tally.get(o.t) ?? 0) + o.c)
     const text = [...tally.entries()].sort((a, b) => b[1] - a[1])[0][0]
@@ -200,7 +200,40 @@ export function trackBlocks(frames: OcrFrame[], fps: number): SignBlock[] {
       conf: L.occ.reduce((n, o) => n + o.c, 0) / L.occ.length,
       box: { x: median(L.occ.map((o) => o.x)), y: median(L.occ.map((o) => o.y)), w: median(L.occ.map((o) => o.w)), h: median(L.occ.map((o) => o.h)) }
     }
-  })
+  }))
+}
+
+/**
+ * 同一块字被 OCR 每帧读得不太一样（「СКОРАЯ МЕДИЦИНСКАЯ」一会儿少一个词、招牌被人挡住半秒），
+ * 跟踪时按文本相似度 0.6 卡不住，就被拆成好几块：观众看到的是同一块招牌的译名一跳一跳地换。
+ * 收尾再并一次：位置基本重合、前后挨着、文字八成像，就当同一块，留读得更稳的那份文本。
+ */
+function mergeJitter(blocks: SignBlock[]): SignBlock[] {
+  const out: SignBlock[] = []
+  for (const b of blocks) {
+    const prev = out.find((m) => {
+      if (b.startSec - m.endSec > 2 || b.startSec < m.startSec) return false
+      const ix = Math.max(0, Math.min(m.box.x + m.box.w, b.box.x + b.box.w) - Math.max(m.box.x, b.box.x))
+      const iy = Math.max(0, Math.min(m.box.y + m.box.h, b.box.y + b.box.h) - Math.max(m.box.y, b.box.y))
+      const inter = ix * iy
+      const union = m.box.w * m.box.h + b.box.w * b.box.h - inter
+      if (union <= 0 || inter / union < 0.5) return false
+      return textSimilarity(m.text, b.text) >= 0.75
+    })
+    if (!prev) {
+      out.push(b)
+      continue
+    }
+    // 读到的帧数多的那份文本更可信
+    if (b.frames > prev.frames) {
+      prev.text = b.text
+      prev.box = b.box
+    }
+    prev.endSec = Math.max(prev.endSec, b.endSec)
+    prev.frames += b.frames
+    prev.conf = Math.max(prev.conf, b.conf)
+  }
+  return out
 }
 
 /** 整条流水线：分组 → 跟踪 → 名单/置信度/闪现 → 人声重叠 → 烧录字幕带 */
@@ -212,7 +245,9 @@ export function trackBlocks(frames: OcrFrame[], fps: number): SignBlock[] {
 const KAOMOJI_MARK = /[*＊´｀'’”"^＾~〜ωДд・･ﾟ゚°_;；∀☆★＞＜><\\\/|｜]/
 export function stripKaomoji(text: string): string {
   const out = text
-    .replace(/[(（][^()（）\n]{0,12}[)）]?[ノシﾉｼっッ~〜ー\s]*/g, (m) => (KAOMOJI_MARK.test(m) ? '' : m))
+    .replace(/[(（][^()（）\n]{0,12}[)）][ノシﾉｼっッ~〜ー\s]*/g, (m) => (KAOMOJI_MARK.test(m) ? '' : m))
+    // 括号压根没闭合、后面只剩一小截：OCR 把颜文字读坏了，整截去掉（「（エリ？」「（*”エリノシ」）
+    .replace(/[(（]([^()（）\n]{0,8})$/gm, (m, inner: string) => (KAOMOJI_MARK.test(m) || inner.length <= 5 ? '' : m))
     .replace(/[ \t]{2,}/g, ' ')
   return out
     .split('\n')
@@ -228,11 +263,13 @@ export function buildSignBlocks(
   regions: SpeechRegion[] | null
 ): SignBlocksResult {
   const credits = creditWindows(frames, fps)
-  const grouped = frames.map((f) => ({ i: f.i, boxes: groupLines(f.boxes) }))
+  // 颜文字要在跟踪之前去掉：同一个 (*´ｪ｀)ノシ 每帧被 OCR 读坏的样子都不一样，
+  // 留着的话同一条聊天气泡会被拆成三四块，译文跟着一跳一跳
+  const cleaned = frames.map((f) => ({ i: f.i, boxes: f.boxes.map((b) => ({ ...b, t: stripKaomoji(b.t) })).filter((b) => b.t !== '') }))
+  const grouped = cleaned.map((f) => ({ i: f.i, boxes: groupLines(f.boxes) }))
   const blocks = trackBlocks(grouped, fps)
 
   for (const b of blocks) {
-    b.text = stripKaomoji(b.text)
     const clean = norm(b.text)
     const dur = b.endSec - b.startSec
     const inCredits = credits.some(([s, e]) => Math.min(b.endSec, e) - Math.max(b.startSec, s) >= 0.7 * dur)
