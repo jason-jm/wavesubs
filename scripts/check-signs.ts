@@ -2,7 +2,7 @@
  * 画面文字模块自检：几何与统计规则（分组 / 跟踪 / 名单时段 / 烧录字幕带）、判别对齐锚、排版取舍、写出格式。
  * 全部用合成数据，不跑 OCR 也不跑模型；判别用假 chat 模拟 8B 的串行毛病。
  */
-import { buildSignBlocks, creditWindows, dialogueLinesAt, dialogueSafeBottom, groupLines, judgeSigns, leftoverScript, measureText, signsToCues, trackBlocks, textSimilarity } from '../src/main/core/signs'
+import { buildSignBlocks, creditWindows, dialogueLinesAt, dialogueSafeBottom, groupLines, judgeSigns, leftoverScript, measureText, signsToCues, trackBlocks, textSimilarity, wrapToWidth } from '../src/main/core/signs'
 import type { OcrBox, OcrFrame, SignBlock, SignJudgement } from '../src/main/core/signs'
 import { cuesToAss } from '../src/main/core/subtitle/ass'
 import { cuesToSrt } from '../src/main/core/subtitle/srt'
@@ -203,6 +203,14 @@ console.log('\n排版与取舍：')
     eq('重要度 1 的默认不出', cues.some((c) => c.text === 'E'), false)
     eq('index 从指定值接续、带 kind/pos/anchor/fontSize', [cues[0].index, cues[0].kind, typeof cues[0].anchor?.x, typeof cues[0].fontSize], [100, 'sign', 'number', 'number'])
   }
+}
+
+{
+  // 一整段中日韩文字里夹着空格时，整段会变成一个断不开的「词」——必须能逐字切
+  const long = '95); ' + '中心经济政策研究所所长他于1983年创立以及巴黎高等社会科学研究学院自1978年起的主任研究员他是一位罗德学者'
+  const wrapped = wrapToWidth(long, 22, 0.6)
+  const widest = Math.max(...wrapped.split('\n').map((l) => measureText(l, 22).w))
+  eq('超长的无空格段落会被逐字折行', widest <= 0.6 + 1e-6, true)
 }
 
 console.log('\n写出：')

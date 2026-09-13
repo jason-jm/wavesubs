@@ -2,7 +2,7 @@ export { extractFrames, ocrLanguagesFor, runVisionOcr } from './ocr'
 export { buildSignBlocks, creditWindows, groupLines, textSimilarity, trackBlocks } from './blocks'
 export { judgeSigns, leftoverScript } from './judge'
 export type { ChatFn, JudgeOptions } from './judge'
-export { dialogueLinesAt, dialogueSafeBottom, fallbackPlacement, measureText, signsToCues } from './layout'
+export { dialogueLinesAt, dialogueSafeBottom, fallbackPlacement, measureText, signsToCues, wrapToWidth } from './layout'
 export type { LayoutOptions, Rect, SpeechLine } from './layout'
 export type { OcrBox, OcrFrame, SignBlock, SignBlocksResult, SignJudgement } from './types'
 
