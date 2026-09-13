@@ -148,6 +148,11 @@ console.log('\n排版与取舍：')
     const cues = signsToCues([mk(1, 'ルール\n守ろう', 0.3, 0.12)], [sign(1, '规则\n要遵守')])
     eq('小块多行不盖字，贴在旁边', cues[0].layout, 'below')
   }
+  // 同一时刻两处原文译法相同：只出一条
+  {
+    const cues = signsToCues([mk(1, 'ABC', 0.2, 0.05), mk(2, 'ABCD', 0.5, 0.05)], [sign(1, '相同译文'), sign(2, '相同译文')])
+    eq('同屏重复的译文只出一条', cues.length, 1)
+  }
   // 译文和原文一样：不出这一条
   {
     eq('英文照抄的不出', signsToCues([mk(1, 'OUTDOOR COOKING', 0.3, 0.05)], [sign(1, 'OUTDOOR COOKING')]).length, 0)
