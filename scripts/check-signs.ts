@@ -138,15 +138,31 @@ console.log('\n排版与取舍：')
     const cues = signsToCues([mk(1, '営業中', 0.3, 0.04)], [sign(1, '营业中')])
     eq('单行贴下方', [cues[0].layout, cues[0].anchor!.y > 0.34 && cues[0].anchor!.y < 0.42], ['below', true])
   }
-  // 原文占一大块（整屏界面）：盖在原文上
+  // 整屏文件（多行、行距小、占着一大块）：盖在原文上
+  {
+    const doc = '差出人：みかこ\n件名：おげんき？\n今どこにいますか\n私は今シリウスに\n向かっています\nまた手紙を書くね'
+    const cues = signsToCues([mk(1, doc, 0.15, 0.36, 0, 6, 0.5)], [sign(1, '发件人：美加子\n主题：还好吗\n你现在在哪里\n我正前往天狼星\n我再给你写信')])
+    eq('整屏文件才盖字', cues[0].layout, 'box')
+  }
+  // 巨幅标题：一样占一大块，但只有两行大字，盖上去只是在原文正中拍块黑补丁 —— 不盖
   {
     const cues = signsToCues([mk(1, 'ルール\n守ろう', 0.15, 0.5, 0, 5, 0.5)], [sign(1, '规则\n要遵守')])
-    eq('占满一大块才盖字', cues[0].layout, 'box')
+    eq('巨幅标题不盖字', cues[0].layout !== 'box', true)
   }
   // 同样是多行，但只占一小块：贴在旁边，不遮原文
   {
     const cues = signsToCues([mk(1, 'ルール\n守ろう', 0.3, 0.12)], [sign(1, '规则\n要遵守')])
     eq('小块多行不盖字，贴在旁边', cues[0].layout, 'below')
+  }
+  // 原文从上顶到下、下方与顶部都没地方：放到原文左右的空处，别盖住它
+  {
+    const blocks = [mk(1, 'HOW\nCORRUPT\nIS IT', 0.02, 0.93, 0, 6, 0.4)]
+    const cues = signsToCues(blocks, [sign(1, '有多腐败')])
+    const m = measureText(cues[0].translation!, cues[0].fontSize!)
+    const left = cues[0].anchor!.x - m.w / 2
+    const right = cues[0].anchor!.x + m.w / 2
+    eq('顶天立地的原文改放旁边', cues[0].layout, 'side')
+    eq('放在原文框左右之外', right <= 0.35 + 1e-6 || left >= 0.65 - 1e-6, true)
   }
   // 读不完的不出：一段几秒的画面配上百来字的译文，观众来不及读，还糊满画面
   {
@@ -182,7 +198,7 @@ console.log('\n排版与取舍：')
     const safe = dialogueSafeBottom(dialogueLinesAt(speech, 0, 5000))
     const bottom = cues[0].anchor!.y + measureText('在那边', cues[0].fontSize!).h / 2
     eq('对白占两行', dialogueLinesAt(speech, 0, 5000), 2)
-    eq('底部的画面文字挪开、不进对白区', [cues[0].layout, bottom <= safe + 1e-6], ['top', true])
+    eq('底部的画面文字挪开、不进对白区', [cues[0].layout, bottom <= safe + 1e-6], ['side', true])
   }
   // 同样位置、同一时刻没有对白：就地贴下方即可，不必挪走
   {
@@ -191,7 +207,8 @@ console.log('\n排版与取舍：')
   }
   // 盖字时原文框窄、译文长：缩字号而不是把底框撑到旁边
   {
-    const cues = signsToCues([mk(1, '和\n和\n和', 0.2, 0.6, 0, 5, 0.3)], [sign(1, '这是一句很长很长的译文占满了整行')])
+    const doc = ['和', '和', '和', '和', '和', '和', '和', '和'].join('\n')
+    const cues = signsToCues([mk(1, doc, 0.05, 0.6, 0, 8, 0.3)], [sign(1, '这是一句很长很长的译文占满了整行')])
     eq('确实走了盖字', cues[0].layout, 'box')
     const size = measureText(cues[0].translation!, cues[0].fontSize!)
     eq('底框不超过原文框的 1.25 倍宽（或到下限字号为止）', size.w <= Math.max(0.3 * 1.25, 0.18) + 1e-6 || cues[0].fontSize === 22, true)

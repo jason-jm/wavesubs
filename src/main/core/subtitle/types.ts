@@ -23,7 +23,7 @@ export interface Cue {
   importance?: number
 }
 
-export type SignLayout = 'box' | 'below' | 'top'
+export type SignLayout = 'box' | 'below' | 'side' | 'top'
 
 export interface Transcript {
   language: string

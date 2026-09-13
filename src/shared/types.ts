@@ -157,7 +157,7 @@ export interface RecordView {
     /** 画面文字（与语音字幕分开编辑） */
     kind?: 'sign'
     pos?: { x: number; y: number; w: number; h: number }
-    layout?: 'box' | 'below' | 'top'
+    layout?: 'box' | 'below' | 'side' | 'top'
     anchor?: { x: number; y: number }
     fontSize?: number
     importance?: number

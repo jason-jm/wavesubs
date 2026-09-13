@@ -6,7 +6,9 @@
  * - 8B 会把第 n 条答案写到第 n+1 条上（曾把「業務管理室」译成 "SOLO"），所以让它照抄原文开头做 src，
  *   按相似度对齐，批量压到 15 条；
  * - OCR 文本与同时段台词相似 ⇒ 这段字正被角色念出来（短信、书信、便签），两个模型都曾把它判成 noise，
- *   直接判 sign、重要度 3，缺译文的再补译一轮。
+ *   直接判 sign、重要度 3，缺译文的再补译一轮；
+ * - 多行的长条目，8B 常只译第一行就收尾（整段生平只译出人名）。按信息量比对，明显短的当没译，
+ *   清掉扔进补译那一轮重来。
  */
 import { LocalizedError } from '../../../shared/i18n/core'
 import type { Cue } from '../subtitle/types'
@@ -44,7 +46,7 @@ function systemPrompt(src: string, target: string): string {
 - noise：无意义的碎片、品牌 logo、背景装饰文字、明显的错识别、单独的数字或符号。**被切碎的半截词也算 noise**：只有修饰语没有主体的（「はじめての」「アウトドア」这种从「はじめてのアウトドアめし」里被切出来的半截），或者只剩一两个字的残片。地图上密密麻麻的地名与编号、报纸版面里的零碎小字也算 noise：它们不是给观众读的，逐条音译出来只会糊住画面。
 sign 再给一个重要度 importance：3 = 不看就不懂剧情（短信、书信、便签、文件内容、标题卡、关键告示）；2 = 有帮助（店名、招牌、路牌、标签、价签、书名）；1 = 可有可无（界面按钮、菜单项、装饰性文字、背景书架杂志封面、商品与包装上的品牌名、剧场海报或书籍封面上成排的演职员姓名、地图上的地名标注）。
 用 ctx 理解语境：例如露营场景里的「ポール」是帐篷杆而不是人名。
-只有 sign 需要翻译成 ${target}：忠实、简洁、像字幕组的屏幕字，专有名词按通行译法，多行保留换行，颜文字与表情符号原样保留；原文若被 OCR 打碎或有错字，在 fixed 里写修正后的原文再翻。**译文里不要残留源语言的词**：专有名词、简称、店名也要译出或音译，整条照抄原文等于没翻，这种情况宁可判 noise。
+只有 sign 需要翻译成 ${target}：忠实、简洁、像字幕组的屏幕字，专有名词按通行译法，多行保留换行，颜文字与表情符号原样保留。**原文有几行就译几行，每一行都要译完**：整段生平只译出开头的人名、整封邮件只译出日期，都算没译完。原文若被 OCR 打碎或有错字，在 fixed 里写修正后的原文再翻。**译文里不要残留源语言的词**：专有名词、简称、店名也要译出或音译，整条照抄原文等于没翻，这种情况宁可判 noise。
 只输出 JSON 数组，每项形如 {"id":1,"src":"该条 text 的前 12 个字，照抄","category":"sign","importance":2,"fixed":"","tr":""}，src 必须照抄该条 text 的开头（用来核对没有串行），不要任何其它文字。`
 }
 
@@ -74,6 +76,26 @@ export function leftoverScript(tr: string, targetLanguageName: string): boolean 
   return false
 }
 
+/**
+ * 译文信息量按字算：汉字/谚文一个算一个，假名算 0.6（日语的助词到中文会被吃掉），西文一个词算一个。
+ */
+function contentUnits(s: string): number {
+  const count = (re: RegExp): number => (s.match(re) ?? []).length
+  const kana = count(/[\p{Script=Hiragana}\p{Script=Katakana}]/gu)
+  const cjk = count(/[\p{Script=Han}\p{Script=Hangul}]/gu)
+  const words = count(/[\p{Script=Latin}\p{Script=Cyrillic}\p{Script=Greek}]+/gu)
+  return kana * 0.6 + cjk + words
+}
+
+/**
+ * 只译了开头一截。8B 面对多行长条目常只译第一行（整段生平只译出人名、整封邮件只译出日期），
+ * 信息量差得太多就当没译，清掉让补译那一轮重来。
+ */
+export function looksTruncated(src: string, tr: string): boolean {
+  const su = contentUnits(src)
+  return su >= 6 && contentUnits(tr) < su * 0.45
+}
+
 export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promise<SignJudgement[]> {
   const kept = blocks.filter((b) => !b.drop)
   const cues = opts.cues
@@ -89,6 +111,8 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
 
   const system = systemPrompt(opts.sourceLanguageName, opts.targetLanguageName)
   const judged: SignJudgement[] = []
+  /** 只译了半截被清掉的那份：补译要是也没译好，还是拿它出片，总比整条原文强 */
+  const partial = new Map<number, string>()
   for (let i = 0; i < kept.length; i += BATCH) {
     if (opts.signal?.aborted) throw new LocalizedError('error.jobCancelled')
     const batch = kept.slice(i, i + BATCH)
@@ -145,8 +169,17 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
       const fixedRaw = str(j?.fixed).trim()
       const fixed = fixedRaw && textSimilarity(fixedRaw, b.text) >= 0.4 ? fixedRaw : ''
       let tr = str(j?.tr).trim()
-      // 目标语言不是日/韩，译文里却还留着假名/谚文，或者把原文整个抄了进来 ⇒ 没翻，清掉让补译那一轮重来
-      if (tr && (leftoverScript(tr, opts.targetLanguageName) || (norm(b.text).length >= 4 && norm(tr).includes(norm(b.text))))) tr = ''
+      // 没翻、只译了开头一截、译文残留源语言、或把原文整个抄了进来 ⇒ 清掉让补译那一轮重来
+      const source = fixed || b.text
+      if (
+        tr &&
+        (leftoverScript(tr, opts.targetLanguageName) ||
+          looksTruncated(source, tr) ||
+          (norm(b.text).length >= 4 && norm(tr).includes(norm(b.text))))
+      ) {
+        if (looksTruncated(source, tr) && !leftoverScript(tr, opts.targetLanguageName)) partial.set(b.id, tr)
+        tr = ''
+      }
       const item: SignJudgement = j
         ? {
             id: b.id,
@@ -173,7 +206,7 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
     try {
       const out = parseJsonArray(
         await opts.chat(
-          `你是影视字幕翻译。把 JSON 里每一条的 text 从 ${opts.sourceLanguageName} 翻译成 ${opts.targetLanguageName}：忠实、简洁，多行保留换行，颜文字原样保留。dialogue_nearby 只是附近台词、供理解语境，不要翻译也不要输出它。只输出 JSON 数组，每项 {"id":1,"tr":"译文"}，tr 里只放译文，不要夹带原文。`,
+          `你是影视字幕翻译。把 JSON 里每一条的 text 从 ${opts.sourceLanguageName} 翻译成 ${opts.targetLanguageName}：忠实、简洁，多行保留换行，颜文字原样保留。**text 有几行就译几行，整条都要译完**，不许只译第一行、只译开头的人名或日期。dialogue_nearby 只是附近台词、供理解语境，不要翻译也不要输出它。只输出 JSON 数组，每项 {"id":1,"tr":"译文"}，tr 里只放译文，不要夹带原文。`,
           JSON.stringify(items)
         )
       )
@@ -187,7 +220,11 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
         j.tr = tr
       }
     } catch {
-      // 补译失败就让这些条留着原文出片，不中断任务
+      // 补译失败就退回半截译文或原文，不中断任务
+    }
+    // 补译没补上的，把之前那份半截译文还回去
+    for (const j of judged) {
+      if (!j.tr.trim() && partial.has(j.id)) j.tr = partial.get(j.id)!
     }
   }
   opts.onProgress?.(100)
