@@ -148,6 +148,23 @@ console.log('\n排版与取舍：')
     const cues = signsToCues([mk(1, 'ルール\n守ろう', 0.3, 0.12)], [sign(1, '规则\n要遵守')])
     eq('小块多行不盖字，贴在旁边', cues[0].layout, 'below')
   }
+  // 读不完的不出：一段几秒的画面配上百来字的译文，观众来不及读，还糊满画面
+  {
+    const long = '这是一段非常长的译文用来模拟整版报纸被逐段译出来的情况观众根本读不完也会把画面糊住所以不应该出片'
+    eq('几秒钟配上百字的译文不出', signsToCues([mk(1, 'x', 0.3, 0.05, 0, 3)], [sign(1, long)]).length, 0)
+    eq('同样长度给足时间就出', signsToCues([mk(1, 'x', 0.2, 0.05, 0, 20)], [sign(1, long)]).length, 1)
+  }
+  // 贴字时绕开画面上别处的原文
+  {
+    const blocks = [mk(1, 'あ', 0.30, 0.04), mk(2, 'い', 0.36, 0.06)]
+    const cues = signsToCues(blocks, [sign(1, '甲'), sign(2, '乙')])
+    const first = cues.find((c) => c.text === 'あ')!
+    const m = measureText(first.translation!, first.fontSize!)
+    const top = first.anchor!.y - m.h / 2
+    const bottom = first.anchor!.y + m.h / 2
+    eq('译文不落在另一段原文的框里', top >= 0.42 || bottom <= 0.36 + 1e-6, true)
+  }
+
   // 同一时刻两处原文译法相同：只出一条
   {
     const cues = signsToCues([mk(1, 'ABC', 0.2, 0.05), mk(2, 'ABCD', 0.5, 0.05)], [sign(1, '相同译文'), sign(2, '相同译文')])
