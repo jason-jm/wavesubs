@@ -329,16 +329,21 @@ export function buildSignBlocks(
   const CLUTTER_AREA = 0.01
   {
     const area = (b: SignBlock): number => b.box.w * b.box.h
+    const live = blocks.filter((b) => !b.drop)
     const times = new Set<number>()
-    for (const b of blocks) if (!b.drop) for (let t = Math.floor(b.startSec); t < b.endSec; t += 1) times.add(t)
+    for (const b of live) for (let t = Math.floor(b.startSec); t < b.endSec; t += 1) times.add(t)
+    // 先把该丢的都圈出来再统一丢：边算边丢的话，前一秒丢掉十几块会让后一秒的块数掉到门槛以下，
+    // 同一张地图上晚出现的那几块就漏网了
+    const clutter = new Set<SignBlock>()
     for (const t of times) {
-      const on = blocks.filter((b) => !b.drop && b.startSec <= t && t < b.endSec)
+      const on = live.filter((b) => b.startSec <= t && t < b.endSec)
       if (on.length < CLUTTER_MIN) continue
       const sorted = on.map(area).sort((x, y) => x - y)
       const median = sorted[Math.floor(sorted.length / 2)]
       if (median >= CLUTTER_AREA) continue
-      for (const b of on) if (area(b) < median * 3) b.drop = 'clutter'
+      for (const b of on) if (area(b) < median * 3) clutter.add(b)
     }
+    for (const b of clutter) b.drop = 'clutter'
   }
 
   // 台标/水印：同一段字在同一位置累计出现太久（≥ 2 分钟且 ≥ 全片 8%）——电视台 logo、频道水印、播放器 UI
