@@ -141,7 +141,7 @@ console.log('\n判别对齐锚与念读兜底：')
 {
   const chat = async (): Promise<string> =>
     JSON.stringify([
-      { id: 1, src: 'キャンプを楽', category: 'noise', importance: 1, fixed: '', tr: '' },
+      { id: 1, src: 'キャンプを楽', category: 'sign', importance: 1, fixed: '', tr: '享受露营时' },
       { id: 2, src: 'ルールを必ず', category: 'sign', importance: 2, fixed: '', tr: '一定要遵守规则' },
       { id: 3, src: '冬の野外は寒', category: 'sign', importance: 2, fixed: '', tr: '冬天野外很冷' },
       { id: 4, src: '野外活動サー', category: 'sign', importance: 2, fixed: '', tr: '户外活动社团' }
@@ -153,7 +153,8 @@ console.log('\n判别对齐锚与念读兜底：')
     { id: 4, text: '野外活動サークル', startSec: 1, endSec: 6, frames: 5, conf: 0.9, box: { x: 0.75, y: 0.9, w: 0.2, h: 0.05 } }
   ]
   const out = await judgeSigns(card, { chat, cues: [], sourceLanguageName: 'Japanese', targetLanguageName: 'Simplified Chinese' })
-  eq('一屏字里被漏判的标题跟着出', out.find((j) => j.id === 1)?.category, 'sign')
+  eq('一屏字里被压成「可有可无」的标题提回来', out.find((j) => j.id === 1)?.importance, 2)
+  eq('已经译好的不重译', out.find((j) => j.id === 1)?.tr, '享受露营时')
   eq('标题的面积比正文块小也认得出来（按行高比）', card[0].box.w * card[0].box.h < card[1].box.w * card[1].box.h, true)
   // 街景：只有一块招牌，旁边一堆背景杂字，不该把杂字也拉进来
   const street: SignBlock[] = [

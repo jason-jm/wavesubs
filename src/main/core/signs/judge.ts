@@ -128,7 +128,8 @@ function promoteLoners(judged: SignJudgement[], blocks: SignBlock[]): void {
   const byId = new Map(blocks.map((b) => [b.id, b]))
   const isSign = (j: SignJudgement): boolean => j.category === 'sign' && j.importance >= 2
   for (const j of judged) {
-    if (j.category !== 'noise') continue
+    // 判成噪声的、和判成「可有可无」的，都算漏判：一屏字里最大的那块不可能两样都不是
+    if (j.category === 'credits' || isSign(j)) continue
     const b = byId.get(j.id)
     if (!b) continue
     let others = 0
@@ -144,9 +145,9 @@ function promoteLoners(judged: SignJudgement[], blocks: SignBlock[]): void {
     const sorted = [...signLineH].sort((x, y) => x - y)
     const median = sorted[Math.floor(sorted.length / 2)]
     if (lineHeight(b) < median * 1.25) continue
+    if (j.category !== 'sign') j.tr = ''
     j.category = 'sign'
     j.importance = 2
-    j.tr = ''
   }
 }
 
