@@ -665,6 +665,61 @@ T['th'] = dict(
        ('Mac Intel ล่ะ?', 'ยังไม่รองรับ การจับบทพูดในเครื่องต้องพึ่งการเร่งด้วย Metal ของ Apple Silicon บน Intel จะช้าเกินกว่าจะใช้งานจริง')], footer_changelog='บันทึกการเปลี่ยนแปลง',
 )
 
+# 1.0.7 的头牌功能：画面文字翻译。单独放一块，免得散进上面十一份文案里改到眼花。
+# 每种语言四段：首屏标签、翻译区的一条要点、一条常见问题（问、答）。
+SIGNS = {
+ 'zh': ('翻译画面中的文字',
+   '画面里的招牌、便签、短信也一起翻译，译文贴在原文旁边（macOS）',
+   '画面里的招牌、短信也能翻译吗？',
+   'macOS 版可以。开启「翻译画面中的文字」后，会读出画面里的招牌、便签、短信与聊天气泡、告示、文件和标题卡，把译文贴在原文旁边，绝不挡住底部的对白字幕。片头片尾名单、片源自带的烧录字幕、电视台台标会自动跳过。用的是系统自带的文字识别，不下载任何模型。'),
+ 'en': ('Translate on-screen text',
+   'Signs, notes and text messages in the picture are translated too, placed beside the original (macOS)',
+   'Can it translate signs and text messages shown in the picture?',
+   'On macOS, yes. Turn on "Translate on-screen text" and it reads signs, notes, text messages and chat bubbles, notices, documents and title cards straight from the image, then puts the translation beside the original — never over the dialogue subtitles at the bottom. Opening and closing credits, subtitles already burned into the video, and TV station logos are skipped. It uses the text recognition built into macOS, so there is no extra model to download.'),
+ 'ja': ('画面内の文字も翻訳',
+   '画面に映る看板・メモ・メッセージも翻訳し、原文の隣に配置（macOS）',
+   '画面に映る看板やメッセージも翻訳できますか？',
+   'macOS 版なら可能です。「画面内の文字を翻訳」をオンにすると、看板・メモ・メッセージやチャット、掲示、書類、タイトルカードを画面から読み取り、訳文を原文の隣に置きます。下部のセリフ字幕にかぶることはありません。オープニング／エンディングのスタッフロール、映像に焼き込まれた字幕、放送局のロゴは自動で除外します。macOS 内蔵の文字認識を使うため、追加のモデルをダウンロードする必要はありません。'),
+ 'ko': ('화면 속 글자도 번역',
+   '화면에 나오는 간판·메모·메시지도 번역해 원문 옆에 배치 (macOS)',
+   '화면에 나오는 간판이나 메시지도 번역되나요?',
+   'macOS에서는 됩니다. "화면 속 글자 번역"을 켜면 간판, 메모, 문자와 채팅, 공지, 문서, 타이틀 카드를 화면에서 읽어 번역을 원문 옆에 놓습니다. 화면 아래 대사 자막을 가리는 일은 없습니다. 오프닝·엔딩 크레딧, 영상에 이미 입혀진 자막, 방송사 로고는 자동으로 건너뜁니다. macOS에 내장된 문자 인식을 사용하므로 추가로 내려받을 모델이 없습니다.'),
+ 'fr': ("Traduire le texte à l'écran",
+   "Panneaux, notes et messages visibles à l'image sont traduits et placés à côté de l'original (macOS)",
+   "Peut-il traduire les panneaux et les messages affichés à l'image ?",
+   "Sur macOS, oui. Activez « Traduire le texte à l'écran » : l'application lit les panneaux, notes, SMS et bulles de discussion, avis, documents et cartons-titres directement dans l'image, puis place la traduction à côté de l'original, jamais par-dessus les sous-titres de dialogue en bas. Les génériques, les sous-titres déjà incrustés dans la vidéo et les logos de chaîne sont ignorés. La reconnaissance de texte intégrée à macOS est utilisée : aucun modèle supplémentaire à télécharger."),
+ 'de': ('Text im Bild übersetzen',
+   'Schilder, Notizen und Nachrichten im Bild werden mitübersetzt und neben das Original gesetzt (macOS)',
+   'Übersetzt es auch Schilder und Nachrichten, die im Bild zu sehen sind?',
+   'Unter macOS ja. Schalten Sie „Text im Bild übersetzen" ein: Schilder, Notizen, SMS und Chatblasen, Aushänge, Dokumente und Titelkarten werden aus dem Bild gelesen und die Übersetzung neben das Original gesetzt — nie über die Dialoguntertitel am unteren Rand. Vor- und Abspann, bereits ins Video eingebrannte Untertitel und Senderlogos werden übersprungen. Genutzt wird die in macOS eingebaute Texterkennung, es muss also kein weiteres Modell geladen werden.'),
+ 'ru': ('Перевод текста в кадре',
+   'Вывески, записки и сообщения в кадре тоже переводятся и ставятся рядом с оригиналом (macOS)',
+   'Переводит ли он вывески и сообщения, которые видны в кадре?',
+   'В macOS — да. Включите «Переводить текст в кадре»: программа читает вывески, записки, СМС и чаты, объявления, документы и титульные карточки прямо с изображения и ставит перевод рядом с оригиналом, никогда не поверх диалоговых субтитров внизу. Начальные и финальные титры, субтитры, уже вшитые в видео, и логотипы телеканалов пропускаются. Используется встроенное в macOS распознавание текста — дополнительные модели скачивать не нужно.'),
+ 'id': ('Terjemahkan teks di layar',
+   'Papan nama, catatan, dan pesan yang tampil di gambar ikut diterjemahkan dan diletakkan di samping aslinya (macOS)',
+   'Bisakah menerjemahkan papan nama dan pesan yang tampil di gambar?',
+   'Di macOS, bisa. Nyalakan "Terjemahkan teks di layar": aplikasi membaca papan nama, catatan, SMS dan gelembung obrolan, pengumuman, dokumen, dan kartu judul langsung dari gambar, lalu menaruh terjemahannya di samping teks asli — tidak pernah menutupi subtitel dialog di bagian bawah. Kredit pembuka dan penutup, subtitel yang sudah ditanam dalam video, serta logo stasiun TV dilewati. Pengenalan teks bawaan macOS yang dipakai, jadi tidak ada model tambahan yang perlu diunduh.'),
+ 'ms': ('Terjemah teks pada skrin',
+   'Papan tanda, nota dan mesej yang kelihatan dalam gambar turut diterjemah dan diletakkan di sebelah teks asal (macOS)',
+   'Bolehkah ia menterjemah papan tanda dan mesej yang kelihatan dalam gambar?',
+   'Pada macOS, boleh. Hidupkan "Terjemah teks pada skrin": aplikasi membaca papan tanda, nota, SMS dan gelembung sembang, notis, dokumen dan kad tajuk terus daripada gambar, kemudian meletakkan terjemahan di sebelah teks asal — tidak sekali-kali menutup sari kata dialog di bahagian bawah. Kredit pembukaan dan penutup, sari kata yang sudah dibakar ke dalam video, dan logo stesen TV dilangkau. Pengecaman teks terbina dalam macOS digunakan, jadi tiada model tambahan perlu dimuat turun.'),
+ 'vi': ('Dịch chữ trên màn hình',
+   'Biển hiệu, ghi chú và tin nhắn xuất hiện trong hình cũng được dịch và đặt cạnh bản gốc (macOS)',
+   'Có dịch được biển hiệu và tin nhắn hiện trong hình không?',
+   'Trên macOS thì có. Bật "Dịch chữ trên màn hình": ứng dụng đọc biển hiệu, ghi chú, tin nhắn và bong bóng chat, thông báo, tài liệu và thẻ tiêu đề ngay trong hình, rồi đặt bản dịch cạnh bản gốc — không bao giờ che phụ đề thoại ở dưới. Danh sách đoàn phim đầu và cuối phim, phụ đề đã cháy sẵn trong video và logo đài truyền hình sẽ được bỏ qua. Ứng dụng dùng nhận dạng chữ có sẵn của macOS nên không phải tải thêm mô hình nào.'),
+ 'th': ('แปลข้อความบนภาพ',
+   'ป้าย บันทึก และข้อความที่ปรากฏในภาพก็แปลด้วย โดยวางไว้ข้างต้นฉบับ (macOS)',
+   'แปลป้ายและข้อความที่ปรากฏในภาพได้ไหม',
+   'บน macOS ได้ เปิด "แปลข้อความบนภาพ" แล้วโปรแกรมจะอ่านป้าย บันทึก ข้อความและแชท ประกาศ เอกสาร และการ์ดชื่อเรื่องจากภาพโดยตรง แล้ววางคำแปลไว้ข้างต้นฉบับ ไม่บังคำบรรยายบทสนทนาด้านล่างเด็ดขาด เครดิตต้นเรื่องและท้ายเรื่อง คำบรรยายที่ฝังมากับวิดีโออยู่แล้ว และโลโก้สถานีโทรทัศน์จะถูกข้ามไป ใช้การรู้จำข้อความที่มีมากับ macOS จึงไม่ต้องดาวน์โหลดโมเดลเพิ่ม'),
+}
+for _k, (_pill, _li, _q, _a) in SIGNS.items():
+    T[_k]['pills'] = list(T[_k]['pills']) + [_pill]
+    T[_k]['tr_li'] = list(T[_k]['tr_li']) + [_li]
+    T[_k]['faq'] = list(T[_k]['faq'])
+    T[_k]['faq'].insert(2, (_q, _a))
+
+
 DL_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>'
 
 def esc(s): return html.escape(s, quote=True)
