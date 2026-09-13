@@ -359,6 +359,14 @@ console.log('\n排版与取舍：')
     const speech2 = [{ startMs: 0, endMs: 6000, text: '', translation: '这是一句相当长的对白，长到要折成两行才显示得完的那种程度' }]
     const tight = signsToCues(blocks, judged, { speech: speech2 })
     eq('底下有两行对白时也一条不少', tight.length, 6)
+    // 挤到只能用兜底排法时，也不许两条译文叠在一起
+    const rects = tight.map((c) => {
+      const m = measureText(c.translation!, c.fontSize!)
+      return { x: c.anchor!.x - m.w / 2, y: c.anchor!.y - m.h / 2, w: m.w, h: m.h }
+    })
+    const hit = (a: typeof rects[0], b: typeof rects[0]): boolean =>
+      a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h
+    eq('六条互不重叠', rects.every((r, i) => rects.every((o, k) => k === i || !hit(r, o))), true)
     const safe = dialogueSafeBottom(dialogueLinesAt(speech2, 0, 6000))
     eq('而且都没进对白区', tight.every((c) => c.anchor!.y + measureText(c.translation!, c.fontSize!).h / 2 <= safe + 1e-6), true)
   }
