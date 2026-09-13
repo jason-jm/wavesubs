@@ -454,8 +454,14 @@ export function EditorView(props: Props): React.JSX.Element {
                 onClick={() =>
                   apply((prev) => {
                     const next = insertAfter(prev, i)
-                    // 画面文字页里新增的也是画面文字，位置沿用上一条
-                    if (cue.kind === 'sign') next[i + 1] = { ...next[i + 1], kind: 'sign', pos: cue.pos, layout: cue.layout, importance: cue.importance }
+                    // 画面文字页里新增的也是画面文字，位置、字号、底板都沿用上一条：
+                    // 少带 anchor/fontSize/plate 的话，写 ASS 时会退回粗略的兜底位置，盖字还会丢掉底板
+                    if (cue.kind === 'sign') {
+                      next[i + 1] = {
+                        ...next[i + 1], kind: 'sign', pos: cue.pos, layout: cue.layout,
+                        anchor: cue.anchor, fontSize: cue.fontSize, plate: cue.plate, importance: cue.importance
+                      }
+                    }
                     return next
                   })
                 }
