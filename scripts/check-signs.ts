@@ -140,6 +140,8 @@ console.log('\n判别对齐锚与念读兜底：')
 console.log('\n译文残留判定：')
 eq('整句照抄的日文算没翻', leftoverScript('リン 今週はどこ行ってんの', 'Simplified Chinese'), true)
 eq('带片假名专名的中文译文是对的', leftoverScript('欢迎来到野クル！', 'Simplified Chinese'), false)
+eq('连着一串假名没音译算没翻', leftoverScript('确认在12万距离处有タルシアン群体', 'Simplified Chinese'), true)
+eq('谚文一个不该留', leftoverScript('这是제국益闻社', 'Simplified Chinese'), true)
 eq('目标是日语时不判', leftoverScript('ようこそ', 'Japanese'), false)
 
 console.log('\n译文收尾：')

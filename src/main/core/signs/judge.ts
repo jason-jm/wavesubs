@@ -71,16 +71,24 @@ function parseJsonArray(s: string): Array<Record<string, unknown>> {
 const str = (v: unknown): string => (typeof v === 'string' ? v : '')
 const norm = (s: string): string => s.normalize('NFKC').replace(/[\s　]+/g, '').toLowerCase()
 /**
- * 译文里残留源语言文字：目标不是日语却有大量假名、不是韩语却有大量谚文 ⇒ 没翻。
- * 按占比判而不是一见就判——「欢迎来到野クル！」这种带片假名专名的译文是对的，整句照抄的才是没翻。
+ * 译文里残留源语言文字 ⇒ 这一条没翻。两条判据：
+ * - 整体占比：假名/谚文占到四成，基本是整句照抄；
+ * - 连着三个以上的假名（「タルシアン」「シリウ」）：中文字幕里的外来专名一律音译，
+ *   连着一串假名就是模型没敢译。两个字的（「野クル」）是作品自己在用的简称，留着没问题。
  */
 export function leftoverScript(tr: string, targetLanguageName: string): boolean {
   const t = targetLanguageName.toLowerCase()
   const letters = (tr.match(/\p{L}/gu) ?? []).length
   if (letters === 0) return false
   const count = (re: RegExp): number => (tr.match(re) ?? []).length
-  if (!t.includes('japanese') && count(/[\p{Script=Hiragana}\p{Script=Katakana}]/gu) / letters >= 0.4) return true
-  if (!t.includes('korean') && count(/\p{Script=Hangul}/gu) / letters >= 0.4) return true
+  if (!t.includes('japanese')) {
+    if (count(/[\p{Script=Hiragana}\p{Script=Katakana}]/gu) / letters >= 0.4) return true
+    if (/[\p{Script=Hiragana}\p{Script=Katakana}ー]{3,}/u.test(tr)) return true
+  }
+  if (!t.includes('korean')) {
+    if (count(/\p{Script=Hangul}/gu) / letters >= 0.4) return true
+    if (/\p{Script=Hangul}{2,}/u.test(tr)) return true
+  }
   return false
 }
 
@@ -131,7 +139,7 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
     cues.some((c) => c.endMs / 1000 >= b.startSec - 3 && c.startMs / 1000 <= b.endSec + 3 && textSimilarity(c.text, b.text.replace(/\n/g, '')) >= 0.5)
 
   const judged: SignJudgement[] = []
-  /** 只译了半截被清掉的那份：补译要是也没译好，还是拿它出片，总比整条原文强 */
+  /** 判为没译好、清掉的那份：补译要是也没补上，还是拿它出片，总比整条原文强 */
   const partial = new Map<number, string>()
   for (let i = 0; i < kept.length; i += BATCH) {
     if (opts.signal?.aborted) throw new LocalizedError('error.jobCancelled')
@@ -203,7 +211,7 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
           looksTruncated(source, tr) ||
           (norm(b.text).length >= 4 && norm(tr).includes(norm(b.text))))
       ) {
-        if (looksTruncated(source, tr) && !leftoverScript(tr, opts.targetLanguageName)) partial.set(b.id, tr)
+        partial.set(b.id, tr)
         tr = ''
       }
       const item: SignJudgement = j
