@@ -18,6 +18,10 @@ function escapeAssText(text: string): string {
   return text.replace(/\{/g, '(').replace(/\}/g, ')').replace(/\r?\n/g, '\\N')
 }
 
+/**
+ * 三个样式共用 PingFang SC、常规字重、同一套白字深边：画面文字原来是粗体、对白是常规体，
+ * 同一屏上看着像两种字体。字号不同是有意的（画面文字要贴着原文走），字形不该跟着变。
+ */
 const ASS_HEADER = `[Script Info]
 Title: Wave Subs
 ScriptType: v4.00+
@@ -31,8 +35,8 @@ PlayResY: 1080
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
 Style: Default,PingFang SC,70,&H00FFFFFF,&H000000FF,&H00101010,&H80000000,0,0,0,0,100,100,0,0,1,3,1,2,60,60,45,1
 Style: Orig,Helvetica,46,&H00C8C8C8,&H000000FF,&H00101010,&H80000000,0,0,0,0,100,100,0,0,1,2,1,2,60,60,45,1
-Style: Sign,PingFang SC,40,&H00F5F5F5,&H000000FF,&H00202020,&H80000000,-1,0,0,0,100,100,0,0,1,2,1,5,20,20,20,1
-Style: SignBox,PingFang SC,40,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,0,0,5,20,20,20,1
+Style: Sign,PingFang SC,40,&H00FFFFFF,&H000000FF,&H00101010,&H80000000,0,0,0,0,100,100,0,0,1,3,1,5,20,20,20,1
+Style: SignBox,PingFang SC,40,&H00FFFFFF,&H000000FF,&H00101010,&H80000000,0,0,0,0,100,100,0,0,1,1,0,5,20,20,20,1
 Style: SignPlate,PingFang SC,40,&H08101010,&H000000FF,&H08101010,&H08101010,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
 
 [Events]

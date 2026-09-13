@@ -250,11 +250,23 @@ console.log('\n排版与取舍：')
     // 日本新字体不算繁体：「歴」「頼」中文观众未必认得，译文有用
     eq('日本新字体照出', signsToCues([mk(1, '源頼朝', 0.3, 0.05)], [sign(1, '源赖朝')]).length, 1)
   }
-  // 这段字正被念出来、底下的对白字幕已经写着同一句：画面上不再写一遍
+  // 观众看得见的每一块都要有译文：和对白说的是同一句也照出，不然画面上就是个没翻的空气泡
   {
     const speech = [{ startMs: 0, endMs: 5000, text: '', translation: '你所在的营地放了熊和老虎' }]
-    eq('和对白重复的画面文字不出', signsToCues([mk(1, '貴様のいるキャンプ場に熊とトラを放った', 0.3, 0.05)], [sign(1, '你所在的营地放了熊和老虎')], { speech }).length, 0)
-    eq('内容不同的照出', signsToCues([mk(1, '営業中', 0.3, 0.05)], [sign(1, '营业中')], { speech }).length, 1)
+    eq('和对白重复的画面文字照样出', signsToCues([mk(1, '貴様のいるキャンプ場に熊とトラを放った', 0.3, 0.05)], [sign(1, '你所在的营地放了熊和老虎')], { speech }).length, 1)
+  }
+  // 同屏挤满一排气泡：一块都不许少，挤不挤交给字号和让位去解决
+  {
+    const blocks = Array.from({ length: 6 }, (_, i) => mk(i + 1, `気泡${i + 1}`, 0.08 + i * 0.13, 0.06, 0, 6, 0.34))
+    const judged = blocks.map((b, i) => sign(b.id, `第${i + 1}条消息`))
+    const cues = signsToCues(blocks, judged)
+    eq('六条气泡一条不少', cues.length, 6)
+    eq('每条都有位置和字号', cues.every((c) => c.anchor !== undefined && (c.fontSize ?? 0) >= 22), true)
+    const speech2 = [{ startMs: 0, endMs: 6000, text: '', translation: '这是一句相当长的对白，长到要折成两行才显示得完的那种程度' }]
+    const tight = signsToCues(blocks, judged, { speech: speech2 })
+    eq('底下有两行对白时也一条不少', tight.length, 6)
+    const safe = dialogueSafeBottom(dialogueLinesAt(speech2, 0, 6000))
+    eq('而且都没进对白区', tight.every((c) => c.anchor!.y + measureText(c.translation!, c.fontSize!).h / 2 <= safe + 1e-6), true)
   }
   // 底部的招牌 + 同时有两行对白：必须避开对白占用的高度
   {
@@ -298,7 +310,7 @@ console.log('\n排版与取舍：')
     const blocks = [mk(1, 'A', 0.1, 0.04), mk(2, 'B', 0.2, 0.04), mk(3, 'C', 0.3, 0.04), mk(4, 'D', 0.4, 0.08), mk(5, 'E', 0.5, 0.04, 10, 12)]
     const judged = [sign(1, '译1'), sign(2, '译2'), sign(3, '译3'), sign(4, '译4', 3), sign(5, '译5', 1)]
     const cues = signsToCues(blocks, judged, { startIndex: 100 })
-    eq('同屏最多 3 条', cues.filter((c) => c.startMs === 0).length, 3)
+    eq('同屏四条全都出', cues.filter((c) => c.startMs === 0).length, 4)
     eq('重要度 1 的默认不出', cues.some((c) => c.text === 'E'), false)
     eq('index 从指定值接续、带 kind/pos/anchor/fontSize', [cues[0].index, cues[0].kind, typeof cues[0].anchor?.x, typeof cues[0].fontSize], [100, 'sign', 'number', 'number'])
   }
