@@ -190,6 +190,52 @@ function promoteLoners(judged: SignJudgement[], blocks: SignBlock[]): void {
   }
 }
 
+/**
+ * 整屏是字的那一段，一条都不落。
+ * 模型是一条一条判重要度的，没有场景的概念：一整屏手机聊天记录、一封信、一张简报卡，
+ * 逐条看每一条都「可有可无」——单看一句「うい」（嗯）确实不重要。可观众此刻盯着的就是这块屏幕，
+ * 译出四条里的两条，剩下两条留着日文，看上去只会像软件漏了。
+ * 判法：时间上首尾相接（允许 2 秒断档）的画面文字连成一段场景；
+ * 段里至少三条、跨度不超过 90 秒、且已经有一条被判到重要度 2 以上的，
+ * 把这一段里剩下的「可有可无」一并提到 2。
+ * 跨度封顶是为了不把台标、整片挂着的门牌那种连续几分钟的东西当成一段场景。
+ */
+const SCENE_GAP = 2
+const SCENE_MIN = 3
+const SCENE_MAX_SPAN = 90
+function promoteTextScenes(judged: SignJudgement[], blocks: SignBlock[]): void {
+  const byId = new Map(blocks.map((b) => [b.id, b]))
+  const signs = judged
+    .filter((j) => j.category === 'sign' && byId.has(j.id))
+    .sort((a, b) => byId.get(a.id)!.startSec - byId.get(b.id)!.startSec)
+  const scenes: SignJudgement[][] = []
+  for (const j of signs) {
+    const b = byId.get(j.id)!
+    const touching = scenes.filter((sc) =>
+      sc.some((o) => {
+        const ob = byId.get(o.id)!
+        return ob.startSec < b.endSec + SCENE_GAP && b.startSec < ob.endSec + SCENE_GAP
+      })
+    )
+    if (touching.length === 0) {
+      scenes.push([j])
+      continue
+    }
+    touching[0].push(j)
+    for (const extra of touching.slice(1)) {
+      touching[0].push(...extra)
+      scenes.splice(scenes.indexOf(extra), 1)
+    }
+  }
+  for (const sc of scenes) {
+    if (sc.length < SCENE_MIN) continue
+    const span = Math.max(...sc.map((j) => byId.get(j.id)!.endSec)) - Math.min(...sc.map((j) => byId.get(j.id)!.startSec))
+    if (span > SCENE_MAX_SPAN) continue
+    if (!sc.some((j) => j.importance >= 2)) continue
+    for (const j of sc) j.importance = Math.max(j.importance, 2)
+  }
+}
+
 /** 图表上的圆点、箭头被 OCR 当成文字读进来的痕迹 */
 const LEAD_GLYPH = /^[\s•·▪●◦‣▶►▸→←⇒–—\-*+=|]+/
 /**
@@ -203,8 +249,33 @@ export function tidyTranslation(tr: string, src: string): string {
   return out.trim()
 }
 
+/**
+ * 同一段文字连着反复出现的，只判一次。
+ * 聊天记录来一条新消息整屏往上滚，同一条气泡会按位置切成四五条（见 blocks.ts 的 splitByPosition），
+ * 分头判别既多花几倍时间，批与批之间还没记忆——同一句会译出两三种写法，
+ * 观众看到的是气泡往上滚一格、译文就换一个说法。
+ * 文字一样、且离上一次不到 30 秒的接成一串，判第一条，其余照抄。
+ * 隔得远的（片头片尾各出现一次的招牌）仍各判各的：同样的字在不同场景里未必是同一回事。
+ */
+const RUN_GAP = 30
+function dedupeRuns(kept: SignBlock[]): { reps: SignBlock[]; repOf: Map<number, number> } {
+  const reps: SignBlock[] = []
+  const repOf = new Map<number, number>()
+  const last = new Map<string, { id: number; endSec: number }>()
+  for (const b of [...kept].sort((a, b) => a.startSec - b.startSec)) {
+    const key = norm(b.text)
+    const prev = last.get(key)
+    const chained = Boolean(key) && prev !== undefined && b.startSec - prev.endSec <= RUN_GAP
+    if (chained) repOf.set(b.id, prev!.id)
+    else reps.push(b)
+    last.set(key, { id: chained ? prev!.id : b.id, endSec: chained ? Math.max(prev!.endSec, b.endSec) : b.endSec })
+  }
+  return { reps, repOf }
+}
+
 export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promise<SignJudgement[]> {
   const kept = blocks.filter((b) => !b.drop)
+  const { reps, repOf } = dedupeRuns(kept)
   const cues = opts.cues
   const ctxOf = (b: SignBlock): string =>
     cues
@@ -219,9 +290,9 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
   const judged: SignJudgement[] = []
   /** 只译了半截被清掉的那份：补译要是也没补上，还是拿它出片，半句好过整条原文 */
   const partial = new Map<number, string>()
-  for (let i = 0; i < kept.length; i += BATCH) {
+  for (let i = 0; i < reps.length; i += BATCH) {
     if (opts.signal?.aborted) throw new LocalizedError('error.jobCancelled')
-    const batch = kept.slice(i, i + BATCH)
+    const batch = reps.slice(i, i + BATCH)
     // 术语表只注入这一批里真出现的条目：全表塞进去会稀释注意力，也会让模型把没出现的名字带进译文
     const system = systemPrompt(
       opts.sourceLanguageName,
@@ -312,13 +383,24 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
       }
       judged.push(item)
     }
-    opts.onProgress?.(Math.round(((i + batch.length) / Math.max(1, kept.length)) * 90))
+    opts.onProgress?.(Math.round(((i + batch.length) / Math.max(1, reps.length)) * 90))
+  }
+
+  // 滚上去的那几条照抄代表那一条的判别结果
+  const byRep = new Map(judged.map((j) => [j.id, j]))
+  for (const b of kept) {
+    const rep = repOf.get(b.id)
+    if (rep === undefined) continue
+    const r = byRep.get(rep)
+    judged.push(r ? { ...r, id: b.id } : { id: b.id, category: 'noise', importance: 1, fixed: '', tr: '' })
   }
 
   // 集数标题与下集预告：不指望模型守规矩，按字面认出来直接定成重要度 3
   promoteEpisodeCards(judged, kept)
   // 整屏文字里被漏判的那一两块，跟着同屏的其余块一起出
   promoteLoners(judged, kept)
+  // 整屏是字的那一段场景（聊天记录、信件、简报卡），段里有一条值得出，剩下的就都得出
+  promoteTextScenes(judged, kept)
 
   // 补译：判为 sign 却没给译文的（含念读兜底的、被判没译好清掉的、整屏里提上来的）。
   // 和判别一样分批：整片几十条塞进一次请求，输出会被 max_tokens 截断，
@@ -352,6 +434,24 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
   // 补译没补上的，把之前那份被清掉的译文还回去
   for (const j of judged) {
     if (!j.tr.trim() && partial.has(j.id)) j.tr = partial.get(j.id)!
+  }
+  // 同一串里补译只补上了其中一条时，其余几条跟着用同一份译文，别一格一个说法
+  {
+    const all = new Map(judged.map((j) => [j.id, j]))
+    const members = new Map<number, SignJudgement[]>()
+    for (const b of kept) {
+      const rep = repOf.get(b.id) ?? b.id
+      const j = all.get(b.id)
+      if (j) members.set(rep, [...(members.get(rep) ?? []), j])
+    }
+    for (const group of members.values()) {
+      const tr = group.find((j) => j.tr.trim())?.tr
+      const fixed = group.find((j) => j.fixed.trim())?.fixed
+      for (const j of group) {
+        if (tr) j.tr = tr
+        if (fixed) j.fixed = fixed
+      }
+    }
   }
   opts.onProgress?.(100)
   return judged

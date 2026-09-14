@@ -267,6 +267,34 @@ console.log('\n判别对齐锚与念读兜底：')
   eq('街景里的背景杂字不会被带出来', out2.filter((j) => j.category === 'sign').length, 1)
 }
 
+// 整屏是字的那一段场景：段里有一条值得出，剩下的「可有可无」一并提上来
+{
+  // 聊天记录：气泡一条条往上滚，块与块首尾相接（不重叠），模型逐条看越到后面越觉得「可有可无」
+  const chat = async (): Promise<string> =>
+    JSON.stringify([
+      { id: 1, src: '富士山の目の', category: 'sign', importance: 2, fixed: '', tr: '就在富士山脚下' },
+      { id: 2, src: '写真撮ったら', category: 'sign', importance: 2, fixed: '', tr: '拍完照片发给我' },
+      { id: 3, src: 'ついでにお昼', category: 'sign', importance: 1, fixed: '', tr: '顺便买点午饭' },
+      { id: 4, src: 'うい', category: 'sign', importance: 1, fixed: '', tr: '嗯' },
+      { id: 5, src: '死ぬのはお前', category: 'sign', importance: 1, fixed: '', tr: '死的是你' }
+    ])
+  const bubble = (id: number, text: string, s: number, e: number): SignBlock =>
+    ({ id, text, startSec: s, endSec: e, frames: 3, conf: 0.9, box: { x: 0.3, y: 0.2 + id * 0.1, w: 0.4, h: 0.06 } })
+  const thread = [
+    bubble(1, '富士山の目の前の', 10, 13), bubble(2, '写真撮ったら送ってねー', 13, 16),
+    bubble(3, 'ついでにお昼ゴハンも', 16, 20), bubble(4, 'うい', 20, 23), bubble(5, '死ぬのはお前だ', 23, 27)
+  ]
+  const out = await judgeSigns(thread, { chat, cues: [], sourceLanguageName: 'Japanese', targetLanguageName: 'Simplified Chinese' })
+  eq('一整段聊天记录一条不落', out.filter((j) => j.category === 'sign' && j.importance >= 2).length, 5)
+  // 路边招牌：零零散散分布在全片、彼此挨不上，不该被连成一段
+  const scattered = [
+    bubble(1, '営業中', 10, 13), bubble(2, '準備中', 300, 303), bubble(3, '定休日', 600, 603),
+    bubble(4, '本日限り', 900, 903), bubble(5, '駐車場', 1200, 1203)
+  ]
+  const out2 = await judgeSigns(scattered, { chat, cues: [], sourceLanguageName: 'Japanese', targetLanguageName: 'Simplified Chinese' })
+  eq('隔得远的招牌各判各的', out2.filter((j) => j.category === 'sign' && j.importance >= 2).length, 2)
+}
+
 // 补译要分批：整片几十条塞进一次请求会被截断，整批补不上
 {
   const seen: number[] = []
@@ -345,6 +373,22 @@ console.log('\n抖动合并：')
   eq('留读得最稳的那份文本', merged[0].text, 'СКОРАЯ МЕДИЦИНСКАЯ ПОМОЩЬ')
   const apart = trackBlocks([f(0, '営業中'), f(1, '営業中'), f(20, '準備中'), f(21, '準備中')], 1)
   eq('内容不同的不并', apart.length, 2)
+}
+
+console.log('\n挪了位就切开：')
+{
+  // 聊天记录来了新消息整屏往上滚：同一条气泡的文字没变，位置换了一格。
+  // 不切的话存进字幕条的是两处的中位数，译文会贴到中间——压着上下两条别的气泡的原文
+  const f = (i: number, y: number): OcrFrame => ({ i, boxes: [box('ついでにお昼ゴハンも買ってきてねー', 0.3, y, 0.3, 0.05)] })
+  const moved = trackBlocks([f(0, 0.60), f(1, 0.60), f(2, 0.60), f(3, 0.45), f(4, 0.45), f(5, 0.45)], 1)
+  eq('滚了一格的切成两条', moved.length, 2)
+  eq('前一条贴在原来的位置', moved[0].box.y, 0.60)
+  eq('后一条贴在新位置', moved[1].box.y, 0.45)
+  eq('前一条只占它待着的那三秒', [moved[0].startSec, moved[0].endSec], [0, 3])
+  eq('后一条接着往下', [moved[1].startSec, moved[1].endSec], [3, 6])
+  // 镜头轻微晃动、OCR 每帧把框读差几个像素的，还是一条
+  const jitter = trackBlocks([f(0, 0.60), f(1, 0.606), f(2, 0.594), f(3, 0.602), f(4, 0.598)], 1)
+  eq('读框差几个像素的不切', jitter.length, 1)
 }
 
 console.log('\n排版与取舍：')

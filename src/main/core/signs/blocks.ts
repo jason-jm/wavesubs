@@ -201,7 +201,7 @@ export function creditWindows(frames: OcrFrame[], fps: number): Array<[number, n
 
 interface Live extends SignBlock {
   lastFrame: number
-  occ: OcrBox[]
+  occ: Array<{ b: OcrBox; i: number }>
 }
 
 const median = (xs: number[]): number => {
@@ -240,12 +240,12 @@ export function trackBlocks(frames: OcrFrame[], fps: number): SignBlock[] {
         best.lastFrame = fr.i
         best.endSec = t + 1 / fps
         best.frames += 1
-        best.occ.push(b)
+        best.occ.push({ b, i: fr.i })
         used.add(best)
       } else {
         const L: Live = {
           id: nextId++, text: b.t, startSec: t, endSec: t + 1 / fps, frames: 1, conf: b.c,
-          box: { x: b.x, y: b.y, w: b.w, h: b.h }, lastFrame: fr.i, occ: [b]
+          box: { x: b.x, y: b.y, w: b.w, h: b.h }, lastFrame: fr.i, occ: [{ b, i: fr.i }]
         }
         live.push(L)
         used.add(L)
@@ -259,17 +259,57 @@ export function trackBlocks(frames: OcrFrame[], fps: number): SignBlock[] {
     }
   }
   done.push(...live)
-  return mergeJitter(done.sort((a, b) => a.startSec - b.startSec).map((L) => {
-    const tally = new Map<string, number>()
-    for (const o of L.occ) tally.set(o.t, (tally.get(o.t) ?? 0) + o.c)
-    const text = [...tally.entries()].sort((a, b) => b[1] - a[1])[0][0]
-    return {
-      id: L.id, text, startSec: L.startSec, endSec: L.endSec, frames: L.frames,
-      conf: L.occ.reduce((n, o) => n + o.c, 0) / L.occ.length,
-      box: { x: median(L.occ.map((o) => o.x)), y: median(L.occ.map((o) => o.y)), w: median(L.occ.map((o) => o.w)), h: median(L.occ.map((o) => o.h)) }
+  const out: SignBlock[] = []
+  for (const L of done.sort((a, b) => a.startSec - b.startSec)) {
+    for (const seg of splitByPosition(L.occ)) {
+      const tally = new Map<string, number>()
+      for (const o of seg) tally.set(o.b.t, (tally.get(o.b.t) ?? 0) + o.b.c)
+      const text = [...tally.entries()].sort((a, b) => b[1] - a[1])[0][0]
+      out.push({
+        id: nextId++, text, startSec: seg[0].i / fps, endSec: seg[seg.length - 1].i / fps + 1 / fps,
+        frames: seg.length, conf: seg.reduce((n, o) => n + o.b.c, 0) / seg.length,
+        box: {
+          x: median(seg.map((o) => o.b.x)), y: median(seg.map((o) => o.b.y)),
+          w: median(seg.map((o) => o.b.w)), h: median(seg.map((o) => o.b.h))
+        }
+      })
     }
-  }))
+  }
+  return mergeJitter(out.sort((a, b) => a.startSec - b.startSec))
 }
+
+/**
+ * 同一块字挪了位就切成两条。
+ * 聊天记录来一条新消息整屏往上滚、镜头摇过一块招牌，文本一直像，跟踪就一直接在同一块上；
+ * 可存进字幕条的框是各帧的中位数，哪一帧都不是它——译文会贴到中途某个位置，
+ * 前半程压着上面那条气泡的原文，后半程压着下面那条。
+ * 按位置切段：离本段中位数超过半个字高（或半个框宽）就另起一段，
+ * 每段各自算自己的框，译文就始终贴着它这一段里原文实际待的地方。
+ */
+function splitByPosition(occ: Array<{ b: OcrBox; i: number }>): Array<Array<{ b: OcrBox; i: number }>> {
+  if (occ.length < 2) return [occ]
+  const segs: Array<Array<{ b: OcrBox; i: number }>> = []
+  let cur: Array<{ b: OcrBox; i: number }> = []
+  const drifted = (o: { b: OcrBox }): boolean => {
+    const cx = median(cur.map((p) => p.b.x + p.b.w / 2))
+    const cy = median(cur.map((p) => p.b.y + p.b.h / 2))
+    const h = median(cur.map((p) => p.b.h))
+    const w = median(cur.map((p) => p.b.w))
+    return Math.abs(o.b.y + o.b.h / 2 - cy) > Math.max(POS_EPS, h / 2) ||
+      Math.abs(o.b.x + o.b.w / 2 - cx) > Math.max(POS_EPS, w / 2)
+  }
+  for (const o of occ) {
+    if (cur.length > 0 && drifted(o)) {
+      segs.push(cur)
+      cur = []
+    }
+    cur.push(o)
+  }
+  segs.push(cur)
+  return segs
+}
+/** 位置抖动的容差：OCR 每帧把同一块字的框读得差几个像素，1080p 下 0.015 屏高约 16px */
+const POS_EPS = 0.015
 
 /**
  * 同一块字被 OCR 每帧读得不太一样（「СКОРАЯ МЕДИЦИНСКАЯ」一会儿少一个词、招牌被人挡住半秒），
@@ -286,6 +326,8 @@ function mergeJitter(blocks: SignBlock[]): SignBlock[] {
       const inter = ix * iy
       const union = m.box.w * m.box.h + b.box.w * b.box.h - inter
       if (union <= 0 || inter / union < 0.5) return false
+      // 中心挪了超过半个字高的，是同一块字换了地方（滚动的聊天记录），不是读抖了，别并回去
+      if (Math.abs(m.box.y + m.box.h / 2 - (b.box.y + b.box.h / 2)) > Math.max(POS_EPS, m.box.h / 2)) return false
       return textSimilarity(m.text, b.text) >= 0.75
     })
     if (!prev) {

@@ -19,7 +19,8 @@
 
 **已知限制**
 - 画面文字目前只在 macOS 上可用（用的是系统文字识别），Windows 版待接系统 OCR
-- 剧海报上成排的演员名仍会被译出来：它和纪录片里逐个出现的流程图标签在结构上分不开
+- 名单之外的一串人名仍会被译出来：话剧海报上成排的演员名，以及和制作名单隔了半分钟先单独打出来的主演名。
+  前者和纪录片里逐个出现的流程图标签在结构上分不开；后者靠放宽名单的邻接阈值能捞回来，代价是片头社团招牌、片尾正文会被误吃，不划算
 - 本地 8B 模型对专有名词不稳（机构名、历史术语会译错或前后不一致）。术语表是可靠的办法
 - 片源自己把画面文字的译文烧在画面上时（部分字幕组的做法），会和本程序的译文并存
 
@@ -44,6 +45,7 @@
 
 **Known limitations**
 - On-screen text is macOS only for now (it uses the system text recogniser); the Windows build is waiting on the system OCR
-- Rows of actor names on a theatre poster still get translated: structurally they are indistinguishable from the diagram labels a documentary reveals one at a time
+- A run of personal names outside the credit roll still gets translated: rows of actor names on a theatre poster, and lead billing shown half a minute before the staff roll.
+  The first is structurally indistinguishable from the diagram labels a documentary reveals one at a time; the second could be caught by widening the credit-run adjacency threshold, at the cost of eating an opening club sign and closing narration
 - The local 8B model is unreliable on proper nouns (institution names and historical terms come out wrong or inconsistent). The glossary is the dependable fix
 - When a release already burns its own on-screen-text translation into the picture, it will coexist with the one this app produces
