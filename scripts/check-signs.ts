@@ -2,7 +2,7 @@
  * 画面文字模块自检：几何与统计规则（分组 / 跟踪 / 名单时段 / 烧录字幕带）、判别对齐锚、排版取舍、写出格式。
  * 全部用合成数据，不跑 OCR 也不跑模型；判别用假 chat 模拟 8B 的串行毛病。
  */
-import { buildSignBlocks, stripKaomoji, creditWindows, fuzzyContains, dialogueLinesAt, dialogueSafeBottom, groupLines, judgeSigns, leftoverScript, measureText, tidyTranslation, signsToCues, trackBlocks, textSimilarity, wrapToWidth } from '../src/main/core/signs'
+import { buildSignBlocks, stripKaomoji, creditWindows, fuzzyContains, dialogueLinesAt, dialogueSafeBottom, groupLines, judgeSigns, leftoverScript, looksBloated, measureText, tidyTranslation, signsToCues, trackBlocks, textSimilarity, wrapToWidth } from '../src/main/core/signs'
 import type { OcrBox, OcrFrame, SignBlock, SignJudgement } from '../src/main/core/signs'
 import { cuesToAss } from '../src/main/core/subtitle/ass'
 import { cuesToSrt } from '../src/main/core/subtitle/srt'
@@ -306,6 +306,16 @@ eq('谚文一个不该留', leftoverScript('这是제국益闻社', 'Simplified 
   eq('补译补不上时不拿残留假名的那份顶替', out[0].tr, '')
 }
 eq('目标是日语时不判', leftoverScript('ようこそ', 'Japanese'), false)
+
+console.log('\n译文掺台词：')
+{
+  eq('把附近台词一起译进来的判为没译',
+     looksBloated('NEKRASSOV', '涅克拉索夫\n而且这可能需要时间，因为我们并不都一样。\n而且必须花时间。\n就像这样。'), true)
+  eq('短原文留足余量', looksBloated('Episode 15', '第15集'), false)
+  eq('正常的长句不误判', looksBloated('The global economic crisis of 2008 cost tens of millions of people their savings',
+     '2008年全球金融危机让数以千万计的人失去了他们的积蓄'), false)
+  eq('音译比原文长也不误判', looksBloated('TARSIS CRATER', '塔尔西斯环形山'), false)
+}
 
 console.log('\n译文收尾：')
 {

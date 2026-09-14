@@ -1,6 +1,6 @@
 export { extractFrames, ocrLanguagesFor, runVisionOcr } from './ocr'
 export { buildSignBlocks, creditWindows, groupLines, stripKaomoji, textSimilarity, trackBlocks } from './blocks'
-export { judgeSigns, leftoverScript, looksTruncated, tidyTranslation } from './judge'
+export { judgeSigns, leftoverScript, looksBloated, looksTruncated, tidyTranslation } from './judge'
 export type { ChatFn, JudgeOptions } from './judge'
 export { dialogueLinesAt, dialogueSafeBottom, fallbackPlacement, fuzzyContains, measureText, signsToCues, wrapToWidth } from './layout'
 export type { LayoutOptions, Rect, SpeechLine } from './layout'

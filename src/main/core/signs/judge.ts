@@ -113,6 +113,18 @@ export function looksTruncated(src: string, tr: string): boolean {
 }
 
 /**
+ * 译文比原文长得离谱：模型把喂给它的附近台词（ctx）当成正文一起译了出来。
+ * 实测《正发生》一块只写着「NEKRASSOV」的海报，译文是
+ * 「涅克拉索夫\n而且这可能需要时间，因为我们并不都一样。\n而且必须花时间。\n就像这样。」——
+ * 后三行是台词，画在海报上就是四行不相干的字压满画面。
+ * 给短原文留 8 个字的底，免得「Episode 15 → 第15集」这种被误判。
+ */
+export function looksBloated(src: string, tr: string): boolean {
+  const su = contentUnits(src)
+  return contentUnits(tr) > Math.max(8, su * 4)
+}
+
+/**
  * 一屏字里被漏判的那一两块，跟着同屏的其余块走。
  *
  * 露营须知卡上四块字，三块判了 sign，只有最大的标题「キャンプを楽しむときは...」因为带省略号、
@@ -275,12 +287,14 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
         tr &&
         (leftoverScript(tr, opts.targetLanguageName) ||
           looksTruncated(source, tr) ||
+          looksBloated(source, tr) ||
           (norm(b.text).length >= 4 && norm(tr).includes(norm(b.text))))
       ) {
         // 只译了半截的那份还能用作兜底（半句译文好过整条原文）；
         // 残留源语言、或把原文抄进来的那份不能留——留下来等于绕过判据，
         // 观众看到的是「TARSIAN → タルシアン」这种一个字都没译的东西
-        if (!leftoverScript(tr, opts.targetLanguageName) && !norm(tr).includes(norm(b.text))) partial.set(b.id, tr)
+        // 掺了台词的那份也不能留作兜底
+        if (!leftoverScript(tr, opts.targetLanguageName) && !looksBloated(source, tr) && !norm(tr).includes(norm(b.text))) partial.set(b.id, tr)
         tr = ''
       }
       const item: SignJudgement = j
@@ -328,7 +342,7 @@ export async function judgeSigns(blocks: SignBlock[], opts: JudgeOptions): Promi
         const src = j.fixed || byId.get(j.id)!.text
         const tr = tidyTranslation(str(o.tr).trim(), src)
         // 还是没翻（残留假名、或把原文/台词抄了进来）就宁可空着出原文，也不出垃圾
-        if (!tr || leftoverScript(tr, opts.targetLanguageName) || (norm(src).length >= 4 && norm(tr).includes(norm(src)))) continue
+        if (!tr || leftoverScript(tr, opts.targetLanguageName) || looksBloated(src, tr) || (norm(src).length >= 4 && norm(tr).includes(norm(src)))) continue
         j.tr = tr
       }
     } catch {
