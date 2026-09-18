@@ -25,6 +25,9 @@
 
 **首次使用**
 - 刚装好、一个模型都没有时，转换页直接给出这台机器的推荐模型和「下载并继续」，进度在原地走，下完直接开始；拖了文件再发现没模型也不用离开这一页。本地翻译缺模型同样处理
+- 没有模型时不再摆一排没意义的选项：卡片里只留「字幕来源」和下载提示，模型下好了选项再出来；批量页同样
+- 拖进来的文件在切换标签时不再丢，只有点「取消」才回到空态
+- 按钮各态重画：主按钮在浅色模式下 hover 时不再变成一块看不清字的白板；键盘焦点有了统一的环
 
 **已知限制**
 - 画面文字目前只在 macOS 上可用（用的是系统文字识别），Windows 版待接系统 OCR
@@ -60,6 +63,9 @@
 
 **First run**
 - With no model installed yet, the Convert page recommends a model for this machine and offers "Download and continue" right there — progress shows in place and you can start as soon as it finishes; dropping a file first no longer sends you off to the Models page. The same applies when local translation has no model
+- Options that need a model stay hidden until one is installed: the card shows only the subtitle source and the download prompt, and the rest appears once the model is there; same on the Batch page
+- A dropped file survives switching tabs; only Cancel returns to the empty state
+- Button states redrawn: the primary button no longer turns into an unreadable pale block on hover in light mode, and keyboard focus has a consistent ring
 
 **Known limitations**
 - On-screen text is macOS only for now (it uses the system text recogniser); the Windows build is waiting on the system OCR

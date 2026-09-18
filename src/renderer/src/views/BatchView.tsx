@@ -352,7 +352,7 @@ export function BatchView(props: Props): React.JSX.Element {
   // 之前这里不拦，点开始后每个文件挨个报错
   const installedAsr = overview?.models.filter((m) => m.installed) ?? []
   const needAsrModel = overview !== null && installedAsr.length === 0 &&
-    entries.some((e) => effectiveSource(e)?.kind === 'asr')
+    (entries.length === 0 || entries.some((e) => effectiveSource(e)?.kind === 'asr'))
 
   const add = useCallback(
     (paths: string[]) => {
@@ -427,6 +427,19 @@ export function BatchView(props: Props): React.JSX.Element {
       <div className="section">
         <div className="section-title">{t('batch.settings')}</div>
         <div className="card">
+          {needAsrModel && (
+            <div className="card-notice">
+              <ModelDownloadNotice
+                kind="asr"
+                models={overview?.models ?? []}
+                downloads={downloads}
+                error={modelError}
+                onDownload={onDownload}
+                onCancel={onCancelDownload}
+                goModels={goModels}
+              />
+            </div>
+          )}
           <div className="row">
             <div className="row-label">
               <strong>{t('home.language')}</strong>
@@ -477,7 +490,21 @@ export function BatchView(props: Props): React.JSX.Element {
             </div>
           )}
 
-          {translating && signsSupported && (
+          {translating && needLlmModel && (
+            <div className="card-notice">
+              <ModelDownloadNotice
+                kind="llm"
+                models={overview?.llmModels ?? []}
+                downloads={downloads}
+                error={modelError}
+                onDownload={onDownload}
+                onCancel={onCancelDownload}
+                goModels={goModels}
+              />
+            </div>
+          )}
+
+          {translating && !needLlmModel && signsSupported && (
             <div className="row">
               <div className="row-label">
                 <strong>{t('home.signs')}</strong>
@@ -495,7 +522,7 @@ export function BatchView(props: Props): React.JSX.Element {
             </div>
           )}
 
-          {translating && (
+          {translating && !needLlmModel && (
             <div className="row">
               <div className="row-label">
                 <strong>{t('home.content')}</strong>
@@ -728,28 +755,6 @@ export function BatchView(props: Props): React.JSX.Element {
             {t('home.notice.goConfigure')}
           </button>
         </div>
-      )}
-      {needLlmModel && (
-        <ModelDownloadNotice
-          kind="llm"
-          models={overview?.llmModels ?? []}
-          downloads={downloads}
-          error={modelError}
-          onDownload={onDownload}
-          onCancel={onCancelDownload}
-          goModels={goModels}
-        />
-      )}
-      {needAsrModel && (
-        <ModelDownloadNotice
-          kind="asr"
-          models={overview?.models ?? []}
-          downloads={downloads}
-          error={modelError}
-          onDownload={onDownload}
-          onCancel={onCancelDownload}
-          goModels={goModels}
-        />
       )}
 
       <div className="job-actions">

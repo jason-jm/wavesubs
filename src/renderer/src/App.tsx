@@ -443,7 +443,9 @@ export default function App(): React.JSX.Element {
           </nav>
         )}
         <div className="scroll">
-          {view === 'home' && (
+          {/* 转换页不卸载、只隐藏：拖进来的文件和改过的选项要留着，切个标签再回来不能清空。
+              只有用户自己点「取消」才回到空态 */}
+          <div hidden={view !== 'home'}>
             <HomeView
               settings={settings}
               overview={overview}
@@ -462,7 +464,7 @@ export default function App(): React.JSX.Element {
               onSelectLlm={(file) => selectModel('llm', file)}
               goModels={() => setView('models')}
             />
-          )}
+          </div>
           {view === 'editor' && editorPath && (
             <EditorView
               path={editorPath}

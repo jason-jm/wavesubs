@@ -47,6 +47,10 @@
   --accent-hover: hsl(232 42% 37%);
   --accent-quiet: hsl(232 42% 44% / 0.13);
   --on-accent: #fff;
+  /* 实心控件的底色（主按钮、分段选中项）：由 theme.ts 按主题色相注入，这里是注入前的兜底 */
+  --accent-fill: hsl(232 42% 46%);
+  --accent-fill-hover: hsl(232 42% 40%);
+  --accent-fill-active: hsl(232 42% 35%);
 
   --green: #1e7f39;
   --orange: #a24a00;
@@ -100,6 +104,9 @@
     --accent: hsl(232 42% 68%);
     --accent-hover: hsl(232 42% 76%);
     --accent-quiet: hsl(232 42% 68% / 0.22);
+    --accent-fill: hsl(232 42% 58%);
+    --accent-fill-hover: hsl(232 42% 62%);
+    --accent-fill-active: hsl(232 42% 52%);
 
     --green: #3ad865;
     --orange: #ffa62b;
@@ -473,6 +480,17 @@ textarea {
   box-shadow: inset 0 0.5px 0 var(--line);
 }
 
+/* 卡片里嵌一条提示（没有模型时顶替掉后面的选项行）：左右和行对齐，和相邻的行之间一道发丝线 */
+.card-notice {
+  padding: var(--sp-3) var(--sp-4);
+}
+
+.row + .card-notice,
+.card-notice + .row,
+.card-notice + .card-notice {
+  box-shadow: inset 0 0.5px 0 var(--line);
+}
+
 .row-label {
   display: flex;
   flex-direction: column;
@@ -533,6 +551,7 @@ textarea {
 }
 
 .btn:active:not(:disabled) {
+  background: var(--bg-fill-hover);
   transform: scale(0.975);
 }
 
@@ -542,14 +561,22 @@ textarea {
 }
 
 /* 主按钮用当前主题的渐变色，而不是固定蓝——整个界面才像一套东西 */
+/* 实心控件（主按钮、分段选中项、btn-on）的底色统一从 --accent-fill 出：
+   之前直接拿壁纸渐变的两个色标当底，浅色模式那是几个粉彩色，白字压上去本就勉强，
+   hover 再提亮 8% 就成了一块白板。现在四态各自一个明度，白字在哪个主题、哪种模式下都读得清 */
 .btn-primary {
   color: var(--on-accent);
-  background: linear-gradient(140deg, var(--grad-2), var(--grad-3));
+  background: linear-gradient(140deg, color-mix(in srgb, var(--accent-fill) 86%, #fff), var(--accent-fill));
   box-shadow: 0 2px 8px rgba(20, 20, 40, 0.2), inset 0 0.5px 0 rgba(255, 255, 255, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
-  filter: brightness(1.08);
+  background: linear-gradient(140deg, color-mix(in srgb, var(--accent-fill-hover) 88%, #fff), var(--accent-fill-hover));
+}
+
+.btn-primary:active:not(:disabled) {
+  background: var(--accent-fill-active);
+  box-shadow: 0 1px 3px rgba(20, 20, 40, 0.2);
 }
 
 .btn-lg {
@@ -597,8 +624,26 @@ textarea {
 .btn.btn-on,
 .btn.btn-on:hover:not(:disabled) {
   color: var(--on-accent);
-  background: linear-gradient(140deg, var(--grad-2), var(--grad-3));
+  background: linear-gradient(140deg, color-mix(in srgb, var(--accent-fill) 86%, #fff), var(--accent-fill));
   box-shadow: 0 1px 3px rgba(20, 20, 40, 0.22), inset 0 0.5px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* 键盘焦点：按钮、分段、开关、下拉统一一圈强调色的环，只在 Tab 到它时出现，鼠标点击不出。
+   Windows 用键盘的人多，Chromium 默认那圈方角蓝框和圆角控件不搭 */
+.btn:focus-visible,
+.segmented button:focus-visible,
+.switch:focus-visible,
+.select select:focus-visible,
+.nav-item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--pane), 0 0 0 4px var(--accent);
+}
+
+.btn:focus:not(:focus-visible),
+.segmented button:focus:not(:focus-visible),
+.switch:focus:not(:focus-visible),
+.select select:focus:not(:focus-visible) {
+  outline: none;
 }
 
 /* ---------------------------- 表单控件 ---------------------------- */
@@ -749,10 +794,15 @@ select optgroup {
  * background 会被 transparent 盖掉——原来那版白底压根没画出来，
  * 选中项和未选中项的差别只剩 box-shadow 那圈 0.5px 描边，所以看着几乎一样。
  */
+.segmented button:active:not(.segmented-on):not(:disabled) {
+  background: var(--bg-fill-hover);
+  filter: brightness(0.96);
+}
+
 .segmented button.segmented-on {
   font-weight: 600;
   color: var(--on-accent);
-  background: linear-gradient(140deg, var(--grad-2), var(--grad-3));
+  background: linear-gradient(140deg, color-mix(in srgb, var(--accent-fill) 86%, #fff), var(--accent-fill));
   box-shadow: 0 1px 3px rgba(20, 20, 40, 0.22), inset 0 0.5px 0 rgba(255, 255, 255, 0.3);
 }
 
@@ -791,8 +841,22 @@ select optgroup {
   transition: transform 0.18s var(--ease);
 }
 
+.switch:hover:not(:disabled) {
+  background: var(--bg-fill-hover);
+  filter: brightness(0.96);
+}
+
+.switch:disabled {
+  opacity: 0.5;
+}
+
 .switch-on {
   background: var(--accent);
+}
+
+.switch-on:hover:not(:disabled) {
+  background: var(--accent-hover);
+  filter: none;
 }
 
 .switch-on::after {

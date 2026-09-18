@@ -347,99 +347,195 @@ export function HomeView(props: Props): React.JSX.Element {
             </div>
           )}
 
-          {usingAsr && info && info.audioStreams.length > 1 && (
-            <div className="row">
-              <div className="row-label">
-                <strong>{t('home.audioTrack')}</strong>
-              </div>
-              <div className="row-control">
-                <Select value={audioIndex} onChange={(v) => setAudioIndex(Number(v))} wide>
-                  {info.audioStreams.map((s) => (
-                    <option key={s.audioIndex} value={s.audioIndex}>
-                      {audioTrackLabel(s, t)}
-                    </option>
-                  ))}
-                </Select>
-              </div>
+          {/* 没有识别模型，后面的选项都无从谈起：卡片里只留来源和这一条，模型下好了选项再出来。
+              翻译同理：本地翻译没模型时，画面文字 / 字幕内容这些行先不出 */}
+          {needAsrModel ? (
+            <div className="card-notice">
+              <ModelDownloadNotice
+                kind="asr"
+                models={overview?.models ?? []}
+                downloads={downloads}
+                error={modelError}
+                onDownload={onDownload}
+                onCancel={onCancelDownload}
+                goModels={goModels}
+              />
             </div>
-          )}
-
-          <div className="row">
-            <div className="row-label">
-              <strong>{t('home.language')}</strong>
-              <span>{usingAsr ? t('home.language.hintAsr') : t('home.language.hintSub')}</span>
-            </div>
-            <div className="row-control lang-flow">
-              <Select value={sourceLang} onChange={setSourceLang}>
-                {SOURCE_LANGUAGES.map((l) => (
-                  <option key={l.value} value={l.value}>
-                    {t(l.key)}
-                  </option>
-                ))}
-              </Select>
-              <span className="lang-arrow">→</span>
-              <Select value={targetLang} onChange={setTargetLang}>
-                {TARGET_LANGUAGES.map((l) => (
-                  <option key={l.value} value={l.value}>
-                    {targetLanguageLabel(l.value, locale, t)}
-                  </option>
-                ))}
-              </Select>
-            </div>
-          </div>
-
-          {translating && (
+          ) : (
             <>
-              <div className="row">
-                <div className="row-label">
-                  <strong>{t('home.service')}</strong>
-                  <span>{t('home.service.hint')}</span>
-                </div>
-                <div className="row-control">
-                  <Select value={service} onChange={setService} wide>
-                    <optgroup label={t('home.service.localGroup')}>
-                      <option value="local">{t('home.service.localModel')}</option>
-                    </optgroup>
-                    {providers.length > 0 && (
-                      <optgroup label={t('home.service.cloudGroup')}>
-                        {providers.map((p) => (
-                          <option key={p.id} value={`api:${p.id}`}>
-                            {p.name}
-                            {p.hasApiKey ? '' : t('home.service.missingKey')}
-                          </option>
-                        ))}
-                      </optgroup>
-                    )}
-                  </Select>
-                </div>
-              </div>
-
-              {props.signsSupported && (
+              {usingAsr && info && info.audioStreams.length > 1 && (
                 <div className="row">
                   <div className="row-label">
-                    <strong>{t('home.signs')}</strong>
-                    <span>{t('home.signsHint')}</span>
+                    <strong>{t('home.audioTrack')}</strong>
                   </div>
                   <div className="row-control">
-                    <button
-                      className={signs ? 'switch switch-on' : 'switch'}
-                      role="switch"
-                      aria-checked={signs}
-                      onClick={() => setSigns((v) => !v)}
-                    />
+                    <Select value={audioIndex} onChange={(v) => setAudioIndex(Number(v))} wide>
+                      {info.audioStreams.map((s) => (
+                        <option key={s.audioIndex} value={s.audioIndex}>
+                          {audioTrackLabel(s, t)}
+                        </option>
+                      ))}
+                    </Select>
                   </div>
                 </div>
               )}
+              <div className="row">
+                <div className="row-label">
+                  <strong>{t('home.language')}</strong>
+                  <span>{usingAsr ? t('home.language.hintAsr') : t('home.language.hintSub')}</span>
+                </div>
+                <div className="row-control lang-flow">
+                  <Select value={sourceLang} onChange={setSourceLang}>
+                    {SOURCE_LANGUAGES.map((l) => (
+                      <option key={l.value} value={l.value}>
+                        {t(l.key)}
+                      </option>
+                    ))}
+                  </Select>
+                  <span className="lang-arrow">→</span>
+                  <Select value={targetLang} onChange={setTargetLang}>
+                    {TARGET_LANGUAGES.map((l) => (
+                      <option key={l.value} value={l.value}>
+                        {targetLanguageLabel(l.value, locale, t)}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+              </div>
+              {translating && (
+                <>
+                  <div className="row">
+                    <div className="row-label">
+                      <strong>{t('home.service')}</strong>
+                      <span>{t('home.service.hint')}</span>
+                    </div>
+                    <div className="row-control">
+                      <Select value={service} onChange={setService} wide>
+                        <optgroup label={t('home.service.localGroup')}>
+                          <option value="local">{t('home.service.localModel')}</option>
+                        </optgroup>
+                        {providers.length > 0 && (
+                          <optgroup label={t('home.service.cloudGroup')}>
+                            {providers.map((p) => (
+                              <option key={p.id} value={`api:${p.id}`}>
+                                {p.name}
+                                {p.hasApiKey ? '' : t('home.service.missingKey')}
+                              </option>
+                            ))}
+                          </optgroup>
+                        )}
+                      </Select>
+                    </div>
+                  </div>
 
-              {useLocal && installedLlm.length > 0 && (
+                  {needLlmModel ? (
+                    <div className="card-notice">
+                      <ModelDownloadNotice
+                        kind="llm"
+                        models={overview?.llmModels ?? []}
+                        downloads={downloads}
+                        error={modelError}
+                        onDownload={onDownload}
+                        onCancel={onCancelDownload}
+                        goModels={goModels}
+                      />
+                    </div>
+                  ) : (
+                    <>
+                      {props.signsSupported && (
+                        <div className="row">
+                          <div className="row-label">
+                            <strong>{t('home.signs')}</strong>
+                            <span>{t('home.signsHint')}</span>
+                          </div>
+                          <div className="row-control">
+                            <button
+                              className={signs ? 'switch switch-on' : 'switch'}
+                              role="switch"
+                              aria-checked={signs}
+                              onClick={() => setSigns((v) => !v)}
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      {useLocal && installedLlm.length > 0 && (
+                        <div className="row">
+                          <div className="row-label">
+                            <strong>{t('home.llmModel')}</strong>
+                            <span>{t('home.llmModel.hint')}</span>
+                          </div>
+                          <div className="row-control">
+                            <Select value={overview?.llmSelected ?? ''} onChange={onSelectLlm}>
+                              {installedLlm.map((m) => (
+                                <option key={m.file} value={m.file}>
+                                  {m.name}
+                                </option>
+                              ))}
+                            </Select>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="row">
+                        <div className="row-label">
+                          <strong>{t('home.content')}</strong>
+                        </div>
+                        <div className="row-control">
+                          <div className="segmented">
+                            <button
+                              className={content === 'translated' ? 'segmented-on' : ''}
+                              onClick={() => setContent('translated')}
+                            >
+                              {t('home.content.translated')}
+                            </button>
+                            <button
+                              className={content === 'bilingual' ? 'segmented-on' : ''}
+                              onClick={() => setContent('bilingual')}
+                            >
+                              {t('home.content.bilingual')}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+              <div className="row">
+                <div className="row-label">
+                  <strong>{t('home.format')}</strong>
+                  <span>{format === 'srt' ? t('home.format.srtHint') : t('home.format.assHint')}</span>
+                </div>
+                <div className="row-control">
+                  <div className="segmented">
+                    <button
+                      className={format === 'srt' ? 'segmented-on' : ''}
+                      onClick={() => setFormat('srt')}
+                    >
+                      SRT
+                    </button>
+                    <button
+                      className={format === 'ass' ? 'segmented-on' : ''}
+                      onClick={() => setFormat('ass')}
+                    >
+                      ASS
+                    </button>
+                  </div>
+                </div>
+              </div>
+              {usingAsr && (
                 <div className="row">
                   <div className="row-label">
-                    <strong>{t('home.llmModel')}</strong>
-                    <span>{t('home.llmModel.hint')}</span>
+                    <strong>{t('home.asrModel')}</strong>
                   </div>
                   <div className="row-control">
-                    <Select value={overview?.llmSelected ?? ''} onChange={onSelectLlm}>
-                      {installedLlm.map((m) => (
+                    <Select
+                      value={overview?.selected ?? ''}
+                      onChange={onSelectModel}
+                      disabled={installedModels.length === 0}
+                    >
+                      {installedModels.map((m) => (
                         <option key={m.file} value={m.file}>
                           {m.name}
                         </option>
@@ -448,73 +544,7 @@ export function HomeView(props: Props): React.JSX.Element {
                   </div>
                 </div>
               )}
-
-              <div className="row">
-                <div className="row-label">
-                  <strong>{t('home.content')}</strong>
-                </div>
-                <div className="row-control">
-                  <div className="segmented">
-                    <button
-                      className={content === 'translated' ? 'segmented-on' : ''}
-                      onClick={() => setContent('translated')}
-                    >
-                      {t('home.content.translated')}
-                    </button>
-                    <button
-                      className={content === 'bilingual' ? 'segmented-on' : ''}
-                      onClick={() => setContent('bilingual')}
-                    >
-                      {t('home.content.bilingual')}
-                    </button>
-                  </div>
-                </div>
-              </div>
             </>
-          )}
-
-          <div className="row">
-            <div className="row-label">
-              <strong>{t('home.format')}</strong>
-              <span>{format === 'srt' ? t('home.format.srtHint') : t('home.format.assHint')}</span>
-            </div>
-            <div className="row-control">
-              <div className="segmented">
-                <button
-                  className={format === 'srt' ? 'segmented-on' : ''}
-                  onClick={() => setFormat('srt')}
-                >
-                  SRT
-                </button>
-                <button
-                  className={format === 'ass' ? 'segmented-on' : ''}
-                  onClick={() => setFormat('ass')}
-                >
-                  ASS
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {usingAsr && (
-            <div className="row">
-              <div className="row-label">
-                <strong>{t('home.asrModel')}</strong>
-              </div>
-              <div className="row-control">
-                <Select
-                  value={overview?.selected ?? ''}
-                  onChange={onSelectModel}
-                  disabled={installedModels.length === 0}
-                >
-                  {installedModels.map((m) => (
-                    <option key={m.file} value={m.file}>
-                      {m.name}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-            </div>
           )}
 
           <div className="job-actions">
@@ -541,32 +571,6 @@ export function HomeView(props: Props): React.JSX.Element {
             <button className="btn" onClick={goModels}>
               {t('home.notice.goConfigure')}
             </button>
-          </div>
-        )}
-        {needLlmModel && (
-          <div style={{ marginTop: 16 }}>
-            <ModelDownloadNotice
-              kind="llm"
-              models={overview?.llmModels ?? []}
-              downloads={downloads}
-              error={modelError}
-              onDownload={onDownload}
-              onCancel={onCancelDownload}
-              goModels={goModels}
-            />
-          </div>
-        )}
-        {needAsrModel && (
-          <div style={{ marginTop: 16 }}>
-            <ModelDownloadNotice
-              kind="asr"
-              models={overview?.models ?? []}
-              downloads={downloads}
-              error={modelError}
-              onDownload={onDownload}
-              onCancel={onCancelDownload}
-              goModels={goModels}
-            />
           </div>
         )}
       </div>

@@ -224,16 +224,27 @@ export function accentFor(theme: ThemeSetting, dark: boolean): {
   accent: string
   hover: string
   quiet: string
+  /** 实心控件（主按钮、分段选中项）的底色：白字压在上面要读得清，明度比 accent 收得更紧 */
+  fill: string
+  fillHover: string
+  fillActive: string
 } {
   const { stops } = resolveStops({ ...theme, intensity: 1 }, false)
   const [h, s] = toHsl(stops[2])
   const sat = clamp(s * 100, 8, 88)
   const light = dark ? 68 : 44
   const hover = dark ? 76 : 37
+  const hsl = (l: number): string => `hsl(${h.toFixed(0)} ${sat.toFixed(0)}% ${l}%)`
+  // 实心控件之前直接拿壁纸渐变的两个色标当底，浅色模式那是几个粉彩色，白字压上去本就勉强，
+  // hover 再提亮 8% 就成了一块白板。改成从同一色相推出的固定明度：
+  // 浅色 46% 白字对比约 5.5:1，hover 往深走；深色 58% 约 4:1，hover 往浅走但只到 62%
   return {
-    accent: `hsl(${h.toFixed(0)} ${sat.toFixed(0)}% ${light}%)`,
-    hover: `hsl(${h.toFixed(0)} ${sat.toFixed(0)}% ${hover}%)`,
-    quiet: `hsl(${h.toFixed(0)} ${sat.toFixed(0)}% ${light}% / ${dark ? 0.22 : 0.13})`
+    accent: hsl(light),
+    hover: hsl(hover),
+    quiet: `hsl(${h.toFixed(0)} ${sat.toFixed(0)}% ${light}% / ${dark ? 0.22 : 0.13})`,
+    fill: hsl(dark ? 58 : 46),
+    fillHover: hsl(dark ? 62 : 40),
+    fillActive: hsl(dark ? 52 : 35)
   }
 }
 

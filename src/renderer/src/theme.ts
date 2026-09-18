@@ -20,6 +20,9 @@ export function applyTheme(theme: ThemeSetting, dark: boolean): void {
   root.style.setProperty('--accent', a.accent)
   root.style.setProperty('--accent-hover', a.hover)
   root.style.setProperty('--accent-quiet', a.quiet)
+  root.style.setProperty('--accent-fill', a.fill)
+  root.style.setProperty('--accent-fill-hover', a.fillHover)
+  root.style.setProperty('--accent-fill-active', a.fillActive)
   root.dataset.grad = isLightGradient(stops) ? 'light' : 'dark'
 }
 
