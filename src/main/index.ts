@@ -98,8 +98,13 @@ const fallbackOutputDir = (): string => join(app.getPath('videos'), 'Wave Subs')
 
 const VIDEO_EXTENSIONS = ['mkv', 'mp4', 'mov', 'avi', 'ts', 'm2ts', 'webm', 'flv', 'wmv', 'm4v']
 
+// WAVESUBS_DEBUG_PORT：开 Chrome DevTools 协议端口，自检脚本用它给界面截图；平时不设
+if (process.env.WAVESUBS_DEBUG_PORT) app.commandLine.appendSwitch('remote-debugging-port', process.env.WAVESUBS_DEBUG_PORT)
+
 function modelsDir(): string {
   // 开发期用项目内 models/，打包后用用户数据目录
+  // WAVESUBS_MODELS_DIR：自检脚本用它指到一个空目录，模拟刚装好、一个模型都没有的首次启动
+  if (process.env.WAVESUBS_MODELS_DIR) return process.env.WAVESUBS_MODELS_DIR
   return app.isPackaged ? join(app.getPath('userData'), 'models') : join(process.cwd(), 'models')
 }
 

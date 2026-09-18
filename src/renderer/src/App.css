@@ -651,6 +651,28 @@ textarea {
   min-width: 220px;
 }
 
+/* 原生下拉的弹出列表。Windows 上 Chromium 是拿 select 的背景色和 option 的文字色去画那张列表的：
+   我们的 select 底色是半透明的白（--bg-control），叠在弹层上就成了一层米色，
+   而文字色继承的是深色模式的浅字——浅字配米底，整张列表看不见。
+   给 option 一块不透明的底和配套的文字色，弹层不管走哪套配色都能读；
+   select 自己的 color-scheme 跟着主题走，弹层的边框、滚动条也一起换色。
+   macOS 用的是系统菜单，这几条对它没影响。 */
+select {
+  color-scheme: light;
+}
+
+select option,
+select optgroup {
+  color: var(--text-1);
+  background-color: var(--pane);
+}
+
+@media (prefers-color-scheme: dark) {
+  select {
+    color-scheme: dark;
+  }
+}
+
 .field {
   display: flex;
   flex-direction: column;
@@ -891,6 +913,23 @@ textarea {
 .notice-error {
   color: var(--red);
   background: color-mix(in srgb, var(--red) 12%, transparent);
+}
+
+/* 就地下载模型的那条提示：进度条铺满提示的宽度，不用模型页那个 210px 的定宽 */
+.notice .dl-wrap {
+  width: min(440px, 100%);
+  margin-top: 6px;
+}
+
+/* 刚装好、一个模型都没有时，空态下面的那一段 */
+.first-run {
+  margin-top: 20px;
+}
+
+.first-run-title {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--text-2);
 }
 
 .notice + * {

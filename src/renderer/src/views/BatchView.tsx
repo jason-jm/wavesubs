@@ -5,6 +5,8 @@ import type {
   ExportContent,
   ExportFormat,
   JobRequest,
+  ModelDownloadProgress,
+  ModelKind,
   ModelsOverview,
   SettingsUpdate,
   SettingsView,
@@ -18,6 +20,8 @@ import { QC_TAG, qcFindingText } from '../lib/qc'
 import { pickDefaultSource } from '../lib/source'
 import { audioTrackLabel, subtitleTrackLabel } from '../lib/trackLabels'
 import { Icon } from '../components/Icon'
+import { ModelDownloadNotice } from '../components/ModelDownloadNotice'
+import type { ModelError } from '../App'
 import { formatDuration } from '../lib/duration'
 import { useStageEta } from '../lib/useStageEta'
 
@@ -40,6 +44,10 @@ interface Props {
   signsSupported: boolean
   updateSettings: (patch: SettingsUpdate) => Promise<void>
   goModels: () => void
+  downloads: Record<string, ModelDownloadProgress>
+  modelError: ModelError | null
+  onDownload: (kind: ModelKind, file: string) => void
+  onCancelDownload: (kind: ModelKind, file: string) => void
 }
 
 function Select(props: {
@@ -302,7 +310,7 @@ function EntryConfig(props: {
 
 export function BatchView(props: Props): React.JSX.Element {
   const { settings, overview, entries, running, stopping, onAdd, onRemove, onClear } = props
-  const { onOverride, onEdit, onStart, onStop, onCancelCurrent, signsSupported, updateSettings, goModels } = props
+  const { onOverride, onEdit, onStart, onStop, onCancelCurrent, signsSupported, updateSettings, goModels, downloads, modelError, onDownload, onCancelDownload } = props
   const { t, locale } = useI18n()
 
   const [dragOver, setDragOver] = useState(false)
@@ -340,6 +348,11 @@ export function BatchView(props: Props): React.JSX.Element {
   const needApiKey =
     translating && !useLocal && activeProvider !== undefined && !activeProvider.hasApiKey
   const needLlmModel = translating && useLocal && overview !== null && installedLlm.length === 0
+  // 队列里有要走语音识别的（没字幕轨、或指定了识别），却一个识别模型都没有——
+  // 之前这里不拦，点开始后每个文件挨个报错
+  const installedAsr = overview?.models.filter((m) => m.installed) ?? []
+  const needAsrModel = overview !== null && installedAsr.length === 0 &&
+    entries.some((e) => effectiveSource(e)?.kind === 'asr')
 
   const add = useCallback(
     (paths: string[]) => {
@@ -395,7 +408,7 @@ export function BatchView(props: Props): React.JSX.Element {
   const waiting = entries.filter((e) => e.status === 'waiting').length
   const done = entries.filter((e) => e.status === 'done').length
   const failed = entries.filter((e) => e.status === 'failed').length
-  const blocked = needApiKey || needLlmModel
+  const blocked = needApiKey || needLlmModel || needAsrModel
 
   return (
     <div
@@ -717,13 +730,26 @@ export function BatchView(props: Props): React.JSX.Element {
         </div>
       )}
       {needLlmModel && (
-        <div className="notice notice-warn">
-          <Icon name="warning" />
-          <p>{t('home.notice.needLlm')}</p>
-          <button className="btn" onClick={goModels}>
-            {t('home.notice.goDownload')}
-          </button>
-        </div>
+        <ModelDownloadNotice
+          kind="llm"
+          models={overview?.llmModels ?? []}
+          downloads={downloads}
+          error={modelError}
+          onDownload={onDownload}
+          onCancel={onCancelDownload}
+          goModels={goModels}
+        />
+      )}
+      {needAsrModel && (
+        <ModelDownloadNotice
+          kind="asr"
+          models={overview?.models ?? []}
+          downloads={downloads}
+          error={modelError}
+          onDownload={onDownload}
+          onCancel={onCancelDownload}
+          goModels={goModels}
+        />
       )}
 
       <div className="job-actions">

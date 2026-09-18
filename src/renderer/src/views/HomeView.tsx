@@ -4,6 +4,8 @@ import type {
   ExportFormat,
   JobRequest,
   MediaProbeInfo,
+  ModelDownloadProgress,
+  ModelKind,
   ModelsOverview,
   PipelineStage,
   SettingsUpdate,
@@ -11,7 +13,7 @@ import type {
   SubtitleSource
 } from '../../../shared/types'
 import type { TranslationKey } from '../../../shared/i18n'
-import type { JobState } from '../App'
+import type { JobState, ModelError } from '../App'
 import { useI18n, withNode } from '../i18n'
 import { normalizeLanguageTag, SOURCE_LANGUAGES, TARGET_LANGUAGES, targetLanguageLabel } from '../lib/languages'
 import { cacheNote } from '../lib/jobSummary'
@@ -22,6 +24,7 @@ import { useStageEta } from '../lib/useStageEta'
 import { defaultSourceKey } from '../lib/source'
 import { audioTrackLabel, subtitleTrackLabel } from '../lib/trackLabels'
 import { Icon } from '../components/Icon'
+import { ModelDownloadNotice } from '../components/ModelDownloadNotice'
 
 
 const STAGE_ORDER: PipelineStage[] = ['probe', 'extract', 'transcribe', 'translate', 'signs', 'write']
@@ -54,6 +57,10 @@ interface Props {
   onSelectModel: (file: string) => void
   onSelectLlm: (file: string) => void
   goModels: () => void
+  downloads: Record<string, ModelDownloadProgress>
+  modelError: ModelError | null
+  onDownload: (kind: ModelKind, file: string) => void
+  onCancelDownload: (kind: ModelKind, file: string) => void
 }
 
 
@@ -78,7 +85,7 @@ function Select(props: {
 }
 
 export function HomeView(props: Props): React.JSX.Element {
-  const { settings, overview, jobState, lastInput, onEdit, onRun, updateSettings } = props
+  const { settings, overview, jobState, lastInput, onEdit, onRun, updateSettings, downloads, modelError, onDownload, onCancelDownload } = props
   const { onSelectModel, onSelectLlm, goModels } = props
   const { t, locale } = useI18n()
   const [dragOver, setDragOver] = useState(false)
@@ -537,21 +544,29 @@ export function HomeView(props: Props): React.JSX.Element {
           </div>
         )}
         {needLlmModel && (
-          <div className="notice notice-warn" style={{ marginTop: 16 }}>
-            <Icon name="warning" />
-            <p>{t('home.notice.needLlm')}</p>
-            <button className="btn" onClick={goModels}>
-              {t('home.notice.goDownload')}
-            </button>
+          <div style={{ marginTop: 16 }}>
+            <ModelDownloadNotice
+              kind="llm"
+              models={overview?.llmModels ?? []}
+              downloads={downloads}
+              error={modelError}
+              onDownload={onDownload}
+              onCancel={onCancelDownload}
+              goModels={goModels}
+            />
           </div>
         )}
         {needAsrModel && (
-          <div className="notice notice-warn" style={{ marginTop: 16 }}>
-            <Icon name="warning" />
-            <p>{t('home.notice.needAsr')}</p>
-            <button className="btn" onClick={goModels}>
-              {t('home.notice.goDownload')}
-            </button>
+          <div style={{ marginTop: 16 }}>
+            <ModelDownloadNotice
+              kind="asr"
+              models={overview?.models ?? []}
+              downloads={downloads}
+              error={modelError}
+              onDownload={onDownload}
+              onCancel={onCancelDownload}
+              goModels={goModels}
+            />
           </div>
         )}
       </div>
@@ -588,6 +603,22 @@ export function HomeView(props: Props): React.JSX.Element {
         </p>
         <button className="btn">{t('home.drop.pick')}</button>
       </div>
+
+      {/* 刚装好、一个模型都没有：拖文件之前先把识别模型下了，省得拖进来才发现要等 */}
+      {overview && installedModels.length === 0 && installedLlm.length === 0 && (
+        <div className="first-run">
+          <p className="first-run-title">{t('home.empty.noModel')}</p>
+          <ModelDownloadNotice
+            kind="asr"
+            models={overview.models}
+            downloads={downloads}
+            error={modelError}
+            onDownload={onDownload}
+            onCancel={onCancelDownload}
+            goModels={goModels}
+          />
+        </div>
+      )}
 
       {jobState.kind === 'done' && (
         <div className="card result result-ok rise">

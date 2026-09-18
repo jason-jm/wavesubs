@@ -454,6 +454,10 @@ export default function App(): React.JSX.Element {
               onCancel={cancelJob}
               signsSupported={signsSupported}
               updateSettings={updateSettings}
+              downloads={downloads}
+              modelError={modelError}
+              onDownload={downloadModel}
+              onCancelDownload={cancelDownload}
               onSelectModel={(file) => selectModel('asr', file)}
               onSelectLlm={(file) => selectModel('llm', file)}
               goModels={() => setView('models')}
@@ -482,6 +486,10 @@ export default function App(): React.JSX.Element {
               onCancelCurrent={cancelJob}
               signsSupported={signsSupported}
               updateSettings={updateSettings}
+              downloads={downloads}
+              modelError={modelError}
+              onDownload={downloadModel}
+              onCancelDownload={cancelDownload}
               goModels={() => setView('models')}
             />
           )}

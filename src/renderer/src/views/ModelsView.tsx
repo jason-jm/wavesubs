@@ -5,6 +5,7 @@ import type {
   ModelsOverview,
   SettingsView
 } from '../../../shared/types'
+import { sizeLabel } from '../lib/models'
 import type { TranslationKey, Translate } from '../../../shared/i18n'
 import { useState } from 'react'
 import type { ModelError, ModelTab } from '../App'
@@ -31,10 +32,6 @@ const FITNESS: Record<ModelInfo['fitness'], { key: TranslationKey; tone: string 
   ok: { key: 'models.fitness.fit', tone: 'tag-green' },
   slow: { key: 'models.fitness.slow', tone: 'tag-orange' },
   unfit: { key: 'models.fitness.unfit', tone: 'tag-red' }
-}
-
-function sizeLabel(mb: number): string {
-  return mb >= 1000 ? `${(mb / 1024).toFixed(1)} GB` : `${mb} MB`
 }
 
 function Meter({ value }: { value: number }): React.JSX.Element {

@@ -21,6 +21,10 @@
 - 语音识别不再随包带 OpenBLAS：之前随包的官方 `whisper-blas-bin` 预编译包里的 OpenBLAS 在一部分机器上一加载模型就崩（「whisper-cli 识别失败（退出码 3221225477）」）。换成不带 BLAS 的官方包，常用模型速度不变，装到磁盘上少 51 MB
 - 模型页按 Windows 机器判断：CPU 型号按实际读，不再一律写成「这台 Mac：Intel」；适配标签与要求文案不再照搬 Mac 的规则
 - 任务失败时可以一键复制完整日志
+- 深色模式下的下拉菜单能看清了：之前语种、模型这些列表在 Windows 上整张看不见，只有选中的那一行能读
+
+**首次使用**
+- 刚装好、一个模型都没有时，转换页直接给出这台机器的推荐模型和「下载并继续」，进度在原地走，下完直接开始；拖了文件再发现没模型也不用离开这一页。本地翻译缺模型同样处理
 
 **已知限制**
 - 画面文字目前只在 macOS 上可用（用的是系统文字识别），Windows 版待接系统 OCR
@@ -52,6 +56,10 @@
 - Speech recognition no longer ships with OpenBLAS: the bundled official `whisper-blas-bin` build crashed on some machines as soon as the model loaded ("whisper-cli failed (exit code 3221225477)"). Switched to the official non-BLAS build — same speed on the common models, and 51 MB less on disk
 - The Models page now judges the actual Windows machine: the CPU model is read as-is instead of always showing "This Mac: Intel", and the fitness tags and requirement lines no longer apply the Mac rules
 - A failed task now has a one-click "Copy log" button
+- Dropdown menus are readable in dark mode: the language and model lists used to render as an unreadable pale list on Windows, with only the selected row legible
+
+**First run**
+- With no model installed yet, the Convert page recommends a model for this machine and offers "Download and continue" right there — progress shows in place and you can start as soon as it finishes; dropping a file first no longer sends you off to the Models page. The same applies when local translation has no model
 
 **Known limitations**
 - On-screen text is macOS only for now (it uses the system text recogniser); the Windows build is waiting on the system OCR
