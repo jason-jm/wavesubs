@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import type {
   ExportContent,
   ExportFormat,
@@ -83,6 +83,12 @@ export function HomeView(props: Props): React.JSX.Element {
   const { t, locale } = useI18n()
   const [dragOver, setDragOver] = useState(false)
   const [pending, setPending] = useState<PendingFile | null>(null)
+  // 「在访达中显示」在 Windows 上得叫资源管理器
+  const [platform, setPlatform] = useState('darwin')
+  useEffect(() => {
+    void window.waveSubs.appInfo().then((i) => setPlatform(i.platform))
+  }, [])
+  const [logCopied, setLogCopied] = useState(false)
   const [sourceKey, setSourceKey] = useState('asr')
   const [sourceLang, setSourceLang] = useState('auto')
   const [targetLang, setTargetLang] = useState('zh')
@@ -631,7 +637,7 @@ export function HomeView(props: Props): React.JSX.Element {
               onClick={() => window.waveSubs.revealInFinder(jobState.result.outputPath)}
             >
               <Icon name="reveal" size={14} />
-              {t('home.result.reveal')}
+              {t(platform === 'darwin' ? 'home.result.reveal' : 'home.result.revealExplorer')}
             </button>
           </div>
         </div>
@@ -645,6 +651,20 @@ export function HomeView(props: Props): React.JSX.Element {
           <div className="result-body">
             <h3>{t('home.result.failed')}</h3>
             <pre className="result-error-detail">{jobState.message}</pre>
+            {/* 反馈问题时要整段日志，之前只能对着屏幕拍照 */}
+            <div className="result-actions">
+              <button
+                className="btn"
+                onClick={() => {
+                  void navigator.clipboard.writeText(jobState.message).then(() => {
+                    setLogCopied(true)
+                    window.setTimeout(() => setLogCopied(false), 1500)
+                  })
+                }}
+              >
+                {t(logCopied ? 'common.copied' : 'home.result.copyLog')}
+              </button>
+            </div>
           </div>
         </div>
       )}

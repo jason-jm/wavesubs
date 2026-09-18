@@ -112,7 +112,9 @@ export const nl: Dict = {
   'home.result.title': 'Ondertitels gemaakt · {n} regels',
   'home.result.translated': ' · {n} vertaald',
   'home.result.reveal': 'Toon in Finder',
+  'home.result.revealExplorer': "Tonen in Verkenner",
   'home.result.failed': 'Taak mislukt',
+  'home.result.copyLog': "Logboek kopiëren",
 
   'nav.batch': 'Batch',
   'nav.batch.caption': 'Zet meerdere bestanden in één keer om — dezelfde instellingen voor alles',
@@ -195,8 +197,10 @@ export const nl: Dict = {
   'models.installed': 'Gedownload',
   'models.deleteTitle': 'Verwijder het modelbestand',
   'models.hardware': 'Deze Mac: {chip} · {mem} GB geheugen',
+  'models.hardwarePc': "Deze pc: {chip} · {mem} GB geheugen",
   'models.location': 'Locatie: {dir}',
   'models.openFinder': 'Open in Finder',
+  'models.openExplorer': "Openen in Verkenner",
   'models.manualHint': 'Handmatig geplaatste {pattern}-bestanden worden vanzelf herkend.',
 
   'cloud.empty.title': 'Nog geen cloudservice toegevoegd',
@@ -252,6 +256,7 @@ export const nl: Dict = {
   'settings.about.privacy': 'Waar herkenning en vertaling draaien',
   'settings.about.privacyHint':
     'Standaard gebeurt alles op deze Mac — geen netwerk, er wordt niets geüpload',
+  'settings.about.privacyHintPc': "Standaard gebeurt alles lokaal op deze pc: geen netwerk, niets wordt geüpload",
   'settings.about.deps': 'Gebruikte opensourceonderdelen',
   'settings.about.depsHint':
     'ffmpeg (media) · whisper.cpp (spraakherkenning) · llama.cpp + Qwen3 (lokale vertaling)',
@@ -273,6 +278,13 @@ export const nl: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon met 16 GB geheugen of meer',
   'req.llm24or32': 'Bruikbaar met 24 GB, 32 GB of meer aanbevolen',
   'req.appleSilicon48': 'Apple Silicon met 48 GB geheugen of meer',
+  'req.pc.any': "Werkt op elke pc",
+  'req.pc.8gb': "Elke pc met 8 GB geheugen of meer",
+  'req.pc.cpuSlow': "Werkt met 8 GB; alleen CPU, merkbaar traag",
+  'req.pc.8gbSlow': "8 GB geheugen of meer; alleen CPU, wat traag",
+  'req.pc.16gbSlow': "16 GB geheugen of meer; alleen CPU, erg traag",
+  'req.pc.16gbGpu': "16 GB geheugen of meer; veel sneller met een aparte GPU",
+  'req.pc.48gb': "48 GB geheugen of meer; alleen praktisch met een GPU met veel VRAM",
 
   'asr.tiny.detail': 'Het snelst maar het minst nauwkeurig; alleen goed voor een snelle blik',
   'asr.base.detail': 'Erg snel; bruikbaar bij eenvoudige audio met duidelijke uitspraak',

@@ -112,7 +112,9 @@ export const fi: Dict = {
   'home.result.title': 'Tekstitys luotu · {n} riviä',
   'home.result.translated': ' · {n} käännetty',
   'home.result.reveal': 'Näytä Finderissa',
+  'home.result.revealExplorer': "Näytä Resurssienhallinnassa",
   'home.result.failed': 'Tehtävä epäonnistui',
+  'home.result.copyLog': "Kopioi loki",
 
   'nav.batch': 'Erä',
   'nav.batch.caption': 'Muunna monta tiedostoa kerralla — samat asetukset kaikille',
@@ -195,8 +197,10 @@ export const fi: Dict = {
   'models.installed': 'Ladattu',
   'models.deleteTitle': 'Poista mallitiedosto',
   'models.hardware': 'Tämä Mac: {chip} · {mem} Gt muistia',
+  'models.hardwarePc': "Tämä tietokone: {chip} · {mem} Gt muistia",
   'models.location': 'Sijainti: {dir}',
   'models.openFinder': 'Avaa Finderissa',
+  'models.openExplorer': "Avaa Resurssienhallinnassa",
   'models.manualHint': 'Myös itse lisätyt {pattern}-tiedostot tunnistetaan automaattisesti.',
 
   'cloud.empty.title': 'Pilvipalveluita ei ole vielä lisätty',
@@ -252,6 +256,7 @@ export const fi: Dict = {
   'settings.about.privacy': 'Missä tunnistus ja käännös suoritetaan',
   'settings.about.privacyHint':
     'Oletuksena kaikki tapahtuu tässä Macissa — ei verkkoyhteyttä eikä mitään lähetetä',
+  'settings.about.privacyHintPc': "Oletuksena kaikki tehdään paikallisesti tällä tietokoneella – ei verkkoyhteyttä, mitään ei lähetetä",
   'settings.about.deps': 'Käytetyt avoimen lähdekoodin osat',
   'settings.about.depsHint':
     'ffmpeg (media) · whisper.cpp (puheentunnistus) · llama.cpp + Qwen3 (paikallinen käännös)',
@@ -273,6 +278,13 @@ export const fi: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon, vähintään 16 Gt muistia',
   'req.llm24or32': 'Käyttökelpoinen 24 Gt:lla, 32 Gt tai enemmän suositeltava',
   'req.appleSilicon48': 'Apple Silicon, vähintään 48 Gt muistia',
+  'req.pc.any': "Toimii millä tahansa tietokoneella",
+  'req.pc.8gb': "Mikä tahansa tietokone, jossa on vähintään 8 Gt muistia",
+  'req.pc.cpuSlow': "Toimii 8 Gt:lla; vain suoritin, selvästi hidas",
+  'req.pc.8gbSlow': "Vähintään 8 Gt muistia; vain suoritin, hieman hidas",
+  'req.pc.16gbSlow': "Vähintään 16 Gt muistia; vain suoritin, hyvin hidas",
+  'req.pc.16gbGpu': "Vähintään 16 Gt muistia; erillisellä näytönohjaimella paljon nopeampi",
+  'req.pc.48gb': "Vähintään 48 Gt muistia; käytännöllinen vain näytönohjaimella, jossa on paljon VRAM-muistia",
 
   'asr.tiny.detail': 'Nopein mutta epätarkin; sopii vain nopeaan silmäilyyn',
   'asr.base.detail': 'Hyvin nopea; riittää yksinkertaiseen ja selkeästi ääntyvään puheeseen',

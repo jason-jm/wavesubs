@@ -109,7 +109,9 @@ export const ko: Dict = {
   'home.result.title': '자막 생성 완료 · 총 {n}개',
   'home.result.translated': ' · {n}개 번역됨',
   'home.result.reveal': 'Finder에서 보기',
+  'home.result.revealExplorer': "탐색기에서 표시",
   'home.result.failed': '작업 실패',
+  'home.result.copyLog': "로그 복사",
 
   'nav.batch': '일괄',
   'nav.batch.caption': '여러 파일을 한 번에 변환합니다. 설정은 전체에 적용됩니다',
@@ -192,8 +194,10 @@ export const ko: Dict = {
   'models.installed': '내려받음',
   'models.deleteTitle': '모델 파일 삭제',
   'models.hardware': '이 Mac: {chip} · 메모리 {mem} GB',
+  'models.hardwarePc': "이 PC: {chip} · {mem} GB 메모리",
   'models.location': '저장 위치: {dir}',
   'models.openFinder': 'Finder에서 열기',
+  'models.openExplorer': "탐색기에서 열기",
   'models.manualHint': '{pattern} 파일을 직접 넣어도 자동으로 인식됩니다.',
 
   'cloud.empty.title': '아직 추가한 클라우드 서비스가 없습니다',
@@ -249,6 +253,7 @@ export const ko: Dict = {
 
   'settings.about.privacy': '인식과 번역이 실행되는 곳',
   'settings.about.privacyHint': '기본적으로 모두 이 Mac에서 처리하며, 네트워크에 연결하거나 업로드하지 않습니다',
+  'settings.about.privacyHintPc': "기본적으로 모든 처리가 이 PC에서 로컬로 이루어지며, 네트워크 연결이나 업로드는 없습니다",
   'settings.about.deps': '사용한 오픈소스',
   'settings.about.depsHint': 'ffmpeg(미디어 처리) · whisper.cpp(음성 인식) · llama.cpp + Qwen3(로컬 번역)',
   'settings.about.note': '인식 모델, 번역 모델, 클라우드 서비스는 모두 "모델" 페이지에서 관리합니다. 어떤 모델을 쓸지, 번역할지, 어떤 형식으로 내보낼지는 파일을 넣은 뒤에 고릅니다.',
@@ -268,6 +273,13 @@ export const ko: Dict = {
   'req.appleSilicon16plus': '메모리 16GB 이상의 Apple Silicon',
   'req.llm24or32': '메모리 24GB에서 사용 가능, 32GB 이상 권장',
   'req.appleSilicon48': '메모리 48GB 이상의 Apple Silicon',
+  'req.pc.any': "어떤 PC에서도 실행 가능",
+  'req.pc.8gb': "메모리 8GB 이상의 PC",
+  'req.pc.cpuSlow': "메모리 8GB에서 실행 가능. CPU만 사용하므로 눈에 띄게 느림",
+  'req.pc.8gbSlow': "메모리 8GB 이상. CPU만 사용하므로 다소 느림",
+  'req.pc.16gbSlow': "메모리 16GB 이상. CPU만 사용하므로 매우 느림",
+  'req.pc.16gbGpu': "메모리 16GB 이상. 외장 GPU가 있으면 훨씬 빠름",
+  'req.pc.48gb': "메모리 48GB 이상. 대용량 VRAM GPU가 있어야 실용적",
 
   'asr.tiny.detail': '가장 빠르지만 정확도가 가장 낮아 빠른 확인용으로만 적합합니다',
   'asr.base.detail': '매우 빠르며, 발음이 또렷한 단순한 오디오라면 쓸 만합니다',

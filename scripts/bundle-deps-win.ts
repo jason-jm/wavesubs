@@ -64,8 +64,12 @@ const PARTS: Part[] = [
     dir: 'whisper',
     zip: 'whisper-win.zip',
     exes: ['whisper-cli.exe', 'whisper-vad-speech-segments.exe'],
-    url: 'https://github.com/ggml-org/whisper.cpp/releases/download/v1.9.1/whisper-blas-bin-x64.zip',
-    sha256: '3c319eab3e87f85883e1ff3d14426c0a1986c661c5eb5985e8af431ed9c4f71f'
+    // 不带 BLAS 的官方包。1.0.0–1.0.7 用的是 whisper-blas-bin-x64.zip，里面的 OpenBLAS（libopenblas.dll，51 MB）
+    // 在一部分 Windows 机器上模型一加载就访问违例（退出码 3221225477 = 0xC0000005），用户机器上复现，
+    // 上游 ggml-org/whisper.cpp#3654 也是同一现象、至今没修。ggml-cpu 自带 AVX2 / AVX-512 内核
+    // （包里 ggml-cpu-*.dll 按机器挑），base / small 这些常用模型不靠 BLAS 也一样快，安装包还小 50 MB。
+    url: 'https://github.com/ggml-org/whisper.cpp/releases/download/v1.9.1/whisper-bin-x64.zip',
+    sha256: '7d8be46ecd31828e1eb7a2ecdd0d6b314feafd82163038ab6092594b0a063539'
   },
   {
     dir: 'llama',
@@ -175,6 +179,13 @@ async function main(): Promise<void> {
   }
   if (ffmpegBin.includes('--enable-gpl') || ffmpegBin.includes('--enable-nonfree')) {
     console.error('\n✗ 随包的 Windows ffmpeg 含 GPL 组件，不能用于闭源分发。请下载 lgpl 版本。')
+    process.exit(1)
+  }
+
+  // whisper 目录里不许出现 BLAS：见上面 PARTS 里的说明，OpenBLAS 在一部分机器上一启动就崩
+  const whisperDlls = readdirSync(join(OUT, 'whisper')).filter((f) => /blas/i.test(f))
+  if (whisperDlls.length > 0) {
+    console.error(`\n✗ whisper 目录里带着 BLAS（${whisperDlls.join(', ')}），这是会崩的那个包，拒绝打包`)
     process.exit(1)
   }
 

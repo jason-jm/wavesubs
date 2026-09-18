@@ -112,7 +112,9 @@ export const ru: Dict = {
   'home.result.title': 'Субтитры готовы · {n} строк',
   'home.result.translated': ' · переведено {n}',
   'home.result.reveal': 'Показать в Finder',
+  'home.result.revealExplorer': "Показать в Проводнике",
   'home.result.failed': 'Задача не выполнена',
+  'home.result.copyLog': "Скопировать журнал",
 
   'nav.batch': 'Пакет',
   'nav.batch.caption': 'Преобразуйте сразу много файлов — одни настройки на все',
@@ -195,8 +197,10 @@ export const ru: Dict = {
   'models.installed': 'Загружена',
   'models.deleteTitle': 'Удалить файл модели',
   'models.hardware': 'Этот Mac: {chip} · {mem} ГБ памяти',
+  'models.hardwarePc': "Этот ПК: {chip} · {mem} ГБ памяти",
   'models.location': 'Расположение: {dir}',
   'models.openFinder': 'Открыть в Finder',
+  'models.openExplorer': "Открыть в Проводнике",
   'models.manualHint': 'Файлы {pattern}, положенные вручную, тоже распознаются автоматически.',
 
   'cloud.empty.title': 'Облачные сервисы пока не добавлены',
@@ -252,6 +256,7 @@ export const ru: Dict = {
   'settings.about.privacy': 'Где выполняются распознавание и перевод',
   'settings.about.privacyHint':
     'По умолчанию всё считается на этом Mac — без сети и без отправки данных',
+  'settings.about.privacyHintPc': "По умолчанию всё выполняется локально на этом ПК: без сети и без загрузки чего-либо",
   'settings.about.deps': 'Используемые open-source компоненты',
   'settings.about.depsHint':
     'ffmpeg (медиа) · whisper.cpp (распознавание речи) · llama.cpp + Qwen3 (локальный перевод)',
@@ -273,6 +278,13 @@ export const ru: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon с 16 ГБ памяти и более',
   'req.llm24or32': 'Пригодна при 24 ГБ, рекомендуется 32 ГБ и более',
   'req.appleSilicon48': 'Apple Silicon с 48 ГБ памяти и более',
+  'req.pc.any': "Работает на любом ПК",
+  'req.pc.8gb': "Любой ПК с 8 ГБ памяти и больше",
+  'req.pc.cpuSlow': "Работает с 8 ГБ; только CPU, заметно медленно",
+  'req.pc.8gbSlow': "8 ГБ памяти и больше; только CPU, довольно медленно",
+  'req.pc.16gbSlow': "16 ГБ памяти и больше; только CPU, очень медленно",
+  'req.pc.16gbGpu': "16 ГБ памяти и больше; с дискретной видеокартой намного быстрее",
+  'req.pc.48gb': "48 ГБ памяти и больше; практично только с видеокартой с большим объёмом видеопамяти",
 
   'asr.tiny.detail': 'Самая быстрая, но наименее точная — годится лишь для беглого просмотра',
   'asr.base.detail': 'Очень быстрая; подходит для простого звука с чёткой дикцией',

@@ -110,7 +110,9 @@ export const ja: Dict = {
   'home.result.title': '字幕を作成しました · 全 {n} 件',
   'home.result.translated': ' · {n} 件を翻訳',
   'home.result.reveal': 'Finder に表示',
+  'home.result.revealExplorer': "エクスプローラーで表示",
   'home.result.failed': '処理に失敗しました',
+  'home.result.copyLog': "ログをコピー",
 
   'nav.batch': '一括',
   'nav.batch.caption': '複数のファイルをまとめて変換します。設定は全ファイル共通です',
@@ -193,8 +195,10 @@ export const ja: Dict = {
   'models.installed': 'ダウンロード済み',
   'models.deleteTitle': 'モデルファイルを削除',
   'models.hardware': 'この Mac：{chip} · メモリ {mem} GB',
+  'models.hardwarePc': "このPC：{chip} · {mem} GB メモリ",
   'models.location': '保存場所：{dir}',
   'models.openFinder': 'Finder で開く',
+  'models.openExplorer': "エクスプローラーで開く",
   'models.manualHint': '{pattern} ファイルを手動で置いても自動的に認識されます。',
 
   'cloud.empty.title': 'クラウドサービスが未登録です',
@@ -250,6 +254,7 @@ export const ja: Dict = {
 
   'settings.about.privacy': '認識と翻訳が動く場所',
   'settings.about.privacyHint': '既定ではすべてこの Mac 上で完結します。通信も送信も行いません',
+  'settings.about.privacyHintPc': "既定ではすべてこのPC上で処理され、ネットワーク接続もアップロードも行いません",
   'settings.about.deps': '利用しているオープンソース',
   'settings.about.depsHint': 'ffmpeg（メディア処理）· whisper.cpp（音声認識）· llama.cpp + Qwen3（ローカル翻訳）',
   'settings.about.note': '認識モデル・翻訳モデル・クラウド接続は「モデル」ページで管理します。どのモデルを使うか、翻訳するかどうか、書き出し形式は、ファイルをドロップしたあとに選べます。',
@@ -269,6 +274,13 @@ export const ja: Dict = {
   'req.appleSilicon16plus': 'メモリ 16GB 以上の Apple Silicon',
   'req.llm24or32': 'メモリ 24GB で利用可、32GB 以上を推奨',
   'req.appleSilicon48': 'メモリ 48GB 以上の Apple Silicon',
+  'req.pc.any': "どのPCでも動作",
+  'req.pc.8gb': "メモリ 8GB 以上のPC",
+  'req.pc.cpuSlow': "メモリ 8GB で動作。CPU のみのため明らかに遅い",
+  'req.pc.8gbSlow': "メモリ 8GB 以上。CPU のみのためやや遅い",
+  'req.pc.16gbSlow': "メモリ 16GB 以上。CPU のみのため非常に遅い",
+  'req.pc.16gbGpu': "メモリ 16GB 以上。外部GPUがあると大幅に高速",
+  'req.pc.48gb': "メモリ 48GB 以上。大容量VRAMのGPUがないと実用的でない",
 
   'asr.tiny.detail': '最速ですが精度は最低。下読み用途向けです',
   'asr.base.detail': '非常に高速。発音の明瞭な単純な音声なら使えます',

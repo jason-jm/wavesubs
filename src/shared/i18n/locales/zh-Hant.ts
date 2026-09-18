@@ -109,7 +109,9 @@ export const zhHant: Dict = {
   'home.result.title': '字幕已產生 · 共 {n} 條',
   'home.result.translated': ' · 已翻譯 {n} 條',
   'home.result.reveal': '在 Finder 中顯示',
+  'home.result.revealExplorer': "在檔案總管中顯示",
   'home.result.failed': '工作失敗',
+  'home.result.copyLog': "複製日誌",
 
   'nav.batch': '批次',
   'nav.batch.caption': '一次轉換多個檔案，設定套用到全部',
@@ -192,8 +194,10 @@ export const zhHant: Dict = {
   'models.installed': '已下載',
   'models.deleteTitle': '刪除模型檔案',
   'models.hardware': '這台 Mac：{chip} · {mem} GB 記憶體',
+  'models.hardwarePc': "這台電腦：{chip} · {mem} GB 記憶體",
   'models.location': '存放位置：{dir}',
   'models.openFinder': '在 Finder 中打開',
+  'models.openExplorer': "在檔案總管中開啟",
   'models.manualHint': '手動放入 {pattern} 檔案也會被自動辨識。',
 
   'cloud.empty.title': '還沒有新增雲端服務',
@@ -249,6 +253,7 @@ export const zhHant: Dict = {
 
   'settings.about.privacy': '辨識與翻譯在哪執行',
   'settings.about.privacyHint': '預設全部在這台 Mac 本機完成，不連網、不上傳任何內容',
+  'settings.about.privacyHintPc': "預設全部在這台電腦本機完成，不連網、不上傳任何內容",
   'settings.about.deps': '依賴的開源元件',
   'settings.about.depsHint': 'ffmpeg（媒體處理）· whisper.cpp（語音辨識）· llama.cpp + Qwen3（本機翻譯）',
   'settings.about.note': '辨識模型、翻譯模型與雲端介面都在「模型」頁管理。具體用哪個模型、翻不翻譯、匯出什麼格式，都在拖入檔案之後按需選擇。',
@@ -268,6 +273,13 @@ export const zhHant: Dict = {
   'req.appleSilicon16plus': '16GB 記憶體以上的 Apple Silicon',
   'req.llm24or32': '24GB 記憶體可用，建議 32GB 以上',
   'req.appleSilicon48': '48GB 記憶體以上的 Apple Silicon',
+  'req.pc.any': "任何電腦都能跑",
+  'req.pc.8gb': "8GB 記憶體以上的電腦",
+  'req.pc.cpuSlow': "8GB 記憶體可跑；只用 CPU，會明顯偏慢",
+  'req.pc.8gbSlow': "8GB 記憶體以上；只用 CPU，偏慢",
+  'req.pc.16gbSlow': "16GB 記憶體以上；只用 CPU，很慢",
+  'req.pc.16gbGpu': "16GB 記憶體以上；有獨立顯示卡會快很多",
+  'req.pc.48gb': "48GB 記憶體以上；要有大顯示記憶體的顯示卡才實用",
 
   'asr.tiny.detail': '最快但精確度最低，只適合快速預覽',
   'asr.base.detail': '速度很快，發音清晰的簡單音訊可用',

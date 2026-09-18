@@ -112,7 +112,9 @@ export const cs: Dict = {
   'home.result.title': 'Titulky vytvořeny · {n} řádků',
   'home.result.translated': ' · přeloženo {n}',
   'home.result.reveal': 'Zobrazit ve Finderu',
+  'home.result.revealExplorer': "Zobrazit v Průzkumníku",
   'home.result.failed': 'Úloha selhala',
+  'home.result.copyLog': "Kopírovat protokol",
 
   'nav.batch': 'Dávka',
   'nav.batch.caption': 'Převeďte více souborů najednou — jedno nastavení pro všechny',
@@ -195,8 +197,10 @@ export const cs: Dict = {
   'models.installed': 'Staženo',
   'models.deleteTitle': 'Smazat soubor modelu',
   'models.hardware': 'Tento Mac: {chip} · {mem} GB paměti',
+  'models.hardwarePc': "Tento počítač: {chip} · {mem} GB paměti",
   'models.location': 'Umístění: {dir}',
   'models.openFinder': 'Otevřít ve Finderu',
+  'models.openExplorer': "Otevřít v Průzkumníku",
   'models.manualHint': 'Ručně vložené soubory {pattern} se rozpoznají samy.',
 
   'cloud.empty.title': 'Zatím není přidána žádná cloudová služba',
@@ -252,6 +256,7 @@ export const cs: Dict = {
   'settings.about.privacy': 'Kde běží rozpoznávání a překlad',
   'settings.about.privacyHint':
     'Ve výchozím stavu vše probíhá na tomto Macu — bez sítě a bez odesílání čehokoli',
+  'settings.about.privacyHintPc': "Ve výchozím nastavení vše běží místně na tomto počítači: bez sítě, nic se neodesílá",
   'settings.about.deps': 'Použité open source komponenty',
   'settings.about.depsHint':
     'ffmpeg (média) · whisper.cpp (rozpoznávání řeči) · llama.cpp + Qwen3 (místní překlad)',
@@ -273,6 +278,13 @@ export const cs: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon s 16 GB paměti a více',
   'req.llm24or32': 'Použitelný při 24 GB, doporučeno 32 GB a více',
   'req.appleSilicon48': 'Apple Silicon s 48 GB paměti a více',
+  'req.pc.any': "Běží na jakémkoli počítači",
+  'req.pc.8gb': "Jakýkoli počítač s 8 GB paměti nebo více",
+  'req.pc.cpuSlow': "Běží s 8 GB; pouze CPU, znatelně pomalé",
+  'req.pc.8gbSlow': "8 GB paměti nebo více; pouze CPU, spíše pomalé",
+  'req.pc.16gbSlow': "16 GB paměti nebo více; pouze CPU, velmi pomalé",
+  'req.pc.16gbGpu': "16 GB paměti nebo více; s dedikovanou grafickou kartou mnohem rychlejší",
+  'req.pc.48gb': "48 GB paměti nebo více; prakticky použitelné jen s grafickou kartou s velkou VRAM",
 
   'asr.tiny.detail': 'Nejrychlejší, ale nejméně přesný; hodí se jen na rychlý náhled',
   'asr.base.detail': 'Velmi rychlý; postačí pro jednoduchý zvuk se zřetelnou výslovností',

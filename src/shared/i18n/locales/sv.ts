@@ -112,7 +112,9 @@ export const sv: Dict = {
   'home.result.title': 'Undertexter skapade · {n} rader',
   'home.result.translated': ' · {n} översatta',
   'home.result.reveal': 'Visa i Finder',
+  'home.result.revealExplorer': "Visa i Utforskaren",
   'home.result.failed': 'Uppgiften misslyckades',
+  'home.result.copyLog': "Kopiera logg",
 
   'nav.batch': 'Batch',
   'nav.batch.caption': 'Konvertera flera filer på en gång — samma inställningar för alla',
@@ -195,8 +197,10 @@ export const sv: Dict = {
   'models.installed': 'Hämtad',
   'models.deleteTitle': 'Radera modellfilen',
   'models.hardware': 'Den här Macen: {chip} · {mem} GB minne',
+  'models.hardwarePc': "Den här datorn: {chip} · {mem} GB minne",
   'models.location': 'Plats: {dir}',
   'models.openFinder': 'Öppna i Finder',
+  'models.openExplorer': "Öppna i Utforskaren",
   'models.manualHint': '{pattern}-filer som du lägger dit själv känns av automatiskt.',
 
   'cloud.empty.title': 'Ingen molntjänst tillagd än',
@@ -252,6 +256,7 @@ export const sv: Dict = {
   'settings.about.privacy': 'Var igenkänning och översättning körs',
   'settings.about.privacyHint':
     'Som standard sker allt på den här Macen — inget nätverk, inget laddas upp',
+  'settings.about.privacyHintPc': "Som standard körs allt lokalt på den här datorn – ingen uppkoppling, inget laddas upp",
   'settings.about.deps': 'Öppen källkod som används',
   'settings.about.depsHint':
     'ffmpeg (media) · whisper.cpp (taligenkänning) · llama.cpp + Qwen3 (lokal översättning)',
@@ -273,6 +278,13 @@ export const sv: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon med 16 GB minne eller mer',
   'req.llm24or32': 'Användbar med 24 GB, 32 GB eller mer rekommenderas',
   'req.appleSilicon48': 'Apple Silicon med 48 GB minne eller mer',
+  'req.pc.any': "Fungerar på alla datorer",
+  'req.pc.8gb': "Alla datorer med minst 8 GB minne",
+  'req.pc.cpuSlow': "Fungerar med 8 GB; endast CPU, märkbart långsamt",
+  'req.pc.8gbSlow': "Minst 8 GB minne; endast CPU, något långsamt",
+  'req.pc.16gbSlow': "Minst 16 GB minne; endast CPU, mycket långsamt",
+  'req.pc.16gbGpu': "Minst 16 GB minne; betydligt snabbare med ett dedikerat grafikkort",
+  'req.pc.48gb': "Minst 48 GB minne; praktiskt bara med ett grafikkort med mycket VRAM",
 
   'asr.tiny.detail': 'Snabbast men minst träffsäker; duger bara för en snabb titt',
   'asr.base.detail': 'Mycket snabb; fungerar för enkelt ljud med tydligt uttal',

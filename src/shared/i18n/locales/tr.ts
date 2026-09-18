@@ -112,7 +112,9 @@ export const tr: Dict = {
   'home.result.title': 'Altyazı oluşturuldu · {n} satır',
   'home.result.translated': ' · {n} tanesi çevrildi',
   'home.result.reveal': "Finder'da göster",
+  'home.result.revealExplorer': "Gezgin'de göster",
   'home.result.failed': 'İşlem başarısız',
+  'home.result.copyLog': "Günlüğü kopyala",
 
   'nav.batch': 'Toplu',
   'nav.batch.caption': 'Birçok dosyayı tek seferde dönüştürün — hepsi için tek ayar',
@@ -195,8 +197,10 @@ export const tr: Dict = {
   'models.installed': 'İndirildi',
   'models.deleteTitle': 'Model dosyasını sil',
   'models.hardware': 'Bu Mac: {chip} · {mem} GB bellek',
+  'models.hardwarePc': "Bu bilgisayar: {chip} · {mem} GB bellek",
   'models.location': 'Konum: {dir}',
   'models.openFinder': "Finder'da aç",
+  'models.openExplorer': "Gezgin'de aç",
   'models.manualHint': 'Elle koyduğunuz {pattern} dosyaları da kendiliğinden algılanır.',
 
   'cloud.empty.title': 'Henüz bulut servisi eklenmedi',
@@ -252,6 +256,7 @@ export const tr: Dict = {
   'settings.about.privacy': 'Tanıma ve çeviri nerede çalışıyor',
   'settings.about.privacyHint':
     'Varsayılan olarak her şey bu Mac üzerinde çalışır — ağ kullanılmaz, hiçbir şey yüklenmez',
+  'settings.about.privacyHintPc': "Varsayılan olarak her şey bu bilgisayarda yerel olarak çalışır: ağ bağlantısı yok, hiçbir şey yüklenmez",
   'settings.about.deps': 'Kullanılan açık kaynak bileşenler',
   'settings.about.depsHint':
     'ffmpeg (medya) · whisper.cpp (konuşma tanıma) · llama.cpp + Qwen3 (yerel çeviri)',
@@ -273,6 +278,13 @@ export const tr: Dict = {
   'req.appleSilicon16plus': '16 GB ve üzeri belleğe sahip Apple Silicon',
   'req.llm24or32': '24 GB ile kullanılabilir, 32 GB ve üzeri önerilir',
   'req.appleSilicon48': '48 GB ve üzeri belleğe sahip Apple Silicon',
+  'req.pc.any': "Her bilgisayarda çalışır",
+  'req.pc.8gb': "En az 8 GB belleğe sahip her bilgisayar",
+  'req.pc.cpuSlow': "8 GB ile çalışır; yalnızca CPU, belirgin şekilde yavaş",
+  'req.pc.8gbSlow': "En az 8 GB bellek; yalnızca CPU, biraz yavaş",
+  'req.pc.16gbSlow': "En az 16 GB bellek; yalnızca CPU, çok yavaş",
+  'req.pc.16gbGpu': "En az 16 GB bellek; ayrı bir ekran kartıyla çok daha hızlı",
+  'req.pc.48gb': "En az 48 GB bellek; yalnızca yüksek VRAM’li bir ekran kartıyla pratik",
 
   'asr.tiny.detail': 'En hızlısı ama en isabetsizi; yalnızca hızlı bir ön izleme için uygun',
   'asr.base.detail': 'Çok hızlı; telaffuzu net, basit seslerde işe yarar',

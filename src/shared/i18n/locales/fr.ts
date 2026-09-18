@@ -115,7 +115,9 @@ export const fr: Dict = {
   'home.result.title': 'Sous-titres créés · {n} lignes',
   'home.result.translated': ' · {n} traduites',
   'home.result.reveal': 'Afficher dans le Finder',
+  'home.result.revealExplorer': "Afficher dans l'Explorateur",
   'home.result.failed': 'La tâche a échoué',
+  'home.result.copyLog': "Copier le journal",
 
   'nav.batch': 'Lot',
   'nav.batch.caption': 'Convertissez plusieurs fichiers d’un coup, avec les mêmes réglages pour tous',
@@ -198,8 +200,10 @@ export const fr: Dict = {
   'models.installed': 'Téléchargé',
   'models.deleteTitle': 'Supprimer le fichier du modèle',
   'models.hardware': 'Ce Mac : {chip} · {mem} Go de mémoire',
+  'models.hardwarePc': "Ce PC : {chip} · {mem} Go de mémoire",
   'models.location': 'Emplacement : {dir}',
   'models.openFinder': 'Ouvrir dans le Finder',
+  'models.openExplorer': "Ouvrir dans l'Explorateur",
   'models.manualHint': 'Les fichiers {pattern} déposés à la main sont détectés automatiquement.',
 
   'cloud.empty.title': 'Aucun service cloud pour l’instant',
@@ -255,6 +259,7 @@ export const fr: Dict = {
   'settings.about.privacy': 'Où s’exécutent la reconnaissance et la traduction',
   'settings.about.privacyHint':
     'Par défaut, tout se fait sur ce Mac : aucun accès réseau, aucun envoi',
+  'settings.about.privacyHintPc': "Par défaut, tout est traité localement sur ce PC : aucune connexion, rien n'est envoyé",
   'settings.about.deps': 'Composants open source utilisés',
   'settings.about.depsHint':
     'ffmpeg (médias) · whisper.cpp (reconnaissance vocale) · llama.cpp + Qwen3 (traduction locale)',
@@ -276,6 +281,13 @@ export const fr: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon avec 16 Go de mémoire ou plus',
   'req.llm24or32': 'Utilisable avec 24 Go, 32 Go ou plus recommandés',
   'req.appleSilicon48': 'Apple Silicon avec 48 Go de mémoire ou plus',
+  'req.pc.any': "Fonctionne sur n'importe quel PC",
+  'req.pc.8gb': "Tout PC avec 8 Go de mémoire ou plus",
+  'req.pc.cpuSlow': "Fonctionne avec 8 Go ; CPU seul, nettement lent",
+  'req.pc.8gbSlow': "8 Go de mémoire ou plus ; CPU seul, plutôt lent",
+  'req.pc.16gbSlow': "16 Go de mémoire ou plus ; CPU seul, très lent",
+  'req.pc.16gbGpu': "16 Go de mémoire ou plus ; bien plus rapide avec une carte graphique dédiée",
+  'req.pc.48gb': "48 Go de mémoire ou plus ; utilisable seulement avec une carte graphique à grande VRAM",
 
   'asr.tiny.detail': 'Le plus rapide mais le moins précis ; bon pour un simple aperçu',
   'asr.base.detail': 'Très rapide ; convient à un audio simple bien articulé',

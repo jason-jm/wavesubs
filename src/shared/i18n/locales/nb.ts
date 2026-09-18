@@ -112,7 +112,9 @@ export const nb: Dict = {
   'home.result.title': 'Undertekster laget · {n} linjer',
   'home.result.translated': ' · {n} oversatt',
   'home.result.reveal': 'Vis i Finder',
+  'home.result.revealExplorer': "Vis i Utforsker",
   'home.result.failed': 'Oppgaven mislyktes',
+  'home.result.copyLog': "Kopier logg",
 
   'nav.batch': 'Batch',
   'nav.batch.caption': 'Konverter flere filer på én gang — samme innstillinger for alle',
@@ -195,8 +197,10 @@ export const nb: Dict = {
   'models.installed': 'Lastet ned',
   'models.deleteTitle': 'Slett modellfilen',
   'models.hardware': 'Denne Macen: {chip} · {mem} GB minne',
+  'models.hardwarePc': "Denne PC-en: {chip} · {mem} GB minne",
   'models.location': 'Plassering: {dir}',
   'models.openFinder': 'Åpne i Finder',
+  'models.openExplorer': "Åpne i Utforsker",
   'models.manualHint': '{pattern}-filer du legger inn selv, oppdages automatisk.',
 
   'cloud.empty.title': 'Ingen skytjeneste lagt til ennå',
@@ -252,6 +256,7 @@ export const nb: Dict = {
   'settings.about.privacy': 'Hvor gjenkjenning og oversettelse kjører',
   'settings.about.privacyHint':
     'Som standard skjer alt på denne Macen — ingen nettverkstilgang, ingenting lastes opp',
+  'settings.about.privacyHintPc': "Som standard kjører alt lokalt på denne PC-en – ingen tilkobling, ingenting lastes opp",
   'settings.about.deps': 'Åpen kildekode som brukes',
   'settings.about.depsHint':
     'ffmpeg (medier) · whisper.cpp (talegjenkjenning) · llama.cpp + Qwen3 (lokal oversettelse)',
@@ -273,6 +278,13 @@ export const nb: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon med 16 GB minne eller mer',
   'req.llm24or32': 'Brukbar med 24 GB, 32 GB eller mer anbefales',
   'req.appleSilicon48': 'Apple Silicon med 48 GB minne eller mer',
+  'req.pc.any': "Kjører på alle PC-er",
+  'req.pc.8gb': "Alle PC-er med minst 8 GB minne",
+  'req.pc.cpuSlow': "Kjører med 8 GB; kun CPU, merkbart tregt",
+  'req.pc.8gbSlow': "Minst 8 GB minne; kun CPU, litt tregt",
+  'req.pc.16gbSlow': "Minst 16 GB minne; kun CPU, svært tregt",
+  'req.pc.16gbGpu': "Minst 16 GB minne; mye raskere med et dedikert skjermkort",
+  'req.pc.48gb': "Minst 48 GB minne; bare praktisk med et skjermkort med mye VRAM",
 
   'asr.tiny.detail': 'Raskest, men minst nøyaktig; bare til en rask kikk',
   'asr.base.detail': 'Svært rask; duger til enkel lyd med tydelig uttale',

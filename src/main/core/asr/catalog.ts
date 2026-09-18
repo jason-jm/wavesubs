@@ -14,6 +14,8 @@ export interface WhisperModelSpec {
   speed: number
   /** 机型要求与说明都存翻译键，展示时按界面语言解析 */
   requirement: TranslationKey
+  /** Windows 上的一句话要求：没有 Metal、语音识别只走 CPU，和 Mac 的说法不一样 */
+  requirementPc: TranslationKey
   detail: TranslationKey
   recommendedDefault?: boolean
 }
@@ -28,6 +30,7 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
     quality: 1,
     speed: 5,
     requirement: 'req.anyMac',
+    requirementPc: 'req.pc.any',
     detail: 'asr.tiny.detail'
   },
   {
@@ -39,6 +42,7 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
     quality: 2,
     speed: 5,
     requirement: 'req.anyMac',
+    requirementPc: 'req.pc.any',
     detail: 'asr.base.detail'
   },
   {
@@ -50,6 +54,7 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
     quality: 3,
     speed: 4,
     requirement: 'req.mac8gb',
+    requirementPc: 'req.pc.8gb',
     detail: 'asr.small.detail'
   },
   {
@@ -61,6 +66,7 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
     quality: 4,
     speed: 2,
     requirement: 'req.appleSiliconPreferred',
+    requirementPc: 'req.pc.cpuSlow',
     detail: 'asr.medium.detail'
   },
   {
@@ -72,6 +78,7 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
     quality: 4.5,
     speed: 4,
     requirement: 'req.appleSilicon8',
+    requirementPc: 'req.pc.8gbSlow',
     detail: 'asr.largeTurbo.detail'
   },
   {
@@ -83,6 +90,7 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
     quality: 5,
     speed: 1,
     requirement: 'req.appleSilicon16',
+    requirementPc: 'req.pc.16gbSlow',
     detail: 'asr.large.detail',
     recommendedDefault: true
   }

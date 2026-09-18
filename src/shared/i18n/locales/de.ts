@@ -112,7 +112,9 @@ export const de: Dict = {
   'home.result.title': 'Untertitel erstellt · {n} Zeilen',
   'home.result.translated': ' · {n} übersetzt',
   'home.result.reveal': 'Im Finder zeigen',
+  'home.result.revealExplorer': "Im Explorer anzeigen",
   'home.result.failed': 'Auftrag fehlgeschlagen',
+  'home.result.copyLog': "Protokoll kopieren",
 
   'nav.batch': 'Stapel',
   'nav.batch.caption': 'Viele Dateien auf einmal umwandeln – eine Einstellung für alle',
@@ -195,8 +197,10 @@ export const de: Dict = {
   'models.installed': 'Geladen',
   'models.deleteTitle': 'Modelldatei löschen',
   'models.hardware': 'Dieser Mac: {chip} · {mem} GB Arbeitsspeicher',
+  'models.hardwarePc': "Dieser PC: {chip} · {mem} GB Arbeitsspeicher",
   'models.location': 'Speicherort: {dir}',
   'models.openFinder': 'Im Finder öffnen',
+  'models.openExplorer': "Im Explorer öffnen",
   'models.manualHint': 'Manuell abgelegte {pattern}-Dateien werden automatisch erkannt.',
 
   'cloud.empty.title': 'Noch kein Cloud-Dienst hinzugefügt',
@@ -252,6 +256,7 @@ export const de: Dict = {
   'settings.about.privacy': 'Wo Erkennung und Übersetzung laufen',
   'settings.about.privacyHint':
     'Standardmäßig läuft alles auf diesem Mac – ohne Netzwerk, nichts wird hochgeladen',
+  'settings.about.privacyHintPc': "Standardmäßig läuft alles lokal auf diesem PC – keine Verbindung, nichts wird hochgeladen",
   'settings.about.deps': 'Verwendete Open-Source-Komponenten',
   'settings.about.depsHint':
     'ffmpeg (Medien) · whisper.cpp (Spracherkennung) · llama.cpp + Qwen3 (lokale Übersetzung)',
@@ -273,6 +278,13 @@ export const de: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon mit 16 GB Arbeitsspeicher oder mehr',
   'req.llm24or32': 'Mit 24 GB nutzbar, 32 GB oder mehr empfohlen',
   'req.appleSilicon48': 'Apple Silicon mit 48 GB Arbeitsspeicher oder mehr',
+  'req.pc.any': "Läuft auf jedem PC",
+  'req.pc.8gb': "Jeder PC mit 8 GB Arbeitsspeicher oder mehr",
+  'req.pc.cpuSlow': "Läuft mit 8 GB; nur CPU, deutlich langsam",
+  'req.pc.8gbSlow': "8 GB Arbeitsspeicher oder mehr; nur CPU, eher langsam",
+  'req.pc.16gbSlow': "16 GB Arbeitsspeicher oder mehr; nur CPU, sehr langsam",
+  'req.pc.16gbGpu': "16 GB Arbeitsspeicher oder mehr; mit dedizierter Grafikkarte deutlich schneller",
+  'req.pc.48gb': "48 GB Arbeitsspeicher oder mehr; nur mit einer Grafikkarte mit viel VRAM praktikabel",
 
   'asr.tiny.detail': 'Am schnellsten, aber am ungenauesten – nur für eine schnelle Vorschau',
   'asr.base.detail': 'Sehr schnell; brauchbar bei einfachem Ton mit klarer Aussprache',

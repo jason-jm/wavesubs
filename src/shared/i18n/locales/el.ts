@@ -113,7 +113,9 @@ export const el: Dict = {
   'home.result.title': 'Οι υπότιτλοι δημιουργήθηκαν · {n} γραμμές',
   'home.result.translated': ' · μεταφράστηκαν {n}',
   'home.result.reveal': 'Εμφάνιση στο Finder',
+  'home.result.revealExplorer': "Εμφάνιση στην Εξερεύνηση",
   'home.result.failed': 'Η εργασία απέτυχε',
+  'home.result.copyLog': "Αντιγραφή αρχείου καταγραφής",
 
   'nav.batch': 'Παρτίδα',
   'nav.batch.caption': 'Μετατρέψτε πολλά αρχεία μαζί — οι ίδιες ρυθμίσεις για όλα',
@@ -196,8 +198,10 @@ export const el: Dict = {
   'models.installed': 'Έχει ληφθεί',
   'models.deleteTitle': 'Διαγραφή του αρχείου μοντέλου',
   'models.hardware': 'Αυτό το Mac: {chip} · {mem} GB μνήμης',
+  'models.hardwarePc': "Αυτός ο υπολογιστής: {chip} · {mem} GB μνήμη",
   'models.location': 'Τοποθεσία: {dir}',
   'models.openFinder': 'Άνοιγμα στο Finder',
+  'models.openExplorer': "Άνοιγμα στην Εξερεύνηση",
   'models.manualHint': 'Και τα αρχεία {pattern} που τοποθετείτε χειροκίνητα εντοπίζονται αυτόματα.',
 
   'cloud.empty.title': 'Δεν έχει προστεθεί ακόμη υπηρεσία cloud',
@@ -253,6 +257,7 @@ export const el: Dict = {
   'settings.about.privacy': 'Πού εκτελούνται η αναγνώριση και η μετάφραση',
   'settings.about.privacyHint':
     'Εξ ορισμού όλα γίνονται σε αυτό το Mac — χωρίς δίκτυο και χωρίς να ανεβαίνει τίποτα',
+  'settings.about.privacyHintPc': "Από προεπιλογή όλα εκτελούνται τοπικά σε αυτόν τον υπολογιστή: χωρίς δίκτυο, χωρίς αποστολή δεδομένων",
   'settings.about.deps': 'Στοιχεία ανοιχτού κώδικα που χρησιμοποιούνται',
   'settings.about.depsHint':
     'ffmpeg (πολυμέσα) · whisper.cpp (αναγνώριση ομιλίας) · llama.cpp + Qwen3 (τοπική μετάφραση)',
@@ -274,6 +279,13 @@ export const el: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon με 16 GB μνήμης ή περισσότερα',
   'req.llm24or32': 'Αξιοποιήσιμο με 24 GB, συνιστώνται 32 GB ή περισσότερα',
   'req.appleSilicon48': 'Apple Silicon με 48 GB μνήμης ή περισσότερα',
+  'req.pc.any': "Τρέχει σε οποιονδήποτε υπολογιστή",
+  'req.pc.8gb': "Οποιοσδήποτε υπολογιστής με τουλάχιστον 8 GB μνήμη",
+  'req.pc.cpuSlow': "Τρέχει με 8 GB· μόνο CPU, αισθητά αργό",
+  'req.pc.8gbSlow': "Τουλάχιστον 8 GB μνήμη· μόνο CPU, μάλλον αργό",
+  'req.pc.16gbSlow': "Τουλάχιστον 16 GB μνήμη· μόνο CPU, πολύ αργό",
+  'req.pc.16gbGpu': "Τουλάχιστον 16 GB μνήμη· πολύ πιο γρήγορο με ξεχωριστή κάρτα γραφικών",
+  'req.pc.48gb': "Τουλάχιστον 48 GB μνήμη· πρακτικό μόνο με κάρτα γραφικών με μεγάλη VRAM",
 
   'asr.tiny.detail': 'Το ταχύτερο αλλά το λιγότερο ακριβές· μόνο για μια γρήγορη ματιά',
   'asr.base.detail': 'Πολύ γρήγορο· επαρκεί για απλό ήχο με καθαρή άρθρωση',

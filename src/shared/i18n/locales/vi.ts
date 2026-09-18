@@ -112,7 +112,9 @@ export const vi: Dict = {
   'home.result.title': 'Đã tạo phụ đề · {n} dòng',
   'home.result.translated': ' · đã dịch {n}',
   'home.result.reveal': 'Hiện trong Finder',
+  'home.result.revealExplorer': "Hiện trong Explorer",
   'home.result.failed': 'Tác vụ thất bại',
+  'home.result.copyLog': "Sao chép nhật ký",
 
   'nav.batch': 'Hàng loạt',
   'nav.batch.caption': 'Chuyển đổi nhiều tệp cùng lúc — một bộ thiết lập dùng chung',
@@ -195,8 +197,10 @@ export const vi: Dict = {
   'models.installed': 'Đã tải',
   'models.deleteTitle': 'Xóa tệp mô hình',
   'models.hardware': 'Máy Mac này: {chip} · {mem} GB bộ nhớ',
+  'models.hardwarePc': "Máy này: {chip} · {mem} GB bộ nhớ",
   'models.location': 'Vị trí lưu: {dir}',
   'models.openFinder': 'Mở trong Finder',
+  'models.openExplorer': "Mở trong Explorer",
   'models.manualHint': 'Tệp {pattern} bạn tự bỏ vào cũng được nhận diện tự động.',
 
   'cloud.empty.title': 'Chưa thêm dịch vụ đám mây nào',
@@ -252,6 +256,7 @@ export const vi: Dict = {
   'settings.about.privacy': 'Nhận dạng và dịch chạy ở đâu',
   'settings.about.privacyHint':
     'Mặc định mọi thứ đều chạy ngay trên máy Mac này — không nối mạng, không tải gì lên',
+  'settings.about.privacyHintPc': "Mặc định mọi thứ chạy cục bộ trên máy này: không kết nối mạng, không tải lên gì cả",
   'settings.about.deps': 'Các thành phần nguồn mở được dùng',
   'settings.about.depsHint':
     'ffmpeg (xử lý đa phương tiện) · whisper.cpp (nhận dạng giọng nói) · llama.cpp + Qwen3 (dịch cục bộ)',
@@ -273,6 +278,13 @@ export const vi: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon có từ 16 GB bộ nhớ trở lên',
   'req.llm24or32': 'Dùng được với 24 GB, nên có 32 GB trở lên',
   'req.appleSilicon48': 'Apple Silicon có từ 48 GB bộ nhớ trở lên',
+  'req.pc.any': "Chạy được trên mọi máy tính",
+  'req.pc.8gb': "Máy tính có từ 8 GB bộ nhớ trở lên",
+  'req.pc.cpuSlow': "Chạy được với 8 GB; chỉ dùng CPU, chậm rõ rệt",
+  'req.pc.8gbSlow': "Từ 8 GB bộ nhớ trở lên; chỉ dùng CPU, hơi chậm",
+  'req.pc.16gbSlow': "Từ 16 GB bộ nhớ trở lên; chỉ dùng CPU, rất chậm",
+  'req.pc.16gbGpu': "Từ 16 GB bộ nhớ trở lên; có card đồ họa rời sẽ nhanh hơn nhiều",
+  'req.pc.48gb': "Từ 48 GB bộ nhớ trở lên; chỉ thực dụng khi có card đồ họa nhiều VRAM",
 
   'asr.tiny.detail': 'Nhanh nhất nhưng kém chính xác nhất; chỉ hợp để xem lướt',
   'asr.base.detail': 'Rất nhanh; dùng được với âm thanh đơn giản, phát âm rõ',

@@ -112,7 +112,9 @@ export const fa: Dict = {
   'home.result.title': 'زیرنویس ساخته شد · {n} سطر',
   'home.result.translated': ' · {n} سطر ترجمه شد',
   'home.result.reveal': 'نمایش در Finder',
+  'home.result.revealExplorer': "نمایش در File Explorer",
   'home.result.failed': 'کار ناموفق بود',
+  'home.result.copyLog': "کپی گزارش",
 
   'nav.batch': 'دسته\u200cای',
   'nav.batch.caption': 'چند فایل را یکجا تبدیل کنید — یک تنظیم برای همه',
@@ -195,8 +197,10 @@ export const fa: Dict = {
   'models.installed': 'بارگیری شده',
   'models.deleteTitle': 'حذف فایل مدل',
   'models.hardware': 'این Mac: {chip} · {mem} گیگابایت حافظه',
+  'models.hardwarePc': "این رایانه: {chip} · {mem} گیگابایت حافظه",
   'models.location': 'محل نگهداری: {dir}',
   'models.openFinder': 'باز کردن در Finder',
+  'models.openExplorer': "باز کردن در File Explorer",
   'models.manualHint': 'فایل‌های {pattern} که خودتان بگذارید هم خودکار شناسایی می‌شوند.',
 
   'cloud.empty.title': 'هنوز سرویس ابری اضافه نشده',
@@ -252,6 +256,7 @@ export const fa: Dict = {
   'settings.about.privacy': 'تشخیص و ترجمه کجا اجرا می‌شوند',
   'settings.about.privacyHint':
     'به‌طور پیش‌فرض همه چیز روی همین Mac انجام می‌شود — بدون شبکه و بدون بارگذاری هیچ چیز',
+  'settings.about.privacyHintPc': "به‌طور پیش‌فرض همه‌چیز به‌صورت محلی روی این رایانه انجام می‌شود: بدون شبکه و بدون بارگذاری چیزی",
   'settings.about.deps': 'مؤلفه‌های متن‌باز به‌کاررفته',
   'settings.about.depsHint':
     'ffmpeg (رسانه) · whisper.cpp (تشخیص گفتار) · llama.cpp + Qwen3 (ترجمهٔ محلی)',
@@ -273,6 +278,13 @@ export const fa: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon با ۱۶ گیگابایت حافظه یا بیشتر',
   'req.llm24or32': 'با ۲۴ گیگابایت قابل استفاده است، ۳۲ گیگابایت یا بیشتر توصیه می‌شود',
   'req.appleSilicon48': 'Apple Silicon با ۴۸ گیگابایت حافظه یا بیشتر',
+  'req.pc.any': "روی هر رایانه‌ای اجرا می‌شود",
+  'req.pc.8gb': "هر رایانه‌ای با 8 گیگابایت حافظه یا بیشتر",
+  'req.pc.cpuSlow': "با 8 گیگابایت اجرا می‌شود؛ فقط CPU، به‌طور محسوسی کند",
+  'req.pc.8gbSlow': "8 گیگابایت حافظه یا بیشتر؛ فقط CPU، نسبتاً کند",
+  'req.pc.16gbSlow': "16 گیگابایت حافظه یا بیشتر؛ فقط CPU، بسیار کند",
+  'req.pc.16gbGpu': "16 گیگابایت حافظه یا بیشتر؛ با کارت گرافیک مجزا بسیار سریع‌تر",
+  'req.pc.48gb': "48 گیگابایت حافظه یا بیشتر؛ فقط با کارت گرافیک دارای VRAM زیاد کاربردی است",
 
   'asr.tiny.detail': 'سریع‌ترین اما کم‌دقت‌ترین؛ فقط برای یک نگاه سریع مناسب است',
   'asr.base.detail': 'بسیار سریع؛ برای صدای ساده با تلفظ روشن کافی است',

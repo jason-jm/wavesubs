@@ -112,7 +112,9 @@ export const uk: Dict = {
   'home.result.title': 'Субтитри створено · {n} рядків',
   'home.result.translated': ' · перекладено {n}',
   'home.result.reveal': 'Показати у Finder',
+  'home.result.revealExplorer': "Показати у Провіднику",
   'home.result.failed': 'Завдання не виконано',
+  'home.result.copyLog': "Скопіювати журнал",
 
   'nav.batch': 'Пакет',
   'nav.batch.caption': 'Перетворіть багато файлів за раз — одні налаштування на всі',
@@ -195,8 +197,10 @@ export const uk: Dict = {
   'models.installed': 'Завантажено',
   'models.deleteTitle': 'Видалити файл моделі',
   'models.hardware': 'Цей Mac: {chip} · {mem} ГБ пам’яті',
+  'models.hardwarePc': "Цей ПК: {chip} · {mem} ГБ пам’яті",
   'models.location': 'Розташування: {dir}',
   'models.openFinder': 'Відкрити у Finder',
+  'models.openExplorer': "Відкрити у Провіднику",
   'models.manualHint': 'Файли {pattern}, покладені вручну, теж розпізнаються автоматично.',
 
   'cloud.empty.title': 'Хмарних сервісів ще не додано',
@@ -252,6 +256,7 @@ export const uk: Dict = {
   'settings.about.privacy': 'Де виконуються розпізнавання й переклад',
   'settings.about.privacyHint':
     'Типово все обчислюється на цьому Mac — без мережі й без надсилання даних',
+  'settings.about.privacyHintPc': "Типово все виконується локально на цьому ПК: без мережі й без завантаження будь-чого",
   'settings.about.deps': 'Використані компоненти з відкритим кодом',
   'settings.about.depsHint':
     'ffmpeg (медіа) · whisper.cpp (розпізнавання мовлення) · llama.cpp + Qwen3 (локальний переклад)',
@@ -273,6 +278,13 @@ export const uk: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon із 16 ГБ пам’яті або більше',
   'req.llm24or32': 'Придатна за 24 ГБ, рекомендовано 32 ГБ і більше',
   'req.appleSilicon48': 'Apple Silicon із 48 ГБ пам’яті або більше',
+  'req.pc.any': "Працює на будь-якому ПК",
+  'req.pc.8gb': "Будь-який ПК з 8 ГБ пам’яті або більше",
+  'req.pc.cpuSlow': "Працює з 8 ГБ; лише CPU, помітно повільно",
+  'req.pc.8gbSlow': "8 ГБ пам’яті або більше; лише CPU, доволі повільно",
+  'req.pc.16gbSlow': "16 ГБ пам’яті або більше; лише CPU, дуже повільно",
+  'req.pc.16gbGpu': "16 ГБ пам’яті або більше; з дискретною відеокартою значно швидше",
+  'req.pc.48gb': "48 ГБ пам’яті або більше; практично лише з відеокартою з великою відеопам’яттю",
 
   'asr.tiny.detail': 'Найшвидша, але найменш точна — годиться лише для побіжного перегляду',
   'asr.base.detail': 'Дуже швидка; підходить для простого звуку з чіткою вимовою',

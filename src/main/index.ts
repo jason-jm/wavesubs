@@ -166,13 +166,14 @@ async function buildModelsOverview(): Promise<ModelsOverview> {
   const asrDownloading = new Set(asrDownloader.activeFiles())
   const llmDownloading = new Set(llmDownloader.activeFiles())
 
-  // 目录里存的是翻译键，这里按当前界面语言解析成文案
+  // 目录里存的是翻译键，这里按当前界面语言解析成文案；要求那一句 Mac 与 Windows 各有一份
   const t = settings.t
+  const onMac = hardware.platform === 'darwin'
 
   const models: ModelInfo[] = await Promise.all(
-    WHISPER_MODELS.map(async (spec) => ({
+    WHISPER_MODELS.map(async ({ requirementPc, ...spec }) => ({
       ...spec,
-      requirement: t(spec.requirement),
+      requirement: t(onMac ? spec.requirement : requirementPc),
       detail: t(spec.detail),
       downloadUrls: candidateUrls(modelDownloadUrl(spec.file)),
       installed: await isFile(join(dir, spec.file)),
@@ -181,9 +182,9 @@ async function buildModelsOverview(): Promise<ModelsOverview> {
     }))
   )
   const llmModels: ModelInfo[] = await Promise.all(
-    LOCAL_LLM_MODELS.map(async ({ url, ...spec }) => ({
+    LOCAL_LLM_MODELS.map(async ({ url, requirementPc, ...spec }) => ({
       ...spec,
-      requirement: t(spec.requirement),
+      requirement: t(onMac ? spec.requirement : requirementPc),
       detail: t(spec.detail),
       downloadUrls: candidateUrls(url),
       installed: await isFile(join(ldir, spec.file)),

@@ -112,7 +112,9 @@ export const da: Dict = {
   'home.result.title': 'Undertekster lavet · {n} linjer',
   'home.result.translated': ' · {n} oversat',
   'home.result.reveal': 'Vis i Finder',
+  'home.result.revealExplorer': "Vis i Stifinder",
   'home.result.failed': 'Opgaven mislykkedes',
+  'home.result.copyLog': "Kopiér log",
 
   'nav.batch': 'Batch',
   'nav.batch.caption': 'Konvertér flere arkiver på én gang — samme indstillinger for alle',
@@ -195,8 +197,10 @@ export const da: Dict = {
   'models.installed': 'Hentet',
   'models.deleteTitle': 'Slet modelarkivet',
   'models.hardware': 'Denne Mac: {chip} · {mem} GB hukommelse',
+  'models.hardwarePc': "Denne pc: {chip} · {mem} GB hukommelse",
   'models.location': 'Placering: {dir}',
   'models.openFinder': 'Åbn i Finder',
+  'models.openExplorer': "Åbn i Stifinder",
   'models.manualHint': '{pattern}-arkiver, du selv lægger ind, registreres automatisk.',
 
   'cloud.empty.title': 'Ingen skytjeneste tilføjet endnu',
@@ -252,6 +256,7 @@ export const da: Dict = {
   'settings.about.privacy': 'Hvor genkendelse og oversættelse kører',
   'settings.about.privacyHint':
     'Som udgangspunkt sker alt på denne Mac — intet netværk, intet sendes op',
+  'settings.about.privacyHintPc': "Som standard kører alt lokalt på denne pc – ingen forbindelse, intet uploades",
   'settings.about.deps': 'Anvendte open source-komponenter',
   'settings.about.depsHint':
     'ffmpeg (medier) · whisper.cpp (talegenkendelse) · llama.cpp + Qwen3 (lokal oversættelse)',
@@ -273,6 +278,13 @@ export const da: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon med 16 GB hukommelse eller mere',
   'req.llm24or32': 'Brugbar med 24 GB, 32 GB eller mere anbefales',
   'req.appleSilicon48': 'Apple Silicon med 48 GB hukommelse eller mere',
+  'req.pc.any': "Kører på enhver pc",
+  'req.pc.8gb': "Enhver pc med mindst 8 GB hukommelse",
+  'req.pc.cpuSlow': "Kører med 8 GB; kun CPU, mærkbart langsomt",
+  'req.pc.8gbSlow': "Mindst 8 GB hukommelse; kun CPU, lidt langsomt",
+  'req.pc.16gbSlow': "Mindst 16 GB hukommelse; kun CPU, meget langsomt",
+  'req.pc.16gbGpu': "Mindst 16 GB hukommelse; markant hurtigere med et dedikeret grafikkort",
+  'req.pc.48gb': "Mindst 48 GB hukommelse; kun praktisk med et grafikkort med meget VRAM",
 
   'asr.tiny.detail': 'Hurtigst, men mindst præcis; kun til et hurtigt gennemsyn',
   'asr.base.detail': 'Meget hurtig; kan bruges til enkel lyd med tydelig udtale',

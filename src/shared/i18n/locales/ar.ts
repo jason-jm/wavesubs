@@ -111,7 +111,9 @@ export const ar: Dict = {
   'home.result.title': 'تم إنشاء الترجمة · {n} سطرًا',
   'home.result.translated': ' · تُرجم منها {n}',
   'home.result.reveal': 'إظهار في Finder',
+  'home.result.revealExplorer': "إظهار في المستكشف",
   'home.result.failed': 'فشلت المهمة',
+  'home.result.copyLog': "نسخ السجل",
 
   'nav.batch': 'دفعة',
   'nav.batch.caption': 'حوّل عدة ملفات دفعة واحدة — إعداد واحد يسري على الجميع',
@@ -194,8 +196,10 @@ export const ar: Dict = {
   'models.installed': 'مُنزَّل',
   'models.deleteTitle': 'حذف ملف النموذج',
   'models.hardware': 'هذا الـ Mac: {chip} · {mem} غيغابايت ذاكرة',
+  'models.hardwarePc': "هذا الكمبيوتر: {chip} · ذاكرة {mem} غيغابايت",
   'models.location': 'مكان الحفظ: {dir}',
   'models.openFinder': 'فتح في Finder',
+  'models.openExplorer': "فتح في المستكشف",
   'models.manualHint': 'ملفات {pattern} التي تضعها يدويًا يتم اكتشافها تلقائيًا.',
 
   'cloud.empty.title': 'لم تُضف أي خدمة سحابية بعد',
@@ -251,6 +255,7 @@ export const ar: Dict = {
   'settings.about.privacy': 'أين يجري التعرف والترجمة',
   'settings.about.privacyHint':
     'افتراضيًا يجري كل شيء على هذا الـ Mac — بلا اتصال بالشبكة وبلا رفع أي محتوى',
+  'settings.about.privacyHintPc': "افتراضيًا يتم كل شيء محليًا على هذا الكمبيوتر: بلا شبكة ولا يُرفع أي شيء",
   'settings.about.deps': 'المكوّنات مفتوحة المصدر المستخدمة',
   'settings.about.depsHint':
     'ffmpeg (معالجة الوسائط) · whisper.cpp (التعرف على الكلام) · llama.cpp + Qwen3 (الترجمة المحلية)',
@@ -272,6 +277,13 @@ export const ar: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon بذاكرة 16 غيغابايت أو أكثر',
   'req.llm24or32': 'صالح بـ 24 غيغابايت، ويُنصح بـ 32 أو أكثر',
   'req.appleSilicon48': 'Apple Silicon بذاكرة 48 غيغابايت أو أكثر',
+  'req.pc.any': "يعمل على أي كمبيوتر",
+  'req.pc.8gb': "أي كمبيوتر بذاكرة 8 غيغابايت أو أكثر",
+  'req.pc.cpuSlow': "يعمل بذاكرة 8 غيغابايت؛ المعالج فقط، بطيء بشكل ملحوظ",
+  'req.pc.8gbSlow': "ذاكرة 8 غيغابايت أو أكثر؛ المعالج فقط، بطيء نوعًا ما",
+  'req.pc.16gbSlow': "ذاكرة 16 غيغابايت أو أكثر؛ المعالج فقط، بطيء جدًا",
+  'req.pc.16gbGpu': "ذاكرة 16 غيغابايت أو أكثر؛ أسرع بكثير مع بطاقة رسومات منفصلة",
+  'req.pc.48gb': "ذاكرة 48 غيغابايت أو أكثر؛ عملي فقط مع بطاقة رسومات ذات ذاكرة فيديو كبيرة",
 
   'asr.tiny.detail': 'الأسرع لكن الأقل دقة؛ يصلح للمعاينة السريعة فقط',
   'asr.base.detail': 'سريع جدًا؛ يصلح للصوت البسيط والنطق الواضح',

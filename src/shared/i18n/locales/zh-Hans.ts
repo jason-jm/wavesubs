@@ -117,7 +117,9 @@ export const zhHans = {
   'home.result.title': '字幕已生成 · 共 {n} 条',
   'home.result.translated': ' · 已翻译 {n} 条',
   'home.result.reveal': '在访达中显示',
+  'home.result.revealExplorer': "在资源管理器中显示",
   'home.result.failed': '任务失败',
+  'home.result.copyLog': "复制日志",
 
   // ---------- 批量转换 ----------
   'nav.batch': '批量',
@@ -203,8 +205,10 @@ export const zhHans = {
   'models.installed': '已下载',
   'models.deleteTitle': '删除模型文件',
   'models.hardware': '这台 Mac：{chip} · {mem} GB 内存',
+  'models.hardwarePc': "这台电脑：{chip} · {mem} GB 内存",
   'models.location': '存放位置：{dir}',
   'models.openFinder': '在访达中打开',
+  'models.openExplorer': "在资源管理器中打开",
   'models.manualHint': '手动放入 {pattern} 文件也能被自动识别。',
 
   // ---------- 云端服务 ----------
@@ -263,6 +267,7 @@ export const zhHans = {
   // ---------- 模型目录：机型要求 ----------
   'settings.about.privacy': '识别与翻译在哪运行',
   'settings.about.privacyHint': '默认全部在这台 Mac 本地完成，不联网、不上传任何内容',
+  'settings.about.privacyHintPc': "默认全部在这台电脑本地完成，不联网、不上传任何内容",
   'settings.about.deps': '依赖的开源组件',
   'settings.about.depsHint': 'ffmpeg（媒体处理）· whisper.cpp（语音识别）· llama.cpp + Qwen3（本地翻译）',
   'settings.about.note': '识别模型、翻译模型与云端接口都在「模型」页管理。具体用哪个模型、翻不翻译、导出什么格式，都在拖入文件之后按需选择。',
@@ -282,6 +287,13 @@ export const zhHans = {
   'req.appleSilicon16plus': '16GB 内存以上的 Apple Silicon',
   'req.llm24or32': '24GB 内存可用，建议 32GB 以上',
   'req.appleSilicon48': '48GB 内存以上的 Apple Silicon',
+  'req.pc.any': "任何电脑都能跑",
+  'req.pc.8gb': "8GB 内存以上的电脑",
+  'req.pc.cpuSlow': "8GB 内存可跑；只用 CPU，会明显偏慢",
+  'req.pc.8gbSlow': "8GB 内存以上；只用 CPU，偏慢",
+  'req.pc.16gbSlow': "16GB 内存以上；只用 CPU，很慢",
+  'req.pc.16gbGpu': "16GB 内存以上；有独立显卡会快很多",
+  'req.pc.48gb': "48GB 内存以上；要有大显存的显卡才实用",
 
   // ---------- 模型目录：说明 ----------
   'asr.tiny.detail': '最快但精度最低，只适合快速预览',

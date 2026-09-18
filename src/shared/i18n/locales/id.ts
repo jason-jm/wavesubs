@@ -112,7 +112,9 @@ export const id: Dict = {
   'home.result.title': 'Takarir dibuat · {n} baris',
   'home.result.translated': ' · {n} diterjemahkan',
   'home.result.reveal': 'Tampilkan di Finder',
+  'home.result.revealExplorer': "Tampilkan di Explorer",
   'home.result.failed': 'Tugas gagal',
+  'home.result.copyLog': "Salin log",
 
   'nav.batch': 'Massal',
   'nav.batch.caption': 'Konversi banyak berkas sekaligus — satu setelan untuk semuanya',
@@ -195,8 +197,10 @@ export const id: Dict = {
   'models.installed': 'Sudah diunduh',
   'models.deleteTitle': 'Hapus berkas model',
   'models.hardware': 'Mac ini: {chip} · memori {mem} GB',
+  'models.hardwarePc': "PC ini: {chip} · memori {mem} GB",
   'models.location': 'Lokasi: {dir}',
   'models.openFinder': 'Buka di Finder',
+  'models.openExplorer': "Buka di Explorer",
   'models.manualHint': 'Berkas {pattern} yang Anda taruh sendiri juga terdeteksi otomatis.',
 
   'cloud.empty.title': 'Belum ada layanan awan yang ditambahkan',
@@ -252,6 +256,7 @@ export const id: Dict = {
   'settings.about.privacy': 'Di mana pengenalan dan penerjemahan berjalan',
   'settings.about.privacyHint':
     'Secara bawaan semuanya berjalan di Mac ini — tanpa jaringan, tidak ada yang diunggah',
+  'settings.about.privacyHintPc': "Secara default semuanya diproses secara lokal di PC ini: tanpa jaringan, tidak ada yang diunggah",
   'settings.about.deps': 'Komponen sumber terbuka yang dipakai',
   'settings.about.depsHint':
     'ffmpeg (media) · whisper.cpp (pengenalan suara) · llama.cpp + Qwen3 (terjemahan lokal)',
@@ -273,6 +278,13 @@ export const id: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon dengan memori 16 GB atau lebih',
   'req.llm24or32': 'Bisa dipakai dengan 24 GB, disarankan 32 GB atau lebih',
   'req.appleSilicon48': 'Apple Silicon dengan memori 48 GB atau lebih',
+  'req.pc.any': "Berjalan di PC apa pun",
+  'req.pc.8gb': "PC apa pun dengan memori 8 GB atau lebih",
+  'req.pc.cpuSlow': "Berjalan dengan 8 GB; hanya CPU, terasa lambat",
+  'req.pc.8gbSlow': "Memori 8 GB atau lebih; hanya CPU, agak lambat",
+  'req.pc.16gbSlow': "Memori 16 GB atau lebih; hanya CPU, sangat lambat",
+  'req.pc.16gbGpu': "Memori 16 GB atau lebih; jauh lebih cepat dengan GPU diskrit",
+  'req.pc.48gb': "Memori 48 GB atau lebih; hanya praktis dengan GPU ber-VRAM besar",
 
   'asr.tiny.detail': 'Paling cepat tapi paling tidak akurat; hanya cocok untuk pratinjau cepat',
   'asr.base.detail': 'Sangat cepat; cukup untuk audio sederhana dengan pelafalan jelas',

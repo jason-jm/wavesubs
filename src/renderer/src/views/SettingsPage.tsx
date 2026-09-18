@@ -263,7 +263,7 @@ export function SettingsPage({ settings, updateSettings }: Props): React.JSX.Ele
           <div className="row">
             <div className="row-label">
               <strong>{t('settings.about.privacy')}</strong>
-              <span>{t('settings.about.privacyHint')}</span>
+              <span>{t(info && info.platform !== 'darwin' ? 'settings.about.privacyHintPc' : 'settings.about.privacyHint')}</span>
             </div>
           </div>
           <div className="row">

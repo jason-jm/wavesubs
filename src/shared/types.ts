@@ -212,9 +212,11 @@ export interface HardwareInfo {
   chip: string
   memGB: number
   appleSilicon: boolean
+  /** process.platform：'darwin' / 'win32' / …，界面按它挑「这台 Mac」还是「这台电脑」的文案 */
+  platform: string
 }
 
-/** 模型在当前这台 Mac 上的适配程度 */
+/** 模型在当前这台机器上的适配程度 */
 export type ModelFitness = 'great' | 'ok' | 'slow' | 'unfit'
 
 /** asr = Whisper 语音识别模型；llm = 本地翻译大模型 */

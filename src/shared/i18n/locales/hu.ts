@@ -112,7 +112,9 @@ export const hu: Dict = {
   'home.result.title': 'Felirat elkészült · {n} sor',
   'home.result.translated': ' · ebből {n} lefordítva',
   'home.result.reveal': 'Megjelenítés a Finderben',
+  'home.result.revealExplorer': "Megjelenítés Intézőben",
   'home.result.failed': 'A feladat nem sikerült',
+  'home.result.copyLog': "Napló másolása",
 
   'nav.batch': 'Köteg',
   'nav.batch.caption': 'Alakíts át több fájlt egyszerre — ugyanazokkal a beállításokkal',
@@ -195,8 +197,10 @@ export const hu: Dict = {
   'models.installed': 'Letöltve',
   'models.deleteTitle': 'Modellfájl törlése',
   'models.hardware': 'Ez a Mac: {chip} · {mem} GB memória',
+  'models.hardwarePc': "Ez a számítógép: {chip} · {mem} GB memória",
   'models.location': 'Hely: {dir}',
   'models.openFinder': 'Megnyitás a Finderben',
+  'models.openExplorer': "Megnyitás Intézőben",
   'models.manualHint': 'A kézzel bemásolt {pattern} fájlokat is automatikusan felismeri.',
 
   'cloud.empty.title': 'Még nincs hozzáadva felhőszolgáltatás',
@@ -252,6 +256,7 @@ export const hu: Dict = {
   'settings.about.privacy': 'Hol fut a felismerés és a fordítás',
   'settings.about.privacyHint':
     'Alapértelmezés szerint minden ezen a Macen történik — hálózat nélkül, semmit nem tölt fel',
+  'settings.about.privacyHintPc': "Alapértelmezés szerint minden helyben, ezen a számítógépen fut – nincs hálózat, semmi sem kerül feltöltésre",
   'settings.about.deps': 'Felhasznált nyílt forráskódú összetevők',
   'settings.about.depsHint':
     'ffmpeg (média) · whisper.cpp (beszédfelismerés) · llama.cpp + Qwen3 (helyi fordítás)',
@@ -273,6 +278,13 @@ export const hu: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon legalább 16 GB memóriával',
   'req.llm24or32': '24 GB-tal használható, 32 GB vagy több ajánlott',
   'req.appleSilicon48': 'Apple Silicon legalább 48 GB memóriával',
+  'req.pc.any': "Bármely számítógépen fut",
+  'req.pc.8gb': "Bármely számítógép legalább 8 GB memóriával",
+  'req.pc.cpuSlow': "8 GB-tal fut; csak CPU, észrevehetően lassú",
+  'req.pc.8gbSlow': "Legalább 8 GB memória; csak CPU, kissé lassú",
+  'req.pc.16gbSlow': "Legalább 16 GB memória; csak CPU, nagyon lassú",
+  'req.pc.16gbGpu': "Legalább 16 GB memória; dedikált videokártyával sokkal gyorsabb",
+  'req.pc.48gb': "Legalább 48 GB memória; csak nagy VRAM-ú videokártyával használható",
 
   'asr.tiny.detail': 'A leggyorsabb, de a legpontatlanabb; csak gyors átnézésre jó',
   'asr.base.detail': 'Nagyon gyors; tiszta kiejtésű, egyszerű hanganyaghoz megfelel',

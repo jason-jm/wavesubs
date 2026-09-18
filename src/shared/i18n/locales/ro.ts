@@ -113,7 +113,9 @@ export const ro: Dict = {
   'home.result.title': 'Subtitrare creată · {n} rânduri',
   'home.result.translated': ' · {n} traduse',
   'home.result.reveal': 'Arată în Finder',
+  'home.result.revealExplorer': "Afișează în Explorer",
   'home.result.failed': 'Sarcina a eșuat',
+  'home.result.copyLog': "Copiază jurnalul",
 
   'nav.batch': 'Lot',
   'nav.batch.caption': 'Convertește mai multe fișiere odată — aceleași reglaje pentru toate',
@@ -196,8 +198,10 @@ export const ro: Dict = {
   'models.installed': 'Descărcat',
   'models.deleteTitle': 'Șterge fișierul modelului',
   'models.hardware': 'Acest Mac: {chip} · {mem} GB memorie',
+  'models.hardwarePc': "Acest PC: {chip} · {mem} GB memorie",
   'models.location': 'Locație: {dir}',
   'models.openFinder': 'Deschide în Finder',
+  'models.openExplorer': "Deschide în Explorer",
   'models.manualHint': 'Fișierele {pattern} puse manual sunt detectate automat.',
 
   'cloud.empty.title': 'Niciun serviciu din cloud adăugat încă',
@@ -253,6 +257,7 @@ export const ro: Dict = {
   'settings.about.privacy': 'Unde rulează recunoașterea și traducerea',
   'settings.about.privacyHint':
     'Implicit totul se face pe acest Mac — fără rețea și fără să se trimită nimic',
+  'settings.about.privacyHintPc': "Implicit, totul se procesează local pe acest PC: fără rețea, nimic nu se încarcă",
   'settings.about.deps': 'Componente open source folosite',
   'settings.about.depsHint':
     'ffmpeg (media) · whisper.cpp (recunoaștere vocală) · llama.cpp + Qwen3 (traducere locală)',
@@ -274,6 +279,13 @@ export const ro: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon cu cel puțin 16 GB de memorie',
   'req.llm24or32': 'Utilizabil cu 24 GB, se recomandă 32 GB sau mai mult',
   'req.appleSilicon48': 'Apple Silicon cu cel puțin 48 GB de memorie',
+  'req.pc.any': "Rulează pe orice PC",
+  'req.pc.8gb': "Orice PC cu cel puțin 8 GB memorie",
+  'req.pc.cpuSlow': "Rulează cu 8 GB; doar CPU, vizibil lent",
+  'req.pc.8gbSlow': "Cel puțin 8 GB memorie; doar CPU, destul de lent",
+  'req.pc.16gbSlow': "Cel puțin 16 GB memorie; doar CPU, foarte lent",
+  'req.pc.16gbGpu': "Cel puțin 16 GB memorie; mult mai rapid cu o placă video dedicată",
+  'req.pc.48gb': "Cel puțin 48 GB memorie; practic doar cu o placă video cu multă memorie VRAM",
 
   'asr.tiny.detail': 'Cel mai rapid, dar cel mai puțin exact; bun doar pentru o privire rapidă',
   'asr.base.detail': 'Foarte rapid; se descurcă la audio simplu, cu pronunție clară',

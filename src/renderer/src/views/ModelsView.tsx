@@ -148,6 +148,8 @@ export function ModelsView(props: Props): React.JSX.Element {
     ? [...overview.models, ...overview.llmModels].find((m) => m.file === error.file)
     : undefined
   const failedDir = error?.kind === 'asr' ? overview.dir : overview.llmDir
+  // Windows 上没有访达，硬件那一行也不该叫「这台 Mac」
+  const isMac = overview.hardware.platform === 'darwin'
   const copy = (url: string): void => {
     void navigator.clipboard.writeText(url).then(() => {
       setCopied(url)
@@ -176,7 +178,7 @@ export function ModelsView(props: Props): React.JSX.Element {
                   ))}
                 </ul>
                 <button className="btn" onClick={() => window.waveSubs.openPath(failedDir)}>
-                  {t('models.openFinder')}
+                  {t(isMac ? 'models.openFinder' : 'models.openExplorer')}
                 </button>
               </>
             )}
@@ -193,7 +195,7 @@ export function ModelsView(props: Props): React.JSX.Element {
           <div className="hw-strip">
             <Icon name="mac" />
             <span>
-              {t('models.hardware', {
+              {t(isMac ? 'models.hardware' : 'models.hardwarePc', {
                 chip: overview.hardware.chip,
                 mem: overview.hardware.memGB
               })}
@@ -221,7 +223,7 @@ export function ModelsView(props: Props): React.JSX.Element {
               className="btn btn-quiet link-btn"
               onClick={() => window.waveSubs.openPath(dir)}
             >
-              {t('models.openFinder')}
+              {t(isMac ? 'models.openFinder' : 'models.openExplorer')}
             </button>
             <br />
             {t('models.manualHint', { pattern: tab === 'asr' ? 'ggml-*.bin' : '*.gguf' })}

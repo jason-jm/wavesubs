@@ -14,6 +14,8 @@ export interface LocalLlmSpec {
   speed: number
   /** 机型要求与说明都存翻译键，展示时按界面语言解析 */
   requirement: TranslationKey
+  /** Windows 上的一句话要求：没有 Metal、语音识别只走 CPU，和 Mac 的说法不一样 */
+  requirementPc: TranslationKey
   detail: TranslationKey
   url: string
   recommendedDefault?: boolean
@@ -31,6 +33,7 @@ export const LOCAL_LLM_MODELS: LocalLlmSpec[] = [
     quality: 2,
     speed: 5,
     requirement: 'req.mac8gb',
+    requirementPc: 'req.pc.8gb',
     detail: 'llm.1_7b.detail',
     url: `${HF}/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q8_0.gguf`
   },
@@ -43,6 +46,7 @@ export const LOCAL_LLM_MODELS: LocalLlmSpec[] = [
     quality: 3,
     speed: 4,
     requirement: 'req.llm8or16',
+    requirementPc: 'req.llm8or16',
     detail: 'llm.4b.detail',
     url: `${HF}/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf`
   },
@@ -55,6 +59,7 @@ export const LOCAL_LLM_MODELS: LocalLlmSpec[] = [
     quality: 4,
     speed: 3,
     requirement: 'req.appleSilicon16plus',
+    requirementPc: 'req.pc.16gbGpu',
     detail: 'llm.8b.detail',
     url: `${HF}/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf`,
     recommendedDefault: true
@@ -68,6 +73,7 @@ export const LOCAL_LLM_MODELS: LocalLlmSpec[] = [
     quality: 4.5,
     speed: 2,
     requirement: 'req.llm24or32',
+    requirementPc: 'req.llm24or32',
     detail: 'llm.14b.detail',
     url: `${HF}/Qwen3-14B-GGUF/resolve/main/Qwen3-14B-Q4_K_M.gguf`
   },
@@ -80,6 +86,7 @@ export const LOCAL_LLM_MODELS: LocalLlmSpec[] = [
     quality: 5,
     speed: 1,
     requirement: 'req.appleSilicon48',
+    requirementPc: 'req.pc.48gb',
     detail: 'llm.32b.detail',
     url: `${HF}/Qwen3-32B-GGUF/resolve/main/Qwen3-32B-Q4_K_M.gguf`
   }

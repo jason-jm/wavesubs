@@ -111,7 +111,9 @@ export const he: Dict = {
   'home.result.title': 'הכתוביות נוצרו · {n} שורות',
   'home.result.translated': ' · {n} תורגמו',
   'home.result.reveal': 'הצגה ב־Finder',
+  'home.result.revealExplorer': "הצגה בסייר הקבצים",
   'home.result.failed': 'המשימה נכשלה',
+  'home.result.copyLog': "העתקת היומן",
 
   'nav.batch': 'אצווה',
   'nav.batch.caption': 'המירו הרבה קבצים בבת אחת — אותן הגדרות לכולם',
@@ -194,8 +196,10 @@ export const he: Dict = {
   'models.installed': 'הורד',
   'models.deleteTitle': 'מחיקת קובץ המודל',
   'models.hardware': 'ה־Mac הזה: {chip} · {mem} GB זיכרון',
+  'models.hardwarePc': "המחשב הזה: {chip} · {mem} GB זיכרון",
   'models.location': 'מיקום: {dir}',
   'models.openFinder': 'פתיחה ב־Finder',
+  'models.openExplorer': "פתיחה בסייר הקבצים",
   'models.manualHint': 'גם קובצי {pattern} שתשימו ידנית מזוהים אוטומטית.',
 
   'cloud.empty.title': 'עדיין לא הוגדר שירות ענן',
@@ -251,6 +255,7 @@ export const he: Dict = {
   'settings.about.privacy': 'איפה רצים הזיהוי והתרגום',
   'settings.about.privacyHint':
     'כברירת מחדל הכול רץ על ה־Mac הזה — בלי רשת ובלי להעלות שום דבר',
+  'settings.about.privacyHintPc': "כברירת מחדל הכול מתבצע מקומית במחשב הזה: בלי רשת, שום דבר לא מועלה",
   'settings.about.deps': 'רכיבי קוד פתוח בשימוש',
   'settings.about.depsHint':
     'ffmpeg (מדיה) · whisper.cpp (זיהוי דיבור) · llama.cpp + Qwen3 (תרגום מקומי)',
@@ -272,6 +277,13 @@ export const he: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon עם 16GB זיכרון ומעלה',
   'req.llm24or32': 'שמיש עם 24GB, מומלץ 32GB ומעלה',
   'req.appleSilicon48': 'Apple Silicon עם 48GB זיכרון ומעלה',
+  'req.pc.any': "רץ על כל מחשב",
+  'req.pc.8gb': "כל מחשב עם 8 GB זיכרון ומעלה",
+  'req.pc.cpuSlow': "רץ עם 8 GB; מעבד בלבד, איטי באופן ניכר",
+  'req.pc.8gbSlow': "8 GB זיכרון ומעלה; מעבד בלבד, איטי למדי",
+  'req.pc.16gbSlow': "16 GB זיכרון ומעלה; מעבד בלבד, איטי מאוד",
+  'req.pc.16gbGpu': "16 GB זיכרון ומעלה; מהיר בהרבה עם כרטיס מסך ייעודי",
+  'req.pc.48gb': "48 GB זיכרון ומעלה; מעשי רק עם כרטיס מסך בעל VRAM גדול",
 
   'asr.tiny.detail': 'המהיר ביותר אבל הפחות מדויק; מתאים רק להצצה מהירה',
   'asr.base.detail': 'מהיר מאוד; מספיק לאודיו פשוט עם הגייה ברורה',

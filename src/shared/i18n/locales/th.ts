@@ -111,7 +111,9 @@ export const th: Dict = {
   'home.result.title': 'สร้างคำบรรยายแล้ว · {n} บรรทัด',
   'home.result.translated': ' · แปลแล้ว {n}',
   'home.result.reveal': 'แสดงใน Finder',
+  'home.result.revealExplorer': "แสดงใน Explorer",
   'home.result.failed': 'งานล้มเหลว',
+  'home.result.copyLog': "คัดลอกบันทึก",
 
   'nav.batch': 'เป็นชุด',
   'nav.batch.caption': 'แปลงหลายไฟล์ในครั้งเดียว ใช้การตั้งค่าชุดเดียวกันทั้งหมด',
@@ -194,8 +196,10 @@ export const th: Dict = {
   'models.installed': 'ดาวน์โหลดแล้ว',
   'models.deleteTitle': 'ลบไฟล์โมเดล',
   'models.hardware': 'Mac เครื่องนี้: {chip} · หน่วยความจำ {mem} GB',
+  'models.hardwarePc': "เครื่องนี้: {chip} · หน่วยความจำ {mem} GB",
   'models.location': 'ที่เก็บ: {dir}',
   'models.openFinder': 'เปิดใน Finder',
+  'models.openExplorer': "เปิดใน Explorer",
   'models.manualHint': 'ไฟล์ {pattern} ที่นำมาวางเองก็ตรวจพบอัตโนมัติ',
 
   'cloud.empty.title': 'ยังไม่ได้เพิ่มบริการบนคลาวด์',
@@ -251,6 +255,7 @@ export const th: Dict = {
   'settings.about.privacy': 'การรู้จำและการแปลทำงานที่ไหน',
   'settings.about.privacyHint':
     'ค่าเริ่มต้นคือทำงานบน Mac เครื่องนี้ทั้งหมด ไม่ต่อเน็ตและไม่อัปโหลดอะไรเลย',
+  'settings.about.privacyHintPc': "ค่าเริ่มต้นทุกอย่างประมวลผลในเครื่องนี้ ไม่เชื่อมต่อเครือข่าย ไม่อัปโหลดสิ่งใด",
   'settings.about.deps': 'ส่วนประกอบโอเพนซอร์สที่ใช้',
   'settings.about.depsHint':
     'ffmpeg (จัดการสื่อ) · whisper.cpp (รู้จำเสียงพูด) · llama.cpp + Qwen3 (แปลในเครื่อง)',
@@ -272,6 +277,13 @@ export const th: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon ที่มีหน่วยความจำ 16GB ขึ้นไป',
   'req.llm24or32': '24GB พอใช้ได้ แนะนำ 32GB ขึ้นไป',
   'req.appleSilicon48': 'Apple Silicon ที่มีหน่วยความจำ 48GB ขึ้นไป',
+  'req.pc.any': "ใช้ได้กับคอมพิวเตอร์ทุกเครื่อง",
+  'req.pc.8gb': "คอมพิวเตอร์ที่มีหน่วยความจำ 8 GB ขึ้นไป",
+  'req.pc.cpuSlow': "ใช้ได้กับ 8 GB ใช้เฉพาะ CPU จะช้าอย่างเห็นได้ชัด",
+  'req.pc.8gbSlow': "หน่วยความจำ 8 GB ขึ้นไป ใช้เฉพาะ CPU ค่อนข้างช้า",
+  'req.pc.16gbSlow': "หน่วยความจำ 16 GB ขึ้นไป ใช้เฉพาะ CPU ช้ามาก",
+  'req.pc.16gbGpu': "หน่วยความจำ 16 GB ขึ้นไป มีการ์ดจอแยกจะเร็วขึ้นมาก",
+  'req.pc.48gb': "หน่วยความจำ 48 GB ขึ้นไป ใช้งานได้จริงเมื่อมีการ์ดจอ VRAM สูงเท่านั้น",
 
   'asr.tiny.detail': 'เร็วที่สุดแต่แม่นน้อยที่สุด เหมาะกับดูคร่าว ๆ เท่านั้น',
   'asr.base.detail': 'เร็วมาก ใช้กับเสียงง่าย ๆ ที่ออกเสียงชัดได้',

@@ -112,7 +112,9 @@ export const hi: Dict = {
   'home.result.title': 'उपशीर्षक बन गए · {n} पंक्तियाँ',
   'home.result.translated': ' · {n} का अनुवाद हुआ',
   'home.result.reveal': 'Finder में दिखाएँ',
+  'home.result.revealExplorer': "Explorer में दिखाएँ",
   'home.result.failed': 'काम विफल रहा',
+  'home.result.copyLog': "लॉग कॉपी करें",
 
   'nav.batch': 'बैच',
   'nav.batch.caption': 'एक साथ कई फ़ाइलें बदलें — सेटिंग सब पर लागू होगी',
@@ -195,8 +197,10 @@ export const hi: Dict = {
   'models.installed': 'डाउनलोड हो चुका',
   'models.deleteTitle': 'मॉडल फ़ाइल हटाएँ',
   'models.hardware': 'यह Mac: {chip} · {mem} GB मेमोरी',
+  'models.hardwarePc': "यह PC: {chip} · {mem} GB मेमोरी",
   'models.location': 'जगह: {dir}',
   'models.openFinder': 'Finder में खोलें',
+  'models.openExplorer': "Explorer में खोलें",
   'models.manualHint': 'ख़ुद रखी गई {pattern} फ़ाइलें भी अपने आप पहचान ली जाती हैं।',
 
   'cloud.empty.title': 'अभी कोई क्लाउड सेवा नहीं जोड़ी गई',
@@ -252,6 +256,7 @@ export const hi: Dict = {
   'settings.about.privacy': 'पहचान और अनुवाद कहाँ चलते हैं',
   'settings.about.privacyHint':
     'डिफ़ॉल्ट रूप से सब कुछ इसी Mac पर होता है — न नेटवर्क, न कुछ अपलोड',
+  'settings.about.privacyHintPc': "डिफ़ॉल्ट रूप से सब कुछ इसी PC पर स्थानीय रूप से चलता है: न नेटवर्क, न कुछ अपलोड",
   'settings.about.deps': 'इस्तेमाल किए गए ओपन सोर्स घटक',
   'settings.about.depsHint':
     'ffmpeg (मीडिया) · whisper.cpp (वाक् पहचान) · llama.cpp + Qwen3 (स्थानीय अनुवाद)',
@@ -273,6 +278,13 @@ export const hi: Dict = {
   'req.appleSilicon16plus': '16GB या ज़्यादा मेमोरी वाला Apple Silicon',
   'req.llm24or32': '24GB पर काम चल जाता है, 32GB या ज़्यादा बेहतर',
   'req.appleSilicon48': '48GB या ज़्यादा मेमोरी वाला Apple Silicon',
+  'req.pc.any': "किसी भी PC पर चलता है",
+  'req.pc.8gb': "8 GB या अधिक मेमोरी वाला कोई भी PC",
+  'req.pc.cpuSlow': "8 GB पर चलता है; केवल CPU, स्पष्ट रूप से धीमा",
+  'req.pc.8gbSlow': "8 GB या अधिक मेमोरी; केवल CPU, कुछ धीमा",
+  'req.pc.16gbSlow': "16 GB या अधिक मेमोरी; केवल CPU, बहुत धीमा",
+  'req.pc.16gbGpu': "16 GB या अधिक मेमोरी; अलग GPU होने पर काफ़ी तेज़",
+  'req.pc.48gb': "48 GB या अधिक मेमोरी; केवल बड़े VRAM वाले GPU के साथ व्यावहारिक",
 
   'asr.tiny.detail': 'सबसे तेज़ पर सबसे कम सटीक; बस सरसरी नज़र डालने लायक़',
   'asr.base.detail': 'बहुत तेज़; साफ़ उच्चारण वाले सीधे-सादे ऑडियो के लिए ठीक',

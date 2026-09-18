@@ -112,7 +112,9 @@ export const pt: Dict = {
   'home.result.title': 'Legendas criadas · {n} linhas',
   'home.result.translated': ' · {n} traduzidas',
   'home.result.reveal': 'Mostrar no Finder',
+  'home.result.revealExplorer': "Mostrar no Explorador",
   'home.result.failed': 'A tarefa falhou',
+  'home.result.copyLog': "Copiar registro",
 
   'nav.batch': 'Lote',
   'nav.batch.caption': 'Converta vários arquivos de uma vez, com os mesmos ajustes para todos',
@@ -195,8 +197,10 @@ export const pt: Dict = {
   'models.installed': 'Baixado',
   'models.deleteTitle': 'Excluir o arquivo do modelo',
   'models.hardware': 'Este Mac: {chip} · {mem} GB de memória',
+  'models.hardwarePc': "Este PC: {chip} · {mem} GB de memória",
   'models.location': 'Local: {dir}',
   'models.openFinder': 'Abrir no Finder',
+  'models.openExplorer': "Abrir no Explorador",
   'models.manualHint': 'Arquivos {pattern} colocados manualmente também são detectados.',
 
   'cloud.empty.title': 'Nenhum serviço na nuvem ainda',
@@ -252,6 +256,7 @@ export const pt: Dict = {
   'settings.about.privacy': 'Onde o reconhecimento e a tradução são executados',
   'settings.about.privacyHint':
     'Por padrão tudo roda neste Mac — sem rede e sem enviar nada',
+  'settings.about.privacyHintPc': "Por padrão, tudo é processado localmente neste PC: sem rede e sem enviar nada",
   'settings.about.deps': 'Componentes de código aberto usados',
   'settings.about.depsHint':
     'ffmpeg (mídia) · whisper.cpp (reconhecimento de fala) · llama.cpp + Qwen3 (tradução local)',
@@ -273,6 +278,13 @@ export const pt: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon com 16 GB de memória ou mais',
   'req.llm24or32': 'Utilizável com 24 GB, recomendável 32 GB ou mais',
   'req.appleSilicon48': 'Apple Silicon com 48 GB de memória ou mais',
+  'req.pc.any': "Funciona em qualquer PC",
+  'req.pc.8gb': "Qualquer PC com 8 GB de memória ou mais",
+  'req.pc.cpuSlow': "Funciona com 8 GB; só CPU, notavelmente lento",
+  'req.pc.8gbSlow': "8 GB de memória ou mais; só CPU, um pouco lento",
+  'req.pc.16gbSlow': "16 GB de memória ou mais; só CPU, muito lento",
+  'req.pc.16gbGpu': "16 GB de memória ou mais; muito mais rápido com uma GPU dedicada",
+  'req.pc.48gb': "48 GB de memória ou mais; só é prático com uma GPU de muita VRAM",
 
   'asr.tiny.detail': 'O mais rápido, mas o menos preciso; só para uma prévia',
   'asr.base.detail': 'Bem rápido; serve para áudio simples com pronúncia clara',

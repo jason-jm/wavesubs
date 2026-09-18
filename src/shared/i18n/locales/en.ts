@@ -110,7 +110,9 @@ export const en: Dict = {
   'home.result.title': 'Subtitles created · {n} cues',
   'home.result.translated': ' · {n} translated',
   'home.result.reveal': 'Show in Finder',
+  'home.result.revealExplorer': "Show in Explorer",
   'home.result.failed': 'Job failed',
+  'home.result.copyLog': "Copy log",
 
   'nav.batch': 'Batch',
   'nav.batch.caption': 'Convert many files at once — one set of settings for all',
@@ -193,8 +195,10 @@ export const en: Dict = {
   'models.installed': 'Downloaded',
   'models.deleteTitle': 'Delete model file',
   'models.hardware': 'This Mac: {chip} · {mem} GB memory',
+  'models.hardwarePc': "This PC: {chip} · {mem} GB memory",
   'models.location': 'Stored in: {dir}',
   'models.openFinder': 'Open in Finder',
+  'models.openExplorer': "Open in Explorer",
   'models.manualHint': 'Files you drop in manually ({pattern}) are detected automatically.',
 
   'cloud.empty.title': 'No cloud service added yet',
@@ -250,6 +254,7 @@ export const en: Dict = {
 
   'settings.about.privacy': 'Where recognition and translation run',
   'settings.about.privacyHint': 'Everything runs locally on this Mac by default — no network, nothing uploaded',
+  'settings.about.privacyHintPc': "Everything runs locally on this PC by default — no network, nothing uploaded",
   'settings.about.deps': 'Open-source components used',
   'settings.about.depsHint': 'ffmpeg (media) · whisper.cpp (speech recognition) · llama.cpp + Qwen3 (local translation)',
   'settings.about.note': 'Speech models, translation models and cloud services are all managed on the Models page. Which model to use, whether to translate, and the export format are all chosen after you drop a file in.',
@@ -269,6 +274,13 @@ export const en: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon with 16 GB memory or more',
   'req.llm24or32': 'Usable with 24 GB, 32 GB or more recommended',
   'req.appleSilicon48': 'Apple Silicon with 48 GB memory or more',
+  'req.pc.any': "Runs on any PC",
+  'req.pc.8gb': "Any PC with 8 GB memory or more",
+  'req.pc.cpuSlow': "Runs on 8 GB; CPU only, noticeably slow",
+  'req.pc.8gbSlow': "8 GB memory or more; CPU only, on the slow side",
+  'req.pc.16gbSlow': "16 GB memory or more; CPU only, very slow",
+  'req.pc.16gbGpu': "16 GB memory or more; much faster with a discrete GPU",
+  'req.pc.48gb': "48 GB memory or more; only practical with a large-VRAM GPU",
 
   'asr.tiny.detail': 'Fastest but least accurate — only good for a quick preview',
   'asr.base.detail': 'Very fast, fine for simple audio with clear pronunciation',

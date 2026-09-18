@@ -112,7 +112,9 @@ export const bn: Dict = {
   'home.result.title': 'সাবটাইটেল তৈরি হয়েছে · {n} লাইন',
   'home.result.translated': ' · {n}টি অনুবাদ হয়েছে',
   'home.result.reveal': 'Finder-এ দেখান',
+  'home.result.revealExplorer': "Explorer-এ দেখান",
   'home.result.failed': 'কাজটি ব্যর্থ হয়েছে',
+  'home.result.copyLog': "লগ কপি করুন",
 
   'nav.batch': 'ব্যাচ',
   'nav.batch.caption': 'একসঙ্গে অনেক ফাইল বদলান — সেটিং সবার জন্য একই',
@@ -195,8 +197,10 @@ export const bn: Dict = {
   'models.installed': 'নামানো হয়েছে',
   'models.deleteTitle': 'মডেল ফাইল মুছুন',
   'models.hardware': 'এই Mac: {chip} · {mem} GB মেমরি',
+  'models.hardwarePc': "এই PC: {chip} · {mem} GB মেমোরি",
   'models.location': 'রাখার জায়গা: {dir}',
   'models.openFinder': 'Finder-এ খুলুন',
+  'models.openExplorer': "Explorer-এ খুলুন",
   'models.manualHint': 'নিজে রাখা {pattern} ফাইলও নিজে থেকেই শনাক্ত হয়।',
 
   'cloud.empty.title': 'এখনো কোনো ক্লাউড পরিষেবা যোগ করা হয়নি',
@@ -252,6 +256,7 @@ export const bn: Dict = {
   'settings.about.privacy': 'শনাক্তকরণ আর অনুবাদ কোথায় চলে',
   'settings.about.privacyHint':
     'সাধারণ অবস্থায় সবকিছু এই Mac-এই হয় — নেটওয়ার্ক লাগে না, কিছুই আপলোড হয় না',
+  'settings.about.privacyHintPc': "ডিফল্টভাবে সবকিছু এই PC-তেই স্থানীয়ভাবে চলে: কোনো নেটওয়ার্ক নয়, কিছুই আপলোড হয় না",
   'settings.about.deps': 'ব্যবহৃত ওপেন সোর্স উপাদান',
   'settings.about.depsHint':
     'ffmpeg (মিডিয়া) · whisper.cpp (কণ্ঠ শনাক্তকরণ) · llama.cpp + Qwen3 (স্থানীয় অনুবাদ)',
@@ -273,6 +278,13 @@ export const bn: Dict = {
   'req.appleSilicon16plus': '১৬GB বা বেশি মেমরির Apple Silicon',
   'req.llm24or32': '২৪GB-তে চলে, ৩২GB বা বেশি হলে ভালো',
   'req.appleSilicon48': '৪৮GB বা বেশি মেমরির Apple Silicon',
+  'req.pc.any': "যেকোনো PC-তে চলে",
+  'req.pc.8gb': "8 GB বা তার বেশি মেমোরির যেকোনো PC",
+  'req.pc.cpuSlow': "8 GB-তে চলে; শুধু CPU, লক্ষণীয়ভাবে ধীর",
+  'req.pc.8gbSlow': "8 GB বা তার বেশি মেমোরি; শুধু CPU, কিছুটা ধীর",
+  'req.pc.16gbSlow': "16 GB বা তার বেশি মেমোরি; শুধু CPU, খুব ধীর",
+  'req.pc.16gbGpu': "16 GB বা তার বেশি মেমোরি; আলাদা GPU থাকলে অনেক দ্রুত",
+  'req.pc.48gb': "48 GB বা তার বেশি মেমোরি; শুধু বড় VRAM-এর GPU থাকলেই ব্যবহারযোগ্য",
 
   'asr.tiny.detail': 'সবচেয়ে দ্রুত কিন্তু সবচেয়ে কম নির্ভুল; কেবল চট করে দেখে নেওয়ার জন্য',
   'asr.base.detail': 'খুবই দ্রুত; স্পষ্ট উচ্চারণের সহজ অডিওতে কাজ চলে',

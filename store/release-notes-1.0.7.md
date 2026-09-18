@@ -17,6 +17,11 @@
 - 自动判断语种更稳：不再只看开头 30 秒（片头音乐会被判成英语，整集识别成英文胡话），改为在人声最密的几处各取 20 秒投票
 - 字幕样式统一：画面文字原来是粗体、对白是常规体，同一屏上看着像两种字体，现在统一
 
+**Windows**
+- 语音识别不再随包带 OpenBLAS：之前随包的官方 `whisper-blas-bin` 预编译包里的 OpenBLAS 在一部分机器上一加载模型就崩（「whisper-cli 识别失败（退出码 3221225477）」）。换成不带 BLAS 的官方包，常用模型速度不变，装到磁盘上少 51 MB
+- 模型页按 Windows 机器判断：CPU 型号按实际读，不再一律写成「这台 Mac：Intel」；适配标签与要求文案不再照搬 Mac 的规则
+- 任务失败时可以一键复制完整日志
+
 **已知限制**
 - 画面文字目前只在 macOS 上可用（用的是系统文字识别），Windows 版待接系统 OCR
 - 名单之外的一串人名仍会被译出来：话剧海报上成排的演员名，以及和制作名单隔了半分钟先单独打出来的主演名。
@@ -42,6 +47,11 @@
 **Other**
 - Steadier language detection: instead of only the first 30 seconds (where opening music could be read as English and turn a whole episode into English gibberish), five 20-second windows are sampled where speech is densest and vote
 - Consistent subtitle styling: on-screen text was bold while dialogue was regular, which read as two different typefaces on the same frame
+
+**Windows**
+- Speech recognition no longer ships with OpenBLAS: the bundled official `whisper-blas-bin` build crashed on some machines as soon as the model loaded ("whisper-cli failed (exit code 3221225477)"). Switched to the official non-BLAS build — same speed on the common models, and 51 MB less on disk
+- The Models page now judges the actual Windows machine: the CPU model is read as-is instead of always showing "This Mac: Intel", and the fitness tags and requirement lines no longer apply the Mac rules
+- A failed task now has a one-click "Copy log" button
 
 **Known limitations**
 - On-screen text is macOS only for now (it uses the system text recogniser); the Windows build is waiting on the system OCR

@@ -113,7 +113,9 @@ export const pl: Dict = {
   'home.result.title': 'Napisy gotowe · {n} wierszy',
   'home.result.translated': ' · przetłumaczono {n}',
   'home.result.reveal': 'Pokaż w Finderze',
+  'home.result.revealExplorer': "Pokaż w Eksploratorze",
   'home.result.failed': 'Zadanie nie powiodło się',
+  'home.result.copyLog': "Kopiuj dziennik",
 
   'nav.batch': 'Wsad',
   'nav.batch.caption': 'Przekształć wiele plików naraz — jedne ustawienia dla wszystkich',
@@ -196,8 +198,10 @@ export const pl: Dict = {
   'models.installed': 'Pobrany',
   'models.deleteTitle': 'Usuń plik modelu',
   'models.hardware': 'Ten Mac: {chip} · {mem} GB pamięci',
+  'models.hardwarePc': "Ten komputer: {chip} · {mem} GB pamięci",
   'models.location': 'Lokalizacja: {dir}',
   'models.openFinder': 'Otwórz w Finderze',
+  'models.openExplorer': "Otwórz w Eksploratorze",
   'models.manualHint': 'Pliki {pattern} wgrane ręcznie też są wykrywane automatycznie.',
 
   'cloud.empty.title': 'Nie dodano jeszcze żadnej usługi w chmurze',
@@ -253,6 +257,7 @@ export const pl: Dict = {
   'settings.about.privacy': 'Gdzie działa rozpoznawanie i tłumaczenie',
   'settings.about.privacyHint':
     'Domyślnie wszystko liczy się na tym Macu — bez sieci i bez wysyłania czegokolwiek',
+  'settings.about.privacyHintPc': "Domyślnie wszystko odbywa się lokalnie na tym komputerze: bez sieci i bez wysyłania czegokolwiek",
   'settings.about.deps': 'Wykorzystane komponenty open source',
   'settings.about.depsHint':
     'ffmpeg (multimedia) · whisper.cpp (rozpoznawanie mowy) · llama.cpp + Qwen3 (tłumaczenie lokalne)',
@@ -274,6 +279,13 @@ export const pl: Dict = {
   'req.appleSilicon16plus': 'Apple Silicon z 16 GB pamięci lub więcej',
   'req.llm24or32': 'Użyteczny przy 24 GB, zalecane 32 GB lub więcej',
   'req.appleSilicon48': 'Apple Silicon z 48 GB pamięci lub więcej',
+  'req.pc.any': "Działa na każdym komputerze",
+  'req.pc.8gb': "Każdy komputer z co najmniej 8 GB pamięci",
+  'req.pc.cpuSlow': "Działa z 8 GB; tylko CPU, wyraźnie wolno",
+  'req.pc.8gbSlow': "Co najmniej 8 GB pamięci; tylko CPU, dość wolno",
+  'req.pc.16gbSlow': "Co najmniej 16 GB pamięci; tylko CPU, bardzo wolno",
+  'req.pc.16gbGpu': "Co najmniej 16 GB pamięci; z dedykowaną kartą graficzną znacznie szybciej",
+  'req.pc.48gb': "Co najmniej 48 GB pamięci; praktyczne tylko z kartą graficzną o dużej pamięci VRAM",
 
   'asr.tiny.detail': 'Najszybszy, ale najmniej dokładny; nadaje się tylko do szybkiego podglądu',
   'asr.base.detail': 'Bardzo szybki; wystarcza przy prostym dźwięku i wyraźnej wymowie',
