@@ -79,6 +79,11 @@ export const ro: Dict = {
   'home.language': 'Limbă',
   'home.language.hintAsr': 'Limba vorbită în film → limba dorită pentru subtitrare',
   'home.language.hintSub': 'Limba originală a subtitrării → limba țintă',
+  'home.section.recognize': "Recunoaștere",
+  'home.section.translate': "Traducere",
+  'home.sourceLang.hint': "Limba vorbită în videoclip; de obicei detectarea automată este suficientă",
+  'home.targetLang': "Tradu în",
+  'home.targetLang.hint': "În ce limbă să fie subtitrările; alege „Fără traducere” pentru a păstra doar originalul",
   'home.service': 'Serviciu de traducere',
   'home.service.hint':
     'Local e gratuit și offline; cloudul atinge o calitate mai bună și se plătește la consum',

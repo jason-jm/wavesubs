@@ -78,6 +78,11 @@ export const nl: Dict = {
   'home.language': 'Taal',
   'home.language.hintAsr': 'Taal die in de film gesproken wordt → gewenste ondertiteltaal',
   'home.language.hintSub': 'Oorspronkelijke ondertiteltaal → doeltaal',
+  'home.section.recognize': "Herkenning",
+  'home.section.translate': "Vertaling",
+  'home.sourceLang.hint': "De taal die in de video wordt gesproken; automatisch herkennen is meestal genoeg",
+  'home.targetLang': "Vertalen naar",
+  'home.targetLang.hint': "In welke taal de ondertitels moeten zijn; kies \"Niet vertalen\" om alleen het origineel te houden",
   'home.service': 'Vertaaldienst',
   'home.service.hint':
     'Lokaal is gratis en offline; de cloud haalt hogere kwaliteit en rekent per gebruik af',

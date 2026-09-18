@@ -78,6 +78,11 @@ export const pt: Dict = {
   'home.language': 'Idioma',
   'home.language.hintAsr': 'Idioma falado no vídeo → idioma de legenda desejado',
   'home.language.hintSub': 'Idioma original das legendas → idioma de destino',
+  'home.section.recognize': "Reconhecimento",
+  'home.section.translate': "Tradução",
+  'home.sourceLang.hint': "O idioma falado no vídeo; a detecção automática costuma bastar",
+  'home.targetLang': "Traduzir para",
+  'home.targetLang.hint': "Em que idioma as legendas devem ficar; escolha \"Não traduzir\" para manter só o original",
   'home.service': 'Serviço de tradução',
   'home.service.hint':
     'Local é grátis e offline; a nuvem alcança mais qualidade e é cobrada por uso',

@@ -44,6 +44,8 @@ interface Props {
   signsSupported: boolean
   updateSettings: (patch: SettingsUpdate) => Promise<void>
   goModels: () => void
+  onSelectModel: (file: string) => void
+  onSelectLlm: (file: string) => void
   downloads: Record<string, ModelDownloadProgress>
   modelError: ModelError | null
   onDownload: (kind: ModelKind, file: string) => void
@@ -310,7 +312,7 @@ function EntryConfig(props: {
 
 export function BatchView(props: Props): React.JSX.Element {
   const { settings, overview, entries, running, stopping, onAdd, onRemove, onClear } = props
-  const { onOverride, onEdit, onStart, onStop, onCancelCurrent, signsSupported, updateSettings, goModels, downloads, modelError, onDownload, onCancelDownload } = props
+  const { onOverride, onEdit, onStart, onStop, onCancelCurrent, signsSupported, updateSettings, goModels, onSelectModel, onSelectLlm, downloads, modelError, onDownload, onCancelDownload } = props
   const { t, locale } = useI18n()
 
   const [dragOver, setDragOver] = useState(false)
@@ -424,10 +426,11 @@ export function BatchView(props: Props): React.JSX.Element {
       }}
       onDrop={onDrop}
     >
+      {/* 识别：模型 → 语言。来源不在这里选——批量按每个文件自动判断，个别文件在队列里改 */}
       <div className="section">
-        <div className="section-title">{t('batch.settings')}</div>
+        <div className="section-title">{t('home.section.recognize')}</div>
         <div className="card">
-          {needAsrModel && (
+          {needAsrModel ? (
             <div className="card-notice">
               <ModelDownloadNotice
                 kind="asr"
@@ -439,21 +442,52 @@ export function BatchView(props: Props): React.JSX.Element {
                 goModels={goModels}
               />
             </div>
+          ) : (
+            <>
+              <div className="row">
+                <div className="row-label">
+                  <strong>{t('home.asrModel')}</strong>
+                </div>
+                <div className="row-control">
+                  <Select value={overview?.selected ?? ''} onChange={onSelectModel} disabled={running || installedAsr.length === 0}>
+                    {installedAsr.map((m) => (
+                      <option key={m.file} value={m.file}>
+                        {m.name}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+              </div>
+              <div className="row">
+                <div className="row-label">
+                  <strong>{t('home.language')}</strong>
+                  <span>{t('home.sourceLang.hint')}</span>
+                </div>
+                <div className="row-control">
+                  <Select value={sourceLang} onChange={setSourceLang} disabled={running}>
+                    {SOURCE_LANGUAGES.map((l) => (
+                      <option key={l.value} value={l.value}>
+                        {t(l.key)}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+              </div>
+            </>
           )}
+        </div>
+      </div>
+
+      {/* 翻译：翻译成什么 → 用什么服务 → 服务就绪之后才有画面文字、字幕内容 */}
+      <div className="section">
+        <div className="section-title">{t('home.section.translate')}</div>
+        <div className="card">
           <div className="row">
             <div className="row-label">
-              <strong>{t('home.language')}</strong>
-              <span>{t('home.language.hintAsr')}</span>
+              <strong>{t('home.targetLang')}</strong>
+              <span>{t('home.targetLang.hint')}</span>
             </div>
-            <div className="row-control lang-flow">
-              <Select value={sourceLang} onChange={setSourceLang} disabled={running}>
-                {SOURCE_LANGUAGES.map((l) => (
-                  <option key={l.value} value={l.value}>
-                    {t(l.key)}
-                  </option>
-                ))}
-              </Select>
-              <span className="lang-arrow">→</span>
+            <div className="row-control">
               <Select value={targetLang} onChange={setTargetLang} disabled={running}>
                 {TARGET_LANGUAGES.map((l) => (
                   <option key={l.value} value={l.value}>
@@ -465,113 +499,118 @@ export function BatchView(props: Props): React.JSX.Element {
           </div>
 
           {translating && (
-            <div className="row">
-              <div className="row-label">
-                <strong>{t('home.service')}</strong>
-                <span>{t('home.service.hint')}</span>
-              </div>
-              <div className="row-control">
-                <Select value={service} onChange={setService} disabled={running} wide>
-                  <optgroup label={t('home.service.localGroup')}>
-                    <option value="local">{t('home.service.localModel')}</option>
-                  </optgroup>
-                  {providers.length > 0 && (
-                    <optgroup label={t('home.service.cloudGroup')}>
-                      {providers.map((p) => (
-                        <option key={p.id} value={`api:${p.id}`}>
-                          {p.name}
-                          {p.hasApiKey ? '' : t('home.service.missingKey')}
-                        </option>
-                      ))}
+            <>
+              <div className="row">
+                <div className="row-label">
+                  <strong>{t('home.service')}</strong>
+                  <span>{t('home.service.hint')}</span>
+                </div>
+                <div className="row-control">
+                  <Select value={service} onChange={setService} disabled={running} wide>
+                    <optgroup label={t('home.service.localGroup')}>
+                      <option value="local">{t('home.service.localModel')}</option>
                     </optgroup>
-                  )}
-                </Select>
-              </div>
-            </div>
-          )}
-
-          {translating && needLlmModel && (
-            <div className="card-notice">
-              <ModelDownloadNotice
-                kind="llm"
-                models={overview?.llmModels ?? []}
-                downloads={downloads}
-                error={modelError}
-                onDownload={onDownload}
-                onCancel={onCancelDownload}
-                goModels={goModels}
-              />
-            </div>
-          )}
-
-          {translating && !needLlmModel && signsSupported && (
-            <div className="row">
-              <div className="row-label">
-                <strong>{t('home.signs')}</strong>
-                <span>{t('home.signsHint')}</span>
-              </div>
-              <div className="row-control">
-                <button
-                  className={signs ? 'switch switch-on' : 'switch'}
-                  role="switch"
-                  aria-checked={signs}
-                  disabled={running}
-                  onClick={() => setSigns((v) => !v)}
-                />
-              </div>
-            </div>
-          )}
-
-          {translating && !needLlmModel && (
-            <div className="row">
-              <div className="row-label">
-                <strong>{t('home.content')}</strong>
-              </div>
-              <div className="row-control">
-                <div className="segmented">
-                  <button
-                    className={content === 'translated' ? 'segmented-on' : ''}
-                    disabled={running}
-                    onClick={() => setContent('translated')}
-                  >
-                    {t('home.content.translated')}
-                  </button>
-                  <button
-                    className={content === 'bilingual' ? 'segmented-on' : ''}
-                    disabled={running}
-                    onClick={() => setContent('bilingual')}
-                  >
-                    {t('home.content.bilingual')}
-                  </button>
+                    {providers.length > 0 && (
+                      <optgroup label={t('home.service.cloudGroup')}>
+                        {providers.map((p) => (
+                          <option key={p.id} value={`api:${p.id}`}>
+                            {p.name}
+                            {p.hasApiKey ? '' : t('home.service.missingKey')}
+                          </option>
+                        ))}
+                      </optgroup>
+                    )}
+                  </Select>
                 </div>
               </div>
-            </div>
-          )}
 
-          <div className="row">
-            <div className="row-label">
-              <strong>{t('home.format')}</strong>
-              <span>{format === 'srt' ? t('home.format.srtHint') : t('home.format.assHint')}</span>
-            </div>
-            <div className="row-control">
-              <div className="segmented">
-                <button
-                  className={format === 'srt' ? 'segmented-on' : ''}
-                  disabled={running}
-                  onClick={() => setFormat('srt')}
-                >
-                  SRT
-                </button>
-                <button
-                  className={format === 'ass' ? 'segmented-on' : ''}
-                  disabled={running}
-                  onClick={() => setFormat('ass')}
-                >
-                  ASS
-                </button>
-              </div>
-            </div>
-          </div>
+              {needApiKey ? (
+                <div className="card-notice">
+                  <div className="notice notice-warn">
+                    <Icon name="warning" />
+                    <p>{t('home.notice.needKey', { name: activeProvider?.name ?? '' })}</p>
+                    <button className="btn" onClick={goModels}>
+                      {t('home.notice.goConfigure')}
+                    </button>
+                  </div>
+                </div>
+              ) : needLlmModel ? (
+                <div className="card-notice">
+                  <ModelDownloadNotice
+                    kind="llm"
+                    models={overview?.llmModels ?? []}
+                    downloads={downloads}
+                    error={modelError}
+                    onDownload={onDownload}
+                    onCancel={onCancelDownload}
+                    goModels={goModels}
+                  />
+                </div>
+              ) : (
+                <>
+                  {useLocal && installedLlm.length > 0 && (
+                    <div className="row">
+                      <div className="row-label">
+                        <strong>{t('home.llmModel')}</strong>
+                        <span>{t('home.llmModel.hint')}</span>
+                      </div>
+                      <div className="row-control">
+                        <Select value={overview?.llmSelected ?? ''} onChange={onSelectLlm} disabled={running}>
+                          {installedLlm.map((m) => (
+                            <option key={m.file} value={m.file}>
+                              {m.name}
+                            </option>
+                          ))}
+                        </Select>
+                      </div>
+                    </div>
+                  )}
+
+                  {signsSupported && (
+                    <div className="row">
+                      <div className="row-label">
+                        <strong>{t('home.signs')}</strong>
+                        <span>{t('home.signsHint')}</span>
+                      </div>
+                      <div className="row-control">
+                        <button
+                          className={signs ? 'switch switch-on' : 'switch'}
+                          role="switch"
+                          aria-checked={signs}
+                          disabled={running}
+                          onClick={() => setSigns((v) => !v)}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="row">
+                    <div className="row-label">
+                      <strong>{t('home.content')}</strong>
+                    </div>
+                    <div className="row-control">
+                      <div className="segmented">
+                        <button
+                          className={content === 'translated' ? 'segmented-on' : ''}
+                          disabled={running}
+                          onClick={() => setContent('translated')}
+                        >
+                          {t('home.content.translated')}
+                        </button>
+                        <button
+                          className={content === 'bilingual' ? 'segmented-on' : ''}
+                          disabled={running}
+                          onClick={() => setContent('bilingual')}
+                        >
+                          {t('home.content.bilingual')}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </>
+          )}
         </div>
         <p className="section-note">
           {t('batch.settingsHint')}
@@ -747,17 +786,17 @@ export function BatchView(props: Props): React.JSX.Element {
         </div>
       </div>
 
-      {needApiKey && (
-        <div className="notice notice-warn">
-          <Icon name="warning" />
-          <p>{t('home.notice.needKey', { name: activeProvider?.name ?? '' })}</p>
-          <button className="btn" onClick={goModels}>
-            {t('home.notice.goConfigure')}
-          </button>
-        </div>
-      )}
 
       <div className="job-actions">
+        <span className="actions-label">{t('home.format')}</span>
+        <div className="segmented" title={format === 'srt' ? t('home.format.srtHint') : t('home.format.assHint')}>
+          <button className={format === 'srt' ? 'segmented-on' : ''} disabled={running} onClick={() => setFormat('srt')}>
+            SRT
+          </button>
+          <button className={format === 'ass' ? 'segmented-on' : ''} disabled={running} onClick={() => setFormat('ass')}>
+            ASS
+          </button>
+        </div>
         <span className="spacer" />
         {running ? (
           <button className="btn btn-lg" disabled={stopping} onClick={onStop}>

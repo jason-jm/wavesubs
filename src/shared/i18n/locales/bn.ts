@@ -78,6 +78,11 @@ export const bn: Dict = {
   'home.language': 'ভাষা',
   'home.language.hintAsr': 'ছবিতে যে ভাষায় কথা হয় → আপনি যে ভাষায় সাবটাইটেল চান',
   'home.language.hintSub': 'সাবটাইটেলের মূল ভাষা → লক্ষ্য ভাষা',
+  'home.section.recognize': "শনাক্তকরণ",
+  'home.section.translate': "অনুবাদ",
+  'home.sourceLang.hint': "ভিডিওতে যে ভাষায় কথা বলা হয়; সাধারণত স্বয়ংক্রিয় শনাক্তকরণই যথেষ্ট",
+  'home.targetLang': "অনুবাদ করুন",
+  'home.targetLang.hint': "সাবটাইটেল কোন ভাষায় চান; শুধু মূলটি রাখতে \"অনুবাদ নয়\" বেছে নিন",
   'home.service': 'অনুবাদ পরিষেবা',
   'home.service.hint':
     'স্থানীয়টি বিনামূল্যে ও ইন্টারনেট ছাড়াই চলে; ক্লাউডে মান বেশি, তবে ব্যবহার অনুযায়ী খরচ লাগে',

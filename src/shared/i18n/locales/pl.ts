@@ -79,6 +79,11 @@ export const pl: Dict = {
   'home.language': 'Język',
   'home.language.hintAsr': 'Język mówiony w filmie → oczekiwany język napisów',
   'home.language.hintSub': 'Oryginalny język napisów → język docelowy',
+  'home.section.recognize': "Rozpoznawanie",
+  'home.section.translate': "Tłumaczenie",
+  'home.sourceLang.hint': "Język używany w filmie; zwykle wystarczy automatyczne wykrywanie",
+  'home.targetLang': "Przetłumacz na",
+  'home.targetLang.hint': "W jakim języku mają być napisy; wybierz „Nie tłumacz”, aby zostawić tylko oryginał",
   'home.service': 'Usługa tłumaczenia',
   'home.service.hint':
     'Lokalnie jest za darmo i bez internetu; chmura daje wyższą jakość i jest płatna za użycie',

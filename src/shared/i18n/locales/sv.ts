@@ -78,6 +78,11 @@ export const sv: Dict = {
   'home.language': 'Språk',
   'home.language.hintAsr': 'Språket som talas i filmen → undertextspråket du vill ha',
   'home.language.hintSub': 'Undertexternas ursprungsspråk → målspråk',
+  'home.section.recognize': "Igenkänning",
+  'home.section.translate': "Översättning",
+  'home.sourceLang.hint': "Språket som talas i videon; automatisk identifiering räcker oftast",
+  'home.targetLang': "Översätt till",
+  'home.targetLang.hint': "Vilket språk undertexterna ska ha; välj ”Översätt inte” för att bara behålla originalet",
   'home.service': 'Översättningstjänst',
   'home.service.hint':
     'Lokalt är gratis och offline; molnet når högre kvalitet och debiteras per användning',

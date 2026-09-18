@@ -78,6 +78,11 @@ export const fi: Dict = {
   'home.language': 'Kieli',
   'home.language.hintAsr': 'Elokuvassa puhuttu kieli → haluamasi tekstityskieli',
   'home.language.hintSub': 'Tekstityksen alkuperäinen kieli → kohdekieli',
+  'home.section.recognize': "Tunnistus",
+  'home.section.translate': "Käännös",
+  'home.sourceLang.hint': "Videossa puhuttu kieli; automaattinen tunnistus riittää yleensä",
+  'home.targetLang': "Käännä kielelle",
+  'home.targetLang.hint': "Millä kielellä tekstitys halutaan; valitse ”Älä käännä”, jos haluat vain alkuperäisen",
   'home.service': 'Käännöspalvelu',
   'home.service.hint':
     'Paikallinen on ilmainen ja toimii verkotta; pilvi yltää parempaan laatuun ja laskutetaan käytön mukaan',

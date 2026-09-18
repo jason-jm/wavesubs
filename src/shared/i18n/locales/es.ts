@@ -79,6 +79,11 @@ export const es: Dict = {
   'home.language': 'Idioma',
   'home.language.hintAsr': 'Idioma hablado en el vídeo → idioma de subtítulos que quieres',
   'home.language.hintSub': 'Idioma original de los subtítulos → idioma de destino',
+  'home.section.recognize': "Reconocimiento",
+  'home.section.translate': "Traducción",
+  'home.sourceLang.hint': "El idioma que se habla en el vídeo; la detección automática suele bastar",
+  'home.targetLang': "Traducir a",
+  'home.targetLang.hint': "En qué idioma quieres los subtítulos; elige «No traducir» para dejar solo el original",
   'home.service': 'Servicio de traducción',
   'home.service.hint':
     'Local es gratis y sin conexión; la nube alcanza más calidad y se paga por uso',

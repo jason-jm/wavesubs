@@ -78,6 +78,11 @@ export const id: Dict = {
   'home.language': 'Bahasa',
   'home.language.hintAsr': 'Bahasa yang diucapkan dalam film → bahasa takarir yang diinginkan',
   'home.language.hintSub': 'Bahasa asli takarir → bahasa tujuan',
+  'home.section.recognize': "Pengenalan",
+  'home.section.translate': "Terjemahan",
+  'home.sourceLang.hint': "Bahasa yang diucapkan dalam video; deteksi otomatis biasanya cukup",
+  'home.targetLang': "Terjemahkan ke",
+  'home.targetLang.hint': "Subtitle dalam bahasa apa; pilih \"Jangan terjemahkan\" untuk hanya menyimpan aslinya",
   'home.service': 'Layanan penerjemahan',
   'home.service.hint':
     'Lokal gratis dan tanpa internet; awan mencapai kualitas lebih tinggi dan ditagih sesuai pemakaian',

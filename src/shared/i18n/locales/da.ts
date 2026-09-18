@@ -78,6 +78,11 @@ export const da: Dict = {
   'home.language': 'Sprog',
   'home.language.hintAsr': 'Sproget der tales i filmen → det undertekstsprog du vil have',
   'home.language.hintSub': 'Underteksternes oprindelige sprog → målsprog',
+  'home.section.recognize': "Genkendelse",
+  'home.section.translate': "Oversættelse",
+  'home.sourceLang.hint': "Sproget der tales i videoen; automatisk registrering er som regel nok",
+  'home.targetLang': "Oversæt til",
+  'home.targetLang.hint': "Hvilket sprog underteksterne skal være på; vælg \"Oversæt ikke\" for kun at beholde originalen",
   'home.service': 'Oversættelsestjeneste',
   'home.service.hint':
     'Lokalt er gratis og offline; skyen når højere kvalitet og afregnes efter forbrug',

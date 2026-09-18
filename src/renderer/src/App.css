@@ -447,6 +447,11 @@ textarea {
 }
 
 .card + .card,
+/* 转换页：文件卡片下面紧跟「识别」那一节，和节与节之间留一样的距离 */
+.file-card {
+  margin-bottom: var(--sp-5);
+}
+
 .section + .section {
   margin-top: var(--sp-5);
 }
@@ -1122,6 +1127,13 @@ select optgroup {
 
 .job-actions .spacer {
   flex: 1;
+}
+
+/* 动作栏里的小标签（「字幕格式」）：和旁边的分段控件一样矮，别抢主按钮的戏 */
+.job-actions .actions-label {
+  margin-inline-start: var(--sp-2);
+  font-size: 12.5px;
+  color: var(--text-2);
 }
 
 .lang-flow {

@@ -78,6 +78,11 @@ export const vi: Dict = {
   'home.language': 'Ngôn ngữ',
   'home.language.hintAsr': 'Ngôn ngữ nói trong phim → ngôn ngữ phụ đề bạn muốn',
   'home.language.hintSub': 'Ngôn ngữ gốc của phụ đề → ngôn ngữ đích',
+  'home.section.recognize': "Nhận dạng",
+  'home.section.translate': "Dịch",
+  'home.sourceLang.hint': "Ngôn ngữ nói trong video; thường tự động phát hiện là đủ",
+  'home.targetLang': "Dịch sang",
+  'home.targetLang.hint': "Muốn phụ đề ở ngôn ngữ nào; chọn \"Không dịch\" để chỉ giữ bản gốc",
   'home.service': 'Dịch vụ dịch',
   'home.service.hint':
     'Cục bộ thì miễn phí và không cần mạng; đám mây cho chất lượng cao hơn và tính phí theo mức dùng',

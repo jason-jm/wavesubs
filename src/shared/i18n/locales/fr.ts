@@ -80,6 +80,11 @@ export const fr: Dict = {
   'home.language': 'Langue',
   'home.language.hintAsr': 'Langue parlée dans le film → langue de sous-titres souhaitée',
   'home.language.hintSub': 'Langue d’origine des sous-titres → langue cible',
+  'home.section.recognize': "Reconnaissance",
+  'home.section.translate': "Traduction",
+  'home.sourceLang.hint': "La langue parlée dans la vidéo ; la détection automatique suffit en général",
+  'home.targetLang': "Traduire en",
+  'home.targetLang.hint': "La langue des sous-titres ; choisissez « Ne pas traduire » pour garder seulement l'original",
   'home.service': 'Service de traduction',
   'home.service.hint':
     'Le local est gratuit et hors ligne ; le cloud atteint une meilleure qualité, facturé à l’usage',

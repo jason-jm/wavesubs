@@ -78,6 +78,11 @@ export const cs: Dict = {
   'home.language': 'Jazyk',
   'home.language.hintAsr': 'Jazyk, kterým se ve filmu mluví → požadovaný jazyk titulků',
   'home.language.hintSub': 'Původní jazyk titulků → cílový jazyk',
+  'home.section.recognize': "Rozpoznávání",
+  'home.section.translate': "Překlad",
+  'home.sourceLang.hint': "Jazyk, kterým se ve videu mluví; obvykle stačí automatická detekce",
+  'home.targetLang': "Přeložit do",
+  'home.targetLang.hint': "V jakém jazyce mají být titulky; zvolte „Nepřekládat“, aby zůstal jen originál",
   'home.service': 'Překladová služba',
   'home.service.hint':
     'Místní je zdarma a bez internetu; cloud dosáhne vyšší kvality a účtuje se podle použití',

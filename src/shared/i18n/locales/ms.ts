@@ -79,6 +79,11 @@ export const ms: Dict = {
   'home.language': 'Bahasa',
   'home.language.hintAsr': 'Bahasa yang dituturkan dalam filem → bahasa sari kata yang dikehendaki',
   'home.language.hintSub': 'Bahasa asal sari kata → bahasa sasaran',
+  'home.section.recognize': "Pengecaman",
+  'home.section.translate': "Terjemahan",
+  'home.sourceLang.hint': "Bahasa yang dituturkan dalam video; pengesanan automatik biasanya memadai",
+  'home.targetLang': "Terjemah ke",
+  'home.targetLang.hint': "Sari kata dalam bahasa apa; pilih \"Jangan terjemah\" untuk mengekalkan yang asal sahaja",
   'home.service': 'Perkhidmatan terjemahan',
   'home.service.hint':
     'Setempat percuma dan luar talian; awan mencapai kualiti lebih tinggi dan dicaj mengikut penggunaan',

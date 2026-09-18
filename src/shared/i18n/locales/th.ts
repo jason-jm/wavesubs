@@ -78,6 +78,11 @@ export const th: Dict = {
   'home.language': 'ภาษา',
   'home.language.hintAsr': 'ภาษาที่พูดในเรื่อง → ภาษาคำบรรยายที่ต้องการ',
   'home.language.hintSub': 'ภาษาเดิมของคำบรรยาย → ภาษาปลายทาง',
+  'home.section.recognize': "การรู้จำ",
+  'home.section.translate': "การแปล",
+  'home.sourceLang.hint': "ภาษาที่พูดในวิดีโอ ปกติตรวจจับอัตโนมัติก็พอ",
+  'home.targetLang': "แปลเป็น",
+  'home.targetLang.hint': "ต้องการซับไตเติลภาษาใด เลือก \"ไม่แปล\" เพื่อเก็บเฉพาะต้นฉบับ",
   'home.service': 'บริการแปล',
   'home.service.hint':
     'ในเครื่องฟรีและไม่ต้องต่อเน็ต ส่วนคลาวด์คุณภาพสูงกว่าและคิดเงินตามการใช้งาน',

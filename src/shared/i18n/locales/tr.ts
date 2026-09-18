@@ -78,6 +78,11 @@ export const tr: Dict = {
   'home.language': 'Dil',
   'home.language.hintAsr': 'Filmde konuşulan dil → istediğiniz altyazı dili',
   'home.language.hintSub': 'Özgün altyazı dili → hedef dil',
+  'home.section.recognize': "Tanıma",
+  'home.section.translate': "Çeviri",
+  'home.sourceLang.hint': "Videoda konuşulan dil; genellikle otomatik algılama yeterlidir",
+  'home.targetLang': "Şu dile çevir",
+  'home.targetLang.hint': "Altyazıların hangi dilde olacağı; yalnızca orijinali tutmak için \"Çevirme\"yi seçin",
   'home.service': 'Çeviri servisi',
   'home.service.hint':
     'Yerel ücretsiz ve çevrimdışıdır; bulut daha yüksek kaliteye ulaşır ve kullandıkça ödenir',

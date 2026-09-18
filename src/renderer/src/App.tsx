@@ -493,6 +493,8 @@ export default function App(): React.JSX.Element {
               onDownload={downloadModel}
               onCancelDownload={cancelDownload}
               goModels={() => setView('models')}
+              onSelectModel={(file) => selectModel('asr', file)}
+              onSelectLlm={(file) => selectModel('llm', file)}
             />
           )}
           {view === 'models' && (

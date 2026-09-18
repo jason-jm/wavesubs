@@ -25,7 +25,8 @@
 
 **首次使用**
 - 刚装好、一个模型都没有时，转换页直接给出这台机器的推荐模型和「下载并继续」，进度在原地走，下完直接开始；拖了文件再发现没模型也不用离开这一页。本地翻译缺模型同样处理
-- 没有模型时不再摆一排没意义的选项：卡片里只留「字幕来源」和下载提示，模型下好了选项再出来；批量页同样
+- 转换设置拆成「识别」「翻译」两个框：识别框是字幕来源 → 识别模型 → 语言，翻译框是翻译成 → 翻译服务 → 模型 → 画面文字 → 字幕内容，字幕格式放在「开始」旁边。批量页同样
+- 没有模型时不再摆一排没意义的选项：识别框里只留「字幕来源」和下载提示，翻译框里只留「翻译成」「翻译服务」和下载提示，模型下好了选项再出来
 - 拖进来的文件在切换标签时不再丢，只有点「取消」才回到空态
 - 按钮各态重画：主按钮在浅色模式下 hover 时不再变成一块看不清字的白板；键盘焦点有了统一的环
 
@@ -63,7 +64,8 @@
 
 **First run**
 - With no model installed yet, the Convert page recommends a model for this machine and offers "Download and continue" right there — progress shows in place and you can start as soon as it finishes; dropping a file first no longer sends you off to the Models page. The same applies when local translation has no model
-- Options that need a model stay hidden until one is installed: the card shows only the subtitle source and the download prompt, and the rest appears once the model is there; same on the Batch page
+- Conversion settings are now two boxes, Recognition and Translation: source → recognition model → language, and translate-into → service → model → on-screen text → subtitle content, with the subtitle format next to Start. Same on the Batch page
+- Options that need a model stay hidden until one is installed: the Recognition box shows only the source and the download prompt, the Translation box only the target language, the service and its prompt; the rest appears once the model is there
 - A dropped file survives switching tabs; only Cancel returns to the empty state
 - Button states redrawn: the primary button no longer turns into an unreadable pale block on hover in light mode, and keyboard focus has a consistent ring
 

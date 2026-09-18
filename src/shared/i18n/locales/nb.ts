@@ -78,6 +78,11 @@ export const nb: Dict = {
   'home.language': 'Språk',
   'home.language.hintAsr': 'Språket som snakkes i filmen → undertekstspråket du vil ha',
   'home.language.hintSub': 'Undertekstenes opprinnelige språk → målspråk',
+  'home.section.recognize': "Gjenkjenning",
+  'home.section.translate': "Oversettelse",
+  'home.sourceLang.hint': "Språket som snakkes i videoen; automatisk gjenkjenning holder som regel",
+  'home.targetLang': "Oversett til",
+  'home.targetLang.hint': "Hvilket språk undertekstene skal ha; velg «Ikke oversett» for å beholde bare originalen",
   'home.service': 'Oversettelsestjeneste',
   'home.service.hint':
     'Lokalt er gratis og uten nett; skyen når høyere kvalitet og faktureres etter bruk',

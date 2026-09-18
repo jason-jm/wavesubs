@@ -79,6 +79,11 @@ export const fa: Dict = {
   'home.language': 'زبان',
   'home.language.hintAsr': 'زبانی که در فیلم صحبت می‌شود ← زبان زیرنویسی که می‌خواهید',
   'home.language.hintSub': 'زبان اصلی زیرنویس ← زبان مقصد',
+  'home.section.recognize': "تشخیص",
+  'home.section.translate': "ترجمه",
+  'home.sourceLang.hint': "زبانی که در ویدیو صحبت می‌شود؛ معمولاً تشخیص خودکار کافی است",
+  'home.targetLang': "ترجمه به",
+  'home.targetLang.hint': "زیرنویس به چه زبانی باشد؛ برای نگه داشتن فقط متن اصلی «ترجمه نشود» را انتخاب کنید",
   'home.service': 'سرویس ترجمه',
   'home.service.hint':
     'محلی رایگان است و بدون اینترنت کار می‌کند؛ ابری کیفیت بالاتری دارد و بر پایهٔ مصرف حساب می‌شود',

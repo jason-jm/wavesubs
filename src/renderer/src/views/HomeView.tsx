@@ -313,7 +313,7 @@ export function HomeView(props: Props): React.JSX.Element {
   if (pending) {
     return (
       <div className="rise">
-        <div className="card">
+        <div className="card file-card">
           <div className="job-head">
             <span className="job-glyph">
               <Icon name={isSubtitleInput ? 'caption' : 'video'} size={19} />
@@ -323,256 +323,260 @@ export function HomeView(props: Props): React.JSX.Element {
               <div className="job-meta">{fileSummary()}</div>
             </div>
           </div>
+        </div>
 
-          {info && info.kind === 'video' && (
+        {/* 识别：来源 → 模型 → 语言。没有识别模型时只留来源和下载提示，模型下好了再往下 */}
+        <div className="section">
+          <div className="section-title">{t('home.section.recognize')}</div>
+          <div className="card">
+            {info && info.kind === 'video' && (
+              <div className="row">
+                <div className="row-label">
+                  <strong>{t('home.source')}</strong>
+                  <span>{t('home.source.hint')}</span>
+                </div>
+                <div className="row-control">
+                  <Select value={sourceKey} onChange={changeSource} wide>
+                    <option value="asr">{t('home.source.asr')}</option>
+                    {info.subtitleStreams.map((s) => (
+                      <option
+                        key={s.subtitleIndex}
+                        value={`sub:${s.subtitleIndex}`}
+                        disabled={!s.textBased}
+                      >
+                        {subtitleTrackLabel(s, t)}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+              </div>
+            )}
+
+            {needAsrModel ? (
+              <div className="card-notice">
+                <ModelDownloadNotice
+                  kind="asr"
+                  models={overview?.models ?? []}
+                  downloads={downloads}
+                  error={modelError}
+                  onDownload={onDownload}
+                  onCancel={onCancelDownload}
+                  goModels={goModels}
+                />
+              </div>
+            ) : (
+              <>
+                {usingAsr && info && info.audioStreams.length > 1 && (
+                  <div className="row">
+                    <div className="row-label">
+                      <strong>{t('home.audioTrack')}</strong>
+                    </div>
+                    <div className="row-control">
+                      <Select value={audioIndex} onChange={(v) => setAudioIndex(Number(v))} wide>
+                        {info.audioStreams.map((s) => (
+                          <option key={s.audioIndex} value={s.audioIndex}>
+                            {audioTrackLabel(s, t)}
+                          </option>
+                        ))}
+                      </Select>
+                    </div>
+                  </div>
+                )}
+
+                {usingAsr && (
+                  <div className="row">
+                    <div className="row-label">
+                      <strong>{t('home.asrModel')}</strong>
+                    </div>
+                    <div className="row-control">
+                      <Select value={overview?.selected ?? ''} onChange={onSelectModel}>
+                        {installedModels.map((m) => (
+                          <option key={m.file} value={m.file}>
+                            {m.name}
+                          </option>
+                        ))}
+                      </Select>
+                    </div>
+                  </div>
+                )}
+
+                <div className="row">
+                  <div className="row-label">
+                    <strong>{t('home.language')}</strong>
+                    <span>{usingAsr ? t('home.sourceLang.hint') : t('home.language.hintSub')}</span>
+                  </div>
+                  <div className="row-control">
+                    <Select value={sourceLang} onChange={setSourceLang}>
+                      {SOURCE_LANGUAGES.map((l) => (
+                        <option key={l.value} value={l.value}>
+                          {t(l.key)}
+                        </option>
+                      ))}
+                    </Select>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* 翻译：翻译成什么 → 用什么服务 → 服务就绪（本地有模型 / 云端有密钥）之后才有画面文字、字幕内容 */}
+        <div className="section">
+          <div className="section-title">{t('home.section.translate')}</div>
+          <div className="card">
             <div className="row">
               <div className="row-label">
-                <strong>{t('home.source')}</strong>
-                <span>{t('home.source.hint')}</span>
+                <strong>{t('home.targetLang')}</strong>
+                <span>{t('home.targetLang.hint')}</span>
               </div>
               <div className="row-control">
-                <Select value={sourceKey} onChange={changeSource} wide>
-                  <option value="asr">{t('home.source.asr')}</option>
-                  {info.subtitleStreams.map((s) => (
-                    <option
-                      key={s.subtitleIndex}
-                      value={`sub:${s.subtitleIndex}`}
-                      disabled={!s.textBased}
-                    >
-                      {subtitleTrackLabel(s, t)}
+                <Select value={targetLang} onChange={setTargetLang}>
+                  {TARGET_LANGUAGES.map((l) => (
+                    <option key={l.value} value={l.value}>
+                      {targetLanguageLabel(l.value, locale, t)}
                     </option>
                   ))}
                 </Select>
               </div>
             </div>
-          )}
 
-          {/* 没有识别模型，后面的选项都无从谈起：卡片里只留来源和这一条，模型下好了选项再出来。
-              翻译同理：本地翻译没模型时，画面文字 / 字幕内容这些行先不出 */}
-          {needAsrModel ? (
-            <div className="card-notice">
-              <ModelDownloadNotice
-                kind="asr"
-                models={overview?.models ?? []}
-                downloads={downloads}
-                error={modelError}
-                onDownload={onDownload}
-                onCancel={onCancelDownload}
-                goModels={goModels}
-              />
-            </div>
-          ) : (
-            <>
-              {usingAsr && info && info.audioStreams.length > 1 && (
+            {translating && (
+              <>
                 <div className="row">
                   <div className="row-label">
-                    <strong>{t('home.audioTrack')}</strong>
+                    <strong>{t('home.service')}</strong>
+                    <span>{t('home.service.hint')}</span>
                   </div>
                   <div className="row-control">
-                    <Select value={audioIndex} onChange={(v) => setAudioIndex(Number(v))} wide>
-                      {info.audioStreams.map((s) => (
-                        <option key={s.audioIndex} value={s.audioIndex}>
-                          {audioTrackLabel(s, t)}
-                        </option>
-                      ))}
+                    <Select value={service} onChange={setService} wide>
+                      <optgroup label={t('home.service.localGroup')}>
+                        <option value="local">{t('home.service.localModel')}</option>
+                      </optgroup>
+                      {providers.length > 0 && (
+                        <optgroup label={t('home.service.cloudGroup')}>
+                          {providers.map((p) => (
+                            <option key={p.id} value={`api:${p.id}`}>
+                              {p.name}
+                              {p.hasApiKey ? '' : t('home.service.missingKey')}
+                            </option>
+                          ))}
+                        </optgroup>
+                      )}
                     </Select>
                   </div>
                 </div>
-              )}
-              <div className="row">
-                <div className="row-label">
-                  <strong>{t('home.language')}</strong>
-                  <span>{usingAsr ? t('home.language.hintAsr') : t('home.language.hintSub')}</span>
-                </div>
-                <div className="row-control lang-flow">
-                  <Select value={sourceLang} onChange={setSourceLang}>
-                    {SOURCE_LANGUAGES.map((l) => (
-                      <option key={l.value} value={l.value}>
-                        {t(l.key)}
-                      </option>
-                    ))}
-                  </Select>
-                  <span className="lang-arrow">→</span>
-                  <Select value={targetLang} onChange={setTargetLang}>
-                    {TARGET_LANGUAGES.map((l) => (
-                      <option key={l.value} value={l.value}>
-                        {targetLanguageLabel(l.value, locale, t)}
-                      </option>
-                    ))}
-                  </Select>
-                </div>
-              </div>
-              {translating && (
-                <>
-                  <div className="row">
-                    <div className="row-label">
-                      <strong>{t('home.service')}</strong>
-                      <span>{t('home.service.hint')}</span>
-                    </div>
-                    <div className="row-control">
-                      <Select value={service} onChange={setService} wide>
-                        <optgroup label={t('home.service.localGroup')}>
-                          <option value="local">{t('home.service.localModel')}</option>
-                        </optgroup>
-                        {providers.length > 0 && (
-                          <optgroup label={t('home.service.cloudGroup')}>
-                            {providers.map((p) => (
-                              <option key={p.id} value={`api:${p.id}`}>
-                                {p.name}
-                                {p.hasApiKey ? '' : t('home.service.missingKey')}
-                              </option>
-                            ))}
-                          </optgroup>
-                        )}
-                      </Select>
+
+                {needApiKey ? (
+                  <div className="card-notice">
+                    <div className="notice notice-warn">
+                      <Icon name="warning" />
+                      <p>{t('home.notice.needKey', { name: activeProvider?.name ?? '' })}</p>
+                      <button className="btn" onClick={goModels}>
+                        {t('home.notice.goConfigure')}
+                      </button>
                     </div>
                   </div>
-
-                  {needLlmModel ? (
-                    <div className="card-notice">
-                      <ModelDownloadNotice
-                        kind="llm"
-                        models={overview?.llmModels ?? []}
-                        downloads={downloads}
-                        error={modelError}
-                        onDownload={onDownload}
-                        onCancel={onCancelDownload}
-                        goModels={goModels}
-                      />
-                    </div>
-                  ) : (
-                    <>
-                      {props.signsSupported && (
-                        <div className="row">
-                          <div className="row-label">
-                            <strong>{t('home.signs')}</strong>
-                            <span>{t('home.signsHint')}</span>
-                          </div>
-                          <div className="row-control">
-                            <button
-                              className={signs ? 'switch switch-on' : 'switch'}
-                              role="switch"
-                              aria-checked={signs}
-                              onClick={() => setSigns((v) => !v)}
-                            />
-                          </div>
-                        </div>
-                      )}
-
-                      {useLocal && installedLlm.length > 0 && (
-                        <div className="row">
-                          <div className="row-label">
-                            <strong>{t('home.llmModel')}</strong>
-                            <span>{t('home.llmModel.hint')}</span>
-                          </div>
-                          <div className="row-control">
-                            <Select value={overview?.llmSelected ?? ''} onChange={onSelectLlm}>
-                              {installedLlm.map((m) => (
-                                <option key={m.file} value={m.file}>
-                                  {m.name}
-                                </option>
-                              ))}
-                            </Select>
-                          </div>
-                        </div>
-                      )}
-
+                ) : needLlmModel ? (
+                  <div className="card-notice">
+                    <ModelDownloadNotice
+                      kind="llm"
+                      models={overview?.llmModels ?? []}
+                      downloads={downloads}
+                      error={modelError}
+                      onDownload={onDownload}
+                      onCancel={onCancelDownload}
+                      goModels={goModels}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    {useLocal && installedLlm.length > 0 && (
                       <div className="row">
                         <div className="row-label">
-                          <strong>{t('home.content')}</strong>
+                          <strong>{t('home.llmModel')}</strong>
+                          <span>{t('home.llmModel.hint')}</span>
                         </div>
                         <div className="row-control">
-                          <div className="segmented">
-                            <button
-                              className={content === 'translated' ? 'segmented-on' : ''}
-                              onClick={() => setContent('translated')}
-                            >
-                              {t('home.content.translated')}
-                            </button>
-                            <button
-                              className={content === 'bilingual' ? 'segmented-on' : ''}
-                              onClick={() => setContent('bilingual')}
-                            >
-                              {t('home.content.bilingual')}
-                            </button>
-                          </div>
+                          <Select value={overview?.llmSelected ?? ''} onChange={onSelectLlm}>
+                            {installedLlm.map((m) => (
+                              <option key={m.file} value={m.file}>
+                                {m.name}
+                              </option>
+                            ))}
+                          </Select>
                         </div>
                       </div>
-                    </>
-                  )}
-                </>
-              )}
-              <div className="row">
-                <div className="row-label">
-                  <strong>{t('home.format')}</strong>
-                  <span>{format === 'srt' ? t('home.format.srtHint') : t('home.format.assHint')}</span>
-                </div>
-                <div className="row-control">
-                  <div className="segmented">
-                    <button
-                      className={format === 'srt' ? 'segmented-on' : ''}
-                      onClick={() => setFormat('srt')}
-                    >
-                      SRT
-                    </button>
-                    <button
-                      className={format === 'ass' ? 'segmented-on' : ''}
-                      onClick={() => setFormat('ass')}
-                    >
-                      ASS
-                    </button>
-                  </div>
-                </div>
-              </div>
-              {usingAsr && (
-                <div className="row">
-                  <div className="row-label">
-                    <strong>{t('home.asrModel')}</strong>
-                  </div>
-                  <div className="row-control">
-                    <Select
-                      value={overview?.selected ?? ''}
-                      onChange={onSelectModel}
-                      disabled={installedModels.length === 0}
-                    >
-                      {installedModels.map((m) => (
-                        <option key={m.file} value={m.file}>
-                          {m.name}
-                        </option>
-                      ))}
-                    </Select>
-                  </div>
-                </div>
-              )}
-            </>
-          )}
+                    )}
 
-          <div className="job-actions">
-            {/* 和「开始翻译」同高同形，只是不上色——macOS 对话框里取消就是这么配的。
-                之前用 btn-quiet 是透明无阴影，看着像一行说明文字而不是按钮 */}
-            <button className="btn btn-lg" onClick={() => setPending(null)}>
-              {t('common.cancel')}
-            </button>
-            <span className="spacer" />
-            <button
-              className="btn btn-primary btn-lg"
-              disabled={Boolean(pending.probeError) || needAsrModel || needApiKey || needLlmModel}
-              onClick={start}
-            >
-              {usingAsr ? t('home.start.asr') : translating ? t('home.start.translate') : t('home.start.convert')}
-            </button>
+                    {props.signsSupported && (
+                      <div className="row">
+                        <div className="row-label">
+                          <strong>{t('home.signs')}</strong>
+                          <span>{t('home.signsHint')}</span>
+                        </div>
+                        <div className="row-control">
+                          <button
+                            className={signs ? 'switch switch-on' : 'switch'}
+                            role="switch"
+                            aria-checked={signs}
+                            onClick={() => setSigns((v) => !v)}
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="row">
+                      <div className="row-label">
+                        <strong>{t('home.content')}</strong>
+                      </div>
+                      <div className="row-control">
+                        <div className="segmented">
+                          <button
+                            className={content === 'translated' ? 'segmented-on' : ''}
+                            onClick={() => setContent('translated')}
+                          >
+                            {t('home.content.translated')}
+                          </button>
+                          <button
+                            className={content === 'bilingual' ? 'segmented-on' : ''}
+                            onClick={() => setContent('bilingual')}
+                          >
+                            {t('home.content.bilingual')}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
           </div>
         </div>
 
-        {needApiKey && (
-          <div className="notice notice-warn" style={{ marginTop: 16 }}>
-            <Icon name="warning" />
-            <p>{t('home.notice.needKey', { name: activeProvider?.name ?? '' })}</p>
-            <button className="btn" onClick={goModels}>
-              {t('home.notice.goConfigure')}
+        {/* 字幕格式跟着「开始」走：它是输出的事，既不属于识别也不属于翻译 */}
+        <div className="job-actions">
+          {/* 和「开始翻译」同高同形，只是不上色——macOS 对话框里取消就是这么配的 */}
+          <button className="btn btn-lg" onClick={() => setPending(null)}>
+            {t('common.cancel')}
+          </button>
+          <span className="actions-label">{t('home.format')}</span>
+          <div className="segmented" title={format === 'srt' ? t('home.format.srtHint') : t('home.format.assHint')}>
+            <button className={format === 'srt' ? 'segmented-on' : ''} onClick={() => setFormat('srt')}>
+              SRT
+            </button>
+            <button className={format === 'ass' ? 'segmented-on' : ''} onClick={() => setFormat('ass')}>
+              ASS
             </button>
           </div>
-        )}
+          <span className="spacer" />
+          <button
+            className="btn btn-primary btn-lg"
+            disabled={Boolean(pending.probeError) || needAsrModel || needApiKey || needLlmModel}
+            onClick={start}
+          >
+            {usingAsr ? t('home.start.asr') : translating ? t('home.start.translate') : t('home.start.convert')}
+          </button>
+        </div>
       </div>
     )
   }

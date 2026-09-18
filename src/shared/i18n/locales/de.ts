@@ -78,6 +78,11 @@ export const de: Dict = {
   'home.language': 'Sprache',
   'home.language.hintAsr': 'Im Film gesprochene Sprache → gewünschte Untertitelsprache',
   'home.language.hintSub': 'Ursprungssprache der Untertitel → Zielsprache',
+  'home.section.recognize': "Erkennung",
+  'home.section.translate': "Übersetzung",
+  'home.sourceLang.hint': "Die im Video gesprochene Sprache; die automatische Erkennung reicht meist",
+  'home.targetLang': "Übersetzen nach",
+  'home.targetLang.hint': "In welcher Sprache die Untertitel sein sollen; mit „Nicht übersetzen“ bleibt nur das Original",
   'home.service': 'Übersetzungsdienst',
   'home.service.hint':
     'Lokal ist kostenlos und offline; die Cloud erreicht mehr Qualität und wird nach Verbrauch abgerechnet',
