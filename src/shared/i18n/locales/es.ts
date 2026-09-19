@@ -51,6 +51,7 @@ export const es: Dict = {
   'progress.signsCached': "Texto en pantalla desde la caché",
   'home.signs': "Traducir texto en pantalla",
   'home.signsHint': "Carteles, notas, mensajes, avisos; requiere traducción, tarda unos minutos más",
+  'home.signsHint.win': "Carteles, notas, mensajes, avisos; usa el reconocimiento de texto integrado en Windows: instala antes el paquete del idioma hablado (con «Reconocimiento óptico de caracteres»)",
   'home.result.signs': "; más {n} textos en pantalla",
   'editor.tab.speech': "Subtítulos de voz",
   'editor.tab.signs': "Texto en pantalla",

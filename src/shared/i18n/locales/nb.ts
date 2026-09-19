@@ -51,6 +51,7 @@ export const nb: Dict = {
   'progress.signsCached': "Tekst i bildet fra hurtigbuffer",
   'home.signs': "Oversett tekst i bildet",
   'home.signsHint': "Skilt, lapper, meldinger, oppslag; krever oversettelse, tar noen minutter ekstra",
+  'home.signsHint.win': "Skilt, notater, meldinger, oppslag; bruker tekstgjenkjenningen innebygd i Windows – installer først språkpakken for det talte språket (med «Optisk tegngjenkjenning»)",
   'home.result.signs': "; pluss {n} tekster i bildet",
   'editor.tab.speech': "Taleundertekster",
   'editor.tab.signs': "Tekst i bildet",

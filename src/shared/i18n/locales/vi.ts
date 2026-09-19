@@ -51,6 +51,7 @@ export const vi: Dict = {
   'progress.signsCached': "Chữ trên màn hình lấy từ bộ nhớ đệm",
   'home.signs': "Dịch chữ trên màn hình",
   'home.signsHint': "Biển hiệu, ghi chú, tin nhắn, thông báo; cần bật dịch, tốn thêm vài phút",
+  'home.signsHint.win': "Biển hiệu, ghi chú, tin nhắn, thông báo; dùng nhận dạng chữ có sẵn trong Windows — cần cài trước gói ngôn ngữ của tiếng nói trong phim (kèm \"Nhận dạng ký tự quang học\")",
   'home.result.signs': "; thêm {n} chữ trên màn hình",
   'editor.tab.speech': "Phụ đề lời nói",
   'editor.tab.signs': "Chữ trên màn hình",

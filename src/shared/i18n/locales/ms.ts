@@ -51,6 +51,7 @@ export const ms: Dict = {
   'progress.signsCached': "Teks pada skrin daripada cache",
   'home.signs': "Terjemah teks pada skrin",
   'home.signsHint': "Papan tanda, nota, mesej, notis; perlu terjemahan dihidupkan, ambil beberapa minit lebih",
+  'home.signsHint.win': "Papan tanda, nota, mesej, notis; menggunakan pengecaman teks terbina dalam Windows — pasang dahulu pek bahasa untuk bahasa yang dituturkan (dengan \"Pengecaman aksara optik\")",
   'home.result.signs': "; tambah {n} teks pada skrin",
   'editor.tab.speech': "Sari kata pertuturan",
   'editor.tab.signs': "Teks pada skrin",

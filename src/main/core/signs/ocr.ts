@@ -1,7 +1,8 @@
 import { spawn } from 'node:child_process'
-import { mkdir, readdir } from 'node:fs/promises'
-import { join } from 'node:path'
+import { mkdir, readdir, writeFile } from 'node:fs/promises'
+import { dirname, join } from 'node:path'
 import { LocalizedError } from '../../../shared/i18n/core'
+import { powershellPath } from '../tools'
 import type { OcrFrame } from './types'
 
 /** 各识别语言对应的 Vision 语言标签；第二个是英文兜底（招牌、界面、品牌常是英文） */
@@ -117,12 +118,66 @@ export async function runVisionOcr(
         else reject(new Error(`画面文字识别失败（vision-ocr 退出码 ${code}）\n${err}`))
       })
     })
-    for (const line of out.split('\n')) {
-      if (!line.trim()) continue
-      const parsed = JSON.parse(line) as { i: number; boxes: OcrFrame['boxes'] }
-      frames.push({ i: offset + parsed.i, boxes: parsed.boxes })
-    }
+    frames.push(...parseOcrLines(out, offset))
   }
   frames.sort((a, b) => a.i - b.i)
   return frames
+}
+
+/** 两个平台的识别程序都按 JSON Lines 吐结果：一帧一行，帧序号从 0 起；offset 是这一批在整体里的起点 */
+export function parseOcrLines(out: string, offset = 0): OcrFrame[] {
+  const frames: OcrFrame[] = []
+  for (const line of out.split('\n')) {
+    if (!line.trim()) continue
+    const parsed = JSON.parse(line) as { i: number; boxes: OcrFrame['boxes'] }
+    frames.push({ i: offset + parsed.i, boxes: parsed.boxes ?? [] })
+  }
+  return frames
+}
+
+/**
+ * Windows：跑随包的 win-ocr.ps1（Windows.Media.Ocr，系统自带）。
+ * 帧路径写进一个列表文件再传——Windows 的命令行只有 32K 字符，几千帧的路径塞不下。
+ * 退出码 3 是这台 Windows 一种 OCR 语言都没装：不算失败，当没有画面文字处理，原因写进日志。
+ */
+export async function runWindowsOcr(
+  script: string,
+  files: string[],
+  langs: string[],
+  signal?: AbortSignal
+): Promise<OcrFrame[]> {
+  if (files.length === 0) return []
+  const listFile = join(dirname(files[0]), 'ocr-files.txt')
+  await writeFile(listFile, files.join('\r\n') + '\r\n', 'utf8')
+  const out = await new Promise<string | null>((resolve, reject) => {
+    const child = spawn(powershellPath(), [
+      '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass',
+      '-File', script, '-Langs', langs.join(','), '-Files', listFile
+    ])
+    const onAbort = (): void => { child.kill() }
+    if (signal?.aborted) onAbort()
+    else signal?.addEventListener('abort', onAbort, { once: true })
+    const chunks: Buffer[] = []
+    let err = ''
+    child.stdout.on('data', (c: Buffer) => chunks.push(c))
+    child.stderr.on('data', (c: Buffer) => { err = (err + c.toString()).slice(-2000) })
+    child.on('error', reject)
+    child.on('close', (code) => {
+      signal?.removeEventListener('abort', onAbort)
+      if (signal?.aborted) reject(new LocalizedError('error.jobCancelled'))
+      else if (code === 0) resolve(Buffer.concat(chunks).toString('utf8'))
+      else if (code === 3) {
+        console.warn(`画面文字：这台 Windows 没有装任何 OCR 语言，跳过。${err.trim()}`)
+        resolve(null)
+      } else reject(new Error(`画面文字识别失败（win-ocr 退出码 ${code}）\n${err}`))
+    })
+  })
+  return out === null ? [] : parseOcrLines(out).sort((a, b) => a.i - b.i)
+}
+
+/** 按平台挑识别程序：macOS 是自编的 vision-ocr，Windows 是 PowerShell 脚本包着系统 OCR */
+export function runOcr(helper: string, files: string[], langs: string[], signal?: AbortSignal): Promise<OcrFrame[]> {
+  return helper.toLowerCase().endsWith('.ps1')
+    ? runWindowsOcr(helper, files, langs, signal)
+    : runVisionOcr(helper, files, langs, signal)
 }

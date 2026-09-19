@@ -192,6 +192,10 @@ async function main(): Promise<void> {
   // Silero VAD 模型随包自带，理由同 bundle-deps.ts
   mkdirSync(join(OUT, 'vad'), { recursive: true })
   copyFileSync(join(ROOT, 'assets', 'ggml-silero-v5.1.2.bin'), join(OUT, 'vad', 'ggml-silero-v5.1.2.bin'))
+
+  // 画面文字识别：Windows 用系统自带的 OCR（Windows.Media.Ocr），随包只有一个 PowerShell 脚本
+  mkdirSync(join(OUT, 'ocr'), { recursive: true })
+  copyFileSync(join(ROOT, 'native', 'win-ocr', 'win-ocr.ps1'), join(OUT, 'ocr', 'win-ocr.ps1'))
   console.log(`\nvendor-win/ 合计 ${dirSizeMB(OUT)} MB  ·  ffmpeg LGPL 校验通过 ✅`)
 }
 

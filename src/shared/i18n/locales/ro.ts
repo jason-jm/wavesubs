@@ -51,6 +51,7 @@ export const ro: Dict = {
   'progress.signsCached': "Text pe ecran din cache",
   'home.signs': "Traduce textul de pe ecran",
   'home.signsHint': "Firme, notițe, mesaje, anunțuri; necesită traducere, durează câteva minute în plus",
+  'home.signsHint.win': "Panouri, notițe, mesaje, anunțuri; folosește recunoașterea textului integrată în Windows – instalează mai întâi pachetul limbii vorbite (cu „Recunoaștere optică a caracterelor”)",
   'home.result.signs': "; plus {n} texte pe ecran",
   'editor.tab.speech': "Subtitrări vorbite",
   'editor.tab.signs': "Text pe ecran",

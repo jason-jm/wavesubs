@@ -51,6 +51,7 @@ export const it: Dict = {
   'progress.signsCached': "Testo sullo schermo dalla cache",
   'home.signs': "Traduci il testo sullo schermo",
   'home.signsHint': "Insegne, note, messaggi, avvisi; richiede la traduzione, aggiunge qualche minuto",
+  'home.signsHint.win': "Insegne, appunti, messaggi, avvisi; usa il riconoscimento del testo integrato in Windows: installa prima il pacchetto della lingua parlata (con «Riconoscimento ottico dei caratteri»)",
   'home.result.signs': "; più {n} testi sullo schermo",
   'editor.tab.speech': "Sottotitoli del parlato",
   'editor.tab.signs': "Testo sullo schermo",

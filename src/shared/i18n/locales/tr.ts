@@ -51,6 +51,7 @@ export const tr: Dict = {
   'progress.signsCached': "Ekrandaki metin önbellekten",
   'home.signs': "Ekrandaki metni çevir",
   'home.signsHint': "Tabelalar, notlar, mesajlar, duyurular; çeviri gerektirir, birkaç dakika daha sürer",
+  'home.signsHint.win': "Tabelalar, notlar, mesajlar, duyurular; Windows’un yerleşik metin tanımasını kullanır — önce konuşulan dilin dil paketini yükleyin (\"Optik karakter tanıma\" ile)",
   'home.result.signs': "; artı {n} ekran metni",
   'editor.tab.speech': "Konuşma altyazıları",
   'editor.tab.signs': "Ekrandaki metin",

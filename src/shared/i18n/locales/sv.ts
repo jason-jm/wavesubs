@@ -51,6 +51,7 @@ export const sv: Dict = {
   'progress.signsCached': "Text i bild från cache",
   'home.signs': "Översätt text i bild",
   'home.signsHint': "Skyltar, lappar, meddelanden, anslag; kräver översättning, tar några minuter extra",
+  'home.signsHint.win': "Skyltar, lappar, meddelanden, anslag; använder Windows inbyggda textigenkänning – installera först språkpaketet för det talade språket (med ”Optisk teckenigenkänning”)",
   'home.result.signs': "; plus {n} texter i bild",
   'editor.tab.speech': "Talundertexter",
   'editor.tab.signs': "Text i bild",

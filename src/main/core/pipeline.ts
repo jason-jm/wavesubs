@@ -31,7 +31,7 @@ import { unifyTerms } from './translate/terms'
 import { translateCues } from './translate/translateCues'
 import { normalizeLanguageCode } from './translate/types'
 import type { TranslationProvider } from './translate/types'
-import { buildSignBlocks, extractFrames, judgeSigns, ocrLanguagesFor, runVisionOcr, signsToCues, SIGN_FPS, SIGN_FRAME_WIDTH } from './signs'
+import { buildSignBlocks, extractFrames, judgeSigns, ocrLanguagesFor, runOcr, signsToCues, SIGN_FPS, SIGN_FRAME_WIDTH } from './signs'
 import type { OcrFrame } from './signs'
 import { languageName } from './translate/types'
 
@@ -67,7 +67,8 @@ export interface JobOptions {
   signal?: AbortSignal
   /** 画面文字：随包 vision-ocr 的路径；需要 translate，源不能是字幕文件 */
   signs?: {
-    visionOcr: string
+    /** 识别程序：macOS 是 vision-ocr 二进制，Windows 是 win-ocr.ps1 */
+    ocrHelper: string
     minImportance?: number
     /** 诊断回调：名单时段、烧录字幕带、块数——写进日志，用户反馈「漏了/多了」时第一眼看这个 */
     onDiagnostics?: (info: { band: number[]; credits: Array<[number, number]>; blocks: number; kept: number; signs: number }) => void
@@ -231,7 +232,7 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
     const languageKnown = new Promise<string | undefined>((resolve) => { resolveLanguage = resolve })
     const startOcr = (): void => {
       if (!signsWanted || ocrPromise || !opts.signs) return
-      const bin = opts.signs.visionOcr
+      const helper = opts.signs.ocrHelper
       ocrPromise = (async () => {
         const files = await extractFrames(ffmpegPath(), {
           input: opts.input,
@@ -242,7 +243,7 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
           signal: opts.signal
         })
         const lang = await languageKnown
-        return runVisionOcr(bin, files, ocrLanguagesFor(lang), opts.signal)
+        return runOcr(helper, files, ocrLanguagesFor(lang), opts.signal)
       })()
       // 失败留到画面文字阶段再抛：识别与翻译的成果先落盘，不因为 OCR 挂了全丢
       ocrPromise.catch(() => undefined)

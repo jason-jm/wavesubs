@@ -51,6 +51,7 @@ export const da: Dict = {
   'progress.signsCached': "Tekst i billedet fra cache",
   'home.signs': "Oversæt tekst i billedet",
   'home.signsHint': "Skilte, sedler, beskeder, opslag; kræver oversættelse, tager et par minutter ekstra",
+  'home.signsHint.win': "Skilte, notater, beskeder, opslag; bruger Windows’ indbyggede tekstgenkendelse – installér først sprogpakken for det talte sprog (med \"Optisk tegngenkendelse\")",
   'home.result.signs': "; plus {n} tekster i billedet",
   'editor.tab.speech': "Taleundertekster",
   'editor.tab.signs': "Tekst i billedet",

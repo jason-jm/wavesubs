@@ -1,3 +1,4 @@
+import { execFile } from 'node:child_process'
 import { existsSync } from 'node:fs'
 import { readdir } from 'node:fs/promises'
 import { delimiter, join } from 'node:path'
@@ -12,7 +13,8 @@ const EXTRA_BIN_DIRS = IS_WINDOWS ? [] : ['/opt/homebrew/bin', '/usr/local/bin']
 
 /** Windows 上可执行文件带 .exe，查找时要补齐；传进来的名字统一不带后缀 */
 function exeName(name: string): string {
-  return IS_WINDOWS && !name.endsWith('.exe') ? `${name}.exe` : name
+  // 已经带扩展名的（win-ocr.ps1）不再补 .exe
+  return IS_WINDOWS && !/\.[A-Za-z0-9]{1,4}$/.test(name) ? `${name}.exe` : name
 }
 
 /**
@@ -63,8 +65,54 @@ export function findTool(name: string, envVar: string, installHint: string): str
 
 export const ffmpegPath = (): string => findTool('ffmpeg', 'WAVESUBS_FFMPEG', 'brew install ffmpeg')
 export const visionOcrPath = (): string => findTool('vision-ocr', 'WAVESUBS_VISION_OCR', 'npm run build:native')
-/** 画面文字识别目前只有 macOS（系统 Vision 框架，零模型下载）；Windows 待接系统 OCR */
+export const winOcrScriptPath = (): string => findTool('win-ocr.ps1', 'WAVESUBS_WIN_OCR', '把仓库里的 native/win-ocr/win-ocr.ps1 放进随包目录')
+/** Windows PowerShell 5.1（系统自带）；win-ocr.ps1 只能在它里面跑，PowerShell 7 投影不了 WinRT */
+export const powershellPath = (): string =>
+  join(process.env.SystemRoot ?? 'C:\\Windows', 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe')
+
+/** Windows 上已装的 OCR 语言标签；null 表示还没探测 */
+let winOcrLanguages: string[] | null = null
+let winOcrProbe: Promise<string[]> | null = null
+
+/**
+ * 探测 Windows 自带 OCR 装了哪些语言。要起一个 PowerShell（一两秒），所以启动时异步做一次，
+ * 结果缓存；signsSupported() 读缓存，appInfo 与开任务之前先 await 一下。
+ */
+export function probeWindowsOcr(): Promise<string[]> {
+  if (!IS_WINDOWS) return Promise.resolve([])
+  if (!winOcrProbe) {
+    winOcrProbe = new Promise<string[]>((resolve) => {
+      let script: string
+      try {
+        script = winOcrScriptPath()
+      } catch {
+        winOcrLanguages = []
+        resolve([])
+        return
+      }
+      execFile(
+        powershellPath(),
+        ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', script, '-ListLangs'],
+        { timeout: 30_000, windowsHide: true },
+        (err, stdout) => {
+          winOcrLanguages = err ? [] : stdout.trim().split(',').map((x) => x.trim()).filter(Boolean)
+          resolve(winOcrLanguages)
+        }
+      )
+    })
+  }
+  return winOcrProbe
+}
+
+/** 识别程序的路径：macOS 是自编的 vision-ocr，Windows 是随包的 PowerShell 脚本 */
+export const ocrHelperPath = (): string => (IS_WINDOWS ? winOcrScriptPath() : visionOcrPath())
+
+/**
+ * 画面文字识别可用吗。macOS：随包的 vision-ocr 在就行（系统 Vision 框架，零模型下载）。
+ * Windows：随包脚本在、且系统至少装了一种 OCR 语言（语言包里的「光学字符识别」）。
+ */
 export function signsSupported(): boolean {
+  if (IS_WINDOWS) return (winOcrLanguages?.length ?? 0) > 0
   if (process.platform !== 'darwin') return false
   try {
     visionOcrPath()

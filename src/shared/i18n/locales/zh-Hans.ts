@@ -56,6 +56,7 @@ export const zhHans = {
   'progress.signsCached': "画面文字来自缓存",
   'home.signs': "翻译画面中的文字",
   'home.signsHint': "招牌、便签、短信、告示等；需要开启翻译，约多花两三分钟",
+  'home.signsHint.win': "招牌、便签、短信、告示等；用 Windows 自带的文字识别，要先在系统设置里装好片中语言的语言包（含「光学字符识别」）",
   'home.result.signs': "，另有 {n} 条画面文字",
   'editor.tab.speech': "语音字幕",
   'editor.tab.signs': "画面文字",

@@ -84,8 +84,12 @@ export default function App(): React.JSX.Element {
   const [jobState, setJobState] = useState<JobState>({ kind: 'idle' })
   /** 画面文字识别可用（macOS 且随包工具在）；决定转换页显不显示那个开关 */
   const [signsSupported, setSignsSupported] = useState(false)
+  const [platform, setPlatform] = useState('darwin')
   useEffect(() => {
-    void window.waveSubs.appInfo().then((info) => setSignsSupported(Boolean(info.signsSupported)))
+    void window.waveSubs.appInfo().then((info) => {
+      setSignsSupported(Boolean(info.signsSupported))
+      setPlatform(info.platform)
+    })
   }, [])
   /** 单文件页最近一次任务的输入路径——完成卡片的「编辑字幕」要用它定位记录 */
   const [lastInput, setLastInput] = useState<string | null>(null)
@@ -487,6 +491,7 @@ export default function App(): React.JSX.Element {
               onStop={stopBatch}
               onCancelCurrent={cancelJob}
               signsSupported={signsSupported}
+              platform={platform}
               updateSettings={updateSettings}
               downloads={downloads}
               modelError={modelError}

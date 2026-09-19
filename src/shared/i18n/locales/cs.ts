@@ -51,6 +51,7 @@ export const cs: Dict = {
   'progress.signsCached': "Text na obrazovce z mezipaměti",
   'home.signs': "Překládat text na obrazovce",
   'home.signsHint': "Cedule, poznámky, zprávy, oznámení; vyžaduje překlad, trvá o pár minut déle",
+  'home.signsHint.win': "Cedule, poznámky, zprávy, oznámení; používá rozpoznávání textu vestavěné ve Windows – nejdřív nainstalujte jazykovou sadu mluveného jazyka (s „Optickým rozpoznáváním znaků“)",
   'home.result.signs': "; plus {n} textů na obrazovce",
   'editor.tab.speech': "Titulky z řeči",
   'editor.tab.signs': "Text na obrazovce",

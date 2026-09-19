@@ -50,6 +50,7 @@ export const zhHant: Dict = {
   'progress.signsCached': "畫面文字來自快取",
   'home.signs': "翻譯畫面中的文字",
   'home.signsHint': "招牌、便條、簡訊、告示等；需要開啟翻譯，約多花兩三分鐘",
+  'home.signsHint.win': "招牌、便條、簡訊、告示等；用 Windows 內建的文字辨識，要先在系統設定裡裝好片中語言的語言套件（含「光學字元辨識」）",
   'home.result.signs': "，另有 {n} 條畫面文字",
   'editor.tab.speech': "語音字幕",
   'editor.tab.signs': "畫面文字",

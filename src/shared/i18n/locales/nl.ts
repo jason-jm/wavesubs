@@ -51,6 +51,7 @@ export const nl: Dict = {
   'progress.signsCached': "Tekst in beeld uit de cache",
   'home.signs': "Tekst in beeld vertalen",
   'home.signsHint': "Borden, briefjes, berichten, mededelingen; vereist vertaling, duurt enkele minuten langer",
+  'home.signsHint.win': "Borden, notities, berichten, mededelingen; gebruikt de tekstherkenning van Windows – installeer eerst het taalpakket van de gesproken taal (met \"Optische tekenherkenning\")",
   'home.result.signs': "; plus {n} teksten in beeld",
   'editor.tab.speech': "Spraakondertitels",
   'editor.tab.signs': "Tekst in beeld",

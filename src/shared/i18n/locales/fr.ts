@@ -52,6 +52,7 @@ export const fr: Dict = {
   'progress.signsCached': "Texte à l'écran issu du cache",
   'home.signs': "Traduire le texte à l'écran",
   'home.signsHint': "Enseignes, notes, messages, panneaux ; nécessite la traduction, ajoute quelques minutes",
+  'home.signsHint.win': "Panneaux, notes, SMS, affiches ; utilise la reconnaissance de texte intégrée à Windows — installez d’abord le module linguistique de la langue parlée (avec « Reconnaissance optique de caractères »)",
   'home.result.signs': " ; plus {n} textes à l'écran",
   'editor.tab.speech': "Sous-titres vocaux",
   'editor.tab.signs': "Texte à l'écran",

@@ -42,6 +42,8 @@ interface Props {
   /** 立刻取消正在跑的那个文件（退回等待），队列继续处理后面的 */
   onCancelCurrent: () => void
   signsSupported: boolean
+  /** process.platform：Windows 上画面文字的说明要提语言包 */
+  platform: string
   updateSettings: (patch: SettingsUpdate) => Promise<void>
   goModels: () => void
   onSelectModel: (file: string) => void
@@ -312,7 +314,7 @@ function EntryConfig(props: {
 
 export function BatchView(props: Props): React.JSX.Element {
   const { settings, overview, entries, running, stopping, onAdd, onRemove, onClear } = props
-  const { onOverride, onEdit, onStart, onStop, onCancelCurrent, signsSupported, updateSettings, goModels, onSelectModel, onSelectLlm, downloads, modelError, onDownload, onCancelDownload } = props
+  const { onOverride, onEdit, onStart, onStop, onCancelCurrent, signsSupported, platform, updateSettings, goModels, onSelectModel, onSelectLlm, downloads, modelError, onDownload, onCancelDownload } = props
   const { t, locale } = useI18n()
 
   const [dragOver, setDragOver] = useState(false)
@@ -571,7 +573,7 @@ export function BatchView(props: Props): React.JSX.Element {
                 <div className="row">
                   <div className="row-label">
                     <strong>{t('home.signs')}</strong>
-                    <span>{t('home.signsHint')}</span>
+                    <span>{t(platform === 'win32' ? 'home.signsHint.win' : 'home.signsHint')}</span>
                   </div>
                   <div className="row-control">
                     <button

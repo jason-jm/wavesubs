@@ -51,6 +51,7 @@ export const id: Dict = {
   'progress.signsCached': "Teks di layar dari cache",
   'home.signs': "Terjemahkan teks di layar",
   'home.signsHint': "Papan nama, catatan, pesan, pengumuman; perlu terjemahan aktif, butuh beberapa menit lebih",
+  'home.signsHint.win': "Papan nama, catatan, pesan, pengumuman; memakai pengenalan teks bawaan Windows — pasang dulu paket bahasa untuk bahasa yang diucapkan (dengan \"Pengenalan karakter optik\")",
   'home.result.signs': "; plus {n} teks di layar",
   'editor.tab.speech': "Subtitle ucapan",
   'editor.tab.signs': "Teks di layar",

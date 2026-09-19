@@ -51,6 +51,7 @@ export const ja: Dict = {
   'progress.signsCached': "画面内テキストはキャッシュから",
   'home.signs': "画面内の文字も翻訳",
   'home.signsHint': "看板・メモ・メッセージ・掲示など。翻訳が必要で、数分余分にかかります",
+  'home.signsHint.win': "看板・メモ・メッセージ・掲示など。Windows 内蔵の文字認識を使うため、先に映像の言語の言語パック（「光学式文字認識」付き）をインストールしてください",
   'home.result.signs': "、他に画面内テキスト {n} 件",
   'editor.tab.speech': "音声字幕",
   'editor.tab.signs': "画面内テキスト",

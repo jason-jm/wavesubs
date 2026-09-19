@@ -51,6 +51,7 @@ export const fi: Dict = {
   'progress.signsCached': "Kuvan teksti välimuistista",
   'home.signs': "Käännä kuvan teksti",
   'home.signsHint': "Kyltit, laput, viestit, ilmoitukset; vaatii käännöksen, kestää muutaman minuutin kauemmin",
+  'home.signsHint.win': "Kyltit, muistilaput, viestit, ilmoitukset; käyttää Windowsin sisäänrakennettua tekstintunnistusta – asenna ensin puhutun kielen kielipaketti (”Optinen merkintunnistus” mukaan lukien)",
   'home.result.signs': "; lisäksi {n} kuvan tekstiä",
   'editor.tab.speech': "Puhetekstitys",
   'editor.tab.signs': "Kuvan teksti",

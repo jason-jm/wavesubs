@@ -51,6 +51,7 @@ export const de: Dict = {
   'progress.signsCached': "Bildschirmtext aus dem Cache",
   'home.signs': "Bildschirmtext übersetzen",
   'home.signsHint': "Schilder, Notizen, Nachrichten, Hinweise; braucht Übersetzung, dauert ein paar Minuten länger",
+  'home.signsHint.win': "Schilder, Notizen, Nachrichten, Aushänge; nutzt die in Windows integrierte Texterkennung – vorher das Sprachpaket der gesprochenen Sprache installieren (mit „Optische Zeichenerkennung“)",
   'home.result.signs': "; dazu {n} Bildschirmtexte",
   'editor.tab.speech': "Sprach-Untertitel",
   'editor.tab.signs': "Bildschirmtext",

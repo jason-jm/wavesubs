@@ -51,6 +51,7 @@ export const hu: Dict = {
   'progress.signsCached': "Képernyőszöveg a gyorsítótárból",
   'home.signs': "Képernyőszöveg fordítása",
   'home.signsHint': "Táblák, jegyzetek, üzenetek, feliratok; fordítás szükséges, pár perccel tovább tart",
+  'home.signsHint.win': "Táblák, jegyzetek, üzenetek, hirdetmények; a Windows beépített szövegfelismerését használja – előbb telepítsd a beszélt nyelv nyelvi csomagját („Optikai karakterfelismerés”-sel)",
   'home.result.signs': "; plusz {n} képernyőszöveg",
   'editor.tab.speech': "Beszédfeliratok",
   'editor.tab.signs': "Képernyőszöveg",

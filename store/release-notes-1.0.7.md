@@ -1,7 +1,7 @@
 ## Wave Subs 1.0.7
 
-**翻译画面中的文字（macOS）**
-- 转换设置里新增开关（需开启翻译）。用系统自带的文字识别逐秒读画面，把招牌、便签、短信与聊天气泡、告示、文件、标题卡、人物名牌翻译出来，按原文的位置写进 ASS（SRT 放顶部）。不下载任何模型，24 分钟一集多花两三分钟，与语音识别并行
+**翻译画面中的文字**
+- 转换设置里新增开关（需开启翻译）。用系统自带的文字识别（macOS 的 Vision、Windows 的 Windows.Media.Ocr）逐秒读画面，把招牌、便签、短信与聊天气泡、告示、文件、标题卡、人物名牌翻译出来，按原文的位置写进 ASS（SRT 放顶部）。不下载任何模型，24 分钟一集多花两三分钟，与语音识别并行
 - 译文贴着原文放，尽量不遮挡：贴原文正下方 → 放到原文左右的空处 → 挪到画面顶部 → 盖在原文上，四种排法按顺序试。让位分三轮，两轮都没位置就把字号压小再来一遍——宁可字小，也别盖住原文。只有整屏的邮件、短信、文件才铺一块深色底板把原文换掉
 - 底部永远属于对白：同一时刻有对白字幕时，画面文字绝不进入字幕占用的高度，按对白的实际行数让位
 - 看得见的每一块都有译文：同屏放得下八条，和对白说的是同一句也照出，实在排不下就压到最小字号也要排出来
@@ -32,7 +32,7 @@
 - 按钮各态重画：主按钮在浅色模式下 hover 时不再变成一块看不清字的白板；键盘焦点有了统一的环
 
 **已知限制**
-- 画面文字目前只在 macOS 上可用（用的是系统文字识别），Windows 版待接系统 OCR
+- Windows 上的画面文字用系统自带的 OCR，要先在设置里装好片中语言的语言包（含「光学字符识别」）；识别质量不如 macOS，竖排日文基本读不出
 - 名单之外的一串人名仍会被译出来：话剧海报上成排的演员名，以及和制作名单隔了半分钟先单独打出来的主演名。
   前者和纪录片里逐个出现的流程图标签在结构上分不开；后者靠放宽名单的邻接阈值能捞回来，代价是片头社团招牌、片尾正文会被误吃，不划算
 - 本地 8B 模型对专有名词不稳（机构名、历史术语会译错或前后不一致）。术语表是可靠的办法
@@ -40,8 +40,8 @@
 
 ---
 
-**Translate on-screen text (macOS)**
-- A new switch in conversion settings (requires translation to be on). The text recognition built into macOS reads the picture once a second, and signs, notes, text messages and chat bubbles, notices, documents, title cards and lower-third name plates are translated and written into the ASS at the position of the original (SRT places them at the top). No extra model to download; a 24-minute episode takes two to three minutes longer, running alongside speech recognition
+**Translate on-screen text**
+- A new switch in conversion settings (requires translation to be on). The text recognition built into the OS (Vision on macOS, Windows.Media.Ocr on Windows) reads the picture once a second, and signs, notes, text messages and chat bubbles, notices, documents, title cards and lower-third name plates are translated and written into the ASS at the position of the original (SRT places them at the top). No extra model to download; a 24-minute episode takes two to three minutes longer, running alongside speech recognition
 - The translation is placed next to the original, covering it only as a last resort: directly below → in the free space to its left or right → at the top of the frame → over the original, tried in that order. Yielding runs in three rounds, and when two rounds find nothing the font is reduced and the search repeats — smaller type is better than hiding the original. Only a full screen of text (an e-mail, a message thread, a document) is replaced with an opaque plate
 - The bottom belongs to the dialogue: when a dialogue subtitle is on screen, on-screen text never enters the height it occupies, measured from its actual line count
 - Everything visible gets a translation: up to eight at once, kept even when the dialogue says the same thing, and placed at the minimum font size rather than dropped when nothing else fits
@@ -72,7 +72,7 @@
 - Button states redrawn: the primary button no longer turns into an unreadable pale block on hover in light mode, and keyboard focus has a consistent ring
 
 **Known limitations**
-- On-screen text is macOS only for now (it uses the system text recogniser); the Windows build is waiting on the system OCR
+- On Windows, on-screen text uses the built-in OCR: install the language pack for the spoken language first (with "Optical character recognition"); recognition is weaker than on macOS, and vertical Japanese is mostly missed
 - A run of personal names outside the credit roll still gets translated: rows of actor names on a theatre poster, and lead billing shown half a minute before the staff roll.
   The first is structurally indistinguishable from the diagram labels a documentary reveals one at a time; the second could be caught by widening the credit-run adjacency threshold, at the cost of eating an opening club sign and closing narration
 - The local 8B model is unreliable on proper nouns (institution names and historical terms come out wrong or inconsistent). The glossary is the dependable fix

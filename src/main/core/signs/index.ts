@@ -1,4 +1,4 @@
-export { extractFrames, ocrLanguagesFor, runVisionOcr } from './ocr'
+export { extractFrames, ocrLanguagesFor, parseOcrLines, runOcr, runVisionOcr, runWindowsOcr } from './ocr'
 export { buildSignBlocks, creditWindows, groupLines, stripKaomoji, textSimilarity, trackBlocks } from './blocks'
 export { judgeSigns, leftoverScript, looksBloated, looksTruncated, tidyTranslation } from './judge'
 export type { ChatFn, JudgeOptions } from './judge'

@@ -50,6 +50,7 @@ export const ko: Dict = {
   'progress.signsCached': "화면 속 텍스트는 캐시에서",
   'home.signs': "화면 속 텍스트 번역",
   'home.signsHint': "간판, 메모, 메시지, 안내문 등. 번역이 켜져 있어야 하며 몇 분 더 걸립니다",
+  'home.signsHint.win': "간판, 메모, 문자, 안내문 등. Windows에 내장된 문자 인식을 사용하므로 먼저 영상 언어의 언어 팩(「광학 문자 인식」 포함)을 설치하세요",
   'home.result.signs': ", 화면 속 텍스트 {n}개 추가",
   'editor.tab.speech': "음성 자막",
   'editor.tab.signs': "화면 속 텍스트",

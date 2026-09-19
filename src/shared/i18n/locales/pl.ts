@@ -51,6 +51,7 @@ export const pl: Dict = {
   'progress.signsCached': "Tekst na ekranie z pamięci podręcznej",
   'home.signs': "Tłumacz tekst na ekranie",
   'home.signsHint': "Szyldy, notatki, wiadomości, ogłoszenia; wymaga tłumaczenia, zajmuje kilka minut dłużej",
+  'home.signsHint.win': "Szyldy, notatki, wiadomości, ogłoszenia; używa wbudowanego w Windows rozpoznawania tekstu – najpierw zainstaluj pakiet językowy mówionego języka (z „Optycznym rozpoznawaniem znaków”)",
   'home.result.signs': "; oraz {n} tekstów na ekranie",
   'editor.tab.speech': "Napisy z mowy",
   'editor.tab.signs': "Tekst na ekranie",

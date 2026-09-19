@@ -2,7 +2,7 @@
  * 画面文字模块自检：几何与统计规则（分组 / 跟踪 / 名单时段 / 烧录字幕带）、判别对齐锚、排版取舍、写出格式。
  * 全部用合成数据，不跑 OCR 也不跑模型；判别用假 chat 模拟 8B 的串行毛病。
  */
-import { buildSignBlocks, stripKaomoji, creditWindows, fuzzyContains, dialogueLinesAt, dialogueSafeBottom, groupLines, judgeSigns, leftoverScript, looksBloated, measureText, tidyTranslation, signsToCues, trackBlocks, textSimilarity, wrapToWidth } from '../src/main/core/signs'
+import { buildSignBlocks, stripKaomoji, creditWindows, fuzzyContains, dialogueLinesAt, dialogueSafeBottom, groupLines, judgeSigns, leftoverScript, looksBloated, measureText, parseOcrLines, tidyTranslation, signsToCues, trackBlocks, textSimilarity, wrapToWidth } from '../src/main/core/signs'
 import type { OcrBox, OcrFrame, SignBlock, SignJudgement } from '../src/main/core/signs'
 import { cuesToAss } from '../src/main/core/subtitle/ass'
 import { cuesToSrt } from '../src/main/core/subtitle/srt'
@@ -350,6 +350,16 @@ console.log('\n译文收尾：')
   eq('图表上被读成文字的圆点箭头去掉', tidyTranslation('•–2007 房价 194%', '2007 HOME PRICES 194%'), '2007 房价 194%')
   eq('原文本来就是项目符号的留着', tidyTranslation('• 仅使用一名评估师', '• Exclusive use of one appraiser'), '• 仅使用一名评估师')
   eq('结尾被截断的孤零零一个字母去掉', tidyTranslation('AIGFP及一名量化风险专家，M', 'AIGFP and a quantitative risk expert, M'), 'AIGFP及一名量化风险专家')
+}
+
+console.log('\nOCR 输出解析（两个平台共用）：')
+{
+  // Windows 的 ConvertTo-Json 把非 ASCII 写成 \uXXXX，还带 \r\n；空帧 boxes 是 []
+  const out = '{"i":0,"file":"00001.jpg","boxes":[]}\r\n{"i":1,"file":"00002.jpg","boxes":[{"t":"\\u55b6\\u696d\\u4e2d","c":0.6,"x":0.1,"y":0.2,"w":0.3,"h":0.05}]}\r\n\r\n'
+  const frames = parseOcrLines(out, 1500)
+  eq('帧序号加上批次起点', frames.map((f) => f.i), [1500, 1501])
+  eq('\\u 转义的日文读回来', frames[1].boxes[0].t, '営業中')
+  eq('空帧也是一帧', frames[0].boxes, [])
 }
 
 console.log('\n颜文字：')

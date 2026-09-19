@@ -513,7 +513,7 @@ export function HomeView(props: Props): React.JSX.Element {
                   <div className="row">
                     <div className="row-label">
                       <strong>{t('home.signs')}</strong>
-                      <span>{t('home.signsHint')}</span>
+                      <span>{t(platform === 'win32' ? 'home.signsHint.win' : 'home.signsHint')}</span>
                     </div>
                     <div className="row-control">
                       <button

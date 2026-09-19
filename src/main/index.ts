@@ -57,9 +57,10 @@ import {
   ffprobePath,
   listLocalLlmModels,
   listWhisperModels,
+  ocrHelperPath,
+  probeWindowsOcr,
   setBundledBinDirs,
-  signsSupported,
-  visionOcrPath
+  signsSupported
 } from './core/tools'
 import { LlamaServerManager, LocalLlamaProvider } from './core/translate/llamaServer'
 import { findLocalLlmSpec, LOCAL_LLM_MODELS, pickBestInstalledLlm } from './core/translate/localCatalog'
@@ -464,7 +465,7 @@ function registerIpc(): void {
         fallbackOutputDir: fallbackOutputDir(),
         refreshCache: request.refreshCache,
         glossary: settings.glossary,
-        signs: (request.signs ?? settings.signsEnabled) && translate && signsSupported() ? { visionOcr: visionOcrPath() } : undefined,
+        signs: (request.signs ?? settings.signsEnabled) && translate && signsSupported() ? { ocrHelper: ocrHelperPath() } : undefined,
         onProgress: (p) => {
           if (!event.sender.isDestroyed()) event.sender.send('job:progress', p)
         }
@@ -630,8 +631,15 @@ function refreshTitleBarOverlay(): void {
   }
 }
 
-function appInfo(): AppInfo {
+/** 菜单等同步场合用：不等 Windows 的 OCR 探测，signsSupported 取当下的缓存 */
+function appInfoSync(): AppInfo {
   return { version: app.getVersion(), platform: process.platform, mas: Boolean(process.mas), locale: settings.resolvedLanguage, signsSupported: signsSupported() }
+}
+
+/** 给渲染层的：Windows 上先等 OCR 语言探测出结果，画面文字那一行显不显示要靠它 */
+async function appInfo(): Promise<AppInfo> {
+  await probeWindowsOcr()
+  return appInfoSync()
 }
 
 /**
@@ -640,7 +648,7 @@ function appInfo(): AppInfo {
  */
 function buildAppMenu(): void {
   const t = translatorFor(settings.resolvedLanguage)
-  const info = appInfo()
+  const info = appInfoSync()
   const open = (url: string) => (): void => {
     void shell.openExternal(url)
   }
@@ -714,13 +722,15 @@ void app.whenReady().then(() => {
      */
     setBundledBinDirs(
       process.platform === 'win32'
-        ? [join(vendor, 'ffmpeg'), join(vendor, 'whisper'), join(vendor, 'llama')]
+        ? [join(vendor, 'ffmpeg'), join(vendor, 'whisper'), join(vendor, 'llama'), join(vendor, 'ocr')]
         : [join(vendor, 'bin')]
     )
   } else {
     // 开发态：随包工具走 PATH，自编的 vision-ocr 在仓库里的 native/*/build
-    setBundledBinDirs([join(app.getAppPath(), 'native', 'vision-ocr', 'build')])
+    setBundledBinDirs([join(app.getAppPath(), 'native', 'vision-ocr', 'build'), join(app.getAppPath(), 'native', 'win-ocr')])
   }
+  // Windows 自带 OCR 装了哪些语言：起一个 PowerShell 要一两秒，启动时就开始探，别等到用户拖文件
+  void probeWindowsOcr()
   setDownloadRegion(likelyMainlandChina())
 
   const moved = migrateLegacyUserData()
