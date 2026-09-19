@@ -1,7 +1,7 @@
 # 1.0.8 推广帖（小红书中文 · X 英文），全部可直接复制
 
-> 图在 `store/social/posts/`：`update/` 是「更新了什么」，`raw/` 是「看生肉找不到字幕」。
-> 小红书用 `zh-01-cover.jpg` 做封面、其余按序号做内页（3:4，2160×2880）；X 用 `en-x.jpg`（2560×1280），线程里的截图用 `docs/assets/shots/en-dark-*.jpg`。
+> 图在 `store/social/posts/`：`update/` 是「更新了什么」（版本说明书风：白纸点阵、巨大版本号、新功能/修复/Windows 三色标签、统计大字），`raw/` 是「看生肉找不到字幕」（字幕文件风：奶油底、.srt 文件页签、「生肉」红章→「熟了」绿章、剧照上压真字幕、步骤写成 SRT 的 cue）。两组都是浅色主题，截图是浅色界面。
+> 小红书用 `zh-01-cover.jpg` 做封面、其余按序号做内页（3:4，2160×2880）；X 用 `en-x1-cover.jpg` 做第 1 条配图，`en-x2-*.jpg`、`en-x3-*.jpg` 配后面的推文（16:9，2400×1350）。
 > 链接统一 **https://wavesubs.com**；Release 页 https://github.com/jason-jm/wavesubs/releases/latest。
 > 图片和文案由 `scripts/build-posts.py` 与本文件生成、维护；数字都来自 CHANGELOG 里写明的实测。
 
@@ -67,7 +67,7 @@ Mac（M 系列）和 Windows 都有，官网搜 wavesubs
 
 ## X · Post 1: What's new（英文线程）
 
-配图：第 1 条 `update/en-x.jpg`；第 2 条 `docs/assets/shots/en-dark-editor.jpg`；第 4 条 `docs/assets/shots/en-dark-models.jpg`
+配图：第 1 条 `update/en-x1-cover.jpg`；第 3 条 `update/en-x2-numbers.jpg`；第 4 条 `update/en-x3-models.jpg`
 
 ```
 1/ Wave Subs 1.0.8 is out — the biggest update in two weeks, on macOS and Windows.
@@ -94,7 +94,7 @@ https://wavesubs.com
 
 ## X · Post 2: Watching raws with no subtitles?（英文线程）
 
-配图：第 1 条 `raw/en-x.jpg`；第 2 条 `docs/assets/shots/en-dark-home-done.jpg`；第 3 条 `docs/assets/shots/en-dark-editor.jpg`
+配图：第 1 条 `raw/en-x1-cover.jpg`；第 2 条 `raw/en-x2-flow.jpg`；第 3 条 `raw/en-x3-editor.jpg`
 
 ```
 1/ Watching raws because nobody subtitled that show, documentary or old film in your language?
