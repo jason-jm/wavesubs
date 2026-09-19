@@ -82,38 +82,97 @@ export function buildUserContent(items: BatchItem[], ctx: TranslateContext): str
 }
 
 /**
+ * 把文本里所有顶层 JSON 对象逐个抠出来（不依赖外层数组是否完整）。
+ *
+ * 1.7B 这一档的小模型经常不按「一个数组」输出，而是一行一个 `[{...}]`、或者干脆 JSONL；
+ * 输出被 max_tokens 截断时最后一个对象也是残的。这些情况下整段当 JSON 解析必然失败，
+ * 之前是整批 20 条好译文一起作废、退到小批和单条重试——而单条那轮小模型又最爱照抄原文。
+ * 逐个对象抠，能救回来的全救回来。字符串里的花括号按 JSON 转义规则跳过。
+ */
+function extractObjects(text: string): unknown[] {
+  const out: unknown[] = []
+  let depth = 0
+  let start = -1
+  let inString = false
+  let escaped = false
+  for (let i = 0; i < text.length; i += 1) {
+    const ch = text[i]
+    if (inString) {
+      if (escaped) escaped = false
+      else if (ch === '\\') escaped = true
+      else if (ch === '"') inString = false
+      continue
+    }
+    if (ch === '"') {
+      inString = true
+    } else if (ch === '{') {
+      if (depth === 0) start = i
+      depth += 1
+    } else if (ch === '}' && depth > 0) {
+      depth -= 1
+      if (depth === 0 && start >= 0) {
+        try {
+          out.push(JSON.parse(text.slice(start, i + 1)))
+        } catch {
+          // 这一段不是合法 JSON，跳过它继续找下一个
+        }
+        start = -1
+      }
+    }
+  }
+  return out
+}
+
+/** 编号：正常是数字，小模型偶尔给成 "12" 这样的字符串，照认 */
+function rowIndex(raw: unknown): number | undefined {
+  if (typeof raw === 'number' && Number.isInteger(raw)) return raw
+  if (typeof raw === 'string' && /^\d+$/.test(raw.trim())) return Number(raw.trim())
+  return undefined
+}
+
+/**
  * @param sources 本批各编号的原文；给了就核对每行的锚 k，对不上的行当作没译（由调用方重试）。
  *   模型没输出 k 的行照常接受——云端模型偶尔不理会格式要求，宁可少一道检查也不能全批作废。
  */
 export function parseBatchResponse(content: string, sources?: Map<number, string>): Map<number, string> {
   const cleaned = content
     .replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '')
+    // 关掉思考的 Qwen3 仍会先吐一个孤零零的 </think>
+    .replace(/<\/?think(?:ing)?>/gi, '')
     .trim()
     .replace(/^```(?:json)?\s*/i, '')
     .replace(/```\s*$/, '')
+  // 先按理想形态（一个完整数组）解析；不行再逐个对象抠
+  let whole: unknown
   const start = cleaned.indexOf('[')
   const end = cleaned.lastIndexOf(']')
-  if (start < 0 || end <= start) throw new TranslationParseError('翻译结果不是合法的 JSON 数组')
-  let rows: unknown
-  try {
-    rows = JSON.parse(cleaned.slice(start, end + 1))
-  } catch {
-    throw new TranslationParseError('翻译结果 JSON 解析失败')
-  }
-  const map = new Map<number, string>()
-  if (Array.isArray(rows)) {
-    for (const row of rows) {
-      const item = row as { i?: unknown; k?: unknown; t?: unknown }
-      if (typeof item?.i === 'number' && typeof item?.t === 'string' && item.t.trim()) {
-        // 单条批次不可能错位，锚对不上也照收：这是漏译兜底轮的最后一道，宁可要一条可疑译文也不留原文
-        if (sources && sources.size > 1 && typeof item.k === 'string' && item.k.trim()) {
-          const src = sources.get(item.i)
-          const k = anchorKey(item.k)
-          if (src !== undefined && k.length >= 2 && !anchorKey(src).startsWith(k.slice(0, ANCHOR_CHARS))) continue
-        }
-        map.set(item.i, item.t.trim())
-      }
+  if (start >= 0 && end > start) {
+    try {
+      whole = JSON.parse(cleaned.slice(start, end + 1))
+    } catch {
+      whole = undefined
     }
+  }
+  const rows: unknown[] = Array.isArray(whole) ? whole : extractObjects(cleaned)
+  if (rows.length === 0) throw new TranslationParseError('翻译结果不是合法的 JSON 数组')
+  const map = new Map<number, string>()
+  for (const row of rows) {
+    const item = row as { i?: unknown; k?: unknown; t?: unknown }
+    const index = rowIndex(item?.i)
+    if (index === undefined || typeof item?.t !== 'string' || !item.t.trim()) continue
+    // 单条批次不可能错位，锚对不上也照收：这是漏译兜底轮的最后一道，宁可要一条可疑译文也不留原文
+    if (sources && sources.size > 1 && typeof item.k === 'string' && item.k.trim()) {
+      const src = sources.get(index)
+      const k = anchorKey(item.k)
+      if (src !== undefined && k.length >= 2 && !anchorKey(src).startsWith(k.slice(0, ANCHOR_CHARS))) continue
+    }
+    map.set(index, item.t.trim())
+  }
+  if (map.size === 0 && sources?.size === 1) {
+    // 单条兜底轮：小模型常把格式整个丢掉，只回 ["译文"]。批里只有这一条，不可能对错号，照收
+    const [only] = sources.keys()
+    const strings = rows.filter((r): r is string => typeof r === 'string' && r.trim().length > 0)
+    if (strings.length === 1) map.set(only, strings[0].trim())
   }
   return map
 }

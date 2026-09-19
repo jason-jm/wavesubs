@@ -11,6 +11,7 @@
 **翻译**
 - 术语表现在也管画面文字。之前只喂给对白翻译，同一个人名在两条轨道上会对不上；术语表改了，对白与画面文字一起重译
 - 小模型把长句只译成开头几个字：用 1.7B 翻日语纪录片时整集译文都只有原文头一个短语（「今年6月」「受邀的是」），根因是提示词里要求先照抄原文开头几个字，小模型把译文也只译那几个字。提示词已改
+- 小模型翻出来的整批译文不再丢：1.7B 常把结果输出成一行一个数组、或者中途截断，之前解析不了就整批 20 条作废，退到逐条重试——而逐条时小模型最爱把原文照抄回来，抄回来的又没被拦住直接进了字幕（双语模式同一句日文出两遍）。现在能救的都救回来，每一轮都拦照抄。一集 NHK 纪录片（Tiny + 1.7B）里没译文或照抄的对白从 98 条降到 56 条
 - 同一个专名不再有两种写法。翻译是分批做的，批与批之间没有记忆，一部片里同一个名字会出现「韦伯／威伯」两种写法。收尾按源文里反复出现的专名把译文分组，把少数写法改成多数写法
 - 同一个文件跑两遍出同一份字幕：画面文字的判别改成贪心解码加固定随机种子
 
@@ -51,6 +52,7 @@
 **Translation**
 - The glossary now applies to on-screen text as well. It previously reached only the dialogue, so the same personal name could differ between the two tracks; changing the glossary now retranslates both
 - Small models translated only the first few words of a long line: with the 1.7B model a Japanese documentary came out as one short phrase per line ("This June", "Those invited were"). The cause was the alignment anchor in the prompt — copy the first four characters of the source, then translate — which small models applied to the translation too. The prompt now says so explicitly
+- Batches from small models are no longer thrown away: the 1.7B model often returns one array per line or gets cut off mid-output, and the parser accepted only a single complete array, so a whole batch of 20 good translations was discarded and retried line by line — where small models most often copy the source back, and those copies slipped into the subtitles unchecked (the same Japanese line twice in bilingual mode). Every salvageable row is now kept, and copied-back source is rejected in every round. In one NHK documentary episode (Tiny + 1.7B), dialogue lines with no translation or a copied-back source fell from 98 to 56
 - One proper noun, one spelling. Translation runs in batches with no memory between them, so a single name could come out two ways in one film. A final pass groups translations by the recurring proper noun in their source and rewrites the minority spelling
 - The same file twice gives the same subtitles: on-screen text judging now uses greedy decoding with a fixed seed
 

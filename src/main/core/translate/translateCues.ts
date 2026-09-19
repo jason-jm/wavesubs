@@ -44,10 +44,16 @@ export async function translateCues(
   const checkCancelled = (): void => {
     if (control?.signal?.aborted) throw new LocalizedError('error.jobCancelled')
   }
+  /**
+   * 每一轮的结果都过一道「译文里还有源语言文字」的检查，不只第一轮。
+   * 之前只在第一轮之后查，小批重试、单条兜底那两轮把原文原样抄回来的（1.7B 常干这事）
+   * 就直接进了字幕——一集里 62 条「译文」是日文原文，双语模式下同一句日文出两遍。
+   * 抄原文的不收，宁可这条留空：留空是原文出一遍，抄原文是出两遍。
+   */
   const apply = (map: Map<number, string>): void => {
     for (const cue of cues) {
       const t = map.get(cue.index)
-      if (t) cue.translation = t
+      if (t && !looksUntranslated(t, ctx.targetLanguage)) cue.translation = t
     }
   }
 
@@ -91,15 +97,8 @@ export async function translateCues(
     onProgress?.(Math.round((done / total) * 95))
   }
 
-  // 漏译的、以及译文里还残留源语言文字的，都用更小的批再试一轮
-  const needRetry = cues.filter(
-    (c) => !c.translation || looksUntranslated(c.translation, ctx.targetLanguage)
-  )
-  for (const cue of needRetry) {
-    if (cue.translation && looksUntranslated(cue.translation, ctx.targetLanguage)) {
-      cue.translation = undefined
-    }
-  }
+  // 漏译的（含译文里残留源语言、被 apply 挡掉的）用更小的批再试一轮
+  const needRetry = cues.filter((c) => !c.translation)
   for (let i = 0; i < needRetry.length; i += RETRY_BATCH_SIZE) {
     checkCancelled()
     await runBatch(needRetry.slice(i, i + RETRY_BATCH_SIZE))
