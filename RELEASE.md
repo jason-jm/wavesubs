@@ -2,6 +2,12 @@
 
 两个平台：macOS（Apple Silicon，DMG）与 Windows（x64，NSIS 安装包 + ZIP）。
 
+## 仓库约定
+
+- 仓库对外的一切用英文：提交信息、README（其它语言是 `README.<lang>.md` 的翻译）、`CHANGELOG.md`；中文更新日志在 `CHANGELOG.zh-CN.md`。
+- 与程序无关的东西不进仓库：推广素材（海报、商店截图、文案）在仓库外的 `../marketing/`（见那里的 README），发布说明与 Homebrew cask 源文件在仓库外的 `../store/`（`make-latest.ts` 默认从那里读，可用 `WAVESUBS_STORE_DIR` 覆盖）。
+- 开发者向的内容（构建、签名、自检脚本、代码结构）在 `DEVELOPMENT.md`，不进 README。
+
 ## 一次性准备
 
 ### 1. 安装 Developer ID 证书
@@ -59,6 +65,9 @@ electron-builder（当前 26.15）能直接读这个钥匙串 profile，密码�
 
 ## 每次发布
 
+发版前先写两份更新日志：`CHANGELOG.md`（英文，仓库里对外的那份）与 `CHANGELOG.zh-CN.md`（中文），
+再写仓库外的 `../store/release-notes-<版本>.md`（中文在前、`---` 之后是英文，供 GitHub Release 与 latest.json 用）。
+
 `scripts/bundle-deps.ts` 会用 `xcrun swiftc` 现编随包的 `vision-ocr`（画面文字识别，macOS Vision），发布机需要装 Xcode 命令行工具。
 
 ```bash
@@ -87,19 +96,19 @@ bash scripts/verify-release.sh
 # 代码先推上去，Release 的标签打在 main 上
 git push origin main
 gh release create v<版本> --repo jason-jm/wavesubs --target main --title "Wave Subs <版本>" \
-  --notes-file store/release-notes-<版本>.md \
+  --notes-file ../store/release-notes-<版本>.md \
   "release/Wave Subs-<版本>-arm64.dmg" "release/Wave Subs-<版本>-arm64-mac.zip" \
   "release/Wave Subs Setup <版本>.exe" "release/Wave Subs-<版本>-win.zip" release/SHA256SUMS.txt
 npx tsx scripts/make-latest.ts --upload && npx tsx scripts/make-latest.ts --verify   # 见下一节
 # 官网：版本号从 package.json 来，重建后提交 docs/ 即上线（GitHub Pages 取 main 的 /docs）
 python3 scripts/build-site.py && npm run check-site
-# Homebrew：改 store/homebrew/wavesubs.rb 的 version 与 sha256（DMG 那行），提交，再同步到 tap 仓库
+# Homebrew：改仓库外 ../store/homebrew/wavesubs.rb 的 version 与 sha256（DMG 那行），再同步到 tap 仓库
 SHA=$(gh api repos/jason-jm/homebrew-wavesubs/contents/Casks/wavesubs.rb --jq .sha)
 gh api -X PUT repos/jason-jm/homebrew-wavesubs/contents/Casks/wavesubs.rb -f message="wavesubs <版本>" \
-  -f content="$(base64 < store/homebrew/wavesubs.rb)" -f sha="$SHA"
+  -f content="$(base64 < ../store/homebrew/wavesubs.rb)" -f sha="$SHA"
 brew fetch --cask jason-jm/wavesubs/wavesubs   # 校验值对不上会在这里炸
 # Scoop：bucket/wavesubs.json 的 version、url、hash（win.zip 那行），同样用 gh api PUT 到 jason-jm/scoop-wavesubs
-git add store/homebrew/wavesubs.rb docs && git commit -m "Homebrew cask <版本>；官网 <版本>" && git push && git fetch --tags
+git add docs && git commit -m "Website <version>" && git push && git fetch --tags
 ```
 
 ## 传 Release 之后：latest.json（应用内「检查更新」读的文件）
@@ -114,7 +123,7 @@ npx tsx scripts/make-latest.ts --upload   # 生成 release/latest.json 并作为
 npx tsx scripts/make-latest.ts --verify   # 从永久链接拉回来核对：线上版本 = package.json
 ```
 
-更新要点取 `store/release-notes-<版本>.md`（中文在前、`---` 之后是英文），每种语言最多 1400 字。
+更新要点取仓库外的 `../store/release-notes-<版本>.md`（中文在前、`---` 之后是英文），每种语言最多 1400 字。
 **忘了这一步，用户那边永远显示「已是最新版本」。**
 
 ## 发布前必查
@@ -223,7 +232,7 @@ npm run release:mas        # 需要 build/WaveSubs_MAS.provisionprofile 与 Appl
 `core/output.ts` 会把成品落到 `~/Movies/Wave Subs`（entitlement `assets.movies.read-write`），
 界面显示真实路径。拖入整个文件夹则原地写入。
 
-后台准备步骤、商店文案、隐私问卷、审核备注全部在 `store/app-store-metadata.md`。
+后台准备步骤、商店文案、隐私问卷、审核备注全部在仓库外的 `../marketing/app-store-metadata.md`（App Store 版已停止发布，留档）。
 截图用 `docs/assets/shots/*.png`（2880×1800）。
 
 **随包 ffmpeg 是 LGPL**，与 App Store 条款的兼容性存在争议（用户已知悉并选择保留）。

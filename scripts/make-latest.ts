@@ -5,7 +5,7 @@
  *   npx tsx scripts/make-latest.ts --upload   # 生成并作为附件传到该版本的 Release（已存在就覆盖）
  *   npx tsx scripts/make-latest.ts --verify   # 从永久链接拉回来解析一遍，确认线上那份就是这个版本
  *
- * 版本号取 package.json；更新要点取 store/release-notes-<版本>.md（中文在前、`---` 之后是英文）；
+ * 版本号取 package.json；更新要点取仓库外的 ../store/release-notes-<版本>.md（中文在前、`---` 之后是英文；目录可用 WAVESUBS_STORE_DIR 覆盖）；
  * 各平台安装包地址从 Release 的附件列表里找（GitHub 会把文件名里的空格换成点，所以不能自己拼）。
  */
 import { execFileSync } from 'node:child_process'
@@ -15,6 +15,8 @@ import { compareVersions, LATEST_JSON_URL, parseLatest } from '../src/shared/upd
 import type { LatestManifest } from '../src/shared/updates'
 
 const ROOT = join(import.meta.dirname, '..')
+/** 发布说明与 Homebrew cask 源文件放在仓库外（默认是仓库旁边的 store/），不进 GitHub */
+const STORE = process.env.WAVESUBS_STORE_DIR ?? join(ROOT, '..', 'store')
 const version = (JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as { version: string }).version
 const tag = `v${version}`
 const REPO = 'jason-jm/wavesubs'
@@ -39,9 +41,9 @@ function tidyNotes(md: string): string {
 function releaseNotes(): Record<string, string> | undefined {
   let md: string
   try {
-    md = readFileSync(join(ROOT, 'store', `release-notes-${version}.md`), 'utf8')
+    md = readFileSync(join(STORE, `release-notes-${version}.md`), 'utf8')
   } catch {
-    console.warn(`  (没有 store/release-notes-${version}.md，latest.json 里不带更新要点)`)
+    console.warn(`  (没有 ${join(STORE, `release-notes-${version}.md`)}，latest.json 里不带更新要点)`)
     return undefined
   }
   const [zh, en] = md.split(/\n---\n/)

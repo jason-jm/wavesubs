@@ -2,7 +2,7 @@
   "name": "wavesubs",
   "productName": "Wave Subs",
   "version": "1.0.8",
-  "description": "Turn any video into translated subtitles (macOS)",
+  "description": "Generate and translate subtitles from any video with local AI (macOS / Windows)",
   "private": true,
   "type": "module",
   "main": "out/main/index.js",
@@ -176,5 +176,5 @@
     "type": "git",
     "url": "https://github.com/jason-jm/wavesubs.git"
   },
-  "homepage": "https://jason-jm.github.io/wavesubs/"
+  "homepage": "https://wavesubs.com"
 }

@@ -1,216 +1,123 @@
-# 更新日志
+# Changelog
+
+[中文版](./CHANGELOG.zh-CN.md)
 
 ## 1.0.8 — 2026-09-20
 
-- 设置里「自动检查更新」改叫「启动时检查更新」，小字说明「应用启动时进行一次更新检查」：它只在启动时查一次，之前的文案让人以为运行期间也会查。
+- Settings: "Check for updates automatically" is now "Check for updates at launch", with the note "Checks for a new version once when the app starts". It only checks once, at launch; the old wording suggested it kept checking while running.
 
 ## 1.0.7 — 2026-09-20
 
-- **翻译画面中的文字（macOS）**：转换设置里新增开关（需开启翻译）。用系统 Vision OCR 逐秒读画面，
-  按行分组、跨帧跟踪之后交给翻译模型判断哪些是观众需要看懂的——招牌、便签、短信与聊天气泡、告示、
-  文件、标题卡、人物名牌——翻译后按原文的位置写进 ASS（SRT 放顶部）。不下载任何模型，
-  24 分钟一集多花两三分钟，与语音识别并行。
-- **译文贴着原文放，尽量不遮挡**。四种排法按顺序试：贴原文正下方 → 放到原文左右的空处 →
-  挪到画面顶部 → 盖在原文上。让位分三轮：先躲开画面上所有原文，躲不开就只保证不压自己那段原文，
-  两轮都没位置就把字号压小再来一遍——宁可字小，也别盖住原文。
-  只有整屏的邮件、短信、文件才铺一块深色底板把原文换掉；两行的日期卡、巨幅标题一律贴在旁边。
-- **底部永远属于对白**。同一时刻有对白字幕时，画面文字绝不进入字幕占用的高度，按对白的实际行数让位。
-- **看得见的每一块都有译文**。同屏放得下八条；和对白说的是同一句也照出（气泡旁边空着，观众只会当成
-  软件坏了）；三种排法都放不下时压到最小字号也要排出来。
-- **不该出的不出**：片头片尾名单（按职位词密度整段剔除，片尾的「角色名／声優名」表也一并认出来）、
-  片源自带的烧录字幕（按「下半屏固定一条带、居中」的几何规律识别）、电视台台标与频道水印、
-  聊天气泡里被 OCR 读坏的颜文字、译文和原文一样的（英文照抄、中日同形、只做了简繁转写的日剧人名字幕）。
-- 编辑器：语音字幕与画面文字分两个页签，各自增删改；预览里画面文字按排好的位置与字号叠在画面上。
-- 完成卡片显示画面文字条数；批量页同样可开。
-- **术语表现在也管画面文字**。之前只喂给对白翻译，同一个人名在两条轨道上会对不上；
-  术语表改了，对白与画面文字一起重译。
-- **小模型把长句只译成开头几个字**。用 Qwen3 1.7B 翻一集 NHK 纪录片，
-  「ことし6月東北地方の大連市で…」译成「今年6月」，「招待されたのは28の国と…」译成「受邀的是」，
-  整集都是原文头一个短语。根因是提示词里的对齐锚：要求模型先照抄原文开头 4 个字再给译文，小模型把译文
-  也只译那 4 个字。提示词说死「k 只是校对用的锚，t 必须译完整条」。1.7B 实测同一段 12 条全部译完整。
-  提示词版本 +1，旧的译文缓存会重译。
-- **小模型翻出来的整批译文不再丢掉**。用 Tiny + Qwen3 1.7B 翻一集 NHK 纪录片，397 条对白里 36 条没译文、
-  62 条「译文」是日文原文照抄。两处根因：(1) 小模型常把结果输出成一行一个数组、JSONL，或者中途截断，
-  解析端只认一个完整数组，整批 20 条好译文一起作废，退到小批和单条重试——而单条那轮小模型最爱照抄原文；
-  (2) 「译文里残留源语言」的检查只在第一轮做，小批、单条两轮抄回来的原文直接进了字幕，双语模式下同一句日文出两遍。
-  现在逐个对象抠、能救的都救回来，每一轮都不收抄原文的译文。同一集里没译文或照抄的对白从 98 条降到 56 条，
-  剩下的是听写烂到模型三轮都拒译的（Tiny 的问题，换 Large v3 Turbo 识别就没有）。
-- **小模型不再把原文照抄成译文**。上面那集把三份识别结果各重发一遍、存下模型原始输出来看：1.7B 第一轮就有
-  16%～26% 的条把日文原文原样抄进译文，听写有错字的句子更是整批照抄；三轮重试之后还是留下几十条空着。
-  拿最难的 5 批（各跑 3 次）试了几种提示词：只加「别照抄」的强调没用（40%→40%），只加一组示例 58%，
-  两样一起 88%，把温度调高没用。提示词现在按源语言、目标语言各带一句示例，外加「即使原文是语音听写、
-  有错字或不通顺，也按最可能的意思译出来」。提示词版本 +1，旧的译文缓存会重译。
-- **同一个专名不再有两种写法**。翻译是分批做的，批与批之间没有记忆，一部片里同一个名字会出现
-  「韦伯／威伯」两种写法。收尾按源文里反复出现的专名把译文分组，把少数写法改成多数写法。
-- **译文贴在原文当前待的地方**。跨帧跟踪只认文字，同一块字挪了位（聊天记录来一条新消息整屏往上滚、
-  镜头摇过一块招牌）也还接在同一块上，而存进字幕条的位置是各帧的中位数——哪一帧都不是它。
-  一屏聊天记录上四条译文全挂错了气泡：这条压着上面那条的原文，那条的原文还没上屏。
-  改成按位置切段，离本段中位数超过半个字高就另起一条，每条各自贴着自己这一段里原文实际待的地方。
-- **同一段文字连着反复出现的只判一次**。切开之后同一条气泡会按位置分成四五条，
-  分头判别既多花几倍时间，批与批之间又没记忆，同一句会译出两三种写法——
-  观众看到的是气泡往上滚一格、译文就换一个说法。文字一样、离上一次不到 30 秒的接成一串，判一次照抄。
-- **同一个文件跑两遍出同一份字幕**。判别改成贪心解码加固定随机种子（之前带随机性，同一集连跑三次
-  画面文字条数都不一样）。
-- **模型页按语言给参考**。每个识别模型下面标出英语、欧洲语言、日语·韩语·中文三组的意思保留率
-  （识别出的对白里意思完整的比例）和一个档位（推荐 / 可用 / 勉强 / 不建议），列表上方一句「按语言挑模型」。
-  数字是实测：英语《Spotlight》、德语《Ballon》、日语 NHK《鎌倉殿の13人》各截 30 分钟走产品管线，
-  每部抽 50 句盲评。Tiny 三种语言都有三成以上的句子意思出错，Small 只够英语，日语韩语中文要 Large v3 Turbo。
-- **检查更新**。设置页「关于」里多一行：启动 5 秒后自动查一次，也能手动点；有新版本就在这一行下面提示，
-  给「下载新版本」「查看更新说明」「跳过这个版本」，侧栏「设置」上出一个小点。菜单「帮助」里也有「检查更新…」。
-  没有服务端：读的是 GitHub Release 附件里一个静态的 latest.json（发布链生成，见 RELEASE.md）。
-  Homebrew / Scoop 装的不给下载按钮，给它们自己的升级命令；App Store 版不查。
-  可以在设置里关掉；查的时候 GitHub 只看得到 IP 和系统类型。
-- **自动判断语种更稳**：不再只看开头 30 秒（片头音乐会被判成英语，整集识别成英文胡话），
-  改为在人声最密的几处各取 20 秒投票，多花几秒钟。指定了语种的不受影响。
-- 字幕样式统一：画面文字原来是粗体、对白是常规体，同一屏上看着像两种字体，现在统一。
-- **画面文字翻译在 Windows 上也有了**。用 Windows 自带的文字识别（Windows.Media.Ocr，Win10 起都有），
-  随包只多一个 PowerShell 脚本，不下载模型；识别出来的框走和 macOS 完全同一条管线（分组、跟踪、判别、排版）。
-  要先在 Windows 设置里装好片中语言的语言包（勾选「光学字符识别」）；一种都没装时这项功能不显示，
-  装了别的语言时退到系统语言的引擎并在日志里说明。Windows 的 OCR 不给置信度，一律按 0.6 记，
-  只闪一帧的按现有规则丢掉。识别质量不如 macOS 的 Vision：竖排日文基本读不出，艺术字体认得差。
-- **Windows：语音识别不再随包带 OpenBLAS**。1.0.0 起随包的是 whisper.cpp 官方的 `whisper-blas-bin` 预编译包，
-  里面的 OpenBLAS 在一部分机器上模型一加载就访问违例，界面上只看到「whisper-cli 识别失败（退出码 3221225477）」，
-  上游 whisper.cpp#3654 是同样的报告、至今没修。换成不带 BLAS 的官方包：ggml 自带 AVX2 / AVX-512 内核，
-  常用的 base / small 模型不靠 BLAS 也一样快，装到磁盘上少 51 MB（下载包小约 10 MB）。打包脚本现在拒绝任何带 BLAS 的 whisper 目录。
-- **Windows 的模型页不再把电脑当成 Mac**。之前硬件那一行写「这台 Mac：Intel」（AMD 机器也是 Intel），
-  每个模型都被标成「能跑但偏慢」（套的是 Intel Mac 没有 Metal 的规则），推荐语全是「Apple Silicon」，
-  按钮叫「在访达中打开」。现在 CPU 型号按机器实际读，适配判断与要求文案 Mac / Windows 各一套。
-- 任务失败时可以一键复制完整日志，反馈问题不用再截图。
-- **Windows 深色模式下的下拉菜单能看清了**。原生下拉的弹出列表在 Windows 上是 Chromium 拿 select 的背景色
-  和 option 的文字色画的：我们的 select 底色是半透明的白，叠在弹层上成了米色，文字却是深色模式的浅字——
-  语种、模型这些列表整张看不见，只有选中的那一行能读。给 option 一块不透明的底和配套的文字色，
-  select 的 color-scheme 跟着主题走，转换、批量、云端、设置四处的下拉一并修好。
-- **刚装好、一个模型都没有时，就地下载**。之前拖进文件才发现要模型，一条「去下载」跳到模型页，
-  回来时拖进来的文件已经没了，模型页一屏五六个也不知道该点哪个。现在转换页空态就给出这台机器的推荐
-  （按内存与芯片挑，Apple Silicon 是 Large v3，Windows 16GB 是 Large v3 Turbo）和一个「下载并继续」，
-  进度就在原地走，下完直接能开始；拖了文件再发现没模型也是同一条，文件留在原地。本地翻译缺模型同样处理。
-  批量页也补上了没有识别模型时的拦截——之前不拦，点开始后每个文件挨个报错。
-- **转换设置拆成「识别」「翻译」两个框**。原来八九行选项挤在一张卡片里，识别的、翻译的、输出的混在一起，
-  看不出哪个管哪个。现在：识别框 = 字幕来源 → 识别模型 → 语言（片中说的语言）；翻译框 = 翻译服务
-  （不翻译 / 本地模型 / 云端，先定用什么）→ 翻译模型（本地没模型就在这里下载）→ 翻译成 → 翻译画面中的文字
-  → 字幕内容，服务没就绪之前后面几行不出；字幕格式跟着「开始」放在动作栏里，它是输出的事，既不属于识别
-  也不属于翻译。批量页同样两框，识别框里多了「识别模型」可选。字幕文件的「语言」一行只说原字幕的语言。
-- 拖着文件悬在拖放区上时，底色的圆角和外面的画框对不齐：之前那一下放大了 0.6%，一千多像素宽就是
-  往外胀四五个像素。不放大了，虚线框变实线、底色铺满。
-- 动作栏上方那道多出来的横线去掉了（它是原来卡片内部的分隔线，动作栏挪到卡片外面后就成了一道突出去的线）。
-- **没有模型时不再摆一排没意义的选项**。没有识别模型，语言、翻译、格式这些行都无从谈起：卡片里只留
-  「字幕来源」和那条下载提示，模型下好了选项再出来；本地翻译没模型时，「翻译画面中的文字」「字幕内容」
-  这两行同样先不出，下载提示就放在「翻译服务」下面——想改用云端翻译也在手边。批量页同一套逻辑。
-- **拖进来的文件在切换标签时不再丢**。转换页之前是切走就卸载，去模型页下载完模型回来，
-  文件已经没了，得再拖一遍。现在切走只是隐藏，改过的选项也都留着；只有点「取消」才回到空态。
-- **按钮各态重画**。主按钮、分段选中项之前直接拿壁纸渐变的两个色标当底，浅色模式那是几个粉彩色，
-  白字压上去本就勉强，hover 再提亮 8% 就成了一块白板，字看不见。现在实心控件的底色从主题色相推出
-  固定明度（浅色 46% / 深色 58%），hover、按下各自一档，白字在十套配色、两种模式下都读得清；
-  普通按钮按下时底色也有反馈；开关补了 hover 与禁用态；按钮、分段、开关、下拉统一加了键盘焦点环
-  （只在 Tab 到它时出现，Windows 上用键盘的人多）。
+- **Translate on-screen text (macOS).** A new switch in the conversion settings (requires translation to be on). The system Vision OCR reads the picture once a second; lines are grouped, tracked across frames and handed to the translation model, which decides what the viewer needs to understand — signs, notes, text messages and chat bubbles, notices, documents, title cards, name plates — and translates it. The result is written into the ASS at the position of the original (SRT places it at the top). No model to download; a 24-minute episode takes two to three minutes longer, in parallel with speech recognition.
+- **The translation sits next to the original and covers it only as a last resort.** Four placements are tried in order: directly below the original → in the free space to its left or right → at the top of the frame → over the original. Yielding runs in three rounds: first avoid every piece of original text on screen, then at least avoid the block being translated, and if both fail the font is reduced and the search repeats. Smaller type is better than hiding the original. Only a full screen of e-mail, messages or documents is replaced by a dark plate; two-line date cards and huge titles are always placed beside the original.
+- **The bottom always belongs to the dialogue.** When a dialogue subtitle is on screen, on-screen text never enters the height it occupies, measured from the actual number of dialogue lines.
+- **Every visible block gets a translation.** Up to eight fit on one screen; a block is kept even when the dialogue says the same thing (an empty bubble next to a translated one just looks like a bug); when none of the three placements fit, the text is placed at the minimum size rather than dropped.
+- **What must not appear does not appear:** opening and closing credits (whole runs removed by job-title density; the character / voice-actor list at the end is recognized too), subtitles burned into the source (recognized by the geometry of a fixed centred band in the lower half), station logos and channel watermarks, emoticons garbled by OCR in chat bubbles, and translations identical to the original (English copied verbatim, characters shared by Chinese and Japanese, Japanese name captions that were merely converted from traditional to simplified characters).
+- Editor: speech subtitles and on-screen text are two tabs, each with its own insert, edit and delete; the preview overlays on-screen text at its computed position and size.
+- The finished card shows the number of on-screen text lines; the switch is also available on the Batch page.
+- **The glossary now applies to on-screen text as well.** It used to reach only the dialogue, so the same name could differ between the two tracks; changing the glossary now retranslates dialogue and on-screen text together.
+- **Small models translated only the first few words of long lines.** With Qwen3 1.7B on an NHK documentary episode, "ことし6月東北地方の大連市で…" came out as "This June" and "招待されたのは28の国と…" as "Those invited were": the whole episode was the first phrase of each line. The cause was the alignment anchor in the prompt, which asks the model to copy the first four characters of the source before translating; small models applied that to the translation too. The prompt now states that the anchor is only for checking and that the translation must cover the whole line. Tested with 1.7B: all 12 lines of the sample come out complete. Prompt revision +1, so cached translations are redone.
+- **Whole batches from small models are no longer thrown away.** With Tiny + Qwen3 1.7B on an NHK documentary episode, 36 of 397 dialogue lines had no translation and 62 "translations" were the Japanese source copied back. Two causes: (1) small models often return one array per line, JSONL, or get cut off mid-output, and the parser accepted only a single complete array, so a batch of 20 good translations was discarded and retried in smaller batches and line by line — where small models most often copy the source back; (2) the "source language left in the translation" check ran only in the first round, so copies from the smaller-batch and single-line rounds went straight into the subtitles, showing the same Japanese line twice in bilingual mode. Objects are now extracted one by one and every salvageable row is kept, and copied-back source is rejected in every round. In the same episode, lines with no translation or a copied-back source fell from 98 to 56; the rest are transcripts so garbled that the model refused three times (a Tiny problem; Large v3 Turbo has none).
+- **Small models no longer hand the source back as the translation.** Re-sending the three transcripts of that episode and saving the raw model output showed 1.7B copying the Japanese source verbatim in 16–26 % of lines on the first pass, and whole batches when the transcript had errors; dozens of lines were still blank after three retries. On the five hardest batches (three runs each), adding only a "do not copy" instruction changed nothing (40 % → 40 %), adding only an example pair reached 58 %, both together 88 %, and raising the temperature did nothing. The prompt now carries an example pair chosen by source and target language plus "even if the source is a speech transcript with errors or broken grammar, translate the most plausible meaning". Prompt revision +1, so cached translations are redone.
+- **One proper noun, one spelling.** Translation runs in batches with no memory between them, so a name could appear as 韦伯 in one batch and 威伯 in the next. A final pass groups translations by the recurring proper nouns in their source and rewrites the minority spelling to the majority one.
+- **Translations stick to where the original currently is.** Tracking across frames looked only at the text, so a block that moved (a chat log scrolling up as a new message arrives, a camera panning across a sign) stayed attached to the same track while the stored position was the median of all frames — a position it never actually had. On one screen of chat, all four translations hung on the wrong bubbles. Tracks are now cut into segments by position: a shift of more than half a line height starts a new segment, and each segment gets the position its original really occupied.
+- **Consecutive repeats of the same text are judged once.** After the segmentation the same bubble could become four or five entries; judging them separately took several times longer and, with no memory between batches, produced two or three different wordings — the viewer saw the translation change every time the bubble scrolled one step. Identical text less than 30 seconds apart is chained and judged once, the rest copy the result.
+- **The same file twice gives the same subtitles.** Judging now uses greedy decoding with a fixed seed; it used to be random, and three runs of one episode gave three different on-screen text counts.
+- **The Models page gives per-language guidance.** Each recognition model shows meaning retention (the share of recognized lines whose meaning is intact) for English, European languages and Japanese · Korean · Chinese with a verdict (recommended / usable / marginal / not advised), plus a "choose by language" note above the list. The figures are measured: 30-minute excerpts of *Spotlight* (English), *Ballon* (German) and NHK's *The 13 Lords of the Shogun* (Japanese) through the product pipeline, 50 sentences each judged blind. Tiny gets the meaning wrong in over a third of sentences in all three; Small is enough only for English; Japanese, Korean and Chinese want Large v3 Turbo.
+- **Check for updates.** A new row under Settings › About checks once, five seconds after launch, and on demand; when a newer version exists it offers "Download the new version", "View release notes" and "Skip this version", and the Settings entry in the sidebar shows a dot. The Help menu has "Check for updates…" as well. There is no server: the app reads a static `latest.json` attached to the GitHub Release (produced by the release chain, see RELEASE.md). Copies installed with Homebrew or Scoop get their own upgrade command instead of a download button; the App Store build does not check. The check can be turned off in Settings; GitHub sees only an IP address and the operating system type.
+- **Steadier automatic language detection:** instead of only the first 30 seconds (where an opening theme could be read as English and turn a whole episode into English gibberish), 20-second windows are sampled where speech is densest and vote. A few seconds slower; a language set by hand is unaffected.
+- Consistent subtitle styling: on-screen text was bold while dialogue was regular, which read as two typefaces on the same frame; they now match.
+- **On-screen text translation now works on Windows too**, using the text recognition built into Windows (Windows.Media.Ocr, present since Windows 10). The package only gains a PowerShell script, no model; the recognized boxes go through exactly the same pipeline as on macOS (grouping, tracking, judging, layout). The Windows language pack for the spoken language must be installed with "Optical character recognition" ticked; with no OCR language installed the feature is hidden, and with only other languages installed it falls back to the system language and says so in the log. Windows OCR gives no confidence values, so 0.6 is assumed and blocks that flash for a single frame are dropped by the existing rule. Quality is below macOS Vision: vertical Japanese is mostly missed and decorative typefaces are read poorly.
+- **Windows: speech recognition no longer ships with OpenBLAS.** Since 1.0.0 the package used the official `whisper-blas-bin` build, whose OpenBLAS crashed on some machines the moment the model loaded ("whisper-cli failed (exit code 3221225477)"); upstream whisper.cpp#3654 reports the same and is unfixed. Switched to the official build without BLAS: ggml has its own AVX2 / AVX-512 kernels and the common Base / Small models are just as fast, with 51 MB less on disk (about 10 MB smaller download). The bundling script now refuses any whisper directory that contains BLAS.
+- **The Windows Models page no longer treats the machine as a Mac.** The hardware line used to say "This Mac: Intel" (AMD machines too), every model was labelled "runs but slow" (the rule for Intel Macs without Metal), the advice said "Apple Silicon" throughout and the button read "Reveal in Finder". The CPU model is now read as-is, and fitness verdicts and requirement lines have separate Mac and Windows rules.
+- A failed task can copy its complete log with one click, so reporting a problem no longer needs screenshots.
+- **Dropdown menus are readable in dark mode on Windows.** The pop-up list of a native select is drawn by Chromium from the select's background colour and the option's text colour: the select background was a translucent white that became beige over the pop-up, while the text kept the light colour of dark mode — the language and model lists were unreadable except for the selected row. Options now have an opaque background with matching text, the select's colour scheme follows the theme, and the dropdowns on the Convert, Batch, Cloud and Settings pages are all fixed.
+- **Fresh install, no model yet: download in place.** Previously you found out a model was needed only after dropping a file, a "Go to downloads" link took you to the Models page, the dropped file was gone when you came back, and the page showed five or six models with no hint which to pick. The Convert page's empty state now recommends a model for this machine (by memory and chip: Large v3 on Apple Silicon, Large v3 Turbo on a 16 GB Windows PC) and offers "Download and continue"; progress runs in place and you can start as soon as it finishes. Dropping a file first leads to the same prompt with the file kept. Local translation with no model is handled the same way. The Batch page now also refuses to start without a recognition model, instead of failing every file one by one.
+- **Conversion settings are split into a Recognition box and a Translation box.** Eight or nine rows used to share one card, mixing recognition, translation and output. Now: Recognition = subtitle source → recognition model → language (the language spoken); Translation = translation service (none / local model / cloud, chosen first) → translation model (downloadable right there when missing) → translate into → on-screen text → subtitle content, the later rows appearing only once the service is ready. The subtitle format sits next to Start in the action bar, because it is an output setting that belongs to neither box. The Batch page has the same two boxes, with a recognition model selector in the first. For a subtitle file, the language row describes only the language of the original subtitles.
+- While a file is dragged over the drop zone, the highlighted background's corners no longer misalign with the frame: the zone used to scale up by 0.6 %, four or five pixels at this width. It no longer scales; the dashed border becomes solid and the background fills the zone.
+- The stray horizontal line above the action bar is gone (it was the card's internal divider, left behind when the action bar moved outside the card).
+- **No row of meaningless options when there is no model.** Without a recognition model the language, translation and format rows have nothing to act on: the card shows only the subtitle source and the download prompt, and the options appear once the model is there. Without a local translation model, the on-screen text and subtitle content rows stay hidden and the prompt sits under the translation service row, so switching to cloud translation is right there. The Batch page follows the same logic.
+- **A dropped file survives switching tabs.** The Convert page used to unmount when you switched away, so after downloading a model on the Models page the file was gone and had to be dropped again. It is now only hidden, with all changed options kept; only Cancel returns to the empty state.
+- **Button states redrawn.** The primary button and selected segments took their background straight from two stops of the wallpaper gradient — pastel colours in light mode where white text was already marginal, and brightening by 8 % on hover turned them into an unreadable pale block. Solid controls now derive a fixed lightness from the theme hue (46 % light / 58 % dark) with their own hover and pressed steps, so white text stays legible in all ten palettes and both modes; plain buttons give feedback when pressed; switches gained hover and disabled states; buttons, segments, switches and dropdowns share a keyboard focus ring (shown only when reached with Tab, which matters on Windows).
 
 ## 1.0.6 — 2026-09-12
 
-- **中国大陆模型下载根治**：hf-mirror.com 已经不再代理文件（现在只是跳回 huggingface.co），所以 1.0.3 加的镜像形同虚设。
-  现在全部模型都能从 ModelScope（魔搭，阿里云 CDN）下载：whisper 六个模型用两个与官方逐字节一致的镜像仓，
-  Qwen 用官方仓；系统语言为简体中文或时区在中国时 ModelScope 排第一位，其它地区仍先走 huggingface.co
-- 下载完成后核对 sha256（目录里存官方校验值），不一致就删掉重来，不会把来路不明的文件当模型用
-- Silero VAD 模型随安装包自带，时间校正不再依赖下载
-- 下载失败提示改为「所有下载来源都连不上」，并列出可复制的各来源地址
+- **Model downloads fixed for mainland China.** hf-mirror.com no longer proxies files (it just redirects back to huggingface.co), so the mirror added in 1.0.3 was useless there. Every model can now be downloaded from ModelScope (Alibaba Cloud CDN): the six Whisper models from two mirror repositories verified byte-for-byte against the official files, Qwen from its official repository. ModelScope is tried first when the system language is Simplified Chinese or the time zone is in China; elsewhere huggingface.co stays first.
+- Downloads are verified against their SHA-256 after completion (the official checksums are stored in the catalog); a mismatch is deleted and retried, so a file of unknown origin is never used as a model.
+- The Silero VAD model ships inside the installer, so timing refinement no longer depends on a download.
+- A failed download now says "none of the download sources could be reached" and lists every source URL with copy buttons.
 
 ## 1.0.5 — 2026-09-12
 
-- **转换可以取消了**：单文件的进度卡片和批量队列里正在跑的文件都有「取消」按钮，点下去立刻停掉正在跑的
-  ffmpeg / whisper / 翻译请求（之前只能等它跑完或强退应用）；批量里被取消的文件退回「等待中」，队列继续处理后面的
-- **显示预计剩余时间**：按当前阶段（识别、翻译）的推进速度估算，显示在阶段名旁边
-- **完成后显示这次识别用的设备**，如「Apple M1」「NVIDIA GeForce RTX 3060 (Vulkan)」或「CPU」，一眼看出有没有用上 GPU
-- **Windows 版翻译走 GPU**：随包的 llama-server 换成 Vulkan 构建，有 Vulkan 驱动的显卡（NVIDIA / AMD / Intel 均可）
-  翻译在 GPU 上跑，没有就自动回落 CPU；语音识别在 Windows 上暂时仍是 CPU（whisper.cpp 官方只提供体积很大的 CUDA 构建）
-- **模型下载失败时给出具体原因**（如 `getaddrinfo ENOTFOUND`、证书错误），并列出该模型的全部下载地址供复制——
-  用浏览器或下载工具下好、放进模型文件夹即可使用；Qwen 翻译模型多一个 ModelScope（魔搭）来源，官方源与镜像都连不上时自动尝试
+- **Conversions can be cancelled.** The progress card of a single file and the running file in the batch queue both have a Cancel button that immediately stops the running ffmpeg / whisper / translation request (previously you could only wait or force-quit); a cancelled batch file returns to "waiting" and the queue continues with the next one.
+- **Estimated time remaining**, derived from the pace of the current stage (recognition, translation), shown next to the stage name.
+- **The finished card shows the device used for recognition**, such as "Apple M1", "NVIDIA GeForce RTX 3060 (Vulkan)" or "CPU", so you can see at a glance whether the GPU was used.
+- **Translation on Windows uses the GPU:** the bundled llama-server is now a Vulkan build, so translation runs on any GPU with a Vulkan driver (NVIDIA / AMD / Intel) and falls back to the CPU otherwise; speech recognition on Windows stays on the CPU for now (whisper.cpp only offers a very large CUDA build).
+- **A failed model download states the actual cause** (such as `getaddrinfo ENOTFOUND` or a certificate error) and lists every download URL for that model so you can fetch it with a browser or download manager and drop it into the model folder; the Qwen translation models gained a ModelScope source, tried automatically when the official source and the mirror are both unreachable.
 
 ## 1.0.4 — 2026-09-09
 
-- 模型下载不再开头卡在 0%：先显示「正在连接服务器…」；官方源 3 秒没回应就并行去连镜像，谁先回应用谁；
-  赢过的来源记住并落盘，之后的下载和重启后都直接走它
-- Windows 界面语言：改为优先读取系统「显示语言」设置（注册表 PreferredUILanguages），
-  再参考 Electron 报告的偏好语言；「设置 → 语言」下方列出系统报告的原始语言标签，方便对照
-- 统一两个平台的窗口结构：顶部一条 38px 窗口栏，macOS 交通灯与 Windows 的最小化/最大化/关闭都画在栏里，
-  内容卡片从栏下面开始，Windows 上窗口按钮不再压在卡片边框上
+- Model downloads no longer sit at 0 % at the start: the app shows "Connecting to server…" first, and if the official source does not answer within 3 seconds it connects to the mirror in parallel and takes whichever answers first; the winning source is remembered on disk and used directly for later downloads and after restarts.
+- Windows interface language: the system display language setting (registry PreferredUILanguages) is now read first, then the preferred languages reported by Electron; Settings › Language lists the raw language tags the system reports, for comparison.
+- Unified window structure on both platforms: a 38 px window bar at the top holds the macOS traffic lights and the Windows minimize / maximize / close buttons, and the content card starts below it, so on Windows the window buttons no longer overlap the card border.
 
 ## 1.0.3 — 2026-09-08
 
-- **模型下载在中国大陆可用了**：huggingface.co 连不上时自动切到镜像 hf-mirror.com，成功一次后后续文件直接走镜像；
-  下载改走系统网络栈，认系统代理设置。两边都失败时给出明确提示，不再是 "TypeError: fetch failed"
-- 界面语言检测更稳：系统偏好语言列表之外，再参考系统区域与运行时 locale，修复部分 Windows 上中文系统显示英文的问题；
-  启动日志打印检测到的系统语言，方便对照
-- 官网：Windows 访客现在高亮并优先显示 Windows 版下载（之前高亮与链接都是反的）；下载区注明 SmartScreen 提示的处理方法
+- **Model downloads work in mainland China:** when huggingface.co is unreachable the download switches to the hf-mirror.com mirror, and once it has succeeded later files go straight to the mirror; downloads now use the system network stack and honour the system proxy settings. When both fail, a clear message replaces "TypeError: fetch failed".
+- Steadier interface language detection: in addition to the system's preferred-language list, the system region and runtime locale are consulted, fixing Chinese Windows systems that showed English; the startup log prints the detected system languages.
+- Website: Windows visitors are now highlighted and offered the Windows download first (the highlight and the link were swapped); the download section explains the SmartScreen prompt.
 
 ## 1.0.2 — 2026-09-07
 
-- 新增反馈入口：「帮助」菜单与「设置 → 关于」里可以直接打开官网反馈表单（不用注册）、GitHub 讨论区；
-  App Store 版多一项「在 App Store 评价」
-- 自建应用菜单，替换掉 Electron 默认那套指向 Electron 文档的「帮助」菜单；菜单文案跟随界面语言（32 种）
-- 「关于」里显示真实版本号（之前写死为 0.1.0）
-- 应用只允许打开官网、仓库与 App Store 评价链接，其它外部地址一律拒绝
+- New feedback entry points: the Help menu and Settings › About open the website feedback form (no account needed) and GitHub Discussions; the App Store build also offers "Rate on the App Store".
+- The app builds its own menu instead of Electron's default Help menu, which pointed at Electron's documentation; menu labels follow the interface language (32 languages).
+- About shows the real version number (it was hard-coded to 0.1.0).
+- The app only opens its own website, repository and App Store review links; any other external URL is refused.
 
 ## 1.0.1 — 2026-09-06
 
-- 翻译目标语言从 5 种扩展到 29 种（法、德、西、葡、俄、泰、越、印尼、马来等），语言名按界面语言显示；
-  首次启动默认翻译到系统语言，不再一律中文
-- 界面颗粒纹理默认强度从 0.5 降到 0.1：大面积渐变仍不出色带，但不再有明显的磨砂感。
-  已装用户若从未调过这一项，会自动改为新默认；手动调过的保持不变
-- 修复颗粒纹理在正式版里被内容安全策略拦截、从未真正渲染的问题（1.0.0 已含）
-- 沙盒环境下源目录不可写时，字幕自动写到「影片/Wave Subs」并在界面提示（App Store 版）
+- Translation targets extended from 5 to 29 languages (French, German, Spanish, Portuguese, Russian, Thai, Vietnamese, Indonesian, Malay and more), with language names shown in the interface language; on first launch the target defaults to the system language instead of always Chinese.
+- The default strength of the interface grain texture drops from 0.5 to 0.1: large gradients still show no banding, but the frosted look is gone. Existing users who never changed the setting get the new default; a manual setting is kept.
+- Fixed the grain texture being blocked by the content security policy in release builds, so it never actually rendered (included in 1.0.0).
+- In a sandboxed environment where the source directory is not writable, subtitles are written to "Movies/Wave Subs" and the interface says so (App Store build).
 
 ## 1.0.0 — 2026-09-06
 
-首个公开版本。此前以工作代号 SubFlow 内部使用。
+First public release. Previously used internally under the working name SubFlow.
 
-### 功能
+### Features
 
-- **任务缓存与阶段复用**：识别/抽取结果按「文件身份 + 全部影响参数」缓存；翻译失败或换
-  导出格式重跑秒级完成。译文复用有严格的四元组判定（引擎含具体模型、目标语言、提示词
-  版本、术语表哈希），**换模型/改术语表必定重翻，绝不混用旧译文**；缓存的使用在界面与
-  CLI 中始终明示
-- **字幕编辑器**：表格化改文本/时间、插入、删除、智能合并（CJK 交界不加空格）、撤销、
-  自动保存；改过原文的条目标记「译文可能过期」，重译时只补这些条。**带视频预览**：
-  Chromium 能播的直接播，播不了的（HEVC/DTS 的 MKV）由随包 ffmpeg 转成帧序列 + 音频
-  逐条预览，字幕叠加实时反映编辑内容
-- **质检报告**：每个任务完成后体检成品——语音覆盖率、漏段、超长条、语速过快、缺译文、
-  译文残留原文、起止颠倒；阈值来自六部整片的实测基准。单文件与批量都展示，点击可跳转
-- **术语表**：人名、地名固定译法，单文件与批量共用；只注入当批命中的条目
+- **Job cache and stage reuse:** recognition / extraction results are cached by file identity plus every parameter that affects them; a failed translation or a change of export format reruns in seconds. Translation reuse is decided by a strict four-tuple (engine including the exact model, target language, prompt version, glossary hash), so **changing the model or the glossary always retranslates and old output is never mixed in**; cache use is always shown in the interface and the CLI.
+- **Subtitle editor:** edit text and timing in a table, insert, delete, smart merge (no space inserted at CJK boundaries), undo, autosave; lines whose source was edited are marked "translation may be stale" and only those are retranslated. **With video preview:** what Chromium can play is played directly; what it cannot (HEVC / DTS in MKV) is turned into a frame sequence plus audio by the bundled ffmpeg for per-line preview, with the subtitle overlay reflecting edits live.
+- **Quality report:** every finished job is checked — speech coverage, gaps, over-long cues, reading speed too fast, missing translations, source text left in the translation, reversed timing; thresholds from measurements on six full films. Shown for single files and batches, with click-to-jump.
+- **Glossary:** fixed translations for names and places, shared by single-file and batch runs; only the entries hit by the current batch are injected.
+- **Three subtitle sources:** local speech recognition (whisper.cpp, Metal-accelerated), embedded subtitle tracks, external subtitle files.
+- **18 external subtitle formats:** SRT / ASS / SSA / WebVTT / SAMI / MicroDVD / SubViewer / MPL2 / VPlayer / JACOsub / RealText / STL / PJS / LRC and more, with automatic encoding detection (UTF-8 / GBK / Big5 / Shift-JIS / EUC-KR).
+- **Translation:** local Qwen3 (free, offline) or any OpenAI-compatible cloud API, with the Anthropic and Azure protocols supported.
+- **Batch conversion:** a sequential queue in which one failed file does not stop the batch; every file can **override** the source, audio track, language, service and format set globally.
+- **Export** SRT / ASS, translation only or bilingual.
 
-- **三种字幕来源**：本地语音识别（whisper.cpp，Metal 加速）、视频内嵌字幕轨、外部字幕文件
-- **外部字幕支持 18 种格式**：SRT / ASS / SSA / WebVTT / SAMI / MicroDVD / SubViewer /
-  MPL2 / VPlayer / JACOsub / RealText / STL / PJS / LRC 等，文件编码自动识别
-  （UTF-8 / GBK / Big5 / Shift-JIS / EUC-KR）
-- **翻译**：本地 Qwen3（免费离线）或任意 OpenAI 兼容云端 API，支持 Anthropic 与 Azure 协议
-- **批量转换**：队列串行处理，单个文件失败不中断整批；
-  每个文件可在全局设置之外**单独调整**来源、音轨、语言、服务、格式
-- **导出** SRT / ASS，可选仅译文或双语
+### Timing quality
 
-### 时间轴质量
+Tuned repeatedly against the official embedded subtitles of six films (Japanese and Italian, same-language and cross-language):
 
-以 NAS 上六部影片的官方内嵌字幕为基准反复调优（日语、意大利语，含同语种与跨语种）：
+- Frame-level mask F1 **82.1 % → 83.8 %**
+- Cue-start F1 **57.7 % → 59.4 %**, mean start error 348 ms → **328 ms**
+- Share of starts within ±250 ms: 59.4 % → **62.5 %**
 
-- 逐帧掩码 F1 **82.1% → 83.8%**
-- 字幕起点 F1 **57.7% → 59.4%**，起点平均误差 348ms → **328ms**
-- 起点误差在 ±250ms 内的比例 59.4% → **62.5%**
+Key changes: a robust per-genre lead time measured on real films, extra split points at kana / kanji boundaries for Japanese, the start-shift limit raised from 10 to 40 seconds (some subtitles used to hang 25 seconds before anyone spoke), and split guards that avoid unreadable fragments.
 
-关键改动：起点提前量按流派实测取稳健值、日语按假名/汉字交界补切分点、
-起点位移上限从 10 秒放宽到 40 秒（此前有字幕在人开口前挂 25 秒）、
-切分护栏避免切出读不完的碎条。
+### Platforms
 
-### 平台
+macOS (Apple Silicon) and Windows (x64) with matching features. The Windows build comes as an NSIS installer and a portable ZIP.
 
-macOS（Apple Silicon）与 Windows（x64）双平台，功能一一对应。
-Windows 版为 NSIS 安装程序与便携 ZIP 两种形式。
+### Distribution
 
-### 分发
+- **ffmpeg, whisper.cpp and llama.cpp ship inside the app**; no Homebrew or other dependencies to install.
+- The bundled ffmpeg is a self-built **minimal LGPL build** (all GPL encoders removed); see [THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md).
+- Signed with a Developer ID and notarized by Apple: download, double-click, open.
+- Interface in 32 languages.
 
-- **随包自带 ffmpeg / whisper.cpp / llama.cpp**，用户无需安装 Homebrew 或任何依赖
-- 其中 ffmpeg 为自行编译的**最小 LGPL 版本**（去掉全部 GPL 编码器），
-  详见 [THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md)
-- 使用 Developer ID 签名并经 Apple 公证，下载后双击即可打开
-- 界面支持 32 种语言
+### Upgrading from SubFlow
 
-### 从 SubFlow 升级
-
-首次启动会自动迁移旧设置与已下载的模型。**云端 API Key 需要重新填写一次**——
-钥匙串条目名随应用名改变，旧密文在新条目下无法解密。详见 README。
+The first launch migrates old settings and downloaded models automatically. **The cloud API key has to be entered again**: the keychain item is named after the app, and the old ciphertext cannot be decrypted under the new name. Details in DEVELOPMENT.md.

@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
-"""社交分享图：每种语言 4 张。
-  docs/assets/social/<lang>.jpg        1280×640   官网 og:image / Twitter card（轻）
-  store/social/<lang>@2x.jpg           2560×1280  横版高清，发 X / 微博 / 知乎用
-  store/social/<lang>-9x16.jpg         1080×1920  竖版，小红书 / 抖音 / Stories
-  store/social/<lang>-3x4.jpg          1080×1440  竖版，小红书信息流 / Instagram
+"""社交分享图。
+  docs/assets/social/<lang>.jpg        1280×640   官网 og:image / Twitter card（轻）——默认只出这一种
+设了 SOCIAL_OUT=<目录>（推广素材放仓库外，如 ../marketing/social）时再多出三种：
+  <SOCIAL_OUT>/<lang>@2x.jpg           2560×1280  横版高清，发 X / 微博 / 知乎用
+  <SOCIAL_OUT>/<lang>-9x16.jpg         1080×1920  竖版，小红书 / 抖音 / Stories
+  <SOCIAL_OUT>/<lang>-3x4.jpg          1080×1440  竖版，小红书信息流 / Instagram
 用官网文案里的两行标题 + 编辑器截图 + hero 底图渲染成 HTML，Electron 离屏截图（Retina 2×）。
-用法：python3 scripts/build-social.py [lang ...]
+用法：python3 scripts/build-social.py [lang ...]   （SOCIAL_OUT=../marketing/social 时连推广尺寸一起出）
 """
 import os, sys, html, subprocess, importlib.util, tempfile, shutil
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 spec = importlib.util.spec_from_file_location('bs', os.path.join(ROOT, 'scripts', 'build-site.py'))
 bs = importlib.util.module_from_spec(spec); spec.loader.exec_module(bs)
 OUT_WEB = os.path.join(ROOT, 'docs', 'assets', 'social'); os.makedirs(OUT_WEB, exist_ok=True)
-OUT_POST = os.path.join(ROOT, 'store', 'social'); os.makedirs(OUT_POST, exist_ok=True)
+OUT_POST = os.environ.get('SOCIAL_OUT')
+if OUT_POST: os.makedirs(OUT_POST, exist_ok=True)
 esc = lambda s: html.escape(s, quote=True)
 FONT = '-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Segoe UI",Roboto,Helvetica,Arial,sans-serif'
 
@@ -82,8 +84,8 @@ try:
     for k in langs:
         page = os.path.join(tmp, f'{k}.html'); open(page, 'w', encoding='utf-8').write(landscape(k))
         png = shoot(page, os.path.join(tmp, k), 1280, 640)          # 2560×1280
-        print(jpg(png, os.path.join(OUT_WEB, f'{k}.jpg'), 1280), '|', jpg(png, os.path.join(OUT_POST, f'{k}@2x.jpg'), 2560, 88))
-        for name, (w, h) in {'9x16': (540, 960), '3x4': (540, 720)}.items():
+        print(jpg(png, os.path.join(OUT_WEB, f'{k}.jpg'), 1280), *(['|', jpg(png, os.path.join(OUT_POST, f'{k}@2x.jpg'), 2560, 88)] if OUT_POST else []))
+        for name, (w, h) in ({'9x16': (540, 960), '3x4': (540, 720)} if OUT_POST else {}).items():
             page = os.path.join(tmp, f'{k}-{name}.html'); open(page, 'w', encoding='utf-8').write(portrait(k, w, h))
             png = shoot(page, os.path.join(tmp, f'{k}-{name}'), w, h)   # 1080×1920 / 1080×1440
             print('  ', jpg(png, os.path.join(OUT_POST, f'{k}-{name}.jpg'), 1080, 88))

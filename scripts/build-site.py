@@ -950,7 +950,7 @@ def page(k):
 
 <footer><div class="wrap">
   <span>© 2026 Jiesi Ma · Wave Subs</span>
-  <nav><a href="feedback.html">{esc(FB[k]['title'])}</a><a href="{REPO}" target="_blank" rel="noopener">GitHub</a><a href="{REPO}/blob/main/CHANGELOG.md" target="_blank" rel="noopener">{esc(d['footer_changelog'])}</a></nav>
+  <nav><a href="feedback.html">{esc(FB[k]['title'])}</a><a href="{REPO}" target="_blank" rel="noopener">GitHub</a><a href="{REPO}/blob/main/{"CHANGELOG.zh-CN.md" if k == "zh" else "CHANGELOG.md"}" target="_blank" rel="noopener">{esc(d['footer_changelog'])}</a></nav>
 </div></footer>
 
 <script>
