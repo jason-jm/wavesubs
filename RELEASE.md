@@ -76,6 +76,32 @@ electron-builder 签名（Hardened Runtime + entitlements）、公证、装订 .
 公证那步失败（典型报错 `No Keychain password item found`，钥匙串瞬时不可读）时**不用重打**：
 `bash scripts/notarize-app.sh` 会公证并装订已签好的 .app，再用 `--prepackaged` 出 DMG/ZIP 并公证 DMG。
 
+## 传 Release 与后续（1.0.7 实际跑的顺序）
+
+```bash
+# Windows 包（在 Mac 上交叉打，NSIS + zip；vendor-win/ 里的依赖由 bundle-deps-win.ts 取）
+npm run release:win
+# 验证 + 只含本版四个文件的校验值
+bash scripts/verify-release.sh
+(cd release && shasum -a 256 "Wave Subs-<版本>-arm64.dmg" "Wave Subs-<版本>-arm64-mac.zip" "Wave Subs Setup <版本>.exe" "Wave Subs-<版本>-win.zip") > release/SHA256SUMS.txt
+# 代码先推上去，Release 的标签打在 main 上
+git push origin main
+gh release create v<版本> --repo jason-jm/wavesubs --target main --title "Wave Subs <版本>" \
+  --notes-file store/release-notes-<版本>.md \
+  "release/Wave Subs-<版本>-arm64.dmg" "release/Wave Subs-<版本>-arm64-mac.zip" \
+  "release/Wave Subs Setup <版本>.exe" "release/Wave Subs-<版本>-win.zip" release/SHA256SUMS.txt
+npx tsx scripts/make-latest.ts --upload && npx tsx scripts/make-latest.ts --verify   # 见下一节
+# 官网：版本号从 package.json 来，重建后提交 docs/ 即上线（GitHub Pages 取 main 的 /docs）
+python3 scripts/build-site.py && npm run check-site
+# Homebrew：改 store/homebrew/wavesubs.rb 的 version 与 sha256（DMG 那行），提交，再同步到 tap 仓库
+SHA=$(gh api repos/jason-jm/homebrew-wavesubs/contents/Casks/wavesubs.rb --jq .sha)
+gh api -X PUT repos/jason-jm/homebrew-wavesubs/contents/Casks/wavesubs.rb -f message="wavesubs <版本>" \
+  -f content="$(base64 < store/homebrew/wavesubs.rb)" -f sha="$SHA"
+brew fetch --cask jason-jm/wavesubs/wavesubs   # 校验值对不上会在这里炸
+# Scoop：bucket/wavesubs.json 的 version、url、hash（win.zip 那行），同样用 gh api PUT 到 jason-jm/scoop-wavesubs
+git add store/homebrew/wavesubs.rb docs && git commit -m "Homebrew cask <版本>；官网 <版本>" && git push && git fetch --tags
+```
+
 ## 传 Release 之后：latest.json（应用内「检查更新」读的文件）
 
 应用启动 5 秒后会从 `https://github.com/jason-jm/wavesubs/releases/latest/download/latest.json`
