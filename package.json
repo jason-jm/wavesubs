@@ -1,7 +1,7 @@
 {
   "name": "wavesubs",
   "productName": "Wave Subs",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Turn any video into translated subtitles (macOS)",
   "private": true,
   "type": "module",
