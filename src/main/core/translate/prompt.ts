@@ -1,5 +1,6 @@
 import type { BatchItem, TranslateContext } from './types'
 import { languageName, TranslationParseError } from './types'
+import { contentUnits } from './units'
 
 /** 每批注入的术语上限：全表塞进提示词会稀释注意力，也白烧 token */
 const GLOSSARY_PER_BATCH = 40
@@ -25,7 +26,7 @@ export function applicableGlossary(
  * 提示词版本号。措辞实质变化时 +1：翻译缓存按它判断「同一引擎同一目标语言的旧译文
  * 还能不能复用」——提示词变了产出就不同，不 +1 会让旧译文永远盖住新效果。
  */
-export const PROMPT_REV = 2
+export const PROMPT_REV = 3
 
 /** 提示词与结果解析在各协议之间是共用的，只有传输层不同 */
 export function buildSystemPrompt(ctx: TranslateContext): string {
@@ -46,7 +47,8 @@ export function buildSystemPrompt(ctx: TranslateContext): string {
     glossarySection(ctx) +
     `输入是 JSON 数组 [{"i":编号,"t":"原文"}]，只输出对应的 JSON 数组 ` +
     `[{"i":编号,"k":"该条原文开头的前 ${ANCHOR_CHARS} 个字符（原样照抄）","t":"译文"}]。` +
-    `每个 i 的 t 只能是这一条原文的译文，绝不能把内容挪到相邻编号上。不要输出任何其它内容。`
+    `k 只是校对用的锚；t 必须是这一条原文从头到尾的完整译文，不能只译 k 那几个字、不能只译前半句。` +
+    `每个 i 的 t 只能是这一条原文的译文，绝不能把内容挪到相邻编号上。输出的条数要和输入一样多。不要输出任何其它内容。`
   )
 }
 
@@ -84,6 +86,24 @@ export function buildUserContent(items: BatchItem[], ctx: TranslateContext): str
  * @param sources 本批各编号的原文；给了就核对每行的锚 k，对不上的行当作没译（由调用方重试）。
  *   模型没输出 k 的行照常接受——云端模型偶尔不理会格式要求，宁可少一道检查也不能全批作废。
  */
+/**
+ * 只译了开头一截的译文当没译。
+ *
+ * 小模型（1.7B / 4B）对着「k 照抄原文开头 4 个字」这条格式要求，会把 t 也只译那几个字：
+ * 「ことし6月東北地方の大連市で…」译成「今年6月」，「招待されたのは28の国と…」译成「受邀的是」，
+ * 一整集都是这样——每条译文都是原文头一个短语。
+ * 双语 GT 校准（17 部片 8037 条对照、日英德挪 → 中文，原文 ≥ 8 个信息单位）：译文/原文的信息量比值
+ * 中位数 1.4，p5 0.73，p1 0.43（日文 p1 0.28，且最低的那一批都是两份字幕切分不同造成的假配对）。
+ * 上面那集里的坏译文比值在 0.14～0.32。线画在 0.4：漏掉的（「拥有尖端技术」0.43）至少译了大半句，
+ * 误伤的走一趟更小的批重译，代价很低。低于这条线就丢掉，交给后面更小的批、单条重译。
+ */
+const MIN_LENGTH_RATIO = 0.4
+const MIN_SOURCE_UNITS = 8
+export function looksCutShort(source: string, translation: string): boolean {
+  const su = contentUnits(source)
+  return su >= MIN_SOURCE_UNITS && contentUnits(translation) < su * MIN_LENGTH_RATIO
+}
+
 export function parseBatchResponse(content: string, sources?: Map<number, string>): Map<number, string> {
   const cleaned = content
     .replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '')
@@ -110,6 +130,9 @@ export function parseBatchResponse(content: string, sources?: Map<number, string
           const k = anchorKey(item.k)
           if (src !== undefined && k.length >= 2 && !anchorKey(src).startsWith(k.slice(0, ANCHOR_CHARS))) continue
         }
+        // 只译了开头一截的不要：单条批次也一样，半句译文比没有更误导
+        const source = sources?.get(item.i)
+        if (source !== undefined && looksCutShort(source, item.t)) continue
         map.set(item.i, item.t.trim())
       }
     }

@@ -12,6 +12,7 @@
  */
 import { LocalizedError } from '../../../shared/i18n/core'
 import { applicableGlossary } from '../translate/prompt'
+import { contentUnits } from '../translate/units'
 import type { Cue } from '../subtitle/types'
 import { textSimilarity } from './blocks'
 import type { SignBlock, SignJudgement } from './types'
@@ -95,14 +96,6 @@ export function leftoverScript(tr: string, targetLanguageName: string): boolean 
 /**
  * 译文信息量按字算：汉字/谚文一个算一个，假名算 0.6（日语的助词到中文会被吃掉），西文一个词算一个。
  */
-function contentUnits(s: string): number {
-  const count = (re: RegExp): number => (s.match(re) ?? []).length
-  const kana = count(/[\p{Script=Hiragana}\p{Script=Katakana}]/gu)
-  const cjk = count(/[\p{Script=Han}\p{Script=Hangul}]/gu)
-  const words = count(/[\p{Script=Latin}\p{Script=Cyrillic}\p{Script=Greek}]+/gu)
-  return kana * 0.6 + cjk + words
-}
-
 /**
  * 只译了开头一截。8B 面对多行长条目常只译第一行（整段生平只译出人名、整封邮件只译出日期），
  * 信息量差得太多就当没译，清掉让补译那一轮重来。
