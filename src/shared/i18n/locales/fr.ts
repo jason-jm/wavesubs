@@ -307,8 +307,8 @@ export const fr: Dict = {
   "update.skipped": "{version} ignorée ; vous serez prévenu à la prochaine",
   "update.brew": "Cette copie a été installée avec Homebrew. Exécutez dans le Terminal :",
   "update.scoop": "Cette copie a été installée avec Scoop. Exécutez dans un terminal :",
-  "update.auto": "Rechercher automatiquement les mises à jour",
-  "update.autoHint": "Lit un fichier de version sur GitHub au lancement ; GitHub ne voit que votre IP et le type de système, rien d’autre n’est envoyé",
+  "update.auto": "Rechercher les mises à jour au lancement",
+  "update.autoHint": "Vérifie une fois au démarrage de l’application s’il existe une nouvelle version",
   "help.checkUpdate": "Rechercher des mises à jour…",
 
   'req.anyMac': 'N’importe quel Mac, y compris les anciens Intel',

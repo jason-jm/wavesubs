@@ -304,8 +304,8 @@ export const tr: Dict = {
   "update.skipped": "{version} atlandı; bir sonraki sürümde yeniden bildirilecek",
   "update.brew": "Bu kopya Homebrew ile kuruldu. Terminal’de şunu çalıştırın:",
   "update.scoop": "Bu kopya Scoop ile kuruldu. Terminalde şunu çalıştırın:",
-  "update.auto": "Güncellemeleri otomatik denetle",
-  "update.autoHint": "Başlangıçta GitHub’dan bir sürüm dosyası okur; GitHub yalnızca IP’nizi ve sistem türünü görür, başka hiçbir şey gönderilmez",
+  "update.auto": "Başlangıçta güncellemeleri denetle",
+  "update.autoHint": "Uygulama başlarken yeni sürüm olup olmadığını bir kez denetler",
   "help.checkUpdate": "Güncellemeleri Denetle…",
 
   'req.anyMac': 'Eski Intel modeller dahil her Mac',

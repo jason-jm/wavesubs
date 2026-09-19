@@ -304,8 +304,8 @@ export const hu: Dict = {
   "update.skipped": "{version} kihagyva; a következő verziónál újra szólunk",
   "update.brew": "Ezt a példányt Homebrew-val telepítették. Futtassa a Terminálban:",
   "update.scoop": "Ezt a példányt Scoop-pal telepítették. Futtassa terminálban:",
-  "update.auto": "Frissítések automatikus keresése",
-  "update.autoHint": "Indításkor egy verziófájlt olvas be a GitHubról; a GitHub csak az IP-címet és a rendszer típusát látja, más nem kerül elküldésre",
+  "update.auto": "Frissítések keresése indításkor",
+  "update.autoHint": "Az alkalmazás indításakor egyszer ellenőrzi, van-e új verzió",
   "help.checkUpdate": "Frissítések keresése…",
 
   'req.anyMac': 'Bármelyik Mac, a régebbi Inteles gépeket is beleértve',

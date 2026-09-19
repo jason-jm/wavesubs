@@ -304,8 +304,8 @@ export const vi: Dict = {
   "update.skipped": "Đã bỏ qua {version}; sẽ nhắc lại khi có phiên bản tiếp theo",
   "update.brew": "Bản này được cài bằng Homebrew. Chạy lệnh sau trong Terminal:",
   "update.scoop": "Bản này được cài bằng Scoop. Chạy lệnh sau trong terminal:",
-  "update.auto": "Tự động kiểm tra cập nhật",
-  "update.autoHint": "Khi khởi động sẽ đọc một tệp phiên bản từ GitHub; GitHub chỉ thấy IP và loại hệ điều hành, không gửi gì khác",
+  "update.auto": "Kiểm tra cập nhật khi khởi động",
+  "update.autoHint": "Kiểm tra một lần khi mở ứng dụng xem có phiên bản mới không",
   "help.checkUpdate": "Kiểm tra cập nhật…",
 
   'req.anyMac': 'Mọi máy Mac, kể cả các máy Intel đời cũ',

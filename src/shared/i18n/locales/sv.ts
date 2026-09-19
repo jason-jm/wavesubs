@@ -304,8 +304,8 @@ export const sv: Dict = {
   "update.skipped": "{version} överhoppad; du får besked om nästa",
   "update.brew": "Den här kopian installerades med Homebrew. Kör i Terminal:",
   "update.scoop": "Den här kopian installerades med Scoop. Kör i en terminal:",
-  "update.auto": "Sök efter uppdateringar automatiskt",
-  "update.autoHint": "Läser en versionsfil från GitHub vid start; GitHub ser bara din IP och systemtyp, inget annat skickas",
+  "update.auto": "Sök efter uppdateringar vid start",
+  "update.autoHint": "Kontrollerar en gång när appen startar om det finns en ny version",
   "help.checkUpdate": "Sök efter uppdateringar…",
 
   'req.anyMac': 'Vilken Mac som helst, även äldre Intel-modeller',

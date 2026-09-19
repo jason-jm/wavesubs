@@ -304,8 +304,8 @@ export const id: Dict = {
   "update.skipped": "{version} dilewati; Anda akan diberi tahu tentang versi berikutnya",
   "update.brew": "Salinan ini dipasang dengan Homebrew. Jalankan di Terminal:",
   "update.scoop": "Salinan ini dipasang dengan Scoop. Jalankan di terminal:",
-  "update.auto": "Periksa pembaruan secara otomatis",
-  "update.autoHint": "Saat dibuka, membaca satu berkas versi dari GitHub; GitHub hanya melihat IP dan jenis sistem Anda, tidak ada yang lain dikirim",
+  "update.auto": "Periksa pembaruan saat dibuka",
+  "update.autoHint": "Memeriksa sekali saat aplikasi dibuka apakah ada versi baru",
   "help.checkUpdate": "Periksa Pembaruan…",
 
   'req.anyMac': 'Mac apa pun, termasuk model Intel lama',

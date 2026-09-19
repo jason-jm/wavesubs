@@ -300,8 +300,8 @@ export const en: Dict = {
   "update.skipped": "Skipped {version}; you will be told about the next one",
   "update.brew": "This copy was installed with Homebrew. Run this in Terminal to update:",
   "update.scoop": "This copy was installed with Scoop. Run this in a terminal to update:",
-  "update.auto": "Check for updates automatically",
-  "update.autoHint": "Reads one version file from GitHub at launch; GitHub only sees your IP and OS type, nothing else is sent",
+  "update.auto": "Check for updates at launch",
+  "update.autoHint": "Checks for a new version once when the app starts",
   "help.checkUpdate": "Check for Updates…",
 
   'req.anyMac': 'Any Mac, including older Intel models',

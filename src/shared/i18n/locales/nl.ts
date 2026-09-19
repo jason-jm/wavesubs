@@ -304,8 +304,8 @@ export const nl: Dict = {
   "update.skipped": "{version} overgeslagen; bij de volgende versie krijg je weer bericht",
   "update.brew": "Deze kopie is geïnstalleerd met Homebrew. Voer uit in Terminal:",
   "update.scoop": "Deze kopie is geïnstalleerd met Scoop. Voer uit in een terminal:",
-  "update.auto": "Automatisch controleren op updates",
-  "update.autoHint": "Leest bij het starten één versiebestand van GitHub; GitHub ziet alleen je IP en het type systeem, verder wordt niets verstuurd",
+  "update.auto": "Bij het starten op updates controleren",
+  "update.autoHint": "Controleert één keer bij het starten van de app of er een nieuwe versie is",
   "help.checkUpdate": "Controleren op updates…",
 
   'req.anyMac': 'Elke Mac, ook oudere Intel-modellen',

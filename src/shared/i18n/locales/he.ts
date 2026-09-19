@@ -303,8 +303,8 @@ export const he: Dict = {
   "update.skipped": "גרסה {version} דולגה; תקבל הודעה על הגרסה הבאה",
   "update.brew": "עותק זה הותקן באמצעות Homebrew. הרץ בטרמינל:",
   "update.scoop": "עותק זה הותקן באמצעות Scoop. הרץ בטרמינל:",
-  "update.auto": "בדוק עדכונים אוטומטית",
-  "update.autoHint": "בהפעלה נקרא קובץ גרסה אחד מ-GitHub; GitHub רואה רק את כתובת ה-IP וסוג המערכת, שום דבר אחר לא נשלח",
+  "update.auto": "בדיקת עדכונים בהפעלה",
+  "update.autoHint": "בודק פעם אחת בהפעלת היישום אם קיימת גרסה חדשה",
   "help.checkUpdate": "בדוק עדכונים…",
 
   'req.anyMac': 'כל Mac, כולל דגמי Intel ישנים',

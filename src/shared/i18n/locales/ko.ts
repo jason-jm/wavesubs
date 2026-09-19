@@ -299,8 +299,8 @@ export const ko: Dict = {
   "update.skipped": "{version}을(를) 건너뛰었습니다. 다음 버전이 나오면 다시 알립니다",
   "update.brew": "이 앱은 Homebrew로 설치되었습니다. 터미널에서 다음 명령을 실행하세요:",
   "update.scoop": "이 앱은 Scoop으로 설치되었습니다. 터미널에서 다음 명령을 실행하세요:",
-  "update.auto": "자동으로 업데이트 확인",
-  "update.autoHint": "실행 시 GitHub에서 버전 파일 하나를 읽습니다. GitHub에는 IP와 OS 종류만 보이며 그 외에는 아무것도 보내지 않습니다",
+  "update.auto": "실행 시 업데이트 확인",
+  "update.autoHint": "앱을 실행할 때 한 번 업데이트를 확인합니다",
   "help.checkUpdate": "업데이트 확인…",
 
   'req.anyMac': '모든 Mac(구형 Intel 포함)',

@@ -304,8 +304,8 @@ export const fi: Dict = {
   "update.skipped": "{version} ohitettu; seuraavasta versiosta ilmoitetaan taas",
   "update.brew": "Tämä kopio asennettiin Homebrew’lla. Suorita Terminalissa:",
   "update.scoop": "Tämä kopio asennettiin Scoopilla. Suorita päätteessä:",
-  "update.auto": "Tarkista päivitykset automaattisesti",
-  "update.autoHint": "Lukee käynnistyksessä yhden versiotiedoston GitHubista; GitHub näkee vain IP-osoitteen ja järjestelmän tyypin, muuta ei lähetetä",
+  "update.auto": "Tarkista päivitykset käynnistyksessä",
+  "update.autoHint": "Tarkistaa kerran sovelluksen käynnistyessä, onko uutta versiota",
   "help.checkUpdate": "Tarkista päivitykset…",
 
   'req.anyMac': 'Mikä tahansa Mac, myös vanhat Intel-mallit',

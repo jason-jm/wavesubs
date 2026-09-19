@@ -313,8 +313,8 @@ export const zhHans = {
   "update.skipped": "已跳过 {version}，有更新的版本时再提醒",
   "update.brew": "这台电脑是用 Homebrew 安装的，在终端运行这条命令即可更新：",
   "update.scoop": "这台电脑是用 Scoop 安装的，在终端运行这条命令即可更新：",
-  "update.auto": "自动检查更新",
-  "update.autoHint": "启动时从 GitHub 读一个版本文件；GitHub 只会看到 IP 和系统类型，不发送任何其它内容",
+  "update.auto": "启动时检查更新",
+  "update.autoHint": "应用启动时进行一次更新检查",
   "help.checkUpdate": "检查更新…",
 
   'req.anyMac': '任何 Mac（含老款 Intel）',

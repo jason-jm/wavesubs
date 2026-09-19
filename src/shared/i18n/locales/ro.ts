@@ -305,8 +305,8 @@ export const ro: Dict = {
   "update.skipped": "{version} omisă; veți fi anunțat la următoarea",
   "update.brew": "Această copie a fost instalată cu Homebrew. Rulați în Terminal:",
   "update.scoop": "Această copie a fost instalată cu Scoop. Rulați într-un terminal:",
-  "update.auto": "Caută actualizări automat",
-  "update.autoHint": "La pornire citește un fișier de versiune de pe GitHub; GitHub vede doar IP-ul și tipul sistemului, nimic altceva nu este trimis",
+  "update.auto": "Caută actualizări la pornire",
+  "update.autoHint": "Verifică o dată, la pornirea aplicației, dacă există o versiune nouă",
   "help.checkUpdate": "Caută actualizări…",
 
   'req.anyMac': 'Orice Mac, inclusiv modelele Intel mai vechi',

@@ -304,8 +304,8 @@ export const da: Dict = {
   "update.skipped": "{version} sprunget over; du får besked om den næste",
   "update.brew": "Denne kopi blev installeret med Homebrew. Kør i Terminal:",
   "update.scoop": "Denne kopi blev installeret med Scoop. Kør i en terminal:",
-  "update.auto": "Søg automatisk efter opdateringer",
-  "update.autoHint": "Læser én versionsfil fra GitHub ved start; GitHub ser kun din IP og systemtype, intet andet sendes",
+  "update.auto": "Søg efter opdateringer ved start",
+  "update.autoHint": "Kontrollerer én gang, når appen starter, om der er en ny version",
   "help.checkUpdate": "Søg efter opdateringer…",
 
   'req.anyMac': 'Enhver Mac, også ældre Intel-modeller',

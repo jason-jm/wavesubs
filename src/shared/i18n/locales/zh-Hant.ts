@@ -299,8 +299,8 @@ export const zhHant: Dict = {
   "update.skipped": "已略過 {version}，有更新的版本時再提醒",
   "update.brew": "這台電腦是用 Homebrew 安裝的，在終端機執行這條命令即可更新：",
   "update.scoop": "這台電腦是用 Scoop 安裝的，在終端機執行這條命令即可更新：",
-  "update.auto": "自動檢查更新",
-  "update.autoHint": "啟動時從 GitHub 讀一個版本檔案；GitHub 只會看到 IP 和系統類型，不傳送任何其它內容",
+  "update.auto": "啟動時檢查更新",
+  "update.autoHint": "應用程式啟動時進行一次更新檢查",
   "help.checkUpdate": "檢查更新…",
 
   'req.anyMac': '任何 Mac（含舊款 Intel）',

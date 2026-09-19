@@ -300,8 +300,8 @@ export const ja: Dict = {
   "update.skipped": "{version} をスキップしました。次のバージョンで再度お知らせします",
   "update.brew": "このアプリは Homebrew でインストールされています。ターミナルで次のコマンドを実行してください：",
   "update.scoop": "このアプリは Scoop でインストールされています。ターミナルで次のコマンドを実行してください：",
-  "update.auto": "更新を自動的に確認",
-  "update.autoHint": "起動時に GitHub からバージョン情報ファイルを 1 つ読み込みます。GitHub に渡るのは IP アドレスと OS の種類だけです",
+  "update.auto": "起動時に更新を確認",
+  "update.autoHint": "アプリ起動時に一度だけ更新を確認します",
   "help.checkUpdate": "更新を確認…",
 
   'req.anyMac': 'すべての Mac（旧 Intel 機を含む）',

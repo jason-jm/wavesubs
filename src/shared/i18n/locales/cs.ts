@@ -304,8 +304,8 @@ export const cs: Dict = {
   "update.skipped": "{version} přeskočena; na další verzi vás zase upozorníme",
   "update.brew": "Tato kopie byla nainstalována přes Homebrew. Spusťte v Terminálu:",
   "update.scoop": "Tato kopie byla nainstalována přes Scoop. Spusťte v terminálu:",
-  "update.auto": "Kontrolovat aktualizace automaticky",
-  "update.autoHint": "Při spuštění načte jeden soubor s verzí z GitHubu; GitHub vidí jen IP a typ systému, nic dalšího se neposílá",
+  "update.auto": "Kontrolovat aktualizace při spuštění",
+  "update.autoHint": "Při spuštění aplikace jednou zkontroluje, zda je nová verze",
   "help.checkUpdate": "Zkontrolovat aktualizace…",
 
   'req.anyMac': 'Jakýkoli Mac, včetně starších s Intelem',

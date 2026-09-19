@@ -305,8 +305,8 @@ export const ms: Dict = {
   "update.skipped": "{version} dilangkau; anda akan dimaklumkan tentang versi seterusnya",
   "update.brew": "Salinan ini dipasang dengan Homebrew. Jalankan di Terminal:",
   "update.scoop": "Salinan ini dipasang dengan Scoop. Jalankan di terminal:",
-  "update.auto": "Semak kemas kini secara automatik",
-  "update.autoHint": "Semasa dibuka, membaca satu fail versi dari GitHub; GitHub hanya nampak IP dan jenis sistem anda, tiada yang lain dihantar",
+  "update.auto": "Semak kemas kini semasa dibuka",
+  "update.autoHint": "Menyemak sekali semasa aplikasi dibuka sama ada ada versi baharu",
   "help.checkUpdate": "Semak Kemas Kini…",
 
   'req.anyMac': 'Mana-mana Mac, termasuk model Intel lama',
