@@ -17,6 +17,14 @@ export interface WhisperModelSpec {
   /** Windows 上的一句话要求：没有 Metal、语音识别只走 CPU，和 Mac 的说法不一样 */
   requirementPc: TranslationKey
   detail: TranslationKey
+  /**
+   * 各语言的意思保留率（%）：识别出的对白里意思完整的比例。
+   * 2026-09 实测：英语《Spotlight》、德语《Ballon》、日语 NHK《鎌倉殿の13人》各截 30 分钟，
+   * 每部抽 50 句盲评（全对 1 分、大意能懂 0.5、错 0）。en = 英语；eu = 欧洲语言（以德语代表，
+   * 西/意/葡会更好、法/荷/波兰略差）；ea = 日韩中（以日语代表，韩语与普通话按公开评测归同档）。
+   * 给模型页做「按语言选模型」的参考，不参与任何逻辑。
+   */
+  languages: { en: number; eu: number; ea: number }
   recommendedDefault?: boolean
 }
 
@@ -31,7 +39,8 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
     speed: 5,
     requirement: 'req.anyMac',
     requirementPc: 'req.pc.any',
-    detail: 'asr.tiny.detail'
+    detail: 'asr.tiny.detail',
+    languages: { en: 68, eu: 49, ea: 37 }
   },
   {
     file: 'ggml-base.bin',
@@ -43,7 +52,8 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
     speed: 5,
     requirement: 'req.anyMac',
     requirementPc: 'req.pc.any',
-    detail: 'asr.base.detail'
+    detail: 'asr.base.detail',
+    languages: { en: 79, eu: 61, ea: 57 }
   },
   {
     file: 'ggml-small.bin',
@@ -55,7 +65,8 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
     speed: 4,
     requirement: 'req.mac8gb',
     requirementPc: 'req.pc.8gb',
-    detail: 'asr.small.detail'
+    detail: 'asr.small.detail',
+    languages: { en: 92, eu: 81, ea: 66 }
   },
   {
     file: 'ggml-medium.bin',
@@ -67,7 +78,8 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
     speed: 2,
     requirement: 'req.appleSiliconPreferred',
     requirementPc: 'req.pc.cpuSlow',
-    detail: 'asr.medium.detail'
+    detail: 'asr.medium.detail',
+    languages: { en: 91, eu: 81, ea: 79 }
   },
   {
     file: 'ggml-large-v3-turbo.bin',
@@ -79,7 +91,8 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
     speed: 4,
     requirement: 'req.appleSilicon8',
     requirementPc: 'req.pc.8gbSlow',
-    detail: 'asr.largeTurbo.detail'
+    detail: 'asr.largeTurbo.detail',
+    languages: { en: 95, eu: 96, ea: 89 }
   },
   {
     file: 'ggml-large-v3.bin',
@@ -92,6 +105,7 @@ export const WHISPER_MODELS: WhisperModelSpec[] = [
     requirement: 'req.appleSilicon16',
     requirementPc: 'req.pc.16gbSlow',
     detail: 'asr.large.detail',
+    languages: { en: 96, eu: 94, ea: 88 },
     recommendedDefault: true
   }
 ]

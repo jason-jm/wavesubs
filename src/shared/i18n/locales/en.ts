@@ -212,6 +212,15 @@ export const en: Dict = {
   'models.openFinder': 'Open in Finder',
   'models.openExplorer': "Open in Explorer",
   'models.manualHint': 'Files you drop in manually ({pattern}) are detected automatically.',
+  "models.lang.en": "English",
+  "models.lang.eu": "European languages",
+  "models.lang.ea": "Japanese · Korean · Chinese",
+  "models.lang.great": "Recommended",
+  "models.lang.ok": "Usable",
+  "models.lang.weak": "Marginal",
+  "models.lang.bad": "Not advised",
+  "models.lang.guide": "Choosing by language: for English, start at Small; for German, French, Spanish and other European languages, Small is usable and Large v3 Turbo is reliable; for Japanese, Korean and Chinese, use Large v3 Turbo or better; for Thai and Cantonese, use Large v3.",
+  "models.lang.legend": "Percentages are meaning retention: the share of recognized lines whose meaning came through intact, measured on one film each for English, German and Japanese; Korean and Chinese are grouped with Japanese based on published benchmarks.",
 
   'cloud.empty.title': 'No cloud service added yet',
   'cloud.empty.body':

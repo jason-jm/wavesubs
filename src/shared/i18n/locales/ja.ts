@@ -212,6 +212,15 @@ export const ja: Dict = {
   'models.openFinder': 'Finder で開く',
   'models.openExplorer': "エクスプローラーで開く",
   'models.manualHint': '{pattern} ファイルを手動で置いても自動的に認識されます。',
+  "models.lang.en": "英語",
+  "models.lang.eu": "ヨーロッパ言語",
+  "models.lang.ea": "日本語・韓国語・中国語",
+  "models.lang.great": "おすすめ",
+  "models.lang.ok": "使える",
+  "models.lang.weak": "ぎりぎり",
+  "models.lang.bad": "非推奨",
+  "models.lang.guide": "言語で選ぶ：英語は Small から。ドイツ語・フランス語・スペイン語などのヨーロッパ言語は Small でも使えますが、安定させるなら Large v3 Turbo。日本語・韓国語・中国語は Large v3 Turbo 以上。タイ語・広東語は Large v3。",
+  "models.lang.legend": "パーセントは意味保持率——認識した台詞のうち意味が正しく伝わった割合。英語・ドイツ語・日本語は各 1 本の作品で実測、韓国語・中国語は公開ベンチマークをもとに日本語と同じ枠にしています。",
 
   'cloud.empty.title': 'クラウドサービスが未登録です',
   'cloud.empty.body':

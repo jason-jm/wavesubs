@@ -214,6 +214,15 @@ export const tr: Dict = {
   'models.openFinder': "Finder'da aç",
   'models.openExplorer': "Gezgin'de aç",
   'models.manualHint': 'Elle koyduğunuz {pattern} dosyaları da kendiliğinden algılanır.',
+  "models.lang.en": "İngilizce",
+  "models.lang.eu": "Avrupa dilleri",
+  "models.lang.ea": "Japonca · Korece · Çince",
+  "models.lang.great": "Önerilir",
+  "models.lang.ok": "Kullanılabilir",
+  "models.lang.weak": "Sınırda",
+  "models.lang.bad": "Önerilmez",
+  "models.lang.guide": "Dile göre seçim: İngilizce için Small ile başlamak yeter; Almanca, Fransızca, İspanyolca ve diğer Avrupa dillerinde Small kullanılabilir, Large v3 Turbo güvenilirdir; Japonca, Korece ve Çince için en az Large v3 Turbo; Tayca ve Kantonca için Large v3.",
+  "models.lang.legend": "Yüzdeler anlam korunumudur: tanınan repliklerin anlamı eksiksiz ulaşanlarının payı; İngilizce, Almanca ve Japonca için birer filmde ölçüldü; Korece ve Çince yayımlanmış testlere göre Japonca ile aynı gruba alındı.",
 
   'cloud.empty.title': 'Henüz bulut servisi eklenmedi',
   'cloud.empty.body':

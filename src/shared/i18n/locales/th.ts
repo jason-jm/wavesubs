@@ -213,6 +213,15 @@ export const th: Dict = {
   'models.openFinder': 'เปิดใน Finder',
   'models.openExplorer': "เปิดใน Explorer",
   'models.manualHint': 'ไฟล์ {pattern} ที่นำมาวางเองก็ตรวจพบอัตโนมัติ',
+  "models.lang.en": "อังกฤษ",
+  "models.lang.eu": "ภาษายุโรป",
+  "models.lang.ea": "ญี่ปุ่น · เกาหลี · จีน",
+  "models.lang.great": "แนะนำ",
+  "models.lang.ok": "ใช้ได้",
+  "models.lang.weak": "พอถูไถ",
+  "models.lang.bad": "ไม่แนะนำ",
+  "models.lang.guide": "เลือกตามภาษา: ภาษาอังกฤษเริ่มที่ Small ก็พอ; เยอรมัน ฝรั่งเศส สเปน และภาษายุโรปอื่น ๆ Small ใช้ได้ ส่วน Large v3 Turbo ไว้ใจได้; ญี่ปุ่น เกาหลี จีน อย่างน้อย Large v3 Turbo; ไทยและกวางตุ้งใช้ Large v3",
+  "models.lang.legend": "ตัวเลขเปอร์เซ็นต์คืออัตราการรักษาความหมาย: สัดส่วนของบทพูดที่รู้จำได้ซึ่งความหมายส่งถึงครบถ้วน วัดจากภาพยนตร์ภาษาละหนึ่งเรื่องสำหรับอังกฤษ เยอรมัน และญี่ปุ่น; เกาหลีและจีนจัดไว้กลุ่มเดียวกับญี่ปุ่นตามผลทดสอบที่เผยแพร่",
 
   'cloud.empty.title': 'ยังไม่ได้เพิ่มบริการบนคลาวด์',
   'cloud.empty.body':

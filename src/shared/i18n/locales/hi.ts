@@ -214,6 +214,15 @@ export const hi: Dict = {
   'models.openFinder': 'Finder में खोलें',
   'models.openExplorer': "Explorer में खोलें",
   'models.manualHint': 'ख़ुद रखी गई {pattern} फ़ाइलें भी अपने आप पहचान ली जाती हैं।',
+  "models.lang.en": "अंग्रेज़ी",
+  "models.lang.eu": "यूरोपीय भाषाएँ",
+  "models.lang.ea": "जापानी · कोरियाई · चीनी",
+  "models.lang.great": "अनुशंसित",
+  "models.lang.ok": "उपयोगी",
+  "models.lang.weak": "सीमांत",
+  "models.lang.bad": "अनुशंसित नहीं",
+  "models.lang.guide": "भाषा के अनुसार चुनें: अंग्रेज़ी के लिए Small से शुरुआत काफ़ी है; जर्मन, फ़्रेंच, स्पेनिश और अन्य यूरोपीय भाषाओं के लिए Small उपयोगी है और Large v3 Turbo भरोसेमंद; जापानी, कोरियाई और चीनी के लिए कम से कम Large v3 Turbo; थाई और कैंटोनीज़ के लिए Large v3।",
+  "models.lang.legend": "प्रतिशत अर्थ-संरक्षण है: पहचानी गई पंक्तियों में से कितनी का अर्थ पूरा पहुँचा; अंग्रेज़ी, जर्मन और जापानी के लिए एक-एक फ़िल्म पर मापा गया; कोरियाई और चीनी को प्रकाशित परीक्षणों के आधार पर जापानी के साथ रखा गया है।",
 
   'cloud.empty.title': 'अभी कोई क्लाउड सेवा नहीं जोड़ी गई',
   'cloud.empty.body':

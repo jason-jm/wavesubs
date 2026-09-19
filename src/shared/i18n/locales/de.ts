@@ -214,6 +214,15 @@ export const de: Dict = {
   'models.openFinder': 'Im Finder öffnen',
   'models.openExplorer': "Im Explorer öffnen",
   'models.manualHint': 'Manuell abgelegte {pattern}-Dateien werden automatisch erkannt.',
+  "models.lang.en": "Englisch",
+  "models.lang.eu": "Europäische Sprachen",
+  "models.lang.ea": "Japanisch · Koreanisch · Chinesisch",
+  "models.lang.great": "Empfohlen",
+  "models.lang.ok": "Brauchbar",
+  "models.lang.weak": "Grenzwertig",
+  "models.lang.bad": "Nicht empfohlen",
+  "models.lang.guide": "Wahl nach Sprache: Für Englisch reicht der Einstieg mit Small. Für Deutsch, Französisch, Spanisch und andere europäische Sprachen ist Small brauchbar, zuverlässig wird es mit Large v3 Turbo. Für Japanisch, Koreanisch und Chinesisch mindestens Large v3 Turbo; für Thai und Kantonesisch Large v3.",
+  "models.lang.legend": "Die Prozentzahlen sind die Sinnerhaltung: der Anteil erkannter Zeilen, deren Bedeutung vollständig ankam, gemessen an je einem Film für Englisch, Deutsch und Japanisch; Koreanisch und Chinesisch sind anhand veröffentlichter Benchmarks mit Japanisch gruppiert.",
 
   'cloud.empty.title': 'Noch kein Cloud-Dienst hinzugefügt',
   'cloud.empty.body':

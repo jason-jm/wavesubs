@@ -214,6 +214,15 @@ export const nl: Dict = {
   'models.openFinder': 'Open in Finder',
   'models.openExplorer': "Openen in Verkenner",
   'models.manualHint': 'Handmatig geplaatste {pattern}-bestanden worden vanzelf herkend.',
+  "models.lang.en": "Engels",
+  "models.lang.eu": "Europese talen",
+  "models.lang.ea": "Japans · Koreaans · Chinees",
+  "models.lang.great": "Aanbevolen",
+  "models.lang.ok": "Bruikbaar",
+  "models.lang.weak": "Krap",
+  "models.lang.bad": "Afgeraden",
+  "models.lang.guide": "Kiezen per taal: voor Engels volstaat Small om te beginnen; voor Duits, Frans, Spaans en andere Europese talen is Small bruikbaar en Large v3 Turbo betrouwbaar; voor Japans, Koreaans en Chinees minstens Large v3 Turbo; voor Thai en Kantonees Large v3.",
+  "models.lang.legend": "De percentages geven het betekenisbehoud aan: het aandeel herkende regels waarvan de betekenis intact overkwam, gemeten op één film per taal voor Engels, Duits en Japans; Koreaans en Chinees zijn op basis van gepubliceerde benchmarks bij Japans ingedeeld.",
 
   'cloud.empty.title': 'Nog geen cloudservice toegevoegd',
   'cloud.empty.body':

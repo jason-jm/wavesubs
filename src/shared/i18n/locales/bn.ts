@@ -214,6 +214,15 @@ export const bn: Dict = {
   'models.openFinder': 'Finder-এ খুলুন',
   'models.openExplorer': "Explorer-এ খুলুন",
   'models.manualHint': 'নিজে রাখা {pattern} ফাইলও নিজে থেকেই শনাক্ত হয়।',
+  "models.lang.en": "ইংরেজি",
+  "models.lang.eu": "ইউরোপীয় ভাষা",
+  "models.lang.ea": "জাপানি · কোরীয় · চীনা",
+  "models.lang.great": "সুপারিশকৃত",
+  "models.lang.ok": "ব্যবহারযোগ্য",
+  "models.lang.weak": "সীমান্তে",
+  "models.lang.bad": "সুপারিশ নয়",
+  "models.lang.guide": "ভাষা অনুযায়ী বাছাই: ইংরেজির জন্য Small দিয়ে শুরু করলেই চলে; জার্মান, ফরাসি, স্প্যানিশ ও অন্যান্য ইউরোপীয় ভাষায় Small ব্যবহারযোগ্য আর Large v3 Turbo নির্ভরযোগ্য; জাপানি, কোরীয় ও চীনার জন্য অন্তত Large v3 Turbo; থাই ও ক্যান্টনিজের জন্য Large v3।",
+  "models.lang.legend": "শতাংশগুলো অর্থ-সংরক্ষণ: শনাক্ত হওয়া সংলাপের কত অংশের অর্থ অক্ষত পৌঁছেছে; ইংরেজি, জার্মান ও জাপানির জন্য একটি করে সিনেমায় মাপা; কোরীয় ও চীনাকে প্রকাশিত পরীক্ষার ভিত্তিতে জাপানির সঙ্গে রাখা হয়েছে।",
 
   'cloud.empty.title': 'এখনো কোনো ক্লাউড পরিষেবা যোগ করা হয়নি',
   'cloud.empty.body':

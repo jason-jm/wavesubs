@@ -215,6 +215,15 @@ export const ro: Dict = {
   'models.openFinder': 'Deschide în Finder',
   'models.openExplorer': "Deschide în Explorer",
   'models.manualHint': 'Fișierele {pattern} puse manual sunt detectate automat.',
+  "models.lang.en": "Engleză",
+  "models.lang.eu": "Limbi europene",
+  "models.lang.ea": "Japoneză · Coreeană · Chineză",
+  "models.lang.great": "Recomandat",
+  "models.lang.ok": "Utilizabil",
+  "models.lang.weak": "La limită",
+  "models.lang.bad": "Nerecomandat",
+  "models.lang.guide": "Alegere după limbă: pentru engleză e suficient să începeți cu Small; pentru germană, franceză, spaniolă și alte limbi europene Small este utilizabil, iar Large v3 Turbo este fiabil; pentru japoneză, coreeană și chineză cel puțin Large v3 Turbo; pentru thailandeză și cantoneză Large v3.",
+  "models.lang.legend": "Procentele reprezintă păstrarea sensului: ponderea replicilor recunoscute al căror înțeles a ajuns intact, măsurată pe câte un film pentru engleză, germană și japoneză; coreeana și chineza sunt grupate cu japoneza pe baza testelor publicate.",
 
   'cloud.empty.title': 'Niciun serviciu din cloud adăugat încă',
   'cloud.empty.body':

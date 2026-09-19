@@ -214,6 +214,15 @@ export const cs: Dict = {
   'models.openFinder': 'Otevřít ve Finderu',
   'models.openExplorer': "Otevřít v Průzkumníku",
   'models.manualHint': 'Ručně vložené soubory {pattern} se rozpoznají samy.',
+  "models.lang.en": "Angličtina",
+  "models.lang.eu": "Evropské jazyky",
+  "models.lang.ea": "Japonština · Korejština · Čínština",
+  "models.lang.great": "Doporučeno",
+  "models.lang.ok": "Použitelné",
+  "models.lang.weak": "Na hraně",
+  "models.lang.bad": "Nedoporučeno",
+  "models.lang.guide": "Výběr podle jazyka: pro angličtinu stačí začít u Small; pro němčinu, francouzštinu, španělštinu a další evropské jazyky je Small použitelný a spolehlivý je Large v3 Turbo; pro japonštinu, korejštinu a čínštinu nejméně Large v3 Turbo; pro thajštinu a kantonštinu Large v3.",
+  "models.lang.legend": "Procenta udávají zachování smyslu: podíl rozpoznaných replik, jejichž význam dorazil neporušený, měřeno na jednom filmu pro angličtinu, němčinu a japonštinu; korejština a čínština jsou podle zveřejněných testů zařazeny k japonštině.",
 
   'cloud.empty.title': 'Zatím není přidána žádná cloudová služba',
   'cloud.empty.body':

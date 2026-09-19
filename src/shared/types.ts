@@ -246,6 +246,8 @@ export interface ModelInfo {
   /** 静态的 Mac 机型要求说明 */
   requirement: string
   detail: string
+  /** 语音识别模型：各语言意思保留率（%），见 catalog.ts；翻译模型没有 */
+  languages?: { en: number; eu: number; ea: number }
   recommendedDefault?: boolean
   installed: boolean
   downloading: boolean

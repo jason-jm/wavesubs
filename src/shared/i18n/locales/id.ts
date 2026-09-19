@@ -214,6 +214,15 @@ export const id: Dict = {
   'models.openFinder': 'Buka di Finder',
   'models.openExplorer': "Buka di Explorer",
   'models.manualHint': 'Berkas {pattern} yang Anda taruh sendiri juga terdeteksi otomatis.',
+  "models.lang.en": "Inggris",
+  "models.lang.eu": "Bahasa-bahasa Eropa",
+  "models.lang.ea": "Jepang · Korea · Mandarin",
+  "models.lang.great": "Disarankan",
+  "models.lang.ok": "Layak",
+  "models.lang.weak": "Pas-pasan",
+  "models.lang.bad": "Tidak disarankan",
+  "models.lang.guide": "Memilih berdasarkan bahasa: untuk Inggris cukup mulai dari Small; untuk Jerman, Prancis, Spanyol, dan bahasa Eropa lainnya Small layak dan Large v3 Turbo andal; untuk Jepang, Korea, dan Mandarin minimal Large v3 Turbo; untuk Thai dan Kanton gunakan Large v3.",
+  "models.lang.legend": "Persentase adalah keterjagaan makna: bagian dialog yang dikenali dengan makna sampai utuh, diukur pada satu film untuk masing-masing Inggris, Jerman, dan Jepang; Korea dan Mandarin dikelompokkan bersama Jepang berdasarkan pengujian yang dipublikasikan.",
 
   'cloud.empty.title': 'Belum ada layanan awan yang ditambahkan',
   'cloud.empty.body':

@@ -214,6 +214,15 @@ export const sv: Dict = {
   'models.openFinder': 'Öppna i Finder',
   'models.openExplorer': "Öppna i Utforskaren",
   'models.manualHint': '{pattern}-filer som du lägger dit själv känns av automatiskt.',
+  "models.lang.en": "Engelska",
+  "models.lang.eu": "Europeiska språk",
+  "models.lang.ea": "Japanska · Koreanska · Kinesiska",
+  "models.lang.great": "Rekommenderas",
+  "models.lang.ok": "Användbar",
+  "models.lang.weak": "På gränsen",
+  "models.lang.bad": "Avråds",
+  "models.lang.guide": "Val efter språk: för engelska räcker det att börja med Small; för tyska, franska, spanska och andra europeiska språk är Small användbar och Large v3 Turbo pålitlig; för japanska, koreanska och kinesiska minst Large v3 Turbo; för thai och kantonesiska Large v3.",
+  "models.lang.legend": "Procenttalen anger bevarad innebörd: andelen igenkända repliker vars betydelse kom fram intakt, mätt på en film vardera för engelska, tyska och japanska; koreanska och kinesiska grupperas med japanska utifrån publicerade tester.",
 
   'cloud.empty.title': 'Ingen molntjänst tillagd än',
   'cloud.empty.body':

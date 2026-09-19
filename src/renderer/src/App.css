@@ -1660,6 +1660,26 @@ select optgroup {
   color: var(--text-2);
 }
 
+/* 模型卡片里的「按语言」档位：三组语言各一枚标签，百分比是意思保留率 */
+.model-langs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.model-langs .tag b {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.models-lang-guide {
+  margin: 0 0 var(--sp-3);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
 .model-meta {
   display: flex;
   flex-wrap: wrap;

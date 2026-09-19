@@ -213,6 +213,15 @@ export const he: Dict = {
   'models.openFinder': 'פתיחה ב־Finder',
   'models.openExplorer': "פתיחה בסייר הקבצים",
   'models.manualHint': 'גם קובצי {pattern} שתשימו ידנית מזוהים אוטומטית.',
+  "models.lang.en": "אנגלית",
+  "models.lang.eu": "שפות אירופיות",
+  "models.lang.ea": "יפנית · קוריאנית · סינית",
+  "models.lang.great": "מומלץ",
+  "models.lang.ok": "שמיש",
+  "models.lang.weak": "גבולי",
+  "models.lang.bad": "לא מומלץ",
+  "models.lang.guide": "בחירה לפי שפה: לאנגלית מספיק להתחיל מ-Small; לגרמנית, צרפתית, ספרדית ושפות אירופיות אחרות Small שמיש ו-Large v3 Turbo אמין; ליפנית, קוריאנית וסינית לפחות Large v3 Turbo; לתאית ולקנטונזית Large v3.",
+  "models.lang.legend": "האחוזים הם שימור המשמעות: חלק השורות שזוהו שמשמעותן עברה בשלמותה, נמדד על סרט אחד לכל אחת מאנגלית, גרמנית ויפנית; קוריאנית וסינית קובצו עם יפנית על סמך מבחנים שפורסמו.",
 
   'cloud.empty.title': 'עדיין לא הוגדר שירות ענן',
   'cloud.empty.body':

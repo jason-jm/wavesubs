@@ -215,6 +215,15 @@ export const ms: Dict = {
   'models.openFinder': 'Buka dalam Finder',
   'models.openExplorer': "Buka dalam Explorer",
   'models.manualHint': 'Fail {pattern} yang anda letak sendiri turut dikesan secara automatik.',
+  "models.lang.en": "Inggeris",
+  "models.lang.eu": "Bahasa-bahasa Eropah",
+  "models.lang.ea": "Jepun · Korea · Cina",
+  "models.lang.great": "Disyorkan",
+  "models.lang.ok": "Boleh digunakan",
+  "models.lang.weak": "Cukup-cukup",
+  "models.lang.bad": "Tidak disyorkan",
+  "models.lang.guide": "Pilih ikut bahasa: untuk Inggeris, mula dengan Small sudah memadai; untuk Jerman, Perancis, Sepanyol dan bahasa Eropah lain, Small boleh digunakan dan Large v3 Turbo boleh diharap; untuk Jepun, Korea dan Cina sekurang-kurangnya Large v3 Turbo; untuk Thai dan Kantonis gunakan Large v3.",
+  "models.lang.legend": "Peratusan ialah pengekalan makna: bahagian dialog yang dikenal pasti dengan makna sampai sepenuhnya, diukur pada satu filem bagi setiap Inggeris, Jerman dan Jepun; Korea dan Cina dikelompokkan bersama Jepun berdasarkan ujian yang diterbitkan.",
 
   'cloud.empty.title': 'Belum ada perkhidmatan awan ditambah',
   'cloud.empty.body':

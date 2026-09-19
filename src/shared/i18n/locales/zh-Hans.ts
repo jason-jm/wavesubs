@@ -222,6 +222,15 @@ export const zhHans = {
   'models.openFinder': '在访达中打开',
   'models.openExplorer': "在资源管理器中打开",
   'models.manualHint': '手动放入 {pattern} 文件也能被自动识别。',
+  "models.lang.en": "英语",
+  "models.lang.eu": "欧洲语言",
+  "models.lang.ea": "日语·韩语·中文",
+  "models.lang.great": "推荐",
+  "models.lang.ok": "可用",
+  "models.lang.weak": "勉强",
+  "models.lang.bad": "不建议",
+  "models.lang.guide": "按语言挑模型：英语从 Small 起步；德语、法语、西班牙语等欧洲语言 Small 可用、Large v3 Turbo 才稳；日语、韩语、中文至少 Large v3 Turbo；泰语、粤语用 Large v3。",
+  "models.lang.legend": "百分比是意思保留率——识别出的对白里意思完整的比例，英语、德语、日语各用一部片实测；韩语、中文按公开评测归入日语一档。",
 
   // ---------- 云端服务 ----------
   'cloud.empty.title': '还没有添加云端服务',

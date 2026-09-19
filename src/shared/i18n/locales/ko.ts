@@ -211,6 +211,15 @@ export const ko: Dict = {
   'models.openFinder': 'Finder에서 열기',
   'models.openExplorer': "탐색기에서 열기",
   'models.manualHint': '{pattern} 파일을 직접 넣어도 자동으로 인식됩니다.',
+  "models.lang.en": "영어",
+  "models.lang.eu": "유럽 언어",
+  "models.lang.ea": "일본어·한국어·중국어",
+  "models.lang.great": "추천",
+  "models.lang.ok": "사용 가능",
+  "models.lang.weak": "아쉬움",
+  "models.lang.bad": "비추천",
+  "models.lang.guide": "언어별 선택: 영어는 Small부터. 독일어·프랑스어·스페인어 등 유럽 언어는 Small도 쓸 만하지만 Large v3 Turbo라야 안정적입니다. 일본어·한국어·중국어는 Large v3 Turbo 이상, 태국어·광둥어는 Large v3를 쓰세요.",
+  "models.lang.legend": "퍼센트는 의미 보존율입니다. 인식된 대사 중 의미가 온전히 전달된 비율로, 영어·독일어·일본어는 각각 영화 한 편으로 실측했고 한국어·중국어는 공개 벤치마크를 근거로 일본어와 같은 등급으로 묶었습니다.",
 
   'cloud.empty.title': '아직 추가한 클라우드 서비스가 없습니다',
   'cloud.empty.body':

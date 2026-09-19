@@ -34,6 +34,25 @@ const FITNESS: Record<ModelInfo['fitness'], { key: TranslationKey; tone: string 
   unfit: { key: 'models.fitness.unfit', tone: 'tag-red' }
 }
 
+/**
+ * 「按语言选模型」：目录里各模型带三组语言的意思保留率（见 catalog.ts 的实测说明），
+ * 这里只负责把百分比翻成一眼能读的档位。阈值取自实测分布：Turbo 三种语言都在 85 以上，
+ * Small 的英语 92、德语 81、日语 66，Tiny 的日语 37——四档正好把它们分开。
+ */
+type LangGroup = 'en' | 'eu' | 'ea'
+const LANG_GROUPS: LangGroup[] = ['en', 'eu', 'ea']
+const LANG_LABEL: Record<LangGroup, TranslationKey> = {
+  en: 'models.lang.en',
+  eu: 'models.lang.eu',
+  ea: 'models.lang.ea'
+}
+function langLevel(percent: number): { key: TranslationKey; tone: string } {
+  if (percent >= 85) return { key: 'models.lang.great', tone: 'tag-green' }
+  if (percent >= 75) return { key: 'models.lang.ok', tone: 'tag-accent' }
+  if (percent >= 60) return { key: 'models.lang.weak', tone: 'tag-orange' }
+  return { key: 'models.lang.bad', tone: 'tag-red' }
+}
+
 function Meter({ value }: { value: number }): React.JSX.Element {
   return (
     <span className="meter">
@@ -63,6 +82,19 @@ function ModelRow(props: {
           <span className={`tag ${fit.tone}`}>{t(fit.key)}</span>
         </div>
         <p className="model-detail">{model.detail}</p>
+        {model.languages && (
+          <div className="model-langs" title={t('models.lang.legend')}>
+            {LANG_GROUPS.map((g) => {
+              const percent = model.languages![g]
+              const level = langLevel(percent)
+              return (
+                <span key={g} className={`tag ${level.tone}`}>
+                  {t(LANG_LABEL[g])} <b dir="ltr">{percent}%</b> · {t(level.key)}
+                </span>
+              )
+            })}
+          </div>
+        )}
         <div className="model-meta">
           {/* 数字+单位在 RTL 下会被 bidi 反转，锁成 ltr */}
           <span dir="ltr">{sizeLabel(model.sizeMB)}</span>
@@ -198,6 +230,14 @@ export function ModelsView(props: Props): React.JSX.Element {
               })}
             </span>
           </div>
+
+          {tab === 'asr' && (
+            <p className="models-lang-guide">
+              {t('models.lang.guide')}
+              <br />
+              {t('models.lang.legend')}
+            </p>
+          )}
 
           <div className="card">
             {list.map((m) => (

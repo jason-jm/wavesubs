@@ -211,6 +211,15 @@ export const zhHant: Dict = {
   'models.openFinder': '在 Finder 中打開',
   'models.openExplorer': "在檔案總管中開啟",
   'models.manualHint': '手動放入 {pattern} 檔案也會被自動辨識。',
+  "models.lang.en": "英語",
+  "models.lang.eu": "歐洲語言",
+  "models.lang.ea": "日語·韓語·中文",
+  "models.lang.great": "推薦",
+  "models.lang.ok": "可用",
+  "models.lang.weak": "勉強",
+  "models.lang.bad": "不建議",
+  "models.lang.guide": "按語言挑模型：英語從 Small 起步；德語、法語、西班牙語等歐洲語言 Small 可用、Large v3 Turbo 才穩；日語、韓語、中文至少 Large v3 Turbo；泰語、粵語用 Large v3。",
+  "models.lang.legend": "百分比是意思保留率——辨識出的對白裡意思完整的比例，英語、德語、日語各用一部片實測；韓語、中文按公開評測歸入日語一檔。",
 
   'cloud.empty.title': '還沒有新增雲端服務',
   'cloud.empty.body':

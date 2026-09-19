@@ -214,6 +214,15 @@ export const nb: Dict = {
   'models.openFinder': 'Åpne i Finder',
   'models.openExplorer': "Åpne i Utforsker",
   'models.manualHint': '{pattern}-filer du legger inn selv, oppdages automatisk.',
+  "models.lang.en": "Engelsk",
+  "models.lang.eu": "Europeiske språk",
+  "models.lang.ea": "Japansk · Koreansk · Kinesisk",
+  "models.lang.great": "Anbefalt",
+  "models.lang.ok": "Brukbar",
+  "models.lang.weak": "På grensen",
+  "models.lang.bad": "Frarådes",
+  "models.lang.guide": "Valg etter språk: for engelsk holder det å starte med Small; for tysk, fransk, spansk og andre europeiske språk er Small brukbar og Large v3 Turbo pålitelig; for japansk, koreansk og kinesisk minst Large v3 Turbo; for thai og kantonesisk Large v3.",
+  "models.lang.legend": "Prosentene er bevart mening: andelen gjenkjente replikker der betydningen kom intakt gjennom, målt på én film hver for engelsk, tysk og japansk; koreansk og kinesisk er gruppert med japansk ut fra publiserte tester.",
 
   'cloud.empty.title': 'Ingen skytjeneste lagt til ennå',
   'cloud.empty.body':

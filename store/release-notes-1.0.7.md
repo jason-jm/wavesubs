@@ -17,6 +17,7 @@
 - 同一个文件跑两遍出同一份字幕：画面文字的判别改成贪心解码加固定随机种子
 
 **其它**
+- 模型页按语言给参考：每个识别模型标出英语、欧洲语言、日语·韩语·中文三组的意思保留率和档位（推荐 / 可用 / 勉强 / 不建议），列表上方一句「按语言挑模型」。数字来自三部片各 30 分钟的实测盲评
 - 自动判断语种更稳：不再只看开头 30 秒（片头音乐会被判成英语，整集识别成英文胡话），改为在人声最密的几处各取 20 秒投票
 - 字幕样式统一：画面文字原来是粗体、对白是常规体，同一屏上看着像两种字体，现在统一
 
@@ -59,6 +60,7 @@
 - The same file twice gives the same subtitles: on-screen text judging now uses greedy decoding with a fixed seed
 
 **Other**
+- The Models page now gives per-language guidance: each recognition model shows meaning retention for English, European languages and Japanese · Korean · Chinese with a verdict (recommended / usable / marginal / not advised), plus a one-line "choosing by language" note above the list. The figures come from blind-judged 30-minute samples of three films
 - Steadier language detection: instead of only the first 30 seconds (where opening music could be read as English and turn a whole episode into English gibberish), five 20-second windows are sampled where speech is densest and vote
 - Consistent subtitle styling: on-screen text was bold while dialogue was regular, which read as two different typefaces on the same frame
 

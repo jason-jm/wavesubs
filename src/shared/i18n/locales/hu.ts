@@ -214,6 +214,15 @@ export const hu: Dict = {
   'models.openFinder': 'Megnyitás a Finderben',
   'models.openExplorer': "Megnyitás Intézőben",
   'models.manualHint': 'A kézzel bemásolt {pattern} fájlokat is automatikusan felismeri.',
+  "models.lang.en": "Angol",
+  "models.lang.eu": "Európai nyelvek",
+  "models.lang.ea": "Japán · Koreai · Kínai",
+  "models.lang.great": "Ajánlott",
+  "models.lang.ok": "Használható",
+  "models.lang.weak": "Határeset",
+  "models.lang.bad": "Nem ajánlott",
+  "models.lang.guide": "Választás nyelv szerint: angolhoz elég a Small; némethez, franciához, spanyolhoz és más európai nyelvekhez a Small használható, a Large v3 Turbo megbízható; japánhoz, koreaihoz és kínaihoz legalább Large v3 Turbo; thaihoz és kantonihoz Large v3.",
+  "models.lang.legend": "A százalékok a jelentés megőrzését mutatják: a felismert sorok azon hányadát, amelyek jelentése sértetlenül átjött; angolra, németre és japánra egy-egy filmen mérve; a koreait és a kínait közzétett tesztek alapján soroltuk a japán csoportba.",
 
   'cloud.empty.title': 'Még nincs hozzáadva felhőszolgáltatás',
   'cloud.empty.body':

@@ -215,6 +215,15 @@ export const es: Dict = {
   'models.openFinder': 'Abrir en Finder',
   'models.openExplorer': "Abrir en el Explorador",
   'models.manualHint': 'Los archivos {pattern} que dejes ahí se detectan automáticamente.',
+  "models.lang.en": "Inglés",
+  "models.lang.eu": "Lenguas europeas",
+  "models.lang.ea": "Japonés · Coreano · Chino",
+  "models.lang.great": "Recomendado",
+  "models.lang.ok": "Utilizable",
+  "models.lang.weak": "Justo",
+  "models.lang.bad": "No recomendado",
+  "models.lang.guide": "Elegir según el idioma: para inglés basta empezar por Small; para alemán, francés, español y otras lenguas europeas, Small es utilizable y Large v3 Turbo es fiable; para japonés, coreano y chino, Large v3 Turbo como mínimo; para tailandés y cantonés, Large v3.",
+  "models.lang.legend": "Los porcentajes son la conservación del sentido: la proporción de frases reconocidas cuyo significado llegó intacto, medida con una película por idioma para inglés, alemán y japonés; el coreano y el chino se agrupan con el japonés según las evaluaciones publicadas.",
 
   'cloud.empty.title': 'Aún no hay ningún servicio en la nube',
   'cloud.empty.body':

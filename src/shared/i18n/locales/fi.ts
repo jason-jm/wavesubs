@@ -214,6 +214,15 @@ export const fi: Dict = {
   'models.openFinder': 'Avaa Finderissa',
   'models.openExplorer': "Avaa Resurssienhallinnassa",
   'models.manualHint': 'Myös itse lisätyt {pattern}-tiedostot tunnistetaan automaattisesti.',
+  "models.lang.en": "Englanti",
+  "models.lang.eu": "Euroopan kielet",
+  "models.lang.ea": "Japani · Korea · Kiina",
+  "models.lang.great": "Suositeltu",
+  "models.lang.ok": "Käyttökelpoinen",
+  "models.lang.weak": "Rajatapaus",
+  "models.lang.bad": "Ei suositella",
+  "models.lang.guide": "Valinta kielen mukaan: englantiin riittää aloittaa Smallista; saksaan, ranskaan, espanjaan ja muihin Euroopan kieliin Small on käyttökelpoinen ja Large v3 Turbo luotettava; japaniin, koreaan ja kiinaan vähintään Large v3 Turbo; thaihin ja kantoniin Large v3.",
+  "models.lang.legend": "Prosentit kertovat merkityksen säilymisen: kuinka suuri osa tunnistetuista repliikeistä välittyi merkitykseltään ehjänä; mitattu yhdellä elokuvalla englannille, saksalle ja japanille; korea ja kiina on ryhmitelty japanin kanssa julkaistujen testien perusteella.",
 
   'cloud.empty.title': 'Pilvipalveluita ei ole vielä lisätty',
   'cloud.empty.body':

@@ -214,6 +214,15 @@ export const vi: Dict = {
   'models.openFinder': 'Mở trong Finder',
   'models.openExplorer': "Mở trong Explorer",
   'models.manualHint': 'Tệp {pattern} bạn tự bỏ vào cũng được nhận diện tự động.',
+  "models.lang.en": "Tiếng Anh",
+  "models.lang.eu": "Các ngôn ngữ châu Âu",
+  "models.lang.ea": "Nhật · Hàn · Trung",
+  "models.lang.great": "Nên dùng",
+  "models.lang.ok": "Dùng được",
+  "models.lang.weak": "Tạm được",
+  "models.lang.bad": "Không nên",
+  "models.lang.guide": "Chọn theo ngôn ngữ: tiếng Anh bắt đầu từ Small là đủ; tiếng Đức, Pháp, Tây Ban Nha và các ngôn ngữ châu Âu khác Small dùng được, Large v3 Turbo mới ổn định; tiếng Nhật, Hàn, Trung ít nhất Large v3 Turbo; tiếng Thái và tiếng Quảng Đông dùng Large v3.",
+  "models.lang.legend": "Phần trăm là mức giữ được ý nghĩa: tỷ lệ lời thoại nhận dạng được mà ý nghĩa truyền đạt trọn vẹn, đo trên một phim cho mỗi tiếng Anh, Đức và Nhật; tiếng Hàn và tiếng Trung được xếp cùng nhóm với tiếng Nhật theo các đánh giá đã công bố.",
 
   'cloud.empty.title': 'Chưa thêm dịch vụ đám mây nào',
   'cloud.empty.body':
