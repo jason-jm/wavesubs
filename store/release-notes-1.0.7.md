@@ -10,7 +10,7 @@
 
 **翻译**
 - 术语表现在也管画面文字。之前只喂给对白翻译，同一个人名在两条轨道上会对不上；术语表改了，对白与画面文字一起重译
-- 小模型把长句只译成开头几个字的，现在会被拦下重译：用 1.7B 翻日语纪录片时整集译文都只有原文头一个短语（「今年6月」「受邀的是」），根因是提示词里要求先照抄原文开头几个字，小模型把译文也只译那几个字。改了提示词，并按双语字幕校准了一道长度护栏
+- 小模型把长句只译成开头几个字：用 1.7B 翻日语纪录片时整集译文都只有原文头一个短语（「今年6月」「受邀的是」），根因是提示词里要求先照抄原文开头几个字，小模型把译文也只译那几个字。提示词已改
 - 同一个专名不再有两种写法。翻译是分批做的，批与批之间没有记忆，一部片里同一个名字会出现「韦伯／威伯」两种写法。收尾按源文里反复出现的专名把译文分组，把少数写法改成多数写法
 - 同一个文件跑两遍出同一份字幕：画面文字的判别改成贪心解码加固定随机种子
 
@@ -50,7 +50,7 @@
 
 **Translation**
 - The glossary now applies to on-screen text as well. It previously reached only the dialogue, so the same personal name could differ between the two tracks; changing the glossary now retranslates both
-- Small models that translated only the first few words of a long line are now caught and retried: with the 1.7B model a Japanese documentary came out as one short phrase per line ("This June", "Those invited were"). The cause was the alignment anchor in the prompt — copy the first four characters of the source, then translate — which small models applied to the translation too. The prompt now says so explicitly, and a length guard calibrated on bilingual subtitles rejects translations far shorter than their source
+- Small models translated only the first few words of a long line: with the 1.7B model a Japanese documentary came out as one short phrase per line ("This June", "Those invited were"). The cause was the alignment anchor in the prompt — copy the first four characters of the source, then translate — which small models applied to the translation too. The prompt now says so explicitly
 - One proper noun, one spelling. Translation runs in batches with no memory between them, so a single name could come out two ways in one film. A final pass groups translations by the recurring proper noun in their source and rewrites the minority spelling
 - The same file twice gives the same subtitles: on-screen text judging now uses greedy decoding with a fixed seed
 
