@@ -316,7 +316,9 @@ export default function App(): React.JSX.Element {
     if (import.meta.env.DEV) {
       const w = window as unknown as Record<string, unknown>
       w.__openEditor = openEditor
+      // 合并而不是覆盖：HomeView 也往这个对象上挂自己的钩子，子组件的 effect 先跑
       w.__demo = {
+        ...((w.__demo as Record<string, unknown> | undefined) ?? {}),
         setView,
         setModelTab,
         setJobState,

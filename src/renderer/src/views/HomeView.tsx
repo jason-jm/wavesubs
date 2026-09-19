@@ -90,6 +90,13 @@ export function HomeView(props: Props): React.JSX.Element {
   const { t, locale } = useI18n()
   const [dragOver, setDragOver] = useState(false)
   const [pending, setPending] = useState<PendingFile | null>(null)
+  // 仅开发模式：截图脚本不用真的拖文件就能摆出「文件已选、设置两框都在」的状态
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      const w = window as unknown as { __demo?: Record<string, unknown> }
+      w.__demo = { ...(w.__demo ?? {}), setPending }
+    }
+  }, [])
   // 「在访达中显示」在 Windows 上得叫资源管理器
   const [platform, setPlatform] = useState('darwin')
   useEffect(() => {

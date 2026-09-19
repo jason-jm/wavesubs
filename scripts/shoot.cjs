@@ -79,10 +79,10 @@ const overview = {
   hardware: { chip: 'Apple M4 Pro', memGB: 48, appleSilicon: true },
   selected: 'ggml-large-v3-turbo.bin', llmSelected: 'Qwen3-8B-Q4_K_M.gguf',
   models: [
-    model('ggml-large-v3-turbo.bin', 'Large v3 Turbo', 1620, 4, 4, 4, true, 'great', { recommendedDefault: true }),
-    model('ggml-large-v3.bin', 'Large v3', 3100, 6, 5, 2, false, 'ok'),
-    model('ggml-medium.bin', 'Medium', 1530, 3, 3, 3, true, 'great'),
-    model('ggml-small.bin', 'Small', 488, 1, 2, 5, false, 'great')
+    model('ggml-large-v3-turbo.bin', 'Large v3 Turbo', 1620, 4, 4, 4, true, 'great', { recommendedDefault: true, languages: { en: 95, eu: 96, ea: 89 } }),
+    model('ggml-large-v3.bin', 'Large v3', 3100, 6, 5, 2, false, 'ok', { languages: { en: 96, eu: 94, ea: 88 } }),
+    model('ggml-medium.bin', 'Medium', 1530, 3, 3, 3, true, 'great', { languages: { en: 91, eu: 81, ea: 79 } }),
+    model('ggml-small.bin', 'Small', 488, 1, 2, 5, false, 'great', { languages: { en: 92, eu: 81, ea: 66 } })
   ],
   llmModels: [
     model('Qwen3-8B-Q4_K_M.gguf', 'Qwen3 8B', 5030, 8, 4, 3, true, 'great', { recommendedDefault: true }),
@@ -128,8 +128,9 @@ const batch = [
 ]
 
 const SCENES = [
-  { name: 'home-running', run: `__demo.setView('home'); __demo.setLastInput(${JSON.stringify(INPUT)}); __demo.setJobState({ kind: 'running', input: ${JSON.stringify(INPUT)}, progress: { stage: 'transcribe', percent: 62 } })` },
-  { name: 'home-done', run: `__demo.setView('home'); __demo.setLastInput(${JSON.stringify(INPUT)}); __demo.setJobState({ kind: 'done', result: ${JSON.stringify(summary(SHOW, 412, good, { translationReuse: 'none' }))} })` },
+  { name: 'home-ready', run: `__demo.setView('home'); __demo.setJobState({ kind: 'idle' }); __demo.setPending({ path: ${JSON.stringify(INPUT)}, info: ${JSON.stringify(probe(1423))} })`, wait: 700 },
+  { name: 'home-running', run: `__demo.setPending(null); __demo.setView('home'); __demo.setLastInput(${JSON.stringify(INPUT)}); __demo.setJobState({ kind: 'running', input: ${JSON.stringify(INPUT)}, progress: { stage: 'transcribe', percent: 62 } })` },
+  { name: 'home-done', run: `__demo.setPending(null); __demo.setView('home'); __demo.setLastInput(${JSON.stringify(INPUT)}); __demo.setJobState({ kind: 'done', result: ${JSON.stringify(summary(SHOW, 412, good, { translationReuse: 'none' }))} })` },
   { name: 'batch', run: `__demo.setView('batch'); __demo.setBatch(${JSON.stringify(batch)})` },
   { name: 'editor', run: `__openEditor(${JSON.stringify(INPUT)}, 'home')`, after: `
       const row = document.querySelectorAll('.editor-row')[2];
@@ -155,9 +156,12 @@ app.whenReady().then(async () => {
   const win = new BrowserWindow({
     width: 1440, height: 900, useContentSize: true, show: true, frame: false,
     backgroundColor: '#0f1117',
-    webPreferences: { preload: path.join(__dirname, 'shoot-preload.cjs'), contextIsolation: true, sandbox: false }
+    // 被别的窗口挡住时 macOS 会停掉渲染，capturePage 拿到的就是上一场景的旧帧：关掉后台节流，并置顶
+    webPreferences: { preload: path.join(__dirname, 'shoot-preload.cjs'), contextIsolation: true, sandbox: false, backgroundThrottling: false }
   })
   log('window created')
+  win.setAlwaysOnTop(true)
+  win.moveTop()
   win.webContents.on('console-message', (_e, level, msg) => { if (level >= 2) log('page: ' + msg.slice(0, 160)) })
   await win.loadURL(BASE)
   log('loaded')
@@ -170,6 +174,9 @@ app.whenReady().then(async () => {
       await win.webContents.executeJavaScript(`(() => { ${scene.after}; return true })()`)
     }
     await sleep(scene.wait ?? 400)
+    // 强制重绘一帧再截，否则同一帧可能被连着截好几次
+    win.webContents.invalidate()
+    await sleep(250)
     const img = await win.webContents.capturePage()
     const file = path.join(OUT, `${LOCALE}-${THEME}-${scene.name}.png`)
     fs.writeFileSync(file, img.toPNG())

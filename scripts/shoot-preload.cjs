@@ -15,7 +15,12 @@ contextBridge.exposeInMainWorld('waveSubs', {
   getSettings: settings, updateSettings: settings, saveCloudProvider: settings, removeCloudProvider: settings,
   testCloudProvider: async () => ({ ok: true, message: 'ok' }),
   revealInFinder: () => {}, openPath: () => {}, pathForFile: (f) => f.name,
-  appInfo: async () => ({ version: '1.0.1', platform: 'darwin', mas: false, locale: 'zh-Hans' }), openExternal: () => {},
+  appInfo: async () => ({ version: '1.0.8', platform: 'darwin', mas: false, locale: 'zh-Hans', signsSupported: true }), openExternal: () => {},
+  // 检查更新：截图里显示「已是最新版本」；不真的联网
+  updateStatus: async () => ({ state: 'latest', current: '1.0.8', installSource: 'manual', checkedAt: Date.now() }),
+  checkForUpdates: async () => ({ state: 'latest', current: '1.0.8', installSource: 'manual', checkedAt: Date.now() }),
+  skipUpdate: async () => null,
+  onUpdateStatus: () => () => {},
   loadRecord: async () => data.record,
   saveRecordCues: async () => true,
   exportRecord: async () => data.exportPath,

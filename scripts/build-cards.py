@@ -115,19 +115,20 @@ def shoot(page_path, prefix):
     if n > 0: print(f'  ⚠ 内容超出 {n}px: {os.path.basename(prefix)}')
     return prefix + '-0.png'
 
-langs = sys.argv[1:] or bs.LANGS
-tmp = tempfile.mkdtemp(prefix='wavesubs-cards-')
-try:
-    for k in langs:
-        outdir = os.path.join(OUT, k); os.makedirs(outdir, exist_ok=True)
-        cs = cards(k)
-        only = [x for x in os.environ.get('CARDS', '').split(',') if x]
-        for i, (cid, body) in enumerate(cs, 1):
-            if only and cid not in only: continue
-            p = os.path.join(tmp, f'{k}-{i}.html'); open(p, 'w', encoding='utf-8').write(page(k, i, len(cs), body))
-            png = shoot(p, os.path.join(tmp, f'{k}-{i}'))
-            out = os.path.join(outdir, f'{i:02d}-{cid}.jpg')
-            subprocess.run(['sips', '-s', 'format', 'jpeg', '-s', 'formatOptions', '88', png, '--out', out], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        print(f'{k}: {len(cs)} 张 → {os.path.relpath(outdir, ROOT)}')
-finally:
-    shutil.rmtree(tmp, ignore_errors=True)
+if __name__ == '__main__':
+    langs = sys.argv[1:] or bs.LANGS
+    tmp = tempfile.mkdtemp(prefix='wavesubs-cards-')
+    try:
+        for k in langs:
+            outdir = os.path.join(OUT, k); os.makedirs(outdir, exist_ok=True)
+            cs = cards(k)
+            only = [x for x in os.environ.get('CARDS', '').split(',') if x]
+            for i, (cid, body) in enumerate(cs, 1):
+                if only and cid not in only: continue
+                p = os.path.join(tmp, f'{k}-{i}.html'); open(p, 'w', encoding='utf-8').write(page(k, i, len(cs), body))
+                png = shoot(p, os.path.join(tmp, f'{k}-{i}'))
+                out = os.path.join(outdir, f'{i:02d}-{cid}.jpg')
+                subprocess.run(['sips', '-s', 'format', 'jpeg', '-s', 'formatOptions', '88', png, '--out', out], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            print(f'{k}: {len(cs)} 张 → {os.path.relpath(outdir, ROOT)}')
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
