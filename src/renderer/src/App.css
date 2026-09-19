@@ -1660,6 +1660,72 @@ select optgroup {
   color: var(--text-2);
 }
 
+/* 设置页「关于」里的软件更新：有新版本时的提示块 */
+.update-notice {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.update-headline {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.update-hint {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.update-cmd {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.update-cmd code {
+  padding: 4px 8px;
+  font-size: 12px;
+  background: var(--bg-fill);
+  border-radius: 6px;
+  user-select: all;
+}
+
+.update-notes {
+  max-height: 180px;
+  margin: 0;
+  padding: 8px 10px;
+  overflow: auto;
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text-2);
+  white-space: pre-wrap;
+  background: var(--bg-fill);
+  border-radius: 8px;
+}
+
+.update-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* 侧栏「设置」上的小点：有新版本、且用户没跳过 */
+.nav-dot {
+  position: absolute;
+  top: 9px;
+  right: 12px;
+  width: 8px;
+  height: 8px;
+  background: var(--orange);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.18);
+}
+
 /* 模型卡片里的「按语言」档位：三组语言各一枚标签，百分比是意思保留率 */
 .model-langs {
   display: flex;

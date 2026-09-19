@@ -343,6 +343,8 @@ export interface SettingsView {
   translateEnabled: boolean
   /** 上次转换时是否勾了「翻译画面中的文字」 */
   signsEnabled: boolean
+  /** 启动时自动检查更新 */
+  updateCheck: boolean
   translation: TranslationSettingsView
   export: { format: ExportFormat; content: ExportContent }
 }
@@ -353,6 +355,7 @@ export interface SettingsUpdate {
   language?: string
   translateEnabled?: boolean
   signsEnabled?: boolean
+  updateCheck?: boolean
   translation?: {
     engine?: TranslationEngine
     targetLanguage?: string
@@ -372,4 +375,31 @@ export interface AppInfo {
   locale: string
   /** 画面文字识别可用（macOS 且随包的 vision-ocr 在） */
   signsSupported: boolean
+}
+
+/** 装的来源：决定「有新版本」时给下载按钮，还是给包管理器的升级命令 */
+export type InstallSource = 'manual' | 'homebrew' | 'scoop' | 'mas'
+
+/** latest.json 里和这台机器有关的部分 */
+export interface UpdateInfo {
+  version: string
+  publishedAt?: string
+  /** GitHub Release 页 */
+  notesUrl: string
+  /** 更新要点，按语言码 */
+  notes?: Record<string, string>
+  /** 这个平台的安装包直链；latest.json 里没有这个平台时为空 */
+  downloadUrl?: string
+  sizeMB?: number
+}
+
+export interface UpdateStatus {
+  state: 'idle' | 'checking' | 'latest' | 'available' | 'error'
+  current: string
+  installSource: InstallSource
+  checkedAt?: number
+  latest?: UpdateInfo
+  /** latest 正是用户跳过的那个版本：不再提醒 */
+  skipped?: boolean
+  error?: string
 }

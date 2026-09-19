@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type {
+  UpdateStatus,
   BatchEntry,
   BatchOverride,
   JobProgress,
@@ -89,6 +90,24 @@ export default function App(): React.JSX.Element {
     void window.waveSubs.appInfo().then((info) => {
       setSignsSupported(Boolean(info.signsSupported))
       setPlatform(info.platform)
+    })
+  }, [])
+  /** 检查更新的结果：主进程启动后自己查一次并推过来，设置页也能手动查 */
+  const [updateStatus, setUpdateStatus] = useState<UpdateStatus | null>(null)
+  useEffect(() => {
+    void window.waveSubs.updateStatus().then((status) => {
+      if (status) setUpdateStatus(status)
+    })
+    return window.waveSubs.onUpdateStatus(setUpdateStatus)
+  }, [])
+  const checkForUpdates = useCallback(() => {
+    void window.waveSubs.checkForUpdates().then((status) => {
+      if (status) setUpdateStatus(status)
+    })
+  }, [])
+  const skipUpdate = useCallback((version: string) => {
+    void window.waveSubs.skipUpdate(version).then((status) => {
+      if (status) setUpdateStatus(status)
     })
   }, [])
   /** 单文件页最近一次任务的输入路径——完成卡片的「编辑字幕」要用它定位记录 */
@@ -391,6 +410,9 @@ export default function App(): React.JSX.Element {
       {/* 窄轨道里图标是主要识别物，放大到 28px；描边同步调细以抵消等比放大 */}
       <Icon name={item.icon} size={28} strokeWidth={1.05} />
       {t(item.labelKey)}
+      {item.id === 'settings' && updateStatus?.state === 'available' && !updateStatus.skipped && (
+        <span className="nav-dot" />
+      )}
     </button>
   )
 
@@ -516,7 +538,13 @@ export default function App(): React.JSX.Element {
             />
           )}
           {view === 'settings' && (
-            <SettingsPage settings={settings} updateSettings={updateSettings} />
+            <SettingsPage
+              settings={settings}
+              updateSettings={updateSettings}
+              updateStatus={updateStatus}
+              onCheckUpdate={checkForUpdates}
+              onSkipUpdate={skipUpdate}
+            />
           )}
         </div>
       </main>

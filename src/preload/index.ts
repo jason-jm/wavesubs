@@ -16,7 +16,8 @@ import type {
   RecordView,
   SettingsUpdate,
   SettingsView,
-  TranslationTestResult
+  TranslationTestResult,
+  UpdateStatus
 } from '../shared/types'
 
 function subscribe<T>(channel: string, callback: (payload: T) => void): () => void {
@@ -60,6 +61,11 @@ const api = {
     ipcRenderer.invoke('cloud:test', id),
 
   appInfo: (): Promise<AppInfo> => ipcRenderer.invoke('app:info'),
+  updateStatus: (): Promise<UpdateStatus | null> => ipcRenderer.invoke('update:status'),
+  checkForUpdates: (): Promise<UpdateStatus | null> => ipcRenderer.invoke('update:check'),
+  skipUpdate: (version: string): Promise<UpdateStatus | null> => ipcRenderer.invoke('update:skip', version),
+  onUpdateStatus: (callback: (status: UpdateStatus) => void): (() => void) =>
+    subscribe('update:status', callback),
   /** 只放行官网 / 仓库 / App Store 评价链接，主进程再校验一次 */
   openExternal: (url: string): void => {
     void ipcRenderer.invoke('shell:openExternal', url)

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import type { AppInfo, Appearance, SettingsUpdate, SettingsView } from '../../../shared/types'
+import type { AppInfo, Appearance, SettingsUpdate, SettingsView, UpdateStatus } from '../../../shared/types'
+import { pickNotes } from '../../../shared/updates'
 import { APP_STORE_REVIEW_URL, DISCUSSIONS_URL, feedbackUrl } from '../../../shared/feedback'
 import type { TranslationKey } from '../../../shared/i18n'
 import { AVAILABLE_LOCALES, localeMeta } from '../../../shared/i18n'
@@ -11,6 +12,9 @@ import { Icon } from '../components/Icon'
 interface Props {
   settings: SettingsView | null
   updateSettings: (patch: SettingsUpdate) => Promise<void>
+  updateStatus: UpdateStatus | null
+  onCheckUpdate: () => void
+  onSkipUpdate: (version: string) => void
 }
 
 const APPEARANCES: Array<{ id: Appearance; labelKey: TranslationKey; hintKey: TranslationKey }> = [
@@ -179,7 +183,115 @@ function ThemePicker({
   )
 }
 
-export function SettingsPage({ settings, updateSettings }: Props): React.JSX.Element {
+/**
+ * 「关于」卡片里的软件更新：一行状态 + 按钮，有新版本时下面再接一块提示。
+ * 不需要服务端：主进程读 GitHub Release 附件里的 latest.json，这里只管把状态画出来。
+ * Homebrew / Scoop 装的不给下载按钮，给它们自己的升级命令——手动覆盖会和包管理器打架。
+ */
+function UpdateRows(props: {
+  status: UpdateStatus | null
+  locale: string
+  autoCheck: boolean
+  onToggleAuto: (on: boolean) => void
+  onCheck: () => void
+  onSkip: (version: string) => void
+}): React.JSX.Element {
+  const t = useT()
+  const { status, locale } = props
+  const [copied, setCopied] = useState(false)
+  const checking = status?.state === 'checking'
+  const latest = status?.state === 'available' ? status.latest : undefined
+  const time = status?.checkedAt
+    ? new Date(status.checkedAt).toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })
+    : ''
+  const line = !status || status.state === 'idle'
+    ? t('update.never')
+    : status.state === 'checking'
+      ? t('update.checking')
+      : status.state === 'latest'
+        ? `${t('update.latest')} · ${t('update.lastChecked', { time })}`
+        : status.state === 'available'
+          ? status.skipped
+            ? t('update.skipped', { version: status.latest?.version ?? '' })
+            : t('update.available', { version: status.latest?.version ?? '' })
+          : t('update.failed')
+  const cmd = status?.installSource === 'homebrew' ? 'brew upgrade --cask wavesubs' : status?.installSource === 'scoop' ? 'scoop update wavesubs' : ''
+  const copyCmd = (): void => {
+    void navigator.clipboard.writeText(cmd).then(() => {
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 1500)
+    })
+  }
+  const notes = pickNotes(latest?.notes, locale)
+  return (
+    <>
+      <div className="row">
+        <div className="row-label">
+          <strong>{t('update.title')}</strong>
+          <span>{line}</span>
+        </div>
+        <div className="row-control">
+          <button type="button" className="btn" disabled={checking} onClick={props.onCheck}>
+            {checking ? t('update.checking') : t('update.check')}
+          </button>
+        </div>
+      </div>
+      {latest && !status?.skipped && (
+        <div className="card-notice update-notice">
+          <p className="update-headline">
+            <Icon name="download" size={14} />
+            {t('update.available', { version: latest.version })}
+          </p>
+          <p className="update-hint">
+            {cmd ? t(status?.installSource === 'homebrew' ? 'update.brew' : 'update.scoop') : t('update.availableHint', { current: status?.current ?? '' })}
+          </p>
+          {cmd && (
+            <div className="update-cmd">
+              <code dir="ltr">{cmd}</code>
+              <button type="button" className="btn btn-quiet" onClick={copyCmd}>
+                {copied ? t('common.copied') : t('common.copyLink')}
+              </button>
+            </div>
+          )}
+          {notes && <pre className="update-notes">{notes}</pre>}
+          <div className="update-actions">
+            {!cmd && latest.downloadUrl && (
+              <button type="button" className="btn btn-primary" onClick={() => window.waveSubs.openExternal(latest.downloadUrl!)}>
+                <Icon name="download" size={14} />
+                {t('update.download')}
+                {latest.sizeMB ? <span dir="ltr"> · {latest.sizeMB} MB</span> : null}
+              </button>
+            )}
+            <button type="button" className="btn" onClick={() => window.waveSubs.openExternal(latest.notesUrl)}>
+              {t('update.notes')}
+            </button>
+            <button type="button" className="btn btn-quiet" onClick={() => props.onSkip(latest.version)}>
+              {t('update.skip')}
+            </button>
+          </div>
+        </div>
+      )}
+      <div className="row">
+        <div className="row-label">
+          <strong>{t('update.auto')}</strong>
+          <span>{t('update.autoHint')}</span>
+        </div>
+        <div className="row-control">
+          <button
+            type="button"
+            className={props.autoCheck ? 'switch switch-on' : 'switch'}
+            role="switch"
+            aria-checked={props.autoCheck}
+            onClick={() => props.onToggleAuto(!props.autoCheck)}
+          />
+        </div>
+      </div>
+    </>
+  )
+}
+
+export function SettingsPage(props: Props): React.JSX.Element {
+  const { settings, updateSettings } = props
   const t = useT()
   const [info, setInfo] = useState<AppInfo | null>(null)
   useEffect(() => {
@@ -260,6 +372,16 @@ export function SettingsPage({ settings, updateSettings }: Props): React.JSX.Ele
               <span className="tag tag-quiet">{info?.version ?? ''}</span>
             </div>
           </div>
+          {!info?.mas && (
+            <UpdateRows
+              status={props.updateStatus}
+              locale={settings?.resolvedLanguage ?? 'en'}
+              autoCheck={settings?.updateCheck ?? true}
+              onToggleAuto={(on) => void updateSettings({ updateCheck: on })}
+              onCheck={props.onCheckUpdate}
+              onSkip={props.onSkipUpdate}
+            />
+          )}
           <div className="row">
             <div className="row-label">
               <strong>{t('settings.about.privacy')}</strong>

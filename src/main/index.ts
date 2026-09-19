@@ -69,6 +69,7 @@ import type { TranslationProvider } from './core/translate/types'
 import { localizeError } from '../shared/i18n'
 import { migrateLegacyUserData } from './migrate'
 import { SettingsStore, describeSystemLanguages } from './settings'
+import { UpdateChecker } from './updates'
 
 /**
  * 侧边栏轨道宽度，必须与 App.css 里 .app 的第一列保持一致。
@@ -114,6 +115,7 @@ function llmDir(): string {
 }
 
 let settings: SettingsStore
+let updates: UpdateChecker | null = null
 let asrDownloader: ModelDownloader
 let llmDownloader: ModelDownloader
 const llamaManager = new LlamaServerManager()
@@ -349,6 +351,9 @@ function registerIpc(): void {
     return shell.openExternal(url)
   })
   handle('app:info', () => appInfo())
+  handle('update:status', () => updates?.current() ?? null)
+  handle('update:check', () => updates?.check(true) ?? null)
+  handle('update:skip', (_event, version: string) => updates?.skip(version) ?? null)
 
   handle('cloud:save', (_event, input: CloudProviderInput) => {
     settings.saveProvider(input)
@@ -658,6 +663,7 @@ function buildAppMenu(): void {
     { label: t('help.website'), click: open(SITE_URL) }
   ]
   if (info.mas) help.push({ type: 'separator' }, { label: t('help.rate'), click: open(APP_STORE_REVIEW_URL) })
+  if (!info.mas) help.push({ type: 'separator' }, { label: t('help.checkUpdate'), click: () => void checkUpdateFromMenu() })
   const template: MenuItemConstructorOptions[] = [
     ...(process.platform === 'darwin' ? [{ role: 'appMenu' as const }] : []),
     { role: 'fileMenu' },
@@ -667,6 +673,42 @@ function buildAppMenu(): void {
     { role: 'help', submenu: help }
   ]
   Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+}
+
+/**
+ * 菜单里的「检查更新…」：结果用系统对话框给。设置页里那份是主界面，这里只是个快捷入口。
+ * Homebrew / Scoop 装的给升级命令，不给下载按钮——手动覆盖会和包管理器打架。
+ */
+async function checkUpdateFromMenu(): Promise<void> {
+  if (!updates) return
+  const t = translatorFor(settings.resolvedLanguage)
+  const status = await updates.check(true)
+  const win = BrowserWindow.getAllWindows()[0]
+  const show = (opts: Electron.MessageBoxOptions): Promise<Electron.MessageBoxReturnValue> =>
+    win ? dialog.showMessageBox(win, opts) : dialog.showMessageBox(opts)
+  if (status.state === 'available' && status.latest) {
+    const { latest, installSource } = status
+    const cmd = installSource === 'homebrew' ? 'brew upgrade --cask wavesubs' : installSource === 'scoop' ? 'scoop update wavesubs' : ''
+    const canDownload = !cmd && Boolean(latest.downloadUrl)
+    const buttons = [...(canDownload ? [t('update.download')] : []), t('update.notes'), t('common.cancel')]
+    const r = await show({
+      type: 'info',
+      message: t('update.available', { version: latest.version }),
+      detail: cmd
+        ? `${t(installSource === 'homebrew' ? 'update.brew' : 'update.scoop')}\n${cmd}`
+        : t('update.availableHint', { current: status.current }),
+      buttons,
+      defaultId: 0,
+      cancelId: buttons.length - 1
+    })
+    const chosen = buttons[r.response]
+    if (chosen === t('update.download') && latest.downloadUrl) void shell.openExternal(latest.downloadUrl)
+    else if (chosen === t('update.notes')) void shell.openExternal(latest.notesUrl)
+  } else if (status.state === 'latest') {
+    await show({ type: 'info', message: t('update.latest'), detail: `Wave Subs ${status.current}` })
+  } else {
+    await show({ type: 'warning', message: t('update.failed') })
+  }
 }
 
 function createWindow(): void {
@@ -744,6 +786,21 @@ void app.whenReady().then(() => {
     )
   }
   settings = new SettingsStore()
+  updates = new UpdateChecker({
+    skippedVersion: () => settings.skippedVersion,
+    setSkippedVersion: (v) => settings.setSkippedVersion(v),
+    onChange: (status) => {
+      for (const w of BrowserWindow.getAllWindows()) w.webContents.send('update:status', status)
+    },
+    // 开发时可以指向本地的 latest.json 试「有新版本」那条路
+    url: process.env.WAVESUBS_UPDATE_URL
+  })
+  // 启动 5 秒后静默查一次；App Store 版由 App Store 更新，不查
+  if (settings.updateCheck && !process.mas) {
+    setTimeout(() => {
+      void updates?.check(false)
+    }, 5000)
+  }
   nativeTheme.themeSource = settings.appearance
   // 「跟随系统」时用户在系统里切深浅色，这里也要跟着重画窗口按钮
   nativeTheme.on('updated', refreshTitleBarOverlay)

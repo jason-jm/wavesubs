@@ -76,6 +76,21 @@ electron-builder 签名（Hardened Runtime + entitlements）、公证、装订 .
 公证那步失败（典型报错 `No Keychain password item found`，钥匙串瞬时不可读）时**不用重打**：
 `bash scripts/notarize-app.sh` 会公证并装订已签好的 .app，再用 `--prepackaged` 出 DMG/ZIP 并公证 DMG。
 
+## 传 Release 之后：latest.json（应用内「检查更新」读的文件）
+
+应用启动 5 秒后会从 `https://github.com/jason-jm/wavesubs/releases/latest/download/latest.json`
+读一个静态文件（GitHub 的永久链接，永远指向最新一次 Release 里的同名附件），比版本号，
+比当前新就在设置页提示并给下载按钮。没有服务端，文件由这一步生成：
+
+```bash
+# 前提：Release 已建好、DMG / EXE 已传上去（安装包地址从附件列表里取，GitHub 会把文件名里的空格换成点）
+npx tsx scripts/make-latest.ts --upload   # 生成 release/latest.json 并作为附件传上去（覆盖）
+npx tsx scripts/make-latest.ts --verify   # 从永久链接拉回来核对：线上版本 = package.json
+```
+
+更新要点取 `store/release-notes-<版本>.md`（中文在前、`---` 之后是英文），每种语言最多 1400 字。
+**忘了这一步，用户那边永远显示「已是最新版本」。**
+
 ## 发布前必查
 
 ```bash

@@ -107,6 +107,10 @@ interface StoredSettings {
   selectedModel?: string
   translateEnabled: boolean
   signsEnabled?: boolean
+  /** 启动时自动检查更新；没写过就是开 */
+  updateCheck?: boolean
+  /** 用户点过「跳过这个版本」的版本号 */
+  skippedVersion?: string
   translation: {
     engine: TranslationEngine
     targetLanguage: string
@@ -128,6 +132,7 @@ const DEFAULTS: StoredSettings = {
   grainDefaultRev: GRAIN_DEFAULT_REV,
   language: 'system',
   translateEnabled: false,
+  updateCheck: true,
   translation: {
     engine: 'local',
     targetLanguage: 'zh',
@@ -200,6 +205,19 @@ export class SettingsStore {
     writeFileSync(this.path, JSON.stringify(this.data, null, 2), 'utf8')
   }
 
+  get updateCheck(): boolean {
+    return this.data.updateCheck !== false
+  }
+
+  get skippedVersion(): string | undefined {
+    return this.data.skippedVersion
+  }
+
+  setSkippedVersion(version: string | undefined): void {
+    this.data.skippedVersion = version
+    this.save()
+  }
+
   view(): SettingsView {
     const { providers, activeProviderId } = this.data.translation
     return {
@@ -212,6 +230,7 @@ export class SettingsStore {
       systemLanguageTags: systemLanguages(),
       translateEnabled: this.data.translateEnabled,
       signsEnabled: Boolean(this.data.signsEnabled),
+      updateCheck: this.updateCheck,
       translation: {
         engine: this.data.translation.engine,
         targetLanguage: this.data.translation.targetLanguage,
@@ -242,6 +261,7 @@ export class SettingsStore {
     if (patch.language !== undefined) this.data.language = patch.language
     if (patch.translateEnabled !== undefined) this.data.translateEnabled = patch.translateEnabled
     if (patch.signsEnabled !== undefined) this.data.signsEnabled = patch.signsEnabled
+    if (patch.updateCheck !== undefined) this.data.updateCheck = patch.updateCheck
     if (patch.translation) {
       const t = patch.translation
       if (t.engine !== undefined) this.data.translation.engine = t.engine
