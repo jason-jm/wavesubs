@@ -45,7 +45,7 @@ h1{{font-size:64px;font-weight:800;line-height:1.15;margin:22px 0 0;letter-spaci
 .tag{{font-size:20px;font-weight:700;padding:8px 16px;border-radius:8px;letter-spacing:.02em}}
 .tag.new{{background:#EEF0FF;color:var(--indigo)}} .tag.fix{{background:#FFF1E6;color:var(--orange)}} .tag.win{{background:#E8F7EF;color:var(--green)}}
 .frame{{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 30px 60px rgba(20,22,28,.12)}}
-.frame img{{width:100%;height:100%;display:block;object-fit:cover;object-position:top}}
+.frame img{{width:100%;height:auto;display:block}}
 .foot{{display:flex;justify-content:space-between;margin-top:auto;padding-top:18px;border-top:1px solid var(--line);font-family:{MONO};font-size:17px;color:var(--ink3);letter-spacing:.04em}}
 .kick{{display:flex;align-items:center;gap:14px;margin-top:52px}}
 .no{{font-family:{MONO};font-size:22px;color:var(--ink3);letter-spacing:.06em}}
@@ -59,8 +59,8 @@ h2{{font-size:58px;font-weight:800;line-height:1.15;margin:18px 0 0;letter-spaci
 .stat .n{{font-size:78px;font-weight:900;letter-spacing:-.04em;line-height:1;white-space:nowrap}} .stat .n b{{color:var(--indigo);font-weight:900}}
 .stat .l{{margin-top:14px;font-size:22px;color:var(--ink2);line-height:1.45}}
 .cap{{font-family:{MONO};font-size:16px;color:var(--ink3);margin-top:12px;letter-spacing:.03em}}
-.grow{{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;margin-top:34px}}
-.grow .frame{{flex:1;min-height:0}}
+.grow{{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;margin-top:30px}}
+.grow .frame{{flex:0 1 auto;min-height:0;overflow:hidden}}
 /* 「有新版本」提示：按真实界面的文字画一张浅色示意 */
 .ui{{border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:0 30px 60px rgba(20,22,28,.12);padding:30px 36px;font-size:22px}}
 .ui .notes{{background:#F3F4F8;border-radius:14px;padding:18px 22px;margin:4px 0 18px;font-size:19px;line-height:1.6;color:var(--ink2);white-space:pre-line}}
@@ -131,8 +131,8 @@ def update_x_en():
     """X 用的三张 16:9：封面、数字、模型页"""
     foot = '<div class="foot"><span>wavesubs.com</span><span>macOS · Windows · free & open source</span></div>'
     tag = lambda cls, t: f'<span class="tag {cls}">{esc(t)}</span>'
-    two = lambda left, right: f'<div style="display:flex;gap:44px;flex:1;min-height:0;margin-top:18px"><div style="flex:0 0 520px;display:flex;flex-direction:column">{left}</div><div style="flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end">{right}</div></div>'
-    frame = lambda scene, hgt: f'<div class="frame" style="flex:1;min-height:0"><img src="{shot("en", scene)}"></div>'
+    two = lambda left, right: f'<div style="display:flex;gap:44px;flex:1;min-height:0;margin-top:18px"><div style="flex:0 0 520px;display:flex;flex-direction:column">{left}</div><div style="flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center">{right}</div></div>'
+    frame = lambda scene, hgt: f'<div class="frame" style="flex:0 1 auto;min-height:0;overflow:hidden"><img src="{shot("en", scene)}"></div>'
     return [
         ('x1-cover', two(f'<div class="ver" style="font-size:190px;margin-top:10px">1.0.8</div><h1 style="font-size:40px;margin-top:6px">Now it translates the text on screen, too</h1><div class="tags" style="margin-top:18px">{tag("new","4 new")}{tag("fix","5 fixes")}{tag("win","Windows")}</div>',
                           frame('editor', 470)) + foot),
@@ -159,8 +159,9 @@ html,body{{margin:0;overflow:hidden;background:var(--cream);font-family:{SANS};c
 .stamp.ok{{border-color:var(--green);color:var(--green)}}
 .still{{position:relative;border-radius:26px;overflow:hidden;border:3px solid var(--ink);box-shadow:12px 12px 0 var(--ink);background:#000;display:flex}}
 .still img{{width:100%;height:100%;display:block;object-fit:cover;object-position:center}}
-.still.shotframe img{{object-position:top}}
+.still.shotframe{{flex:0 1 auto;display:block}} .still.shotframe img{{height:auto}}
 .grow .still{{flex:1;min-height:0}}
+.grow .still.shotframe{{flex:0 1 auto}}
 .subline{{position:absolute;left:24px;right:24px;bottom:28px;text-align:center;color:#fff;font-size:40px;font-weight:700;line-height:1.3;
   text-shadow:-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000,2px 2px 0 #000,0 0 14px rgba(0,0,0,.7)}}
 .subline small{{display:block;font-size:22px;font-weight:500;opacity:.92}}
@@ -182,7 +183,7 @@ html,body{{margin:0;overflow:hidden;background:var(--cream);font-family:{SANS};c
 .cue h3{{margin:6px 0 8px;font-size:38px;font-weight:800;line-height:1.15}}
 .cue p{{margin:0;font-size:25px;line-height:1.55;color:var(--ink2)}}
 .lead{{font-size:30px;line-height:1.5;color:var(--ink2);margin:22px 0 0}}
-.grow{{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-end}}
+.grow{{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}}
 .big{{font-size:120px;font-weight:900;letter-spacing:-.03em;line-height:1;margin-top:30px}}
 '''
 
@@ -215,8 +216,10 @@ def raw_cards_zh():
     cards.append(('flow', tab('怎么用.srt') + '<div class="h" style="font-size:72px">三条 cue，搞定</div>' + '<div style="margin-top:10px">' + cues(d['steps'], TCS) + '</div>' + frame('home-done') + stk(['自动检测语种', '时间轴对齐到真实说话时刻', 'SRT / ASS']) + foot('两小时电影 M 芯片约 3～6 分钟识别')))
     cards.append(('signs', tab('画面文字.ass') + '<div class="h" style="font-size:72px">画面里的字，<br>也给你<span class="em">翻</span></div>' + '<p class="lead">招牌、便签、短信、聊天气泡、告示、标题卡、人物名牌，按原文的位置写进字幕，不遮对白。</p>'
         + '<div class="grow" style="margin-top:30px">' + still('招牌和短信也有译文', '', '', '<small>画面文字</small>コンビニ 24時間 → 便利店 24 小时') + '</div>' + stk(['不下载模型', '一集多花两三分钟', 'Mac Vision · Windows OCR']) + foot('字幕组的活，本地 AI 顺手干了')))
-    cards.append(('editor', tab('编辑.srt') + '<div class="h" style="font-size:72px">点一行，<br>听这句</div>' + f'<p class="lead">{esc(d["ed_p"])}</p>' + frame('editor') + stk(['HEVC / DTS 也能预览', '改字 · 调时间 · 增删合并']) + foot('改完重新导出，任何播放器都认')))
-    cards.append(('batch', tab('整季.srt') + '<div class="h" style="font-size:72px">一季 24 集，<br>拖一次</div>' + f'<p class="lead">{esc(d["ba_p"])}</p>' + frame('batch') + stk(['术语表：人名整季一致', '每集都有质检结论']) + foot('跑完每一集字幕都在影片旁边')))
+    cards.append(('editor', tab('编辑.srt') + '<div class="h" style="font-size:72px">点一行，<br>听这句</div>' + f'<p class="lead">{esc(d["ed_p"])}</p>'
+        + '<div style="margin-top:6px">' + cues([('点任意一行，直接听这句', 'HEVC、DTS 这些浏览器放不了的格式也能预览，随包带了 ffmpeg'), ('改字、调时间、增删合并', '改完重新导出 SRT 或 ASS，任何播放器都认')], TCS[:2]) + '</div>' + frame('editor') + stk(['HEVC / DTS 也能预览', '改字 · 调时间 · 增删合并']) + foot('改完重新导出，任何播放器都认')))
+    cards.append(('batch', tab('整季.srt') + '<div class="h" style="font-size:72px">一季 24 集，<br>拖一次</div>' + f'<p class="lead">{esc(d["ba_p"])}</p>'
+        + '<div style="margin-top:6px">' + cues([('同一套设置，个别再调', '整个文件夹用一套识别、翻译设置；某几集要换字幕轨、音轨或引擎，在队列里单独指定'), ('每集都有质检结论', '哪里漏了、哪里语速太快，跑完直接标出来；术语表让人名整季一致')], TCS[:2]) + '</div>' + frame('batch') + stk(['术语表：人名整季一致', '每集都有质检结论']) + foot('跑完每一集字幕都在影片旁边')))
     cards.append(('free', tab('说明.txt') + '<div class="h" style="font-size:72px">免费。开源。<br>不联网。</div>' + '<div style="margin-top:14px">' + cues([('不上传', '影片、字幕、你的电脑配置，什么都不发出去；识别和翻译都在这台电脑上完成'), ('没有账号', '下载、打开、拖文件，三步之间没有注册和登录'), ('MIT 开源', '代码在 GitHub 上，谁都能看、能改、能自己打包')], TCS) + '</div>' + frame('settings') + stk(['macOS 12+ · Apple Silicon', 'Windows 10+', '免费 · 没有内购'], 2) + foot('github.com/jason-jm/wavesubs')))
     return cards
 
@@ -231,7 +234,7 @@ def raw_x_en():
                                                           still("Forgot it. It's five minutes if I run.", '忘れた。走れば五分だから。', 'SUBBED', raw_stamp='RAW')) + foot('free · open source · no account')),
         ('x2-flow', tab('how-it-works.srt') + '<div class="h" style="font-size:54px;margin-top:10px">Three cues, done</div>' + '<div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:26px">' + ''.join(f'<div><div class="i" style="font-family:{MONO};font-size:40px;font-weight:800">{i+1}</div><div class="t" style="font-family:{MONO};font-size:15px;color:var(--ink3)">{tc}</div><h3 style="margin:8px 0 6px;font-size:28px;font-weight:800;line-height:1.15">{esc(t)}</h3><p style="margin:0;font-size:19px;line-height:1.5;color:var(--ink2)">{esc(b)}</p></div>' for i, ((t, b), tc) in enumerate(zip(d['steps'], TCS))) + '</div><div class="grow"></div>' + foot('a two-hour film: about 3–6 minutes on Apple Silicon')),
         ('x3-editor', tab('edit.srt') + two('<div class="h" style="font-size:60px;margin-top:8px">Click a line,<br>hear the line</div>' + f'<p class="lead" style="font-size:23px">{esc(d["ed_p"])}</p>' + stk(['HEVC / DTS preview', 'Glossary keeps names consistent']),
-                                            f'<div class="still" style="box-shadow:10px 10px 0 var(--ink)"><img src="{shot("en", "editor")}"></div>') + foot('fix text or timing, export again')),
+                                            f'<div class="still shotframe" style="box-shadow:10px 10px 0 var(--ink)"><img src="{shot("en", "editor")}"></div>') + foot('fix text or timing, export again')),
     ]
 
 # ============================================================ 渲染
