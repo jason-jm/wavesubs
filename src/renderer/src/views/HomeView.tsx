@@ -110,10 +110,10 @@ export function HomeView(props: Props): React.JSX.Element {
   const eta = useStageEta(jobState.kind === 'running' ? jobState.progress : null)
   const installedModels = overview?.models.filter((m) => m.installed) ?? []
   const installedLlm = overview?.llmModels.filter((m) => m.installed) ?? []
-  const translating = targetLang !== 'none'
+  const translating = service !== 'none'
   const providers = settings?.translation.providers ?? []
   const useLocal = service === 'local'
-  const providerId = useLocal ? undefined : service.slice(4)
+  const providerId = service.startsWith('api:') ? service.slice(4) : undefined
   const activeProvider = providers.find((p) => p.id === providerId)
   const needApiKey = translating && !useLocal && activeProvider !== undefined && !activeProvider.hasApiKey
   const needLlmModel = translating && useLocal && overview !== null && installedLlm.length === 0
@@ -123,10 +123,10 @@ export function HomeView(props: Props): React.JSX.Element {
   const acceptFile = useCallback(
     (path: string) => {
       if (settings) {
-        setTargetLang(settings.translateEnabled ? settings.translation.targetLanguage : 'none')
+        setTargetLang(settings.translation.targetLanguage)
         setSigns(Boolean(settings.signsEnabled))
         const active = settings.translation.activeProviderId
-        setService(settings.translation.engine === 'api' && active ? `api:${active}` : 'local')
+        setService(!settings.translateEnabled ? 'none' : settings.translation.engine === 'api' && active ? `api:${active}` : 'local')
         setContent(settings.export.content === 'original' ? 'translated' : settings.export.content)
         setFormat(settings.export.format)
       }
@@ -420,134 +420,133 @@ export function HomeView(props: Props): React.JSX.Element {
           </div>
         </div>
 
-        {/* 翻译：翻译成什么 → 用什么服务 → 服务就绪（本地有模型 / 云端有密钥）之后才有画面文字、字幕内容 */}
+        {/* 翻译：先定用什么（不翻译 / 本地 / 云端）→ 本地要有模型、云端要有密钥 → 就绪之后才有翻译成、画面文字、字幕内容 */}
         <div className="section">
           <div className="section-title">{t('home.section.translate')}</div>
           <div className="card">
             <div className="row">
               <div className="row-label">
-                <strong>{t('home.targetLang')}</strong>
-                <span>{t('home.targetLang.hint')}</span>
+                <strong>{t('home.service')}</strong>
+                <span>{t('home.service.hint')}</span>
               </div>
               <div className="row-control">
-                <Select value={targetLang} onChange={setTargetLang}>
-                  {TARGET_LANGUAGES.map((l) => (
-                    <option key={l.value} value={l.value}>
-                      {targetLanguageLabel(l.value, locale, t)}
-                    </option>
-                  ))}
+                <Select value={service} onChange={setService} wide>
+                  <option value="none">{t('target.none')}</option>
+                  <optgroup label={t('home.service.localGroup')}>
+                    <option value="local">{t('home.service.localModel')}</option>
+                  </optgroup>
+                  {providers.length > 0 && (
+                    <optgroup label={t('home.service.cloudGroup')}>
+                      {providers.map((p) => (
+                        <option key={p.id} value={`api:${p.id}`}>
+                          {p.name}
+                          {p.hasApiKey ? '' : t('home.service.missingKey')}
+                        </option>
+                      ))}
+                    </optgroup>
+                  )}
                 </Select>
               </div>
             </div>
 
-            {translating && (
+            {needLlmModel && (
+              <div className="card-notice">
+                <ModelDownloadNotice
+                  kind="llm"
+                  models={overview?.llmModels ?? []}
+                  downloads={downloads}
+                  error={modelError}
+                  onDownload={onDownload}
+                  onCancel={onCancelDownload}
+                  goModels={goModels}
+                />
+              </div>
+            )}
+            {needApiKey && (
+              <div className="card-notice">
+                <div className="notice notice-warn">
+                  <Icon name="warning" />
+                  <p>{t('home.notice.needKey', { name: activeProvider?.name ?? '' })}</p>
+                  <button className="btn" onClick={goModels}>
+                    {t('home.notice.goConfigure')}
+                  </button>
+                </div>
+              </div>
+            )}
+            {useLocal && installedLlm.length > 0 && (
+              <div className="row">
+                <div className="row-label">
+                  <strong>{t('home.llmModel')}</strong>
+                  <span>{t('home.llmModel.hint')}</span>
+                </div>
+                <div className="row-control">
+                  <Select value={overview?.llmSelected ?? ''} onChange={onSelectLlm}>
+                    {installedLlm.map((m) => (
+                      <option key={m.file} value={m.file}>
+                        {m.name}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+              </div>
+            )}
+
+            {translating && !needLlmModel && !needApiKey && (
               <>
                 <div className="row">
                   <div className="row-label">
-                    <strong>{t('home.service')}</strong>
-                    <span>{t('home.service.hint')}</span>
+                    <strong>{t('home.targetLang')}</strong>
+                    <span>{t('home.targetLang.hint')}</span>
                   </div>
                   <div className="row-control">
-                    <Select value={service} onChange={setService} wide>
-                      <optgroup label={t('home.service.localGroup')}>
-                        <option value="local">{t('home.service.localModel')}</option>
-                      </optgroup>
-                      {providers.length > 0 && (
-                        <optgroup label={t('home.service.cloudGroup')}>
-                          {providers.map((p) => (
-                            <option key={p.id} value={`api:${p.id}`}>
-                              {p.name}
-                              {p.hasApiKey ? '' : t('home.service.missingKey')}
-                            </option>
-                          ))}
-                        </optgroup>
-                      )}
+                    <Select value={targetLang} onChange={setTargetLang}>
+                      {TARGET_LANGUAGES.filter((l) => l.value !== 'none').map((l) => (
+                        <option key={l.value} value={l.value}>
+                          {targetLanguageLabel(l.value, locale, t)}
+                        </option>
+                      ))}
                     </Select>
                   </div>
                 </div>
 
-                {needApiKey ? (
-                  <div className="card-notice">
-                    <div className="notice notice-warn">
-                      <Icon name="warning" />
-                      <p>{t('home.notice.needKey', { name: activeProvider?.name ?? '' })}</p>
-                      <button className="btn" onClick={goModels}>
-                        {t('home.notice.goConfigure')}
+                {props.signsSupported && (
+                  <div className="row">
+                    <div className="row-label">
+                      <strong>{t('home.signs')}</strong>
+                      <span>{t('home.signsHint')}</span>
+                    </div>
+                    <div className="row-control">
+                      <button
+                        className={signs ? 'switch switch-on' : 'switch'}
+                        role="switch"
+                        aria-checked={signs}
+                        onClick={() => setSigns((v) => !v)}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <div className="row">
+                  <div className="row-label">
+                    <strong>{t('home.content')}</strong>
+                  </div>
+                  <div className="row-control">
+                    <div className="segmented">
+                      <button
+                        className={content === 'translated' ? 'segmented-on' : ''}
+                        onClick={() => setContent('translated')}
+                      >
+                        {t('home.content.translated')}
+                      </button>
+                      <button
+                        className={content === 'bilingual' ? 'segmented-on' : ''}
+                        onClick={() => setContent('bilingual')}
+                      >
+                        {t('home.content.bilingual')}
                       </button>
                     </div>
                   </div>
-                ) : needLlmModel ? (
-                  <div className="card-notice">
-                    <ModelDownloadNotice
-                      kind="llm"
-                      models={overview?.llmModels ?? []}
-                      downloads={downloads}
-                      error={modelError}
-                      onDownload={onDownload}
-                      onCancel={onCancelDownload}
-                      goModels={goModels}
-                    />
-                  </div>
-                ) : (
-                  <>
-                    {useLocal && installedLlm.length > 0 && (
-                      <div className="row">
-                        <div className="row-label">
-                          <strong>{t('home.llmModel')}</strong>
-                          <span>{t('home.llmModel.hint')}</span>
-                        </div>
-                        <div className="row-control">
-                          <Select value={overview?.llmSelected ?? ''} onChange={onSelectLlm}>
-                            {installedLlm.map((m) => (
-                              <option key={m.file} value={m.file}>
-                                {m.name}
-                              </option>
-                            ))}
-                          </Select>
-                        </div>
-                      </div>
-                    )}
-
-                    {props.signsSupported && (
-                      <div className="row">
-                        <div className="row-label">
-                          <strong>{t('home.signs')}</strong>
-                          <span>{t('home.signsHint')}</span>
-                        </div>
-                        <div className="row-control">
-                          <button
-                            className={signs ? 'switch switch-on' : 'switch'}
-                            role="switch"
-                            aria-checked={signs}
-                            onClick={() => setSigns((v) => !v)}
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="row">
-                      <div className="row-label">
-                        <strong>{t('home.content')}</strong>
-                      </div>
-                      <div className="row-control">
-                        <div className="segmented">
-                          <button
-                            className={content === 'translated' ? 'segmented-on' : ''}
-                            onClick={() => setContent('translated')}
-                          >
-                            {t('home.content.translated')}
-                          </button>
-                          <button
-                            className={content === 'bilingual' ? 'segmented-on' : ''}
-                            onClick={() => setContent('bilingual')}
-                          >
-                            {t('home.content.bilingual')}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                )}
+                </div>
               </>
             )}
           </div>

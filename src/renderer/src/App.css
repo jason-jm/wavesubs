@@ -1032,8 +1032,7 @@ select optgroup {
   background: var(--bg-card);
   border: 1.5px dashed var(--line-strong);
   border-radius: var(--r-xl);
-  transition: border-color 0.16s var(--ease), background 0.16s var(--ease),
-    transform 0.16s var(--ease);
+  transition: border-color 0.16s var(--ease), background 0.16s var(--ease);
 }
 
 .dropzone:hover {
@@ -1042,11 +1041,13 @@ select optgroup {
 }
 
 /* 拖进来的瞬间用主题渐变点亮，比一块死板的强调色更像"接住了" */
+/* 拖着文件悬在上面：底色铺满、虚线变实线。之前还放大 0.6%，一千多像素宽就是往外胀四五个像素，
+   圆角和外面画框对不齐；底色也别铺到边框底下，不然透明边框那一圈看着像多出一层 */
 .dropzone-over {
   background: linear-gradient(140deg, var(--grad-1), var(--grad-2));
-  border-color: transparent;
+  background-clip: padding-box;
+  border-color: var(--accent);
   border-style: solid;
-  transform: scale(1.006);
 }
 
 .dropzone-glyph {
@@ -1122,7 +1123,6 @@ select optgroup {
   gap: var(--sp-2);
   align-items: center;
   padding: var(--sp-3) var(--sp-4);
-  box-shadow: inset 0 0.5px 0 var(--line);
 }
 
 .job-actions .spacer {
