@@ -1,16 +1,16 @@
 # Wave Subs
 
-[English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Français](./README.fr.md) · [Deutsch](./README.de.md) · [Русский](./README.ru.md) · **Bahasa Indonesia** · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · [ไทย](./README.th.md)
+[English](../README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Français](./README.fr.md) · [Deutsch](./README.de.md) · [Русский](./README.ru.md) · **Bahasa Indonesia** · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · [ไทย](./README.th.md)
 
 **Tak menemukan subtitle untuk sebuah video?** Wave Subs membuat subtitle SRT / ASS dari video apa pun dengan AI lokal dan menerjemahkannya ke bahasa Anda. Pengenalan, pewaktuan, terjemahan, teks di layar, dan penyuntingan semuanya berjalan di komputer Anda sendiri: tidak ada yang diunggah, tidak perlu akun, gratis dan sumber terbuka. macOS (Apple Silicon) dan Windows.
 
 [![Release](https://img.shields.io/github/v/release/jason-jm/wavesubs?label=download)](https://github.com/jason-jm/wavesubs/releases/latest)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](../LICENSE)
 ![Platforms](https://img.shields.io/badge/macOS%2012%2B%20Apple%20Silicon%20%7C%20Windows%2010%2B-lightgrey)
 
-**Situs web:** https://wavesubs.com (11 bahasa) · [Unduh](https://github.com/jason-jm/wavesubs/releases/latest) · [Catatan perubahan](CHANGELOG.md) (Inggris) · [Kebijakan privasi](https://wavesubs.com/en/privacy.html) (Inggris)
+**Situs web:** https://wavesubs.com (11 bahasa) · [Unduh](https://github.com/jason-jm/wavesubs/releases/latest) · [Catatan perubahan](../CHANGELOG.md) (Inggris) · [Kebijakan privasi](https://wavesubs.com/en/privacy.html) (Inggris)
 
-![Editor subtitle dengan pratinjau video](docs/assets/shots/id-dark-editor.jpg)
+![Editor subtitle dengan pratinjau video](../docs/assets/shots/id-dark-editor.jpg)
 
 ## Cara kerja
 
@@ -167,10 +167,10 @@ ffmpeg, whisper.cpp, dan llama.cpp sudah disertakan: pasang dan langsung pakai. 
 
 - [Laporan bug dan permintaan fitur](https://github.com/jason-jm/wavesubs/issues) di GitHub, atau [formulir masukan](https://wavesubs.com/id/feedback.html) jika Anda tidak punya akun GitHub. Tugas yang gagal punya tombol *Salin log*; tempelkan log itu ke laporan.
 - [Discussions](https://github.com/jason-jm/wavesubs/discussions) untuk pertanyaan dan berbagi pengaturan.
-- [Catatan perubahan](CHANGELOG.md) (Inggris) untuk apa yang berubah di setiap versi.
+- [Catatan perubahan](../CHANGELOG.md) (Inggris) untuk apa yang berubah di setiap versi.
 
 ## Lisensi
 
-Wave Subs dirilis di bawah [Lisensi MIT](./LICENSE). Komponen pihak ketiga yang disertakan (ffmpeg di bawah LGPL, whisper.cpp dan llama.cpp di bawah MIT, model Whisper dan Qwen, dan lainnya) membawa lisensinya masing-masing, tercantum di [THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md).
+Wave Subs dirilis di bawah [Lisensi MIT](../LICENSE). Komponen pihak ketiga yang disertakan (ffmpeg di bawah LGPL, whisper.cpp dan llama.cpp di bawah MIT, model Whisper dan Qwen, dan lainnya) membawa lisensinya masing-masing, tercantum di [THIRD-PARTY-LICENSES.md](../THIRD-PARTY-LICENSES.md).
 
-*Membangun dari sumber, antarmuka baris perintah, dan tata letak kode dijelaskan di [DEVELOPMENT.md](./DEVELOPMENT.md) (Inggris).*
+*Membangun dari sumber, antarmuka baris perintah, dan tata letak kode dijelaskan di [DEVELOPMENT.md](../DEVELOPMENT.md) (Inggris).*

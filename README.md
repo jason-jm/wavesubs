@@ -1,6 +1,6 @@
 # Wave Subs
 
-**English** · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Français](./README.fr.md) · [Deutsch](./README.de.md) · [Русский](./README.ru.md) · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · [ไทย](./README.th.md)
+**English** · [简体中文](./readme/README.zh-CN.md) · [日本語](./readme/README.ja.md) · [한국어](./readme/README.ko.md) · [Français](./readme/README.fr.md) · [Deutsch](./readme/README.de.md) · [Русский](./readme/README.ru.md) · [Bahasa Indonesia](./readme/README.id.md) · [Bahasa Melayu](./readme/README.ms.md) · [Tiếng Việt](./readme/README.vi.md) · [ไทย](./readme/README.th.md)
 
 **Can't find subtitles for a video?** Wave Subs generates SRT / ASS subtitles from any video with local AI and translates them into your language. Recognition, timing, translation, on-screen text and editing all run on your own computer: nothing is uploaded, no account is needed, and it is free and open source. macOS (Apple Silicon) and Windows.
 

@@ -1,16 +1,16 @@
 # Wave Subs
 
-[English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · **한국어** · [Français](./README.fr.md) · [Deutsch](./README.de.md) · [Русский](./README.ru.md) · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · [ไทย](./README.th.md)
+[English](../README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · **한국어** · [Français](./README.fr.md) · [Deutsch](./README.de.md) · [Русский](./README.ru.md) · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · [ไทย](./README.th.md)
 
 **자막을 못 찾겠다면?** Wave Subs는 로컬 AI로 영상에서 바로 SRT / ASS 자막을 만들고 내 언어로 번역합니다. 인식, 타이밍, 번역, 화면 속 텍스트, 편집이 모두 내 컴퓨터 안에서 끝납니다. 업로드 없음, 계정 불필요, 무료 오픈소스. macOS(Apple Silicon)와 Windows.
 
 [![Release](https://img.shields.io/github/v/release/jason-jm/wavesubs?label=download)](https://github.com/jason-jm/wavesubs/releases/latest)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](../LICENSE)
 ![Platforms](https://img.shields.io/badge/macOS%2012%2B%20Apple%20Silicon%20%7C%20Windows%2010%2B-lightgrey)
 
-**웹사이트:** https://wavesubs.com (11개 언어) · [다운로드](https://github.com/jason-jm/wavesubs/releases/latest) · [변경 내역](CHANGELOG.md)(영어) · [개인정보 처리방침](https://wavesubs.com/en/privacy.html)(영어)
+**웹사이트:** https://wavesubs.com (11개 언어) · [다운로드](https://github.com/jason-jm/wavesubs/releases/latest) · [변경 내역](../CHANGELOG.md)(영어) · [개인정보 처리방침](https://wavesubs.com/en/privacy.html)(영어)
 
-![영상 미리보기가 있는 자막 편집기](docs/assets/shots/ko-dark-editor.jpg)
+![영상 미리보기가 있는 자막 편집기](../docs/assets/shots/ko-dark-editor.jpg)
 
 ## 사용 방법
 
@@ -167,10 +167,10 @@ ffmpeg, whisper.cpp, llama.cpp가 내장되어 있어 설치 후 바로 쓸 수 
 
 - [버그 신고와 기능 제안](https://github.com/jason-jm/wavesubs/issues)은 GitHub에서, GitHub 계정이 없으면 [피드백 폼](https://wavesubs.com/ko/feedback.html)으로. 실패한 작업에는 *로그 복사* 버튼이 있으니 그 로그를 신고에 붙여 주세요.
 - 질문과 설정 공유는 [Discussions](https://github.com/jason-jm/wavesubs/discussions)에서.
-- 버전별 변경 사항은 [변경 내역](CHANGELOG.md)(영어)에서.
+- 버전별 변경 사항은 [변경 내역](../CHANGELOG.md)(영어)에서.
 
 ## 라이선스
 
-Wave Subs는 [MIT 라이선스](./LICENSE)로 배포됩니다. 내장된 서드파티 구성 요소(LGPL의 ffmpeg, MIT의 whisper.cpp와 llama.cpp, Whisper와 Qwen 모델 등)는 각자의 라이선스를 따르며 [THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md)에 정리되어 있습니다.
+Wave Subs는 [MIT 라이선스](../LICENSE)로 배포됩니다. 내장된 서드파티 구성 요소(LGPL의 ffmpeg, MIT의 whisper.cpp와 llama.cpp, Whisper와 Qwen 모델 등)는 각자의 라이선스를 따르며 [THIRD-PARTY-LICENSES.md](../THIRD-PARTY-LICENSES.md)에 정리되어 있습니다.
 
-*소스 빌드, 명령줄 사용법, 코드 구조는 [DEVELOPMENT.md](./DEVELOPMENT.md)(영어)를 보세요.*
+*소스 빌드, 명령줄 사용법, 코드 구조는 [DEVELOPMENT.md](../DEVELOPMENT.md)(영어)를 보세요.*

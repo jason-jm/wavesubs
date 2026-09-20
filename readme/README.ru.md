@@ -1,16 +1,16 @@
 # Wave Subs
 
-[English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Français](./README.fr.md) · [Deutsch](./README.de.md) · **Русский** · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · [ไทย](./README.th.md)
+[English](../README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Français](./README.fr.md) · [Deutsch](./README.de.md) · **Русский** · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · [ไทย](./README.th.md)
 
 **Не нашли субтитры к видео?** Wave Subs создаёт субтитры SRT / ASS из любого видео с помощью локального ИИ и переводит их на ваш язык. Распознавание, тайминг, перевод, текст на экране и редактирование — всё выполняется на вашем компьютере: ничего не загружается, аккаунт не нужен, программа бесплатна и открыта. macOS (Apple Silicon) и Windows.
 
 [![Release](https://img.shields.io/github/v/release/jason-jm/wavesubs?label=download)](https://github.com/jason-jm/wavesubs/releases/latest)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](../LICENSE)
 ![Platforms](https://img.shields.io/badge/macOS%2012%2B%20Apple%20Silicon%20%7C%20Windows%2010%2B-lightgrey)
 
-**Сайт:** https://wavesubs.com (11 языков) · [Скачать](https://github.com/jason-jm/wavesubs/releases/latest) · [История изменений](CHANGELOG.md) (англ.) · [Политика конфиденциальности](https://wavesubs.com/en/privacy.html) (англ.)
+**Сайт:** https://wavesubs.com (11 языков) · [Скачать](https://github.com/jason-jm/wavesubs/releases/latest) · [История изменений](../CHANGELOG.md) (англ.) · [Политика конфиденциальности](https://wavesubs.com/en/privacy.html) (англ.)
 
-![Редактор субтитров с видеопревью](docs/assets/shots/ru-dark-editor.jpg)
+![Редактор субтитров с видеопревью](../docs/assets/shots/ru-dark-editor.jpg)
 
 ## Как это работает
 
@@ -167,10 +167,10 @@ ffmpeg, whisper.cpp и llama.cpp входят в комплект: устано�
 
 - [Сообщения об ошибках и предложения](https://github.com/jason-jm/wavesubs/issues) на GitHub или [форма обратной связи](https://wavesubs.com/ru/feedback.html), если у вас нет аккаунта GitHub. У неудавшейся задачи есть кнопка *Скопировать журнал*; вставьте этот журнал в сообщение.
 - [Discussions](https://github.com/jason-jm/wavesubs/discussions) для вопросов и обмена настройками.
-- [История изменений](CHANGELOG.md) (англ.) — что изменилось в каждой версии.
+- [История изменений](../CHANGELOG.md) (англ.) — что изменилось в каждой версии.
 
 ## Лицензия
 
-Wave Subs распространяется по [лицензии MIT](./LICENSE). Входящие в комплект сторонние компоненты (ffmpeg под LGPL, whisper.cpp и llama.cpp под MIT, модели Whisper и Qwen и другие) имеют собственные лицензии, перечисленные в [THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md).
+Wave Subs распространяется по [лицензии MIT](../LICENSE). Входящие в комплект сторонние компоненты (ffmpeg под LGPL, whisper.cpp и llama.cpp под MIT, модели Whisper и Qwen и другие) имеют собственные лицензии, перечисленные в [THIRD-PARTY-LICENSES.md](../THIRD-PARTY-LICENSES.md).
 
-*Сборка из исходников, интерфейс командной строки и структура кода описаны в [DEVELOPMENT.md](./DEVELOPMENT.md) (англ.).*
+*Сборка из исходников, интерфейс командной строки и структура кода описаны в [DEVELOPMENT.md](../DEVELOPMENT.md) (англ.).*

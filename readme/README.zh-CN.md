@@ -1,16 +1,16 @@
 # Wave Subs
 
-[English](./README.md) · **简体中文** · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Français](./README.fr.md) · [Deutsch](./README.de.md) · [Русский](./README.ru.md) · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · [ไทย](./README.th.md)
+[English](../README.md) · **简体中文** · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Français](./README.fr.md) · [Deutsch](./README.de.md) · [Русский](./README.ru.md) · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · [ไทย](./README.th.md)
 
 **看片找不到字幕？** Wave Subs 用本地 AI 直接从影片生成 SRT / ASS 字幕，并翻译成你的语言。识别、时间轴、翻译、画面文字、编辑全部在你自己的电脑上完成：不上传、不用账号、免费开源。macOS（Apple Silicon）与 Windows。
 
 [![Release](https://img.shields.io/github/v/release/jason-jm/wavesubs?label=download)](https://github.com/jason-jm/wavesubs/releases/latest)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](../LICENSE)
 ![Platforms](https://img.shields.io/badge/macOS%2012%2B%20Apple%20Silicon%20%7C%20Windows%2010%2B-lightgrey)
 
-**官网：** https://wavesubs.com （11 种语言） · [下载](https://github.com/jason-jm/wavesubs/releases/latest) · [更新日志](CHANGELOG.zh-CN.md) · [隐私政策](https://wavesubs.com/privacy.html)
+**官网：** https://wavesubs.com （11 种语言） · [下载](https://github.com/jason-jm/wavesubs/releases/latest) · [更新日志](../CHANGELOG.zh-CN.md) · [隐私政策](https://wavesubs.com/privacy.html)
 
-![带视频预览的字幕编辑器](docs/assets/shots/zh-Hans-dark-editor.jpg)
+![带视频预览的字幕编辑器](../docs/assets/shots/zh-Hans-dark-editor.jpg)
 
 ## 怎么用
 
@@ -167,10 +167,10 @@ ffmpeg、whisper.cpp、llama.cpp 已随包附带，装完就能用。识别模�
 
 - [问题反馈与功能建议](https://github.com/jason-jm/wavesubs/issues)在 GitHub 上提，没有 GitHub 账号可以用[官网反馈表单](https://wavesubs.com/feedback.html)。任务失败时有「复制日志」按钮，把日志贴进反馈里。
 - [讨论区](https://github.com/jason-jm/wavesubs/discussions)聊用法和配置。
-- [更新日志](CHANGELOG.zh-CN.md)看每个版本改了什么。
+- [更新日志](../CHANGELOG.zh-CN.md)看每个版本改了什么。
 
 ## 许可
 
-Wave Subs 以 [MIT 许可证](./LICENSE)发布。随包分发的第三方组件（LGPL 的 ffmpeg、MIT 的 whisper.cpp 与 llama.cpp、Whisper 与 Qwen 模型等）各自的许可见 [THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md)。
+Wave Subs 以 [MIT 许可证](../LICENSE)发布。随包分发的第三方组件（LGPL 的 ffmpeg、MIT 的 whisper.cpp 与 llama.cpp、Whisper 与 Qwen 模型等）各自的许可见 [THIRD-PARTY-LICENSES.md](../THIRD-PARTY-LICENSES.md)。
 
-*从源码构建、命令行用法与代码结构见 [DEVELOPMENT.md](./DEVELOPMENT.md)（英文）。*
+*从源码构建、命令行用法与代码结构见 [DEVELOPMENT.md](../DEVELOPMENT.md)（英文）。*

@@ -1,16 +1,16 @@
 # Wave Subs
 
-[English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Français](./README.fr.md) · [Deutsch](./README.de.md) · [Русский](./README.ru.md) · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · **ไทย**
+[English](../README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Français](./README.fr.md) · [Deutsch](./README.de.md) · [Русский](./README.ru.md) · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · **ไทย**
 
 **หาซับไตเติลของวิดีโอไม่เจอ?** Wave Subs สร้างซับไตเติล SRT / ASS จากวิดีโอใดก็ได้ด้วย AI ในเครื่อง แล้วแปลเป็นภาษาของคุณ การจับบทพูด การจัดเวลา การแปล ข้อความบนจอ และการแก้ไข ทำงานทั้งหมดบนคอมพิวเตอร์ของคุณเอง ไม่มีการอัปโหลด ไม่ต้องมีบัญชี ฟรีและโอเพนซอร์ส รองรับ macOS (Apple Silicon) และ Windows
 
 [![Release](https://img.shields.io/github/v/release/jason-jm/wavesubs?label=download)](https://github.com/jason-jm/wavesubs/releases/latest)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](../LICENSE)
 ![Platforms](https://img.shields.io/badge/macOS%2012%2B%20Apple%20Silicon%20%7C%20Windows%2010%2B-lightgrey)
 
-**เว็บไซต์:** https://wavesubs.com (11 ภาษา) · [ดาวน์โหลด](https://github.com/jason-jm/wavesubs/releases/latest) · [บันทึกการเปลี่ยนแปลง](CHANGELOG.md) (ภาษาอังกฤษ) · [นโยบายความเป็นส่วนตัว](https://wavesubs.com/en/privacy.html) (ภาษาอังกฤษ)
+**เว็บไซต์:** https://wavesubs.com (11 ภาษา) · [ดาวน์โหลด](https://github.com/jason-jm/wavesubs/releases/latest) · [บันทึกการเปลี่ยนแปลง](../CHANGELOG.md) (ภาษาอังกฤษ) · [นโยบายความเป็นส่วนตัว](https://wavesubs.com/en/privacy.html) (ภาษาอังกฤษ)
 
-![ตัวแก้ไขซับไตเติลพร้อมพรีวิววิดีโอ](docs/assets/shots/th-dark-editor.jpg)
+![ตัวแก้ไขซับไตเติลพร้อมพรีวิววิดีโอ](../docs/assets/shots/th-dark-editor.jpg)
 
 ## วิธีทำงาน
 
@@ -167,10 +167,10 @@ ffmpeg, whisper.cpp และ llama.cpp มาพร้อมแอป ติด
 
 - [รายงานบั๊กและขอฟีเจอร์](https://github.com/jason-jm/wavesubs/issues) บน GitHub หรือใช้[แบบฟอร์มฟีดแบ็ก](https://wavesubs.com/th/feedback.html) ถ้าไม่มีบัญชี GitHub งานที่ล้มเหลวมีปุ่ม *คัดลอกล็อก* ให้วางล็อกนั้นในรายงาน
 - [Discussions](https://github.com/jason-jm/wavesubs/discussions) สำหรับคำถามและการแชร์การตั้งค่า
-- [บันทึกการเปลี่ยนแปลง](CHANGELOG.md) (ภาษาอังกฤษ) สำหรับสิ่งที่เปลี่ยนในแต่ละเวอร์ชัน
+- [บันทึกการเปลี่ยนแปลง](../CHANGELOG.md) (ภาษาอังกฤษ) สำหรับสิ่งที่เปลี่ยนในแต่ละเวอร์ชัน
 
 ## สัญญาอนุญาต
 
-Wave Subs เผยแพร่ภายใต้[สัญญาอนุญาต MIT](./LICENSE) ส่วนประกอบของบุคคลที่สามที่มาพร้อมแอป (ffmpeg ภายใต้ LGPL, whisper.cpp และ llama.cpp ภายใต้ MIT, โมเดล Whisper และ Qwen และอื่น ๆ) มีสัญญาอนุญาตของตัวเอง ดูรายการได้ใน [THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md)
+Wave Subs เผยแพร่ภายใต้[สัญญาอนุญาต MIT](../LICENSE) ส่วนประกอบของบุคคลที่สามที่มาพร้อมแอป (ffmpeg ภายใต้ LGPL, whisper.cpp และ llama.cpp ภายใต้ MIT, โมเดล Whisper และ Qwen และอื่น ๆ) มีสัญญาอนุญาตของตัวเอง ดูรายการได้ใน [THIRD-PARTY-LICENSES.md](../THIRD-PARTY-LICENSES.md)
 
-*การบิลด์จากซอร์ส การใช้งานผ่านคอมมานด์ไลน์ และโครงสร้างโค้ด อธิบายไว้ใน [DEVELOPMENT.md](./DEVELOPMENT.md) (ภาษาอังกฤษ)*
+*การบิลด์จากซอร์ส การใช้งานผ่านคอมมานด์ไลน์ และโครงสร้างโค้ด อธิบายไว้ใน [DEVELOPMENT.md](../DEVELOPMENT.md) (ภาษาอังกฤษ)*

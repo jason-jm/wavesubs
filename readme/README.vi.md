@@ -1,16 +1,16 @@
 # Wave Subs
 
-[English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Français](./README.fr.md) · [Deutsch](./README.de.md) · [Русский](./README.ru.md) · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · **Tiếng Việt** · [ไทย](./README.th.md)
+[English](../README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Français](./README.fr.md) · [Deutsch](./README.de.md) · [Русский](./README.ru.md) · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · **Tiếng Việt** · [ไทย](./README.th.md)
 
 **Không tìm thấy phụ đề cho một video?** Wave Subs tạo phụ đề SRT / ASS từ bất kỳ video nào bằng AI cục bộ và dịch sang ngôn ngữ của bạn. Nhận dạng, căn thời gian, dịch, chữ trên màn hình và chỉnh sửa đều chạy ngay trên máy của bạn: không tải lên gì cả, không cần tài khoản, miễn phí và mã nguồn mở. macOS (Apple Silicon) và Windows.
 
 [![Release](https://img.shields.io/github/v/release/jason-jm/wavesubs?label=download)](https://github.com/jason-jm/wavesubs/releases/latest)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](../LICENSE)
 ![Platforms](https://img.shields.io/badge/macOS%2012%2B%20Apple%20Silicon%20%7C%20Windows%2010%2B-lightgrey)
 
-**Trang web:** https://wavesubs.com (11 ngôn ngữ) · [Tải về](https://github.com/jason-jm/wavesubs/releases/latest) · [Nhật ký thay đổi](CHANGELOG.md) (tiếng Anh) · [Chính sách quyền riêng tư](https://wavesubs.com/en/privacy.html) (tiếng Anh)
+**Trang web:** https://wavesubs.com (11 ngôn ngữ) · [Tải về](https://github.com/jason-jm/wavesubs/releases/latest) · [Nhật ký thay đổi](../CHANGELOG.md) (tiếng Anh) · [Chính sách quyền riêng tư](https://wavesubs.com/en/privacy.html) (tiếng Anh)
 
-![Trình chỉnh sửa phụ đề có xem trước video](docs/assets/shots/vi-dark-editor.jpg)
+![Trình chỉnh sửa phụ đề có xem trước video](../docs/assets/shots/vi-dark-editor.jpg)
 
 ## Cách hoạt động
 
@@ -167,10 +167,10 @@ ffmpeg, whisper.cpp và llama.cpp đã đi kèm: cài là dùng. Mô hình nhậ
 
 - [Báo lỗi và đề xuất tính năng](https://github.com/jason-jm/wavesubs/issues) trên GitHub, hoặc [biểu mẫu phản hồi](https://wavesubs.com/vi/feedback.html) nếu bạn không có tài khoản GitHub. Tác vụ thất bại có nút *Sao chép nhật ký*; dán nhật ký đó vào báo cáo.
 - [Discussions](https://github.com/jason-jm/wavesubs/discussions) để hỏi đáp và chia sẻ thiết lập.
-- [Nhật ký thay đổi](CHANGELOG.md) (tiếng Anh) để xem mỗi phiên bản thay đổi gì.
+- [Nhật ký thay đổi](../CHANGELOG.md) (tiếng Anh) để xem mỗi phiên bản thay đổi gì.
 
 ## Giấy phép
 
-Wave Subs phát hành theo [Giấy phép MIT](./LICENSE). Các thành phần bên thứ ba đi kèm (ffmpeg theo LGPL, whisper.cpp và llama.cpp theo MIT, các mô hình Whisper và Qwen, và những thành phần khác) có giấy phép riêng, liệt kê trong [THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md).
+Wave Subs phát hành theo [Giấy phép MIT](../LICENSE). Các thành phần bên thứ ba đi kèm (ffmpeg theo LGPL, whisper.cpp và llama.cpp theo MIT, các mô hình Whisper và Qwen, và những thành phần khác) có giấy phép riêng, liệt kê trong [THIRD-PARTY-LICENSES.md](../THIRD-PARTY-LICENSES.md).
 
-*Việc dựng từ mã nguồn, giao diện dòng lệnh và cấu trúc mã được mô tả trong [DEVELOPMENT.md](./DEVELOPMENT.md) (tiếng Anh).*
+*Việc dựng từ mã nguồn, giao diện dòng lệnh và cấu trúc mã được mô tả trong [DEVELOPMENT.md](../DEVELOPMENT.md) (tiếng Anh).*

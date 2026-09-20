@@ -1,16 +1,16 @@
 # Wave Subs
 
-[English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · **Français** · [Deutsch](./README.de.md) · [Русский](./README.ru.md) · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · [ไทย](./README.th.md)
+[English](../README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · **Français** · [Deutsch](./README.de.md) · [Русский](./README.ru.md) · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · [ไทย](./README.th.md)
 
 **Pas de sous-titres pour une vidéo ?** Wave Subs génère des sous-titres SRT / ASS à partir de n'importe quelle vidéo grâce à une IA locale et les traduit dans votre langue. Reconnaissance, minutage, traduction, texte à l'écran et édition : tout se passe sur votre ordinateur. Rien n'est envoyé, aucun compte n'est nécessaire, et c'est gratuit et open source. macOS (Apple Silicon) et Windows.
 
 [![Release](https://img.shields.io/github/v/release/jason-jm/wavesubs?label=download)](https://github.com/jason-jm/wavesubs/releases/latest)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](../LICENSE)
 ![Platforms](https://img.shields.io/badge/macOS%2012%2B%20Apple%20Silicon%20%7C%20Windows%2010%2B-lightgrey)
 
-**Site web :** https://wavesubs.com (11 langues) · [Télécharger](https://github.com/jason-jm/wavesubs/releases/latest) · [Journal des modifications](CHANGELOG.md) (anglais) · [Politique de confidentialité](https://wavesubs.com/en/privacy.html) (anglais)
+**Site web :** https://wavesubs.com (11 langues) · [Télécharger](https://github.com/jason-jm/wavesubs/releases/latest) · [Journal des modifications](../CHANGELOG.md) (anglais) · [Politique de confidentialité](https://wavesubs.com/en/privacy.html) (anglais)
 
-![L'éditeur de sous-titres avec aperçu vidéo](docs/assets/shots/fr-dark-editor.jpg)
+![L'éditeur de sous-titres avec aperçu vidéo](../docs/assets/shots/fr-dark-editor.jpg)
 
 ## Fonctionnement
 
@@ -167,10 +167,10 @@ ffmpeg, whisper.cpp et llama.cpp sont inclus : installez et c'est parti. Les mod
 
 - [Rapports de bug et demandes de fonctionnalités](https://github.com/jason-jm/wavesubs/issues) sur GitHub, ou le [formulaire de retour](https://wavesubs.com/fr/feedback.html) si vous n'avez pas de compte GitHub. Une tâche échouée propose un bouton *Copier le journal* : collez ce journal dans votre rapport.
 - [Discussions](https://github.com/jason-jm/wavesubs/discussions) pour les questions et les configurations.
-- [Journal des modifications](CHANGELOG.md) (anglais) pour ce qui a changé à chaque version.
+- [Journal des modifications](../CHANGELOG.md) (anglais) pour ce qui a changé à chaque version.
 
 ## Licence
 
-Wave Subs est publié sous [licence MIT](./LICENSE). Les composants tiers inclus (ffmpeg sous LGPL, whisper.cpp et llama.cpp sous MIT, les modèles Whisper et Qwen, et d'autres) ont leurs propres licences, listées dans [THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md).
+Wave Subs est publié sous [licence MIT](../LICENSE). Les composants tiers inclus (ffmpeg sous LGPL, whisper.cpp et llama.cpp sous MIT, les modèles Whisper et Qwen, et d'autres) ont leurs propres licences, listées dans [THIRD-PARTY-LICENSES.md](../THIRD-PARTY-LICENSES.md).
 
-*La compilation depuis les sources, l'interface en ligne de commande et l'organisation du code sont décrites dans [DEVELOPMENT.md](./DEVELOPMENT.md) (anglais).*
+*La compilation depuis les sources, l'interface en ligne de commande et l'organisation du code sont décrites dans [DEVELOPMENT.md](../DEVELOPMENT.md) (anglais).*

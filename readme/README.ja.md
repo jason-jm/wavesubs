@@ -1,16 +1,16 @@
 # Wave Subs
 
-[English](./README.md) · [简体中文](./README.zh-CN.md) · **日本語** · [한국어](./README.ko.md) · [Français](./README.fr.md) · [Deutsch](./README.de.md) · [Русский](./README.ru.md) · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · [ไทย](./README.th.md)
+[English](../README.md) · [简体中文](./README.zh-CN.md) · **日本語** · [한국어](./README.ko.md) · [Français](./README.fr.md) · [Deutsch](./README.de.md) · [Русский](./README.ru.md) · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · [ไทย](./README.th.md)
 
 **字幕が見つからない？** Wave Subs はローカル AI で動画から直接 SRT / ASS 字幕を生成し、あなたの言語に翻訳します。認識、タイミング、翻訳、画面内テキスト、編集のすべてがあなたのパソコンの中で完結します。アップロードなし、アカウント不要、無料でオープンソース。macOS（Apple Silicon）と Windows に対応。
 
 [![Release](https://img.shields.io/github/v/release/jason-jm/wavesubs?label=download)](https://github.com/jason-jm/wavesubs/releases/latest)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](../LICENSE)
 ![Platforms](https://img.shields.io/badge/macOS%2012%2B%20Apple%20Silicon%20%7C%20Windows%2010%2B-lightgrey)
 
-**公式サイト：** https://wavesubs.com （11 言語） · [ダウンロード](https://github.com/jason-jm/wavesubs/releases/latest) · [更新履歴](CHANGELOG.md)（英語） · [プライバシーポリシー](https://wavesubs.com/en/privacy.html)（英語）
+**公式サイト：** https://wavesubs.com （11 言語） · [ダウンロード](https://github.com/jason-jm/wavesubs/releases/latest) · [更新履歴](../CHANGELOG.md)（英語） · [プライバシーポリシー](https://wavesubs.com/en/privacy.html)（英語）
 
-![動画プレビュー付きの字幕エディタ](docs/assets/shots/ja-dark-editor.jpg)
+![動画プレビュー付きの字幕エディタ](../docs/assets/shots/ja-dark-editor.jpg)
 
 ## 使い方
 
@@ -167,10 +167,10 @@ ffmpeg、whisper.cpp、llama.cpp は同梱済み。インストールしてす�
 
 - [バグ報告と機能要望](https://github.com/jason-jm/wavesubs/issues)は GitHub へ。GitHub アカウントがなければ[フィードバックフォーム](https://wavesubs.com/ja/feedback.html)を。失敗したタスクには「ログをコピー」ボタンがあるので、そのログを報告に貼り付けてください。
 - 質問や設定の共有は [Discussions](https://github.com/jason-jm/wavesubs/discussions) へ。
-- 各バージョンの変更点は[更新履歴](CHANGELOG.md)（英語）で。
+- 各バージョンの変更点は[更新履歴](../CHANGELOG.md)（英語）で。
 
 ## ライセンス
 
-Wave Subs は [MIT ライセンス](./LICENSE)で公開されています。同梱のサードパーティコンポーネント（LGPL の ffmpeg、MIT の whisper.cpp と llama.cpp、Whisper と Qwen のモデルなど）はそれぞれのライセンスに従い、[THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md) に一覧があります。
+Wave Subs は [MIT ライセンス](../LICENSE)で公開されています。同梱のサードパーティコンポーネント（LGPL の ffmpeg、MIT の whisper.cpp と llama.cpp、Whisper と Qwen のモデルなど）はそれぞれのライセンスに従い、[THIRD-PARTY-LICENSES.md](../THIRD-PARTY-LICENSES.md) に一覧があります。
 
-*ソースからのビルド、コマンドラインの使い方、コード構成は [DEVELOPMENT.md](./DEVELOPMENT.md)（英語）を参照してください。*
+*ソースからのビルド、コマンドラインの使い方、コード構成は [DEVELOPMENT.md](../DEVELOPMENT.md)（英語）を参照してください。*

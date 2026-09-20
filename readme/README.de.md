@@ -1,16 +1,16 @@
 # Wave Subs
 
-[English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Français](./README.fr.md) · **Deutsch** · [Русский](./README.ru.md) · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · [ไทย](./README.th.md)
+[English](../README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Français](./README.fr.md) · **Deutsch** · [Русский](./README.ru.md) · [Bahasa Indonesia](./README.id.md) · [Bahasa Melayu](./README.ms.md) · [Tiếng Việt](./README.vi.md) · [ไทย](./README.th.md)
 
 **Keine Untertitel für ein Video gefunden?** Wave Subs erstellt SRT / ASS-Untertitel aus jedem Video mit lokaler KI und übersetzt sie in deine Sprache. Erkennung, Timing, Übersetzung, Text im Bild und Bearbeitung laufen komplett auf deinem eigenen Rechner: Nichts wird hochgeladen, kein Konto ist nötig, und alles ist kostenlos und Open Source. macOS (Apple Silicon) und Windows.
 
 [![Release](https://img.shields.io/github/v/release/jason-jm/wavesubs?label=download)](https://github.com/jason-jm/wavesubs/releases/latest)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](../LICENSE)
 ![Platforms](https://img.shields.io/badge/macOS%2012%2B%20Apple%20Silicon%20%7C%20Windows%2010%2B-lightgrey)
 
-**Website:** https://wavesubs.com (11 Sprachen) · [Download](https://github.com/jason-jm/wavesubs/releases/latest) · [Änderungsprotokoll](CHANGELOG.md) (Englisch) · [Datenschutzerklärung](https://wavesubs.com/en/privacy.html) (Englisch)
+**Website:** https://wavesubs.com (11 Sprachen) · [Download](https://github.com/jason-jm/wavesubs/releases/latest) · [Änderungsprotokoll](../CHANGELOG.md) (Englisch) · [Datenschutzerklärung](https://wavesubs.com/en/privacy.html) (Englisch)
 
-![Der Untertitel-Editor mit Videovorschau](docs/assets/shots/de-dark-editor.jpg)
+![Der Untertitel-Editor mit Videovorschau](../docs/assets/shots/de-dark-editor.jpg)
 
 ## So funktioniert es
 
@@ -167,10 +167,10 @@ ffmpeg, whisper.cpp und llama.cpp sind enthalten: installieren und loslegen. Spr
 
 - [Fehlerberichte und Funktionswünsche](https://github.com/jason-jm/wavesubs/issues) auf GitHub oder das [Feedback-Formular](https://wavesubs.com/de/feedback.html), wenn du kein GitHub-Konto hast. Eine fehlgeschlagene Aufgabe hat einen Knopf *Protokoll kopieren*; füge dieses Protokoll in den Bericht ein.
 - [Discussions](https://github.com/jason-jm/wavesubs/discussions) für Fragen und Konfigurationen.
-- [Änderungsprotokoll](CHANGELOG.md) (Englisch) für die Änderungen jeder Version.
+- [Änderungsprotokoll](../CHANGELOG.md) (Englisch) für die Änderungen jeder Version.
 
 ## Lizenz
 
-Wave Subs steht unter der [MIT-Lizenz](./LICENSE). Die mitgelieferten Drittkomponenten (ffmpeg unter LGPL, whisper.cpp und llama.cpp unter MIT, die Whisper- und Qwen-Modelle und weitere) haben ihre eigenen Lizenzen, aufgelistet in [THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md).
+Wave Subs steht unter der [MIT-Lizenz](../LICENSE). Die mitgelieferten Drittkomponenten (ffmpeg unter LGPL, whisper.cpp und llama.cpp unter MIT, die Whisper- und Qwen-Modelle und weitere) haben ihre eigenen Lizenzen, aufgelistet in [THIRD-PARTY-LICENSES.md](../THIRD-PARTY-LICENSES.md).
 
-*Bauen aus dem Quellcode, die Kommandozeile und die Codestruktur sind in [DEVELOPMENT.md](./DEVELOPMENT.md) beschrieben (Englisch).*
+*Bauen aus dem Quellcode, die Kommandozeile und die Codestruktur sind in [DEVELOPMENT.md](../DEVELOPMENT.md) beschrieben (Englisch).*

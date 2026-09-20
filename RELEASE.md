@@ -4,7 +4,7 @@
 
 ## 仓库约定
 
-- 仓库对外的一切用英文：提交信息、README（其它语言是 `README.<lang>.md` 的翻译）、`CHANGELOG.md`；中文更新日志在 `CHANGELOG.zh-CN.md`。
+- 仓库对外的一切用英文：提交信息、README（其它语言的翻译在 `readme/` 目录）、`CHANGELOG.md`；中文更新日志在 `CHANGELOG.zh-CN.md`。
 - 与程序无关的东西不进仓库：推广素材（海报、商店截图、文案）在仓库外的 `../marketing/`（见那里的 README），发布说明与 Homebrew cask 源文件在仓库外的 `../store/`（`make-latest.ts` 默认从那里读，可用 `WAVESUBS_STORE_DIR` 覆盖）。
 - 开发者向的内容（构建、签名、自检脚本、代码结构）在 `DEVELOPMENT.md`，不进 README。
 

@@ -6,7 +6,7 @@ Wave Subs is an Electron app (TypeScript, React) around a domain core that also 
 
 ## Repository conventions
 
-- Everything public in the repository is in English: commit messages, `README.md`, `CHANGELOG.md`, issue templates. The other `README.<lang>.md` files are translations of the English README; the Chinese changelog lives in `CHANGELOG.zh-CN.md`.
+- Everything public in the repository is in English: commit messages, `README.md`, `CHANGELOG.md`, issue templates. The files in `readme/` are translations of the English README; the Chinese changelog lives in `CHANGELOG.zh-CN.md`.
 - Nothing unrelated to the program lives in the repository: marketing material (posters, store screenshots, social copy), the per-version release notes and the Homebrew cask source are kept in local folders next to the checkout (`../marketing/`, `../store/`). `scripts/make-latest.ts` reads the release notes from `../store/` (override with `WAVESUBS_STORE_DIR`).
 - The release chain (signing, notarization, GitHub Release, `latest.json`, website, Homebrew, Scoop) is documented in [RELEASE.md](./RELEASE.md).
 
