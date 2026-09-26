@@ -4,6 +4,7 @@ import { availableParallelism, tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { Cue } from '../subtitle/types'
 import { LocalizedError } from '../../../shared/i18n/core'
+import { whisperPathArgs } from './pathArgs'
 
 export interface WhisperOptions {
   audioPath: string
@@ -58,13 +59,15 @@ export async function transcribeWithWhisperCpp(
   const workDir = await mkdtemp(join(tmpdir(), 'wavesubs-whisper-'))
   const outBase = join(workDir, 'transcript')
   const language = opts.language || 'auto'
+  // Windows 上换成从模型目录出发的纯 ASCII 相对路径，用户名不进命令行（见 pathArgs.ts）
+  const { cwd, paths: [modelArg, audioArg, outArg] } = whisperPathArgs(opts.modelPath, [opts.modelPath, opts.audioPath, outBase])
   const args = [
-    '-m', opts.modelPath,
-    '-f', opts.audioPath,
+    '-m', modelArg,
+    '-f', audioArg,
     '-l', language,
     '-t', String(opts.threads ?? Math.min(8, availableParallelism())),
     '-oj',
-    '-of', outBase,
+    '-of', outArg,
     '-pp',
     // 跨窗口不携带文本上下文：显著降低配乐段落里的复读循环风险
     '-mc', '0',
@@ -73,9 +76,9 @@ export async function transcribeWithWhisperCpp(
   try {
     let deviceLog = ''
     let languageReported = false
+    let stderrTail = ''
     await new Promise<void>((resolve, reject) => {
-      const child = spawn(whisperCli, args)
-      let stderrTail = ''
+      const child = spawn(whisperCli, args, { cwd, windowsHide: true })
       const onAbort = (): void => { child.kill() }
       if (opts.signal?.aborted) onAbort()
       else opts.signal?.addEventListener('abort', onAbort, { once: true })
@@ -105,7 +108,14 @@ export async function transcribeWithWhisperCpp(
       })
     })
 
-    const raw = JSON.parse(await readFile(`${outBase}.json`, 'utf8')) as WhisperJsonOutput
+    // 读不到音频时 whisper-cli 只打一行错误、照样以 0 退出：没有结果文件就把它的日志带出来，别只报「文件不存在」
+    let json: string
+    try {
+      json = await readFile(`${outBase}.json`, 'utf8')
+    } catch {
+      throw new Error(`whisper-cli 没有写出识别结果（退出码 0）\n${stderrTail}`)
+    }
+    const raw = JSON.parse(json) as WhisperJsonOutput
     const cues: Cue[] = []
     for (const seg of raw.transcription ?? []) {
       const text = (seg.text ?? '').trim()
@@ -159,7 +169,8 @@ export function pickDetectionWindows(
 /** 在一段 WAV 上跑 whisper 的语种检测（-dl，只看开头 30 秒就退出），返回语种与概率 */
 async function detectOnSample(whisperCli: string, modelPath: string, wavPath: string, signal?: AbortSignal): Promise<{ language: string; p: number } | null> {
   return new Promise((resolve) => {
-    const child = spawn(whisperCli, ['-m', modelPath, '-f', wavPath, '-dl', '-l', 'auto', '-t', '4'])
+    const { cwd, paths: [modelArg, wavArg] } = whisperPathArgs(modelPath, [modelPath, wavPath])
+    const child = spawn(whisperCli, ['-m', modelArg, '-f', wavArg, '-dl', '-l', 'auto', '-t', '4'], { cwd, windowsHide: true })
     const onAbort = (): void => { child.kill() }
     signal?.addEventListener('abort', onAbort, { once: true })
     let out = ''
@@ -194,7 +205,7 @@ export async function detectLanguageBySampling(opts: {
     starts.map(async (start, i) => {
       const sample = join(opts.workDir, `langdet-${i}.wav`)
       const ok = await new Promise<boolean>((resolve) => {
-        const child = spawn(opts.ffmpeg, ['-y', '-loglevel', 'error', '-ss', String(start), '-t', '20', '-i', opts.wavPath, '-c:a', 'pcm_s16le', sample])
+        const child = spawn(opts.ffmpeg, ['-y', '-loglevel', 'error', '-ss', String(start), '-t', '20', '-i', opts.wavPath, '-c:a', 'pcm_s16le', sample], { windowsHide: true })
         child.on('error', () => resolve(false))
         child.on('close', (code) => resolve(code === 0))
       })

@@ -189,6 +189,7 @@ export const it: Dict = {
   'editor.error.noRecord': 'Nessun registro di modifica — esegui prima una conversione',
   'editor.caption': 'Correggi il testo, regola i tempi, unisci righe e riesporta',
   'qc.finding.invalid': '{n} riga/e con durata invertita o nulla (prima a {at})',
+  'qc.finding.vadFailed': 'Impossibile rilevare i tratti di parlato; la sincronizzazione dei sottotitoli potrebbe essere meno precisa e la copertura non è stata verificata',
   'editor.play': 'Riproduci questa riga',
   'editor.previewLoading': 'Generazione anteprima…',
   'editor.audioOnly': 'Questo input non ha video; solo audio',

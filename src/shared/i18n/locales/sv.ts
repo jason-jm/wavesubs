@@ -188,6 +188,7 @@ export const sv: Dict = {
   'editor.error.noRecord': 'Ingen redigeringspost – kör en konvertering först',
   'editor.caption': 'Rätta text, justera tider, slå ihop rader och exportera igen',
   'qc.finding.invalid': '{n} rad(er) med omvänd eller noll-längd (första vid {at})',
+  'qc.finding.vadFailed': 'Talavsnitten kunde inte hittas – undertexternas timing kan vara mindre exakt och täckningen kontrollerades inte',
   'editor.play': 'Spela upp raden',
   'editor.previewLoading': 'Genererar förhandsvisning…',
   'editor.audioOnly': 'Denna indata saknar bild; endast ljud',

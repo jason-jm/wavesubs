@@ -189,6 +189,7 @@ export const ro: Dict = {
   'editor.error.noRecord': 'Nu există înregistrare de editare — rulați mai întâi o conversie',
   'editor.caption': 'Corectați textul, ajustați timpii, îmbinați rânduri și exportați din nou',
   'qc.finding.invalid': '{n} rânduri cu durată inversată sau zero (primul la {at})',
+  'qc.finding.vadFailed': 'Segmentele de vorbire nu au putut fi detectate — sincronizarea subtitrărilor poate fi mai puțin precisă, iar acoperirea nu a fost verificată',
   'editor.play': 'Redă acest rând',
   'editor.previewLoading': 'Se generează previzualizarea…',
   'editor.audioOnly': 'Această intrare nu are imagine; doar sunet',

@@ -188,6 +188,7 @@ export const tr: Dict = {
   'editor.error.noRecord': 'Düzenleme kaydı yok — önce bir dönüştürme çalıştırın',
   'editor.caption': 'Metni düzeltin, zamanlamayı ayarlayın, birleştirin ve yeniden dışa aktarın',
   'qc.finding.invalid': 'Başlangıç-bitişi ters veya sıfır süreli {n} satır (ilki {at})',
+  'qc.finding.vadFailed': 'Konuşma bölümleri algılanamadı; altyazı zamanlaması daha az hassas olabilir ve kapsama kontrol edilemedi',
   'editor.play': 'Bu satırı oynat',
   'editor.previewLoading': 'Önizleme oluşturuluyor…',
   'editor.audioOnly': 'Bu girdide görüntü yok; yalnızca ses',

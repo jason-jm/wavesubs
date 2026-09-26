@@ -186,6 +186,7 @@ export const en: Dict = {
   'editor.error.noRecord': 'No editing record for this file — run a conversion first',
   'editor.caption': 'Fix text, adjust timing, split or merge, then export again',
   'qc.finding.invalid': '{n} line(s) with reversed or zero duration (first at {at})',
+  'qc.finding.vadFailed': 'Speech segments could not be detected — timing may be less precise and coverage was not checked',
   'editor.play': 'Play this line',
   'editor.previewLoading': 'Generating preview…',
   'editor.audioOnly': 'This input has no video — audio only',

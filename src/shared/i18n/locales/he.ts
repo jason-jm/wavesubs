@@ -187,6 +187,7 @@ export const he: Dict = {
   'editor.error.noRecord': 'אין רשומת עריכה — הריצו קודם המרה',
   'editor.caption': 'תקנו טקסט, כווננו תזמון, מזגו שורות וייצאו מחדש',
   'qc.finding.invalid': '{n} שורות עם משך הפוך או אפסי (הראשונה ב־{at})',
+  'qc.finding.vadFailed': 'לא ניתן היה לזהות את קטעי הדיבור — תזמון הכתוביות עשוי להיות פחות מדויק, והכיסוי לא נבדק',
   'editor.play': 'נגן שורה זו',
   'editor.previewLoading': 'יוצר תצוגה מקדימה…',
   'editor.audioOnly': 'לקלט הזה אין וידאו — שמע בלבד',

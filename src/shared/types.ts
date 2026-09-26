@@ -125,7 +125,7 @@ export interface MediaProbeInfo {
  * atSec 给「第一处」的时间点，方便直接跳过去看。
  */
 export interface QcFinding {
-  kind: 'coverage' | 'gap' | 'overlong' | 'fastRate' | 'untranslated' | 'residual' | 'invalid'
+  kind: 'coverage' | 'gap' | 'overlong' | 'fastRate' | 'untranslated' | 'residual' | 'invalid' | 'vadFailed'
   severity: 'warn' | 'bad'
   /** 数量类指标（条数、处数） */
   n?: number

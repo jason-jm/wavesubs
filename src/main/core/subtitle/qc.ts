@@ -45,9 +45,17 @@ const BIN_MS = 50
 export function computeQc(
   cues: Cue[],
   regions: SpeechRegion[] | null,
-  opts?: { targetLanguage?: string; translated?: boolean }
+  /** asr：字幕来自语音识别。这时没有 VAD 区间（regions === null）就是 VAD 没跑成，要报出来 */
+  opts?: { targetLanguage?: string; translated?: boolean; asr?: boolean }
 ): QcReport {
   const findings: QcFinding[] = []
+
+  // ---------- VAD 没跑成 ----------
+  // 时间轴退回响度估计、下面的覆盖率与漏段检查也做不了。以前这一步静默失败：Windows 上用户名带中文时
+  // VAD 一直在崩，没有任何提示（GitHub issue #1）。字幕轨、字幕文件本来就没有 VAD，不报
+  if (opts?.asr && regions === null) {
+    findings.push({ kind: 'vadFailed', severity: 'warn' })
+  }
 
   // ---------- 覆盖率与漏段（只有走过 VAD 的识别任务才有依据） ----------
   if (regions && regions.length > 0 && cues.length > 0) {

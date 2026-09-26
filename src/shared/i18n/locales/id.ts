@@ -188,6 +188,7 @@ export const id: Dict = {
   'editor.error.noRecord': 'Tidak ada catatan penyuntingan — jalankan konversi dulu',
   'editor.caption': 'Perbaiki teks, sesuaikan waktu, gabungkan baris, lalu ekspor lagi',
   'qc.finding.invalid': '{n} baris dengan durasi terbalik atau nol (pertama di {at})',
+  'qc.finding.vadFailed': 'Bagian ucapan tidak terdeteksi — waktu subtitel mungkin kurang tepat dan cakupan tidak diperiksa',
   'editor.play': 'Putar baris ini',
   'editor.previewLoading': 'Membuat pratinjau…',
   'editor.audioOnly': 'Masukan ini tanpa video; audio saja',

@@ -1,4 +1,5 @@
 import { spawn } from 'node:child_process'
+import { whisperPathArgs } from './pathArgs'
 
 export interface SpeechRegion {
   startMs: number
@@ -37,7 +38,9 @@ export async function detectSpeechRegions(
   signal?: AbortSignal
 ): Promise<SpeechRegion[]> {
   const stdout = await new Promise<string>((resolve, reject) => {
-    const child = spawn(vadBin, ['-vm', vadModelPath, '-f', wavPath, ...VAD_TUNING])
+    // 和 whisper-cli 同一个坑：VAD 模型也在 AppData 下，Windows 上用户名带非 ASCII 字符就崩（见 pathArgs.ts）
+    const { cwd, paths: [modelArg, wavArg] } = whisperPathArgs(vadModelPath, [vadModelPath, wavPath])
+    const child = spawn(vadBin, ['-vm', modelArg, '-f', wavArg, ...VAD_TUNING], { cwd, windowsHide: true })
     let out = ''
     let errTail = ''
     const onAbort = (): void => { child.kill() }

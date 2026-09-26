@@ -189,6 +189,7 @@ export const ms: Dict = {
   'editor.error.noRecord': 'Tiada rekod suntingan — jalankan penukaran dahulu',
   'editor.caption': 'Baiki teks, laras masa, gabung baris, kemudian eksport semula',
   'qc.finding.invalid': '{n} baris dengan tempoh terbalik atau sifar (pertama pada {at})',
+  'qc.finding.vadFailed': 'Bahagian pertuturan tidak dapat dikesan — masa sari kata mungkin kurang tepat dan liputan tidak disemak',
   'editor.play': 'Main baris ini',
   'editor.previewLoading': 'Menjana pratonton…',
   'editor.audioOnly': 'Input ini tiada video; audio sahaja',

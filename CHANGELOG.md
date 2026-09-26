@@ -2,6 +2,14 @@
 
 [中文版](./CHANGELOG.zh-CN.md)
 
+## 1.0.9 — 2026-09-26
+
+- **Windows: speech recognition works when the Windows user name contains non-English characters** ([#1](https://github.com/jason-jm/wavesubs/issues/1)). Models live under the user folder, and whisper.cpp on Windows receives command-line paths in the system code page but opens the model as UTF-8. A Chinese, Japanese, Korean, Cyrillic or accented user name therefore crashed recognition the moment the model loaded (exit code 3221226505), and a name the system code page cannot represent made the model impossible to open. Speech detection had the same problem. Both programs now start in the models folder and receive every path relative to it, so the user name never reaches their command line. Every earlier Windows version was affected.
+- **A speech-detection failure is no longer silent.** When speech detection cannot run, timing falls back to a loudness estimate and the coverage checks are skipped. That used to happen without any notice; the quality report now says so and marks the file as worth reviewing.
+- **A clear error when recognition produces no result.** When whisper-cli could not read the audio it still exited normally and the app reported only a missing file; the error now carries whisper-cli's own log.
+- **Windows: helper programs no longer open console windows.** ffmpeg, the recognizer, speech detection, the on-screen text reader and the local translation server run without a window.
+- **Windows: on-screen text on Chinese, Japanese and Korean Windows.** Windows PowerShell 5.1 reads the bundled OCR script in the system code page, and the Chinese comments in it could break parsing on double-byte code pages, which also hides the on-screen text switch. The script is now pure ASCII (packaging refuses anything else), writes no byte-order mark and escapes recognized non-ASCII text, so its output no longer depends on the console code page.
+
 ## 1.0.8 — 2026-09-20
 
 - Settings: "Check for updates automatically" is now "Check for updates at launch", with the note "Checks for a new version once when the app starts". It only checks once, at launch; the old wording suggested it kept checking while running.

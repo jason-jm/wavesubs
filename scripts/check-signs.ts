@@ -360,6 +360,9 @@ console.log('\nOCR 输出解析（两个平台共用）：')
   eq('帧序号加上批次起点', frames.map((f) => f.i), [1500, 1501])
   eq('\\u 转义的日文读回来', frames[1].boxes[0].t, '営業中')
   eq('空帧也是一帧', frames[0].boxes, [])
+  // PowerShell 5.1 把输出编码设成带 BOM 的 UTF-8 时，重定向出来的第一行前面会多一个 BOM
+  const bom = parseOcrLines('\uFEFF{"i":0,"file":"00001.jpg","boxes":[]}\r\n{"i":1,"file":"00002.jpg","boxes":[]}\r\n')
+  eq('开头带 BOM 也照样解析', bom.map((f) => f.i), [0, 1])
 }
 
 console.log('\n颜文字：')

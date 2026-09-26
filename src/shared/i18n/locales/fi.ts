@@ -188,6 +188,7 @@ export const fi: Dict = {
   'editor.error.noRecord': 'Ei muokkaustietuetta – aja ensin muunnos',
   'editor.caption': 'Korjaa tekstiä, säädä ajoitusta, yhdistä rivejä ja vie uudelleen',
   'qc.finding.invalid': '{n} riviä, joiden kesto on käänteinen tai nolla (ensimmäinen kohdassa {at})',
+  'qc.finding.vadFailed': 'Puhejaksoja ei löydetty – tekstitysten ajoitus voi olla epätarkempi, eikä kattavuutta tarkistettu',
   'editor.play': 'Toista tämä rivi',
   'editor.previewLoading': 'Luodaan esikatselua…',
   'editor.audioOnly': 'Syötteessä ei ole kuvaa; vain ääni',

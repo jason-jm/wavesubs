@@ -188,6 +188,7 @@ export const nl: Dict = {
   'editor.error.noRecord': 'Geen bewerkingsrecord — voer eerst een conversie uit',
   'editor.caption': 'Corrigeer tekst, pas timing aan, voeg samen en exporteer opnieuw',
   'qc.finding.invalid': '{n} regel(s) met omgekeerde of nul-duur (eerste op {at})',
+  'qc.finding.vadFailed': 'Spraakfragmenten konden niet worden gedetecteerd; de timing van de ondertitels kan minder nauwkeurig zijn en de dekking is niet gecontroleerd',
   'editor.play': 'Deze regel afspelen',
   'editor.previewLoading': 'Voorbeeld genereren…',
   'editor.audioOnly': 'Deze invoer heeft geen beeld; alleen geluid',

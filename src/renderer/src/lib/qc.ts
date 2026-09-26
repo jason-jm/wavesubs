@@ -15,7 +15,8 @@ const FINDING_KEY: Record<QcFinding['kind'], TranslationKey> = {
   fastRate: 'qc.finding.fastRate',
   untranslated: 'qc.finding.untranslated',
   residual: 'qc.finding.residual',
-  invalid: 'qc.finding.invalid'
+  invalid: 'qc.finding.invalid',
+  vadFailed: 'qc.finding.vadFailed'
 }
 
 /** 秒 → mm:ss / h:mm:ss，给「最早出现在 {at}」用 */

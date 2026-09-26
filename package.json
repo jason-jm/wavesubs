@@ -1,7 +1,7 @@
 {
   "name": "wavesubs",
   "productName": "Wave Subs",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Generate and translate subtitles from any video with local AI (macOS / Windows)",
   "private": true,
   "type": "module",
@@ -39,7 +39,8 @@
     "check-signs": "tsx scripts/check-signs.ts",
     "check-output": "tsx scripts/check-output.ts",
     "check-terms": "tsx scripts/check-terms.ts",
-    "check-update": "tsx scripts/check-update.ts"
+    "check-update": "tsx scripts/check-update.ts",
+    "check-winpaths": "tsx scripts/check-winpaths.ts"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",

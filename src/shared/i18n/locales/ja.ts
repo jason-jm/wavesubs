@@ -186,6 +186,7 @@ export const ja: Dict = {
   'editor.error.noRecord': 'このファイルの編集記録がありません。先に変換を実行してください',
   'editor.caption': 'テキスト修正・タイミング調整・行の追加や結合をして再エクスポート',
   'qc.finding.invalid': '開始と終了が逆転またはゼロ長の行が {n} 件（最初は {at}）',
+  'qc.finding.vadFailed': '発話区間を検出できませんでした。字幕のタイミングが不正確な可能性があり、カバー率も確認できていません',
   'editor.play': 'この行を再生',
   'editor.previewLoading': 'プレビューを生成中…',
   'editor.audioOnly': 'この入力には映像がありません。音声のみ再生します',

@@ -191,6 +191,7 @@ export const fr: Dict = {
   'editor.error.noRecord': 'Aucun historique d’édition — lancez d’abord une conversion',
   'editor.caption': 'Corrigez le texte, ajustez les temps, fusionnez, puis réexportez',
   'qc.finding.invalid': '{n} ligne(s) à durée inversée ou nulle (première à {at})',
+  'qc.finding.vadFailed': 'Impossible de détecter les passages parlés ; le minutage des sous-titres peut être moins précis et la couverture n’a pas été vérifiée',
   'editor.play': 'Lire cette ligne',
   'editor.previewLoading': 'Génération de l’aperçu…',
   'editor.audioOnly': 'Cette entrée n’a pas d’image ; audio seulement',

@@ -47,7 +47,7 @@ export class LlamaServerManager {
       '-c', '8192',
       // Qwen3 等思考型模型直接给答案，避免 <think> 拖慢并污染输出
       '--reasoning-budget', '0'
-    ])
+    ], { windowsHide: true })
     let stderrTail = ''
     proc.stderr?.on('data', (chunk: Buffer) => {
       stderrTail = (stderrTail + chunk.toString()).slice(-3000)

@@ -254,7 +254,7 @@ export function parseSbv(content: string): Cue[] {
 
 async function runFfmpeg(ffmpeg: string, args: string[]): Promise<void> {
   await new Promise<void>((resolve, reject) => {
-    const child = spawn(ffmpeg, args)
+    const child = spawn(ffmpeg, args, { windowsHide: true })
     let stderrTail = ''
     child.stderr.on('data', (chunk: Buffer) => {
       stderrTail = (stderrTail + chunk.toString()).slice(-3000)
@@ -386,7 +386,7 @@ export async function extractEmbeddedSubtitle(
         '-map', `0:s:${opts.subtitleIndex}`,
         '-f', 'srt',
         outPath
-      ])
+      ], { windowsHide: true })
       let stderrTail = ''
       child.stderr.on('data', (chunk: Buffer) => {
         stderrTail = (stderrTail + chunk.toString()).slice(-3000)

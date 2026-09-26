@@ -220,7 +220,7 @@ async function main(): Promise<void> {
     const QC_KEY = {
       coverage: 'qc.finding.coverage', gap: 'qc.finding.gap', overlong: 'qc.finding.overlong',
       fastRate: 'qc.finding.fastRate', untranslated: 'qc.finding.untranslated',
-      residual: 'qc.finding.residual', invalid: 'qc.finding.invalid'
+      residual: 'qc.finding.residual', invalid: 'qc.finding.invalid', vadFailed: 'qc.finding.vadFailed'
     } as const
     if (result.qc.level !== 'good') {
       console.log(`\n[qc] ${cliT(result.qc.level === 'bad' ? 'qc.bad' : 'qc.warn')}`)

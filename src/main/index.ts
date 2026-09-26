@@ -557,7 +557,8 @@ function registerIpc(): void {
       // 编辑之后质检结论会过期（改了时长/文本），就地重算保持诚实
       rec.qc = computeQc(rec.cues.filter((c) => c.kind !== 'sign'), rec.regions, {
         translated: Boolean(rec.translation),
-        targetLanguage: rec.translation?.targetLanguage
+        targetLanguage: rec.translation?.targetLanguage,
+        asr: rec.sourceKey.startsWith('asr|')
       })
       await store.save(rec)
       return true

@@ -189,6 +189,7 @@ export const pl: Dict = {
   'editor.error.noRecord': 'Brak zapisu edycji — najpierw uruchom konwersję',
   'editor.caption': 'Popraw tekst, dostosuj czasy, scalaj wiersze i eksportuj ponownie',
   'qc.finding.invalid': '{n} wiersz(y) z odwróconym lub zerowym czasem (pierwszy o {at})',
+  'qc.finding.vadFailed': 'Nie udało się wykryć fragmentów mowy — synchronizacja napisów może być mniej dokładna, pokrycia nie sprawdzono',
   'editor.play': 'Odtwórz ten wiersz',
   'editor.previewLoading': 'Generowanie podglądu…',
   'editor.audioOnly': 'To wejście nie ma obrazu; tylko dźwięk',

@@ -185,6 +185,7 @@ export const zhHant: Dict = {
   'editor.error.noRecord': '沒有這個檔案的編輯記錄，請先完成一次轉換',
   'editor.caption': '改文字、調時間、增刪合併，改完重新匯出',
   'qc.finding.invalid': '{n} 條起訖時間顛倒或零時長（最早在 {at}）',
+  'qc.finding.vadFailed': '沒能偵測出說話的區間：時間軸可能不夠準，覆蓋率也無法檢查',
   'editor.play': '播放這條',
   'editor.previewLoading': '正在產生預覽…',
   'editor.audioOnly': '這個輸入沒有畫面，僅播放聲音',

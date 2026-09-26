@@ -188,6 +188,7 @@ export const hu: Dict = {
   'editor.error.noRecord': 'Nincs szerkesztési bejegyzés — előbb futtasson konvertálást',
   'editor.caption': 'Javítsa a szöveget, igazítsa az időzítést, vonjon össze, majd exportáljon újra',
   'qc.finding.invalid': '{n} sor fordított vagy nulla időtartammal (első: {at})',
+  'qc.finding.vadFailed': 'Nem sikerült felismerni a beszédszakaszokat — a feliratok időzítése pontatlanabb lehet, a lefedettség nem lett ellenőrizve',
   'editor.play': 'Sor lejátszása',
   'editor.previewLoading': 'Előnézet készítése…',
   'editor.audioOnly': 'Ennek a bemenetnek nincs képe; csak hang',

@@ -196,6 +196,7 @@ export const zhHans = {
   'editor.error.noRecord': '没有这个文件的编辑记录，请先完成一次转换',
   'editor.caption': '改文字、调时间、增删合并，改完重新导出',
   'qc.finding.invalid': '{n} 条起止时间颠倒或零时长（最早在 {at}）',
+  'qc.finding.vadFailed': '没能检测出说话的区间：时间轴可能不够准，覆盖率也没法检查',
   'editor.play': '播放这条',
   'editor.previewLoading': '正在生成预览…',
   'editor.audioOnly': '这个输入没有画面，仅播放声音',

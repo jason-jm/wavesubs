@@ -188,6 +188,7 @@ export const nb: Dict = {
   'editor.error.noRecord': 'Ingen redigeringspost – kjør en konvertering først',
   'editor.caption': 'Rett tekst, juster tider, slå sammen linjer og eksporter igjen',
   'qc.finding.invalid': '{n} linje(r) med omvendt eller null varighet (første ved {at})',
+  'qc.finding.vadFailed': 'Taleavsnittene kunne ikke finnes – undertekstenes timing kan være mindre presis, og dekningen ble ikke kontrollert',
   'editor.play': 'Spill av denne linjen',
   'editor.previewLoading': 'Genererer forhåndsvisning…',
   'editor.audioOnly': 'Denne inndataen har ikke bilde; bare lyd',

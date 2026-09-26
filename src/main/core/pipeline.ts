@@ -356,8 +356,12 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
           report('extract', 100)
 
           report('transcribe', 0, 'progress.transcribing')
+          // VAD 失败不中断任务（时间轴退回响度估计），但不能再悄悄吞掉：质检里会报 vadFailed，日志里留原因
           const regionsPromise = opts.vadModelPath
-            ? detectSpeechRegions(vadBinPath(), opts.vadModelPath, wavPath, opts.signal).catch(() => null)
+            ? detectSpeechRegions(vadBinPath(), opts.vadModelPath, wavPath, opts.signal).catch((err: unknown) => {
+                console.warn(`VAD 没跑成，时间轴退回响度估计：${err instanceof Error ? err.message : String(err)}`)
+                return null
+              })
             : Promise.resolve(null)
           const energyPromise = analyzeWavEnergy(wavPath).catch(() => null)
           // 自动语种：别信 whisper 只看开头 30 秒的判断（片头音乐会判成英语，整集识别成英文胡话），
@@ -529,7 +533,8 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
     // ---------- 质检 ----------
     const qc = computeQc(cues, qcRegions, {
       translated: Boolean(opts.translate),
-      targetLanguage: opts.translate?.targetLanguage
+      targetLanguage: opts.translate?.targetLanguage,
+      asr: source.kind === 'asr'
     })
     if (store && record) {
       record.qc = qc

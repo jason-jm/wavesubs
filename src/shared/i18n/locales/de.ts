@@ -188,6 +188,7 @@ export const de: Dict = {
   'editor.error.noRecord': 'Kein Bearbeitungsstand – zuerst eine Konvertierung ausführen',
   'editor.caption': 'Text korrigieren, Timing anpassen, zusammenführen, neu exportieren',
   'qc.finding.invalid': '{n} Zeile(n) mit vertauschter oder Null-Dauer (erste bei {at})',
+  'qc.finding.vadFailed': 'Die Sprechabschnitte konnten nicht erkannt werden – das Timing der Untertitel kann ungenauer sein, die Abdeckung wurde nicht geprüft',
   'editor.play': 'Diese Zeile abspielen',
   'editor.previewLoading': 'Vorschau wird erstellt…',
   'editor.audioOnly': 'Diese Eingabe hat kein Bild – nur Ton',

@@ -64,11 +64,12 @@ npm run typecheck
 | On-screen text OCR | Vision framework (`vision-ocr`, built at bundle time) | `Windows.Media.Ocr` through PowerShell 5.1 (`native/win-ocr/win-ocr.ps1`) |
 | Signing | Developer ID + notarization | not code-signed yet (SmartScreen warns) |
 
-The feature set is identical on both platforms. The Windows build cross-compiles on macOS without Wine (`npm run release:win`). The platforms differ in three places, each branched in code:
+The feature set is identical on both platforms. The Windows build cross-compiles on macOS without Wine (`npm run release:win`). The platforms differ in four places, each branched in code:
 
 - Window chrome: macOS uses `hiddenInset` with the traffic lights inside the sidebar; Windows uses `titleBarOverlay` (button colours follow the theme).
 - Binary lookup: Windows appends `.exe`; whisper and llama each get their own directory because both ship a `ggml.dll` of a different version and Windows resolves DLLs from the executable's directory first.
 - Font stacks: both system font stacks live in the same CSS.
+- Paths for whisper: on Windows, whisper.cpp reads command-line paths in the system code page but opens models as UTF-8, so any non-ASCII user name breaks it. `src/main/core/asr/pathArgs.ts` starts whisper-cli and the VAD tool in the models folder and passes ASCII relative paths. For the same reason `native/win-ocr/win-ocr.ps1` must stay pure ASCII: Windows PowerShell 5.1 reads it in the system code page.
 
 Things that can only be verified on a real Windows machine are listed in [RELEASE.md](./RELEASE.md).
 
@@ -113,6 +114,7 @@ All must be green before a release (see RELEASE.md). Each one pins a class of si
 | `check-signs` | on-screen text: line grouping / tracking / credit windows / burned-in band geometry, judge alignment anchors and read-aloud override, on-screen cap, ASS/SRT output |
 | `check-output` | output fallback matrix (writable in place, read-only fallback, no fallback error) |
 | `check-update` | version comparison, `latest.json` parsing, release-notes language fallback |
+| `check-winpaths` | Windows: every path handed to whisper is ASCII and resolves back to the right file; `win-ocr.ps1` is pure ASCII |
 | `check-site` | website: all 11 language pages, assets, language auto-redirect matrix |
 
 `bench/` holds the subtitle quality benchmark (WER / CER / timing against official subtitles). The evaluation corpus stays local and is not part of the repository.

@@ -16,7 +16,9 @@ import { createHash } from 'node:crypto'
 import { join } from 'node:path'
 import { promisify } from 'node:util'
 
-const run = promisify(execFile)
+const execFileAsync = promisify(execFile)
+/** Windows 上不带 windowsHide 会为每次 ffmpeg 弹一个黑色控制台窗口 */
+const run = (cmd: string, args: string[]): ReturnType<typeof execFileAsync> => execFileAsync(cmd, args, { windowsHide: true })
 
 export interface SegmentSpec {
   input: string

@@ -188,6 +188,7 @@ export const cs: Dict = {
   'editor.error.noRecord': 'Záznam úprav chybí — nejprve spusťte převod',
   'editor.caption': 'Opravte text, upravte časy, slučujte řádky a znovu exportujte',
   'qc.finding.invalid': '{n} řádek/ů s prohozeným nebo nulovým časem (první v {at})',
+  'qc.finding.vadFailed': 'Nepodařilo se rozpoznat úseky řeči — časování titulků může být méně přesné a pokrytí nebylo zkontrolováno',
   'editor.play': 'Přehrát tento řádek',
   'editor.previewLoading': 'Generuje se náhled…',
   'editor.audioOnly': 'Tento vstup nemá obraz; jen zvuk',

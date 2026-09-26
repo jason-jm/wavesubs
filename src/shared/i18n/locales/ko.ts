@@ -185,6 +185,7 @@ export const ko: Dict = {
   'editor.error.noRecord': '이 파일의 편집 기록이 없습니다. 먼저 변환을 실행하세요',
   'editor.caption': '텍스트 수정, 타이밍 조정, 추가·삭제·병합 후 다시 내보내기',
   'qc.finding.invalid': '시작·종료가 뒤바뀌었거나 길이가 0인 줄 {n}개(처음 {at})',
+  'qc.finding.vadFailed': '말하는 구간을 감지하지 못했습니다. 자막 타이밍이 부정확할 수 있고 커버율도 확인하지 못했습니다',
   'editor.play': '이 줄 재생',
   'editor.previewLoading': '미리보기 생성 중…',
   'editor.audioOnly': '이 입력에는 영상이 없어 소리만 재생합니다',

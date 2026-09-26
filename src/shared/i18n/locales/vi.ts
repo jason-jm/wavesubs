@@ -188,6 +188,7 @@ export const vi: Dict = {
   'editor.error.noRecord': 'Chưa có bản ghi chỉnh sửa — hãy chạy chuyển đổi trước',
   'editor.caption': 'Sửa chữ, chỉnh thời gian, gộp dòng rồi xuất lại',
   'qc.finding.invalid': '{n} dòng có thời gian đảo ngược hoặc bằng 0 (đầu tiên tại {at})',
+  'qc.finding.vadFailed': 'Không phát hiện được các đoạn lời thoại — thời gian phụ đề có thể kém chính xác và chưa kiểm tra được độ phủ',
   'editor.play': 'Phát dòng này',
   'editor.previewLoading': 'Đang tạo xem trước…',
   'editor.audioOnly': 'Đầu vào này không có hình; chỉ phát âm thanh',

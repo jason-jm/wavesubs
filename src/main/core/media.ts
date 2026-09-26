@@ -49,7 +49,7 @@ export async function probeMedia(ffprobe: string, input: string): Promise<MediaI
   const { stdout } = await execFileAsync(
     ffprobe,
     ['-v', 'error', '-print_format', 'json', '-show_format', '-show_streams', input],
-    { maxBuffer: 32 * 1024 * 1024 }
+    { maxBuffer: 32 * 1024 * 1024, windowsHide: true }
   )
   const data = JSON.parse(stdout) as {
     format?: { format_name?: string; duration?: string }
@@ -116,7 +116,7 @@ export async function extractAudio(ffmpeg: string, opts: ExtractAudioOptions): P
     opts.output
   ]
   await new Promise<void>((resolve, reject) => {
-    const child = spawn(ffmpeg, args)
+    const child = spawn(ffmpeg, args, { windowsHide: true })
     let stderrTail = ''
     const onAbort = (): void => { child.kill() }
     if (opts.signal?.aborted) onAbort()

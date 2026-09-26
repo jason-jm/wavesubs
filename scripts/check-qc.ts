@@ -145,6 +145,16 @@ console.log('\n无 VAD 的来源（字幕轨/字幕文件）：')
   const { cues } = healthy(20)
   const qc = computeQc(cues, null, { translated: true, targetLanguage: 'zh' })
   check('没有区间就不做覆盖率检查，结构与翻译检查照常', qc.level, 'good')
+  check('字幕轨/字幕文件本来就没有 VAD，不报 vadFailed', computeQc(cues, null, { asr: false }).findings.map((f) => f.kind), [])
+}
+
+console.log('\n语音识别但 VAD 没跑成（以前是静默退回响度估计）：')
+{
+  const { cues, regions } = healthy(20)
+  const failed = computeQc(cues, null, { asr: true })
+  check('报 vadFailed，等级是值得看一眼', [failed.level, failed.findings.map((f) => `${f.kind}/${f.severity}`)], ['warn', ['vadFailed/warn']])
+  check('VAD 正常时不报', computeQc(cues, regions, { asr: true }).level, 'good')
+  check('VAD 跑了但一段人声都没有（纯音乐），不算失败', computeQc(cues, [], { asr: true }).findings.some((f) => f.kind === 'vadFailed'), false)
 }
 
 console.log(bad === 0 ? '\n全部通过' : `\n${bad} 条不符`)

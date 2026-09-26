@@ -61,7 +61,7 @@ export async function extractFrames(ffmpeg: string, opts: ExtractFramesOptions):
       '-vf', `fps=${opts.fps},scale=${opts.width}:-2`,
       '-q:v', '3',
       join(opts.outDir, '%05d.jpg')
-    ])
+    ], { windowsHide: true })
     const onAbort = (): void => { child.kill() }
     if (opts.signal?.aborted) onAbort()
     else opts.signal?.addEventListener('abort', onAbort, { once: true })
@@ -102,7 +102,7 @@ export async function runVisionOcr(
   for (let offset = 0; offset < files.length; offset += CHUNK) {
     const part = files.slice(offset, offset + CHUNK)
     const out = await new Promise<string>((resolve, reject) => {
-      const child = spawn(bin, ['--langs', langs.join(','), ...part])
+      const child = spawn(bin, ['--langs', langs.join(','), ...part], { windowsHide: true })
       const onAbort = (): void => { child.kill() }
       if (signal?.aborted) onAbort()
       else signal?.addEventListener('abort', onAbort, { once: true })
@@ -127,8 +127,10 @@ export async function runVisionOcr(
 /** 两个平台的识别程序都按 JSON Lines 吐结果：一帧一行，帧序号从 0 起；offset 是这一批在整体里的起点 */
 export function parseOcrLines(out: string, offset = 0): OcrFrame[] {
   const frames: OcrFrame[] = []
-  for (const line of out.split('\n')) {
-    if (!line.trim()) continue
+  // Windows PowerShell 把输出编码设成 UTF-8 时可能在开头写一个 BOM，行尾是 \r\n：JSON.parse 两样都不认
+  for (const raw of out.replace(/^\uFEFF/, '').split('\n')) {
+    const line = raw.trim()
+    if (!line) continue
     const parsed = JSON.parse(line) as { i: number; boxes: OcrFrame['boxes'] }
     frames.push({ i: offset + parsed.i, boxes: parsed.boxes ?? [] })
   }
@@ -153,7 +155,7 @@ export async function runWindowsOcr(
     const child = spawn(powershellPath(), [
       '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass',
       '-File', script, '-Langs', langs.join(','), '-Files', listFile
-    ])
+    ], { windowsHide: true })
     const onAbort = (): void => { child.kill() }
     if (signal?.aborted) onAbort()
     else signal?.addEventListener('abort', onAbort, { once: true })

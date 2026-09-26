@@ -194,8 +194,13 @@ async function main(): Promise<void> {
   copyFileSync(join(ROOT, 'assets', 'ggml-silero-v5.1.2.bin'), join(OUT, 'vad', 'ggml-silero-v5.1.2.bin'))
 
   // 画面文字识别：Windows 用系统自带的 OCR（Windows.Media.Ocr），随包只有一个 PowerShell 脚本
+  // 脚本必须是纯 ASCII：Windows PowerShell 5.1 读没有 BOM 的脚本用系统代码页，中日韩 Windows 上是双字节编码，
+  // 文件里的 UTF-8 中文会吞掉后面的引号或换行，脚本直接解析失败（画面文字功能在这些系统上整个消失）
+  const ocrScript = join(ROOT, 'native', 'win-ocr', 'win-ocr.ps1')
+  const nonAscii = [...readFileSync(ocrScript)].findIndex((byte) => byte > 0x7f)
+  if (nonAscii >= 0) throw new Error(`win-ocr.ps1 里有非 ASCII 字符（第 ${nonAscii} 字节），PowerShell 5.1 在中日韩 Windows 上会解析失败`)
   mkdirSync(join(OUT, 'ocr'), { recursive: true })
-  copyFileSync(join(ROOT, 'native', 'win-ocr', 'win-ocr.ps1'), join(OUT, 'ocr', 'win-ocr.ps1'))
+  copyFileSync(ocrScript, join(OUT, 'ocr', 'win-ocr.ps1'))
   console.log(`\nvendor-win/ 合计 ${dirSizeMB(OUT)} MB  ·  ffmpeg LGPL 校验通过 ✅`)
 }
 

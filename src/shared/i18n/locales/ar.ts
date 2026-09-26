@@ -187,6 +187,7 @@ export const ar: Dict = {
   'editor.error.noRecord': 'لا يوجد سجل تحرير — نفّذ تحويلًا أولًا',
   'editor.caption': 'صحّح النص واضبط التوقيت وادمج الأسطر ثم صدّر مجددًا',
   'qc.finding.invalid': '{n} سطر بمدة معكوسة أو صفرية (الأول عند {at})',
+  'qc.finding.vadFailed': 'تعذّر تحديد مقاطع الكلام — قد يكون توقيت الترجمة أقل دقة، ولم يُتحقق من التغطية',
   'editor.play': 'تشغيل هذا السطر',
   'editor.previewLoading': 'جارٍ إنشاء المعاينة…',
   'editor.audioOnly': 'هذا الإدخال بلا صورة؛ صوت فقط',

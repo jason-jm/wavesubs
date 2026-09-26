@@ -189,6 +189,7 @@ export const es: Dict = {
   'editor.error.noRecord': 'No hay registro de edición; ejecuta primero una conversión',
   'editor.caption': 'Corrige texto, ajusta tiempos, combina líneas y exporta de nuevo',
   'qc.finding.invalid': '{n} línea(s) con duración invertida o nula (primera en {at})',
+  'qc.finding.vadFailed': 'No se pudieron detectar los tramos de habla; la sincronización de los subtítulos puede ser menos precisa y no se comprobó la cobertura',
   'editor.play': 'Reproducir esta línea',
   'editor.previewLoading': 'Generando vista previa…',
   'editor.audioOnly': 'Esta entrada no tiene vídeo; solo audio',
