@@ -6,7 +6,7 @@ import { findTool } from '../tools'
 import { OpenAICompatibleProvider } from './openaiCompatible'
 import type { BatchItem, TranslateContext, TranslationProvider } from './types'
 import { looksUntranslated } from './prompt'
-import { languageName, TranslationParseError } from './types'
+import { languageName, normalizeLanguageCode, TranslationParseError } from './types'
 import { LocalizedError } from '../../../shared/i18n/core'
 
 async function availablePort(): Promise<number> {
@@ -156,9 +156,13 @@ export class LocalLlamaProvider implements TranslationProvider {
     // Small instruction models sometimes return the example's row number. For one subtitle we
     // can ask directly, without asking the model to reproduce a JSON schema or infer an index.
     const terms = ctx.glossary?.map(g => g.from + ' → ' + g.to).join('\n')
-    const prompt = '把下面这一句字幕翻译成' + languageName(ctx.targetLanguage) + '。只输出这句话的译文。' +
-      (terms ? '\n使用以下术语：\n' + terms : '')
-    const raw = await inner.chat(prompt, item.text, { signal: ctx.signal, maxTokens: 1500 })
+    const code = normalizeLanguageCode(ctx.targetLanguage)
+    let target = languageName(code)
+    try { target = new Intl.DisplayNames('en', { type: 'language' }).of(code === 'zh' ? 'zh-Hans' : code) ?? target }
+    catch { /* Use the configured language name for a custom tag. */ }
+    const prompt = 'You are a translator.' + (terms ? '\nUse these terms:\n' + terms : '')
+    const request = 'Translate the following subtitle to ' + target + '. Return only the translation:\n' + item.text
+    const raw = await inner.chat(prompt, request, { signal: ctx.signal, maxTokens: 1500 })
     const line = raw.replace(/^[\s\S]*?<\/think(?:ing)?>/i, '').trim().replace(/^(?:译文|Translation)\s*[:：]\s*/i, '').trim()
     if (!line || /^[\[{`]/.test(line) || line === item.text) return new Map()
     return new Map([[item.index, line]])

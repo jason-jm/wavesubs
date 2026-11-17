@@ -117,7 +117,7 @@ try {
         targetLanguage:'zh',content:'bilingual',format:'srt',signs:false,refreshCache:true})
       console.log('Subtitle export',JSON.stringify({cues:result.cueCount,translated:result.translatedCount,device:result.asrDevice}))
       assert.ok(result.cueCount>0)
-      if (llm) assert.ok(result.translatedCount>0,'no cues translated')
+      if (llm) assert.equal(result.translatedCount,result.cueCount,'every subtitle in the acceptance recording must translate')
       const srt = await readFile(result.outputPath,'utf8')
       assert.ok(srt.includes('-->'))
       if (llm) assert.match(srt, /[\u4e00-\u9fff]/u)
