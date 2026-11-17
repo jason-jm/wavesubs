@@ -4,7 +4,7 @@
  * 背景：模型偶尔把第 n 条的译文写到 n+1 条上（评测里「意思弄反」的一大来源），按 i 回填时无人察觉。
  * 现在要求每行先照抄原文开头 ANCHOR_CHARS 个字，对不上的行丢掉走重试。
  */
-import { ANCHOR_CHARS, buildSystemPrompt, parseBatchResponse } from '../src/main/core/translate/prompt'
+import { ANCHOR_CHARS, buildSystemPrompt, looksUntranslated, parseBatchResponse } from '../src/main/core/translate/prompt'
 import { translateCues } from '../src/main/core/translate/translateCues'
 import type { BatchItem, TranslateContext, TranslationProvider } from '../src/main/core/translate/types'
 import type { Cue } from '../src/main/core/subtitle/types'
@@ -16,6 +16,8 @@ const eq = (name: string, got: unknown, want: unknown): void => {
   if (g !== w) bad += 1
 }
 
+eq('英文整句不会当成中文译文', looksUntranslated('what you are looking for', 'zh'), true)
+eq('专名和产品型号可以保留原写法', looksUntranslated('Apple Vision Pro', 'zh'), false)
 const sources = new Map([[1, 'これ以上成長することはないが'], [2, 'すごいな'], [3, 'Hello there, General Kenobi']])
 console.log('锚核对：')
 eq('锚正确的行保留', [...parseBatchResponse('[{"i":1,"k":"これ以上","t":"不会再成长了"}]', sources).entries()], [[1, '不会再成长了']])

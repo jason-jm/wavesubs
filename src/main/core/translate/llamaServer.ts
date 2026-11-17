@@ -5,6 +5,7 @@ import { createServer } from 'node:net'
 import { findTool } from '../tools'
 import { OpenAICompatibleProvider } from './openaiCompatible'
 import type { BatchItem, TranslateContext, TranslationProvider } from './types'
+import { looksUntranslated } from './prompt'
 import { languageName, TranslationParseError } from './types'
 import { LocalizedError } from '../../../shared/i18n/core'
 
@@ -147,7 +148,8 @@ export class LocalLlamaProvider implements TranslationProvider {
     const [item] = items
     try {
       const response = await inner.translateBatch(items, ctx)
-      if (response.has(item.index)) return response
+      const text = response.get(item.index)
+      if (text && !looksUntranslated(text, ctx.targetLanguage)) return response
     } catch (err) {
       if (!(err instanceof TranslationParseError)) throw err
     }

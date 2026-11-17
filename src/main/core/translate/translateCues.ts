@@ -1,21 +1,8 @@
 import type { Cue } from '../subtitle/types'
 import { LocalizedError } from '../../../shared/i18n/core'
-import { applicableGlossary } from './prompt'
+import { applicableGlossary, looksUntranslated } from './prompt'
 import type { TranslateContext, TranslationProvider } from './types'
-import { normalizeLanguageCode, TranslationConfigError } from './types'
-
-/** 目标语言里绝不该出现的源语言文字——出现了就说明这条没翻译干净 */
-const FOREIGN_SCRIPTS: Record<string, RegExp> = {
-  zh: /[぀-ゟ゠-ヿ가-힯]/, // 中文译文里不该有假名或谚文
-  en: /[぀-ヿ一-鿿가-힯]/, // 英文译文里不该有中日韩文字
-  ja: /[가-힯]/,
-  ko: /[぀-ヿ]/
-}
-
-function looksUntranslated(text: string, targetLanguage: string): boolean {
-  const pattern = FOREIGN_SCRIPTS[normalizeLanguageCode(targetLanguage).toLowerCase().split('-')[0]]
-  return pattern ? pattern.test(text) : false
-}
+import { TranslationConfigError } from './types'
 
 const BATCH_SIZE = 20
 /** 重试轮用更小的批：大批撑爆超时时，拆小往往就能过 */

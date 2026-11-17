@@ -1,6 +1,23 @@
 import type { BatchItem, TranslateContext } from './types'
 import { languageName, normalizeLanguageCode, TranslationParseError } from './types'
 
+/** 目标语言里绝不该出现的源语言文字——出现了就说明这条没翻译干净 */
+const FOREIGN_SCRIPTS: Record<string, RegExp> = {
+  zh: /[぀-ゟ゠-ヿ가-힯]/, // 中文译文里不该有假名或谚文
+  en: /[぀-ヿ一-鿿가-힯]/, // 英文译文里不该有中日韩文字
+  ja: /[가-힯]/,
+  ko: /[぀-ヿ]/
+}
+
+export function looksUntranslated(text: string, targetLanguage: string): boolean {
+  const language = normalizeLanguageCode(targetLanguage).toLowerCase().split('-')[0]
+  if (FOREIGN_SCRIPTS[language]?.test(text)) return true
+  if (!['zh','ja','ko'].includes(language) || /[一-鿿぀-ヿ가-힣]/u.test(text)) return false
+  // Keep brands, acronyms and names. A Latin-script sentence is not a Chinese, Japanese or Korean translation.
+  const words = text.match(/\p{Script=Latin}+/gu) ?? []
+  return words.length >= 3 && words.some(word => /^\p{Ll}/u.test(word))
+}
+
 /** 每批注入的术语上限：全表塞进提示词会稀释注意力，也白烧 token */
 const GLOSSARY_PER_BATCH = 40
 

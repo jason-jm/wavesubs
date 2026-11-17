@@ -11,7 +11,7 @@ import { setTimeout as sleep } from 'node:timers/promises'
 const [stage, exe, scratchArg] = process.argv.slice(2)
 assert.ok(['legacy','upgrade','custom','restart','offline','reconnected'].includes(stage))
 const scratch = await realpath(scratchArg)
-const profile = join(scratch, '用户 资料')
+const profile = process.env.WAVESUBS_QA_PROFILE ?? join(scratch, '用户 资料')
 const original = join(profile, 'models')
 const root = resolve(process.env.WAVESUBS_QA_LIBRARY ?? join(scratch, '独立 模型盘'))
 const disconnected = root + '-disconnected'
