@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const en: Dict = {
   'app.tagline': 'Turn videos and subtitles into the language you want',
+  'library.readOnly': "This folder is read-only. You can use its existing models.",
   'library.folder': "Model folder",
   'library.change': "Change folder",
   'library.plan': "The old folder has {n} models ({size}). Moving removes the originals after verification. Switching alone keeps them.",

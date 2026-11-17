@@ -137,16 +137,14 @@
   .hidden{display:none}
 </style></head><body>
 <header class="top"><div class="wrap"><a class="brand" href="../"><img src="../assets/icon.png?v=b5f064a4" alt="Wave Subs"><span>Wave Subs</span></a></div></header>
-<main class="fb"><h1>問題や要望があれば教えてください</h1><p class="intro">入力して送信すると、バージョン・OS・言語を添えた GitHub の issue が開きます（GitHub アカウントが必要）。ディスカッションに書き込むだけでも構いません。</p>
+<main class="fb"><h1>問題や要望があれば教えてください</h1><p class="intro">「GitHub で確認」を押すと、入力内容が GitHub に送られます。アプリから開いた場合はバージョン、OS、表示言語も含まれます。メールアドレスなどの個人情報は入力しないでください。ログイン後に下書きを編集でき、GitHub で投稿を確定すると公開されます。</p>
 <form id="fb-form">
   <input type="hidden" name="version" id="f-version"><input type="hidden" name="os" id="f-os"><input type="hidden" name="locale" id="f-locale"><input type="hidden" name="page" value="ja">
   <label for="f-kind">種類</label>
   <select name="kind" id="f-kind"><option value="bug">不具合</option><option value="idea">機能の要望</option><option value="other">その他</option></select>
   <label for="f-msg">内容</label>
   <textarea name="message" id="f-msg" required placeholder="何が起きたか、どうなってほしいか。不具合の場合はファイル形式と操作手順も"></textarea>
-  <label for="f-email">メールアドレス（任意・返信用）</label>
-  <input type="email" name="email" id="f-email" autocomplete="email">
-  <button class="btn primary" type="submit">送信</button>
+  <button class="btn primary" type="submit" disabled>GitHub で確認</button>
 </form>
 <script>
   // 应用里的「反馈」入口带上版本/系统/语言：?v=1.0.2&os=darwin&locale=zh-Hans；网页直接打开则留空
@@ -158,10 +156,10 @@
       var val = function (id) { var el = document.getElementById(id); return el ? el.value : ''; };
       var kind = val('f-kind') || 'other';
       var body = val('f-msg') + '\n\n---\nversion: ' + (val('f-version') || '-') + '\nos: ' + (val('f-os') || '-') + '\nlocale: ' + (val('f-locale') || '-') + '\npage: ja';
-      var email = val('f-email'); if (email) { body += '\ncontact: ' + email; }
       var url = 'https://github.com/jason-jm/wavesubs/issues/new?title=' + encodeURIComponent('[' + kind + '] ') + '&body=' + encodeURIComponent(body);
       window.open(url, '_blank', 'noopener');
     });
+    document.querySelector('#fb-form button').disabled = false;
   })();
 </script>
 <div class="links"><a href="https://github.com/jason-jm/wavesubs/discussions" target="_blank" rel="noopener">GitHub Discussions</a><a href="https://github.com/jason-jm/wavesubs/issues" target="_blank" rel="noopener">GitHub Issues</a><a href="../">サイトに戻る</a></div></main></body></html>

@@ -118,8 +118,22 @@
 </div></header>
 <main class="doc">
   <h1>Wave Subs 隐私政策</h1>
-  <p class="updated">更新日期：2026 年 9 月 6 日</p>
-  <h2>概述</h2><p>Wave Subs 是一款完全在你自己的电脑上运行的桌面软件。<strong>我们不收集、不存储、不传输任何个人数据</strong>，没有账号系统，没有使用统计，没有崩溃上报，也没有任何属于我们的服务器。</p><h2>在本地处理的数据</h2><p>你导入的视频、音频、字幕文件，以及识别结果、译文、编辑记录和任务缓存，全部保存在你设备的本地目录中，仅供软件本身使用。你可以随时在设置或访达中删除它们。</p><p>语音识别与翻译模型在你的设备上运行，处理过程不经过网络。</p><h2>软件会在什么时候访问网络</h2><p><strong>下载模型：</strong>首次使用时，识别与翻译模型从 Hugging Face 的公开仓库下载。该请求不包含你的任何个人信息；与任何网络下载一样，对方服务器会看到你的 IP 地址，受 Hugging Face 的隐私政策约束。</p><p><strong>云端翻译（可选，默认关闭）：</strong>只有当你自行填入某个第三方翻译服务的接口地址与密钥时，字幕文本才会发送给<em>你选择的那家服务商</em>，由其隐私政策约束。密钥经系统钥匙串加密后仅保存在本地。不配置云端翻译，软件不会向任何翻译服务发送内容。</p><p>除以上两种情况外，软件不进行任何网络请求：没有自动更新检查、没有遥测、没有广告。</p><h2>第三方组件</h2><p>软件随包附带的开源组件（ffmpeg、whisper.cpp、llama.cpp 等）均在本地运行，不与其作者或任何第三方通信。许可信息见应用内与 <a href="https://github.com/jason-jm/wavesubs/blob/main/THIRD-PARTY-LICENSES.md">THIRD-PARTY-LICENSES</a>。</p><h2>官网反馈表单</h2><p>官网的「反馈」页面由 Netlify Forms 托管。只有当你主动提交表单时，你填写的内容、可选的邮箱，以及从应用打开时附带的版本号、系统类型和界面语言，才会发送并保存在 Netlify（受 Netlify 的隐私政策约束）。这些信息仅用于回复你和改进软件，不用于其它目的，也不会与第三方共享。</p><h2>儿童隐私</h2><p>软件不面向儿童设计，也不从任何年龄段的用户收集数据。</p><h2>政策变更</h2><p>如本政策有实质性变更，我们会在本页面更新并注明日期。</p><h2>联系我们</h2><p>关于隐私的任何问题，请通过<a href="feedback.html">反馈表单</a>或 <a href="https://github.com/jason-jm/wavesubs/issues">GitHub Issues</a> 联系我们。</p>
+  <p class="updated">更新于 2026 年 11 月 15 日</p>
+  <h2>概述</h2>
+  <p>Wave Subs 是一款桌面应用，无需注册。应用不收集使用统计或崩溃报告。</p>
+  <h2>在本地处理的数据</h2>
+  <p>导入的影片、音频、字幕，以及生成的字幕、编辑记录和任务缓存都保存在你的设备上。语音识别、时间对齐、画面文字识别和本地翻译在本机运行。模型下载完成后，你可以离线制作和导出字幕。</p>
+  <h2>应用何时联网</h2>
+  <p><strong>下载模型。</strong>当你选择下载模型时，应用会访问 Hugging Face、hf-mirror.com 或 ModelScope。下载源可看到请求的模型文件和 IP 地址。</p>
+  <p><strong>云端翻译。</strong>如果你配置并选择第三方服务，应用会把需要翻译的字幕文本、启用画面文字翻译时识别出的文字，以及匹配的术语表条目发给该服务商。影片、音频和视频帧保留在设备上。API 密钥用于向所选服务商认证。系统加密可用时，应用会加密存储密钥。不可用时，密钥会以可还原的 Base64 编码保存在本地设置中。</p>
+  <p><strong>检查更新。</strong>官网发行版默认在每次启动后向 GitHub 请求一次 <a href="https://github.com/jason-jm/wavesubs/releases/latest/download/latest.json">版本清单</a>，在本机比较版本。GitHub 可以看到请求的 IP 地址。检查不包含影片、字幕或 API 密钥。你可以在设置中关闭「启动时检查更新」，也可以手动检查。</p>
+  <h2>第三方组件</h2>
+  <p>随包提供的 ffmpeg、whisper.cpp 和 llama.cpp 在本地运行。详情见<a href="https://github.com/jason-jm/wavesubs/blob/main/THIRD-PARTY-LICENSES.md">第三方组件许可</a>。</p>
+  <h2>官网反馈表单</h2>
+  <p>点击「在 GitHub 预览」时，网站会将你填写的内容作为草稿交给 GitHub。从应用打开表单时，还会附上应用版本、系统和界面语言。你可以在 GitHub 上修改或放弃草稿。登录并确认提交后，反馈将出现在公开的 <a href="https://github.com/jason-jm/wavesubs/issues">GitHub Issues</a>，他人可以阅读和回复。表单不要求邮箱，请勿在反馈中填写个人资料。GitHub 会依其<a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">隐私声明</a>处理这些请求。</p>
+  <h2>儿童隐私</h2><p>本应用面向一般用户，不专为儿童设计。</p>
+  <h2>政策变更</h2><p>如本政策有实质性变更，我们会在本页面更新并注明日期。</p>
+  <h2>联系我们</h2><p>关于隐私的公开问题，可以通过<a href="feedback.html">反馈表单</a>联系我们。</p>
 </main>
 </body>
 </html>

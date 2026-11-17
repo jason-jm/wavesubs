@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const cs: Dict = {
   'app.tagline': 'Převede videa a titulky do jazyka, který potřebujete',
+  'library.readOnly': "Tato složka je jen pro čtení. Modely v ní můžete používat.",
   'library.folder': "Složka modelů",
   'library.change': "Změnit složku",
   'library.plan': "Ve staré složce je {n} modelů ({size}). Přesun odstraní originály po ověření. Pouhá změna složky je zachová.",

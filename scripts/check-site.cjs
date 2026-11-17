@@ -15,6 +15,15 @@ for (const l of LANGS) {
   const file = path.join(DOCS, l === 'zh' ? 'index.html' : `${l}/index.html`)
   if (!fs.existsSync(file)) { ok(`${l} 页面存在`, false, file); continue }
   const html = fs.readFileSync(file, 'utf8')
+  const versions = require('./site-versions.json')
+  for (const [key, platform, file] of [
+    ['mac-dmg','macOS','Wave.Subs-V-arm64.dmg'],['mac-zip','macOS','Wave.Subs-V-arm64-mac.zip'],
+    ['win-exe','Windows','Wave.Subs.Setup.V.exe'],['win-zip','Windows','Wave.Subs-V-win.zip']
+  ]) {
+    const version = versions[platform]
+    const href = 'https://github.com/jason-jm/wavesubs/releases/download/v' + version + '/' + file.replace('V',version)
+    ok(l + ': ' + key + ' links to the published platform version', html.includes('data-dl="' + key + '" href="' + href + '"'))
+  }
   const hreflangs = (html.match(/hreflang="/g) || []).length
   ok(`${l}: hreflang ${LANGS.length + 1} 条`, hreflangs === LANGS.length + 1, `实际 ${hreflangs}`)
   const imgs = [...html.matchAll(/(?:src|url\()=?"?\(?([^"()\s]+\.(?:jpg|png))/g)].map((m) => m[1])

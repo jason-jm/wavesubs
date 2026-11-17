@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const tr: Dict = {
   'app.tagline': 'Videoları ve altyazıları istediğiniz dile çevirir',
+  'library.readOnly': "Bu klasör salt okunur. İçindeki modelleri kullanabilirsiniz.",
   'library.folder': "Model klasörü",
   'library.change': "Klasörü değiştir",
   'library.plan': "Eski klasörde {n} model ({size}) var. Taşıma, doğrulamadan sonra asılları kaldırır. Yalnızca klasörü değiştirmek asılları korur.",

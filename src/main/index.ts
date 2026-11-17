@@ -133,8 +133,9 @@ function syncScopes(): void {
 }
 function bindDownloaders(): void {
   const fetch = (url: string, init: RequestInit): Promise<Response> => net.fetch(url, init)
-  asrDownloader = new ModelDownloader(modelsDir(), { fetch, prepareDir: () => library.writable('asr') })
-  llmDownloader = new ModelDownloader(llmDir(), { fetch, prepareDir: () => library.writable('llm') })
+  const trackStage = library.trackDownload.bind(library)
+  asrDownloader = new ModelDownloader(modelsDir(), { fetch, trackStage, prepareDir: () => library.writable('asr') })
+  llmDownloader = new ModelDownloader(llmDir(), { fetch, trackStage, prepareDir: () => library.writable('llm') })
 }
 async function exclusive<T>(action: () => Promise<T>): Promise<T> {
   if (jobRunning || libraryBusy || activeDownloads || asrDownloader.activeFiles().length || llmDownloader.activeFiles().length) {
@@ -171,10 +172,10 @@ function bundledVadModelPath(): string {
  * 以前只靠下载，大陆用户连不上 huggingface 时会悄悄丢掉时间校正，字幕明显变差却看不出原因。
  */
 async function ensureVadModel(): Promise<string | undefined> {
-  const path = join(modelsDir(), VAD_MODEL_FILE)
-  if (await isFile(path)) return path
   const bundled = bundledVadModelPath()
   if (await isFile(bundled)) return bundled
+  const path = join(modelsDir(), VAD_MODEL_FILE)
+  if (await isFile(path)) return path
   try {
     await asrDownloader.download(VAD_MODEL_FILE, VAD_MODEL_URL, undefined, VAD_MODEL_SHA256)
     return path

@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const de: Dict = {
   'app.tagline': 'Videos und Untertitel in die gewünschte Sprache bringen',
+  'library.readOnly': "Dieser Ordner ist schreibgeschützt. Vorhandene Modelle lassen sich verwenden.",
   'library.folder': "Modellordner",
   'library.change': "Ordner ändern",
   'library.plan': "Im bisherigen Ordner liegen {n} Modelle ({size}). Beim Verschieben werden die Originale nach der Prüfung entfernt. Beim bloßen Wechsel bleiben sie erhalten.",

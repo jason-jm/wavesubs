@@ -55,23 +55,23 @@ xcrun notarytool history --keychain-profile "WAVESUBS_NOTARY"
 electron-builder（当前 26.15）能直接读这个钥匙串 profile，密码不需要进环境变量——
 发布命令前加 `APPLE_KEYCHAIN_PROFILE=WAVESUBS_NOTARY` 即可（见下）。
 
-### 3. 编译随包 ffmpeg（只需一次，除非升级版本）
+### 3. 编译 macOS 随包工具
 
 ```bash
-~/Documents/Wave Subs/vendor/build-ffmpeg.sh
+npm run build:mac-deps
 ```
 
-产出最小 LGPL 版本。**不要**改用 Homebrew 的 ffmpeg——那是 GPL v3，随闭源应用分发会违规。
+在 `app/` 中运行。脚本按 `package.json` 的 `build.mac.minimumSystemVersion` 为 Apple Silicon 编译 LGPL FFmpeg、Whisper 和 llama。源码和构建缓存默认在仓库旁的 `../vendor`，也可以用 `WAVESUBS_VENDOR_SRC` 指定目录。依赖版本或最低系统版本变化时重跑。
 
 ## 每次发布
 
 发版前先写两份更新日志：`CHANGELOG.md`（英文，仓库里对外的那份）与 `CHANGELOG.zh-CN.md`（中文），
 再写仓库外的 `../store/release-notes-<版本>.md`（中文在前、`---` 之后是英文，供 GitHub Release 与 latest.json 用）。
 
-`scripts/bundle-deps.ts` 会用 `xcrun swiftc` 现编随包的 `vision-ocr`（画面文字识别，macOS Vision），发布机需要装 Xcode 命令行工具。
+`npm run bundle-deps` 用相同的最低系统目标编译 Vision OCR，把六个工具收进 `vendor/`。electron-builder 在签名前检查最终 .app 内的 arm64 Mach-O 文件和 Info.plist，任一组件的系统要求高于声明值就中止。单独检查本地候选包可运行 `node scripts/check-mac-package.cjs "/path/to/Wave Subs.app"`。
 
 ```bash
-npm run check-i18n && npm run check-css && npm run check-batch && npm run check-cache && npm run check-glossary && npm run check-qc && npm run check-editor && npm run check-preview && npm run check-output && npm run check-signs && npm run check-translate && npm run check-update && npm run check-winpaths && npm run typecheck
+npm run check-i18n && npm run check-css && npm run check-batch && npm run check-cache && npm run check-glossary && npm run check-qc && npm run check-editor && npm run check-preview && npm run check-output && npm run check-signs && npm run check-translate && npm run check-update && npm run check-winpaths && npm run check-model-library && npm run check-cloud && npm run typecheck
 APPLE_KEYCHAIN_PROFILE=WAVESUBS_NOTARY npm run release
 ```
 
@@ -100,7 +100,7 @@ gh release create v<版本> --repo jason-jm/wavesubs --target main --title "Wave
   "release/Wave Subs-<版本>-arm64.dmg" "release/Wave Subs-<版本>-arm64-mac.zip" \
   "release/Wave Subs Setup <版本>.exe" "release/Wave Subs-<版本>-win.zip" release/SHA256SUMS.txt
 npx tsx scripts/make-latest.ts --upload && npx tsx scripts/make-latest.ts --verify   # 见下一节
-# 官网：版本号从 package.json 来，重建后提交 docs/ 即上线（GitHub Pages 取 main 的 /docs）
+# 官网：将 scripts/site-versions.json 中各平台的版本设为其已验证的公开安装包版本，重建后提交 docs/（Pages 取 main 的 /docs）
 python3 scripts/build-site.py && npm run check-site
 # Homebrew：改仓库外 ../store/homebrew/wavesubs.rb 的 version 与 sha256（DMG 那行），再同步到 tap 仓库
 SHA=$(gh api repos/jason-jm/homebrew-wavesubs/contents/Casks/wavesubs.rb --jq .sha)
@@ -151,6 +151,10 @@ done
 从浏览器下载 DMG、双击、拖进「应用程序」、打开、跑通一次完整转换。
 本机测试永远发现不了"忘了打包某个依赖"——因为本机什么都有。
 
+### 按平台发布
+
+当 Apple 公证暂时不可用时，可先从通过 Windows 安装升级验收的 Actions 运行取安装包、便携包及其 SHA-256。对应版本的 GitHub Release 使用 `--latest=false`，更新 Scoop 和官网 Windows 下载链接。GitHub 的共用 latest.json 继续服务上一版，两端的旧客户端都能取到有效更新信息。Mac 公证与装订完成后，上传两个 Mac 包、四个包的校验清单及 latest.json，再将该版本设为 Latest，并更新官网与 Homebrew。
+
 ## 官网下载页要写清楚的
 
 - 系统要求：macOS 12 或更高，**Apple Silicon**（目前不含 Intel 版）
@@ -177,7 +181,7 @@ Windows 不自己编译，直接用官方预编译包。两种来源：
 | 文件 | 来源 |
 |---|---|
 | `ffmpeg-win.zip` | BtbN 的 `ffmpeg-master-latest-win64-lgpl-**shared**.zip` |
-| `whisper-win.zip` | whisper.cpp release `v1.9.1` 的 `whisper-blas-bin-x64.zip`（CPU；上游 Windows 只提供 CUDA 版 GPU 包，677MB，暂不随包） |
+| `whisper-win.zip` | whisper.cpp release `v1.9.1` 的 `whisper-bin-x64.zip`（CPU，无 OpenBLAS） |
 | `llama-win.zip` | llama.cpp release 的 `llama-*-bin-win-vulkan-x64.zip`（自带 CPU 后端，无 Vulkan 设备时自动回落） |
 
 **ffmpeg 必须拿 lgpl 而不是 gpl 版本**，理由和 macOS 一样。

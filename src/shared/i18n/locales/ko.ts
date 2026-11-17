@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const ko: Dict = {
   'app.tagline': '영상과 자막을 원하는 언어로 바꿔 줍니다',
+  'library.readOnly': "읽기 전용 폴더입니다. 폴더 안에 있는 모델은 사용할 수 있습니다.",
   'library.folder': "모델 폴더",
   'library.change': "폴더 변경",
   'library.plan': "기존 폴더에 모델 {n}개({size})가 있습니다. 이동하면 검증 후 원본을 삭제하고, 폴더만 전환하면 원본을 유지합니다.",

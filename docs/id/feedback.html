@@ -137,16 +137,14 @@
   .hidden{display:none}
 </style></head><body>
 <header class="top"><div class="wrap"><a class="brand" href="../"><img src="../assets/icon.png?v=b5f064a4" alt="Wave Subs"><span>Wave Subs</span></a></div></header>
-<main class="fb"><h1>Menemukan masalah atau punya ide? Beri tahu kami</h1><p class="intro">Isi lalu kirim — akan terbuka issue GitHub yang sudah terisi versi, OS, dan bahasa Anda (perlu akun GitHub). Bisa juga langsung menulis di Discussions.</p>
+<main class="fb"><h1>Menemukan masalah atau punya ide? Beri tahu kami</h1><p class="intro">Tombol pratinjau mengirim pesan Anda ke GitHub. Jika formulir dibuka dari aplikasi, versi aplikasi, sistem operasi, dan bahasa antarmuka juga disertakan. Hindari alamat email dan data pribadi lainnya. Masuk ke GitHub untuk memeriksa atau mengubah draf. Isinya menjadi publik setelah Anda mengirimkannya di GitHub.</p>
 <form id="fb-form">
   <input type="hidden" name="version" id="f-version"><input type="hidden" name="os" id="f-os"><input type="hidden" name="locale" id="f-locale"><input type="hidden" name="page" value="id">
   <label for="f-kind">Jenis</label>
   <select name="kind" id="f-kind"><option value="bug">Masalah</option><option value="idea">Usulan fitur</option><option value="other">Lainnya</option></select>
   <label for="f-msg">Pesan</label>
   <textarea name="message" id="f-msg" required placeholder="Apa yang terjadi dan apa yang Anda harapkan; untuk masalah, sertakan format berkas dan langkah yang dilakukan"></textarea>
-  <label for="f-email">Email (opsional, untuk balasan)</label>
-  <input type="email" name="email" id="f-email" autocomplete="email">
-  <button class="btn primary" type="submit">Kirim</button>
+  <button class="btn primary" type="submit" disabled>Pratinjau di GitHub</button>
 </form>
 <script>
   // 应用里的「反馈」入口带上版本/系统/语言：?v=1.0.2&os=darwin&locale=zh-Hans；网页直接打开则留空
@@ -158,10 +156,10 @@
       var val = function (id) { var el = document.getElementById(id); return el ? el.value : ''; };
       var kind = val('f-kind') || 'other';
       var body = val('f-msg') + '\n\n---\nversion: ' + (val('f-version') || '-') + '\nos: ' + (val('f-os') || '-') + '\nlocale: ' + (val('f-locale') || '-') + '\npage: id';
-      var email = val('f-email'); if (email) { body += '\ncontact: ' + email; }
       var url = 'https://github.com/jason-jm/wavesubs/issues/new?title=' + encodeURIComponent('[' + kind + '] ') + '&body=' + encodeURIComponent(body);
       window.open(url, '_blank', 'noopener');
     });
+    document.querySelector('#fb-form button').disabled = false;
   })();
 </script>
 <div class="links"><a href="https://github.com/jason-jm/wavesubs/discussions" target="_blank" rel="noopener">GitHub Discussions</a><a href="https://github.com/jason-jm/wavesubs/issues" target="_blank" rel="noopener">GitHub Issues</a><a href="../">Kembali ke situs</a></div></main></body></html>

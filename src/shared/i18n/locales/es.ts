@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const es: Dict = {
   'app.tagline': 'Convierte vídeos y subtítulos al idioma que quieras',
+  'library.readOnly': "Esta carpeta es de solo lectura. Puedes usar los modelos que ya contiene.",
   'library.folder': "Carpeta de modelos",
   'library.change': "Cambiar carpeta",
   'library.plan': "La carpeta anterior tiene {n} modelos ({size}). Mover elimina los originales tras verificarlos. Solo cambiar conserva los archivos.",

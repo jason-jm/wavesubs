@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const hu: Dict = {
   'app.tagline': 'Videókat és feliratokat alakít át az általad kért nyelvre',
+  'library.readOnly': "A mappa írásvédett. A benne lévő modellek használhatók.",
   'library.folder': "Modellek mappája",
   'library.change': "Mappa módosítása",
   'library.plan': "A régi mappában {n} modell van ({size}). Áthelyezéskor az ellenőrzés után törlődnek az eredetik. A mappaváltás megőrzi őket.",

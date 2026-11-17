@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const ro: Dict = {
   'app.tagline': 'Transformă filmele și subtitrările în limba dorită',
+  'library.readOnly': "Dosarul este doar pentru citire. Poți folosi modelele existente în el.",
   'library.folder': "Dosar de modele",
   'library.change': "Schimbă dosarul",
   'library.plan': "Dosarul vechi conține {n} modele ({size}). Mutarea șterge originalele după verificare. Simpla schimbare le păstrează.",

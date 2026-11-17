@@ -1,14 +1,16 @@
 #!/bin/bash
 # 发布前最后一道：四项验证 + 校验值。任何一项不过就非零退出，别把半成品传上去。
-set -u
+set -uo pipefail
 APP="release/mac-arm64/Wave Subs.app"
-DMG="$(ls -t release/*.dmg 2>/dev/null | head -1)"
+version=$(node -p "require('./package.json').version")
+DMG="release/Wave Subs-$version-arm64.dmg"
 fail=0
 ok()  { echo "  ✓ $1"; }
 bad() { echo "  ✗ $1"; fail=1; }
 
 echo "App："
 # codesign 的信息走 stderr；先攒进变量再 grep，避免 grep -q 提前退出给 codesign 一个 SIGPIPE
+codesign --verify --deep --strict "$APP" && ok "App 完整签名" || bad "App 签名验证失败"
 info=$(codesign -dvvv "$APP" 2>&1)
 grep -q "^Authority=Developer ID Application" <<<"$info" && ok "Developer ID 签名" || bad "签名不是 Developer ID"
 grep -q "flags=.*runtime" <<<"$info" && ok "Hardened Runtime" || bad "缺 runtime 标志"
@@ -18,7 +20,7 @@ residue=0; for b in "$APP"/Contents/Resources/vendor/bin/*; do residue=$((residu
 [ "$residue" -eq 0 ] && ok "随包二进制无 Homebrew 残留" || bad "随包二进制引用了 Homebrew 路径 ($residue)"
 
 echo "DMG："
-[ -n "$DMG" ] || { bad "没有 DMG"; DMG=/dev/null; }
+[ -f "$DMG" ] || { bad "缺少当前版本的 DMG"; exit 1; }
 xcrun stapler validate "$DMG" >/dev/null 2>&1 && ok "DMG 票据已装订" || bad "DMG 没有票据"
 spctl -a -t open --context context:primary-signature "$DMG" >/dev/null 2>&1 && ok "DMG Gatekeeper 接受" || bad "DMG Gatekeeper 拒绝"
 # DMG 里的 App 必须就是 release/mac-arm64 里这份（同一 cdhash）
@@ -29,8 +31,15 @@ if [ -n "$mnt" ]; then
   outer=$(grep -o "CDHash=[0-9a-f]*" <<<"$info")
   [ -n "$inner" ] && [ "$inner" = "$outer" ] && ok "DMG 内 App 与已验证的 App 一致" || bad "DMG 内 App 与外面的不一致（${inner:-读不到} vs ${outer:-读不到}）"
   hdiutil detach "$mnt" -quiet 2>/dev/null
+else
+  bad "无法挂载本版本的 DMG"
 fi
 
 echo "产物与校验值："
-(cd release && shasum -a 256 *.dmg *mac.zip *.exe *win.zip 2>/dev/null) | tee release/SHA256SUMS.txt | sed 's/^/  /'
-exit $fail
+files=("Wave Subs-$version-arm64.dmg" "Wave Subs-$version-arm64-mac.zip" "Wave Subs Setup $version.exe" "Wave Subs-$version-win.zip")
+for f in "${files[@]}"; do [ -s "release/$f" ] || bad "缺少 $f"; done
+[ "$fail" -eq 0 ] || exit 1
+for zip in "${files[1]}" "${files[3]}"; do unzip -tq "release/$zip" || exit 1; done
+(cd release && shasum -a 256 "${files[@]}") | sed 's/  Wave Subs Setup /  Wave.Subs.Setup./;s/  Wave Subs-/  Wave.Subs-/' > release/SHA256SUMS.txt.tmp || exit 1
+mv release/SHA256SUMS.txt.tmp release/SHA256SUMS.txt
+cat release/SHA256SUMS.txt

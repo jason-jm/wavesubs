@@ -275,6 +275,7 @@ export interface ModelFolderPlan {
   count: number
   bytes: number
   sourceOnline: boolean
+  moveUnavailable?: 'nested' | 'readonly' | 'unreadable'
 }
 
 export interface ModelMoveProgress {

@@ -43,7 +43,8 @@ export function ModelFolder({ overview, onRefresh }: { overview: ModelsOverview;
       {!overview.folderOnline && <p className="library-alert" role="status">{t('library.offline', { path: overview.dir })}</p>}
       {(plan || move) && <div className="library-plan">
         {plan && <p className="library-path"><b dir="ltr">→ </b><bdi>{plan.dir}</bdi></p>}
-        {plan && <p>{t('library.plan', { n: plan.count, size: sizeLabel(Math.round(plan.bytes / 1048576)) })}</p>}
+        {plan?.moveUnavailable && <p>{t(plan.moveUnavailable === 'nested' ? 'library.nested' : plan.moveUnavailable === 'readonly' ? 'library.readOnly' : 'library.offline', { path: overview.dir })}</p>}
+        {plan && !plan.moveUnavailable && <p>{t('library.plan', { n: plan.count, size: sizeLabel(Math.round(plan.bytes / 1048576)) })}</p>}
         {move && <div role="status" className="library-progress"><span>{progress?.file || t('common.loadingModels')}</span>
           <progress max={progress?.total || 1} value={progress?.done} /></div>}
         <div className="library-buttons">

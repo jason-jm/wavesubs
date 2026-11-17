@@ -13,7 +13,18 @@ SITE = 'https://jason-jm.github.io/wavesubs/'
 REPO = 'https://github.com/jason-jm/wavesubs'
 # Google Search Console 的所有权验证（HTML tag 方式）；令牌本身是公开的，放在每个页面 head 里
 GOOGLE_SITE_VERIFICATION = 'TLrKCVF2uPAhjO3BwQfRuoxYQfg0VOYPy0XAY4ELXDk'
-VERSION = json.load(open(os.path.join(ROOT, 'package.json')))['version']
+with open(os.path.join(ROOT, 'scripts', 'site-versions.json')) as f:
+    versions = json.load(f)
+MAC_VERSION, WIN_VERSION = versions['macOS'], versions['Windows']
+VERSION = MAC_VERSION if MAC_VERSION == WIN_VERSION else f'macOS {MAC_VERSION} / Windows {WIN_VERSION}'
+def download(version, name):
+    return f'{REPO}/releases/download/v{version}/{name}'
+DOWNLOADS = {
+    'mac-dmg': download(MAC_VERSION, f'Wave.Subs-{MAC_VERSION}-arm64.dmg'),
+    'mac-zip': download(MAC_VERSION, f'Wave.Subs-{MAC_VERSION}-arm64-mac.zip'),
+    'win-exe': download(WIN_VERSION, f'Wave.Subs.Setup.{WIN_VERSION}.exe'),
+    'win-zip': download(WIN_VERSION, f'Wave.Subs-{WIN_VERSION}-win.zip'),
+}
 CSS = open(os.path.join(ROOT, 'scripts', 'site.css')).read()
 
 import hashlib
@@ -824,7 +835,7 @@ def page(k):
     canonical = SITE + ('' if k == 'zh' else f'{k}/')
     faq_ld = {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":ans}} for q,ans in d['faq']]}
     app_ld = {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Wave Subs","applicationCategory":"MultimediaApplication",
-              "operatingSystem":"macOS 12+ (Apple Silicon), Windows 10+","softwareVersion":VERSION,"inLanguage":HTML_LANG[k],
+              "operatingSystem":"macOS 12+ (Apple Silicon), Windows 10+",**({"softwareVersion":VERSION} if MAC_VERSION == WIN_VERSION else {}),"inLanguage":HTML_LANG[k],
               "description":d['description'],"url":canonical,"downloadUrl":REPO+'/releases/latest',"screenshot":SITE+f'assets/shots/{sh}-dark-editor.jpg',
               "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"Jiesi Ma"},"featureList":", ".join(d['pills'])}
     alts = ''.join(f'<link rel="alternate" hreflang="{HTML_LANG[l]}" href="{SITE}{"" if l=="zh" else l+"/"}">' for l in LANGS) + f'<link rel="alternate" hreflang="x-default" href="{SITE}">'
@@ -881,8 +892,8 @@ def page(k):
   <p class="h2sub"><em>{esc(d['h2'])}</em></p>
   <p class="lead">{esc(d['lead'])}</p>
   <div class="cta">
-    <a class="btn primary" id="dl-mac" href="#download">{DL_ICON}{esc(d['cta_mac'])} <small>Apple Silicon</small></a>
-    <a class="btn" id="dl-win" href="#download">{DL_ICON}{esc(d['cta_win'])} <small>x64</small></a>
+    <a class="btn primary" id="dl-mac" href="{DOWNLOADS['mac-dmg']}">{DL_ICON}{esc(d['cta_mac'])} <small>Apple Silicon</small></a>
+    <a class="btn" id="dl-win" href="{DOWNLOADS['win-exe']}">{DL_ICON}{esc(d['cta_win'])} <small>x64</small></a>
   </div>
   <p class="cta-note"><a href="{REPO}" target="_blank" rel="noopener">{esc(d['cta_note'][0])}</a><span>·</span>{esc(d['cta_note'][1])}<span>·</span>{esc(d['cta_note'][2])}</p>
   <div class="pills">{pills}</div>
@@ -932,9 +943,9 @@ def page(k):
   <h2>{esc(d['dl_h2'])}</h2><p class="sub">{esc(d['dl_sub'])}</p>
   <div class="dl">
     <div class="card"><h3>macOS</h3><div class="req">{d['mac_req']}</div>
-      <a class="btn primary" data-dl="mac-dmg" href="#">{esc(d['dl_mac'])}</a><div class="req"><a data-dl="mac-zip" href="#">{esc(d['dl_mac_alt'])}</a></div></div>
+      <a class="btn primary" data-dl="mac-dmg" href="{DOWNLOADS['mac-dmg']}">{esc(d['dl_mac'])}</a><div class="req"><a data-dl="mac-zip" href="{DOWNLOADS['mac-zip']}">{esc(d['dl_mac_alt'])}</a></div></div>
     <div class="card"><h3>Windows</h3><div class="req">{d['win_req']}</div>
-      <a class="btn primary" data-dl="win-exe" href="#">{esc(d['dl_win'])}</a><div class="req"><a data-dl="win-zip" href="#">{esc(d['dl_win_alt'])}</a></div>
+      <a class="btn primary" data-dl="win-exe" href="{DOWNLOADS['win-exe']}">{esc(d['dl_win'])}</a><div class="req"><a data-dl="win-zip" href="{DOWNLOADS['win-zip']}">{esc(d['dl_win_alt'])}</a></div>
       <div class="req" style="margin-top:14px">{esc(d['win_note'])}</div></div>
   </div>
   <div class="cli"><div class="cli-h">{esc(d['cli_h'])}</div>
@@ -952,27 +963,8 @@ def page(k):
 </div></footer>
 
 <script>
-  const VERSION = '{VERSION}';
-  const BASE = '{REPO}/releases/download/v' + VERSION + '/';
-  const FILES = {{ 'mac-dmg': BASE + 'Wave.Subs-' + VERSION + '-arm64.dmg', 'mac-zip': BASE + 'Wave.Subs-' + VERSION + '-arm64-mac.zip',
-    'win-exe': BASE + 'Wave.Subs.Setup.' + VERSION + '.exe', 'win-zip': BASE + 'Wave.Subs-' + VERSION + '-win.zip' }};
-  const isWin = /Windows/i.test(navigator.userAgent);
-  const applyLinks = (files) => {{
-    document.querySelectorAll('[data-dl]').forEach((a) => {{ if (files[a.dataset.dl]) a.href = files[a.dataset.dl]; }});
-    document.getElementById('dl-mac').href = files['mac-dmg'];
-    document.getElementById('dl-win').href = files['win-exe'];
-  }};
-  applyLinks(FILES);
   // Windows 访客：把高亮和首位让给 Windows 按钮；链接始终跟着按钮上的标签走
-  if (isWin) {{ const m = document.getElementById('dl-mac'), w = document.getElementById('dl-win'); m.classList.remove('primary'); w.classList.add('primary'); m.parentNode.insertBefore(w, m); }}
-  fetch('https://api.github.com/repos/jason-jm/wavesubs/releases/latest', {{ headers: {{ Accept: 'application/vnd.github+json' }} }})
-    .then((r) => (r.ok ? r.json() : null)).then((rel) => {{
-      if (!rel || !Array.isArray(rel.assets)) return;
-      const pick = (test) => (rel.assets.find((x) => test(x.name)) || {{}}).browser_download_url;
-      const files = {{ 'mac-dmg': pick((n) => n.endsWith('.dmg')), 'mac-zip': pick((n) => n.endsWith('-mac.zip')),
-        'win-exe': pick((n) => n.endsWith('.exe')), 'win-zip': pick((n) => n.endsWith('-win.zip')) }};
-      if (files['mac-dmg'] && files['win-exe']) applyLinks(files);
-    }}).catch(() => {{}});
+  if (/Windows/i.test(navigator.userAgent)) {{ const m = document.getElementById('dl-mac'), w = document.getElementById('dl-win'); m.classList.remove('primary'); w.classList.add('primary'); m.parentNode.insertBefore(w, m); }}
   // 语言切换：记住选择（根页的自动跳转会尊重它），再跳到对应目录
   document.getElementById('lang').addEventListener('change', (e) => {{
     const v = e.target.value; try {{ localStorage.setItem('ws-lang', v); }} catch (_) {{}}

@@ -61,7 +61,7 @@ export async function transcribeWithWhisperCpp(
   const language = opts.language || 'auto'
   let release: (() => Promise<void>) | undefined
   try {
-    const prepared = await nativePaths(opts.modelPath, [opts.modelPath, opts.audioPath, outBase])
+    const prepared = await nativePaths(outBase, [opts.modelPath, opts.audioPath, outBase])
     release = prepared.release
     const { cwd, paths: [modelArg, audioArg, outArg] } = prepared
     const args = [

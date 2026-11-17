@@ -32,6 +32,11 @@ export async function nativePaths(anchor: string, paths: string[]): Promise<Path
   try {
     const args: string[] = []
     for (const [i, path] of paths.entries()) {
+      const fromTemp = win32.relative(cwd, path)
+      if (ascii.test(fromTemp)) {
+        args.push(fromTemp)
+        continue
+      }
       const name = basename(path)
       const parent = dirname(path)
       const dir = 'd' + i

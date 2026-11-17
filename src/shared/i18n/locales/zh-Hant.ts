@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const zhHant: Dict = {
   'app.tagline': '把影片或字幕變成你要的語言',
+  'library.readOnly': "這個資料夾僅供讀取，可以使用裡面已有的模型。",
   'library.folder': "模型資料夾",
   'library.change': "更改資料夾",
   'library.plan': "舊位置有 {n} 個模型，共 {size}。搬移會在驗證後清理原檔，只切換會保留原檔。",

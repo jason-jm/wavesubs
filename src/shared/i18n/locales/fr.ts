@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const fr: Dict = {
   'app.tagline': 'Transformez vidéos et sous-titres dans la langue de votre choix',
+  'library.readOnly': "Ce dossier est en lecture seule. Vous pouvez utiliser les modèles qu’il contient.",
   'library.folder': "Dossier des modèles",
   'library.change': "Changer de dossier",
   'library.plan': "Ancien dossier : {n} modèles ({size}). Le déplacement supprime les originaux après vérification. Le changement seul les conserve.",

@@ -4,11 +4,11 @@
  * 用假 fetch 模拟「官方被墙、镜像正常」：这是中国大陆用户的真实处境，
  * 1.0.2 之前会直接报 "TypeError: fetch failed"，1.0.3 会先干等官方 20 秒。
  */
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, existsSync } from 'node:fs'
+import { mkdtempSync, mkdirSync, writeFileSync, symlinkSync, readFileSync, rmSync, existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import {
-  ModelDownloader,
+  cleanupDownload, ModelDownloader,
   DownloadCancelledError,
   candidateUrls,
   resetPreferredHost,
@@ -102,6 +102,31 @@ try {
     }
     eq('校验不一致：报 error.modelChecksum', err instanceof LocalizedError ? err.key : String(err), 'error.modelChecksum')
     eq('校验不一致：文件不落盘', existsSync(join(work, 'bad.bin')) || existsSync(join(work, 'bad.bin.download')), false)
+  }
+
+  {
+    const dir = fresh(), keep = join(dir,'protected.bin')
+    writeFileSync(keep,'original')
+    const fake = fakeFetch({'huggingface.co':'ok'})
+    const downloader = new ModelDownloader(dir,{fetch:fake})
+    let blocked = false
+    try { await downloader.download('protected.bin', HF) } catch { blocked = true }
+    eq('同名外部文件不被下载覆盖', [blocked,readFileSync(keep,'utf8'),fake.calls.length],[true,'original',0])
+    if (process.platform !== 'win32') {
+      symlinkSync(keep,join(dir,'new.bin.download'))
+      symlinkSync(keep,join(dir,'.download-host'))
+      await downloader.download('new.bin',HF)
+      eq('旧临时文件或偏好文件链接不会改写外部原件', readFileSync(keep,'utf8'),'original')
+    }
+    const token = '.wavesubs-download-12345678-1234-4123-8123-123456789012'
+    const stage = {dir,token,file:'claim.gguf'}
+    mkdirSync(join(dir,token)); writeFileSync(join(dir,token,'payload'),'partial')
+    writeFileSync(join(dir,stage.file),token)
+    await cleanupDownload(stage)
+    eq('强退下载清除半成品及自己的占位文件', [existsSync(join(dir,token)),existsSync(join(dir,stage.file))],[false,false])
+    mkdirSync(join(dir,token)); writeFileSync(join(dir,stage.file),'my existing file')
+    await cleanupDownload(stage)
+    eq('恢复不会删掉后来放入的同名文件',readFileSync(join(dir,stage.file),'utf8'),'my existing file')
   }
 
   console.log('\n官方直接报错、镜像正常：')

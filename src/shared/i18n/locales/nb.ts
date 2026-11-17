@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const nb: Dict = {
   'app.tagline': 'Gjør videoer og undertekster om til språket du vil ha',
+  'library.readOnly': "Mappen er skrivebeskyttet. Du kan bruke modellene som ligger i den.",
   'library.folder': "Modellmappe",
   'library.change': "Bytt mappe",
   'library.plan': "Den gamle mappen har {n} modeller ({size}). Flytting sletter originalene etter kontroll. Et rent mappebytte beholder dem.",

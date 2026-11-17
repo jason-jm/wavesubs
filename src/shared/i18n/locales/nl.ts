@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const nl: Dict = {
   'app.tagline': 'Zet video’s en ondertitels om naar de taal die je wilt',
+  'library.readOnly': "Deze map is alleen-lezen. Je kunt de aanwezige modellen gebruiken.",
   'library.folder': "Modelmap",
   'library.change': "Map wijzigen",
   'library.plan': "De oude map bevat {n} modellen ({size}). Verplaatsen verwijdert de originelen na controle. Alleen wisselen laat ze staan.",

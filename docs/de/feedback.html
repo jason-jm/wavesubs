@@ -137,16 +137,14 @@
   .hidden{display:none}
 </style></head><body>
 <header class="top"><div class="wrap"><a class="brand" href="../"><img src="../assets/icon.png?v=b5f064a4" alt="Wave Subs"><span>Wave Subs</span></a></div></header>
-<main class="fb"><h1>Problem gefunden oder eine Idee? Sag es uns</h1><p class="intro">Ausfüllen und senden: Es öffnet sich ein vorausgefülltes GitHub-Issue mit Version, System und Sprache (ein GitHub-Konto ist nötig). Du kannst auch einfach in den Diskussionen schreiben.</p>
+<main class="fb"><h1>Problem gefunden oder eine Idee? Sag es uns</h1><p class="intro">Mit „Vorschau auf GitHub“ wird deine Nachricht an GitHub gesendet. Beim Öffnen aus der App werden auch Version, Betriebssystem und Oberflächensprache eingetragen. Lass E-Mail-Adressen und andere persönliche Angaben weg. Nach der Anmeldung kannst du den Entwurf prüfen und bearbeiten. Öffentlich wird er, wenn du ihn auf GitHub abschickst.</p>
 <form id="fb-form">
   <input type="hidden" name="version" id="f-version"><input type="hidden" name="os" id="f-os"><input type="hidden" name="locale" id="f-locale"><input type="hidden" name="page" value="de">
   <label for="f-kind">Art</label>
   <select name="kind" id="f-kind"><option value="bug">Problem</option><option value="idea">Funktionswunsch</option><option value="other">Sonstiges</option></select>
   <label for="f-msg">Nachricht</label>
   <textarea name="message" id="f-msg" required placeholder="Was passiert ist und was du erwartet hast; bei Problemen bitte Dateiformat und ungefähre Schritte"></textarea>
-  <label for="f-email">E-Mail (optional, für eine Antwort)</label>
-  <input type="email" name="email" id="f-email" autocomplete="email">
-  <button class="btn primary" type="submit">Senden</button>
+  <button class="btn primary" type="submit" disabled>Vorschau auf GitHub</button>
 </form>
 <script>
   // 应用里的「反馈」入口带上版本/系统/语言：?v=1.0.2&os=darwin&locale=zh-Hans；网页直接打开则留空
@@ -158,10 +156,10 @@
       var val = function (id) { var el = document.getElementById(id); return el ? el.value : ''; };
       var kind = val('f-kind') || 'other';
       var body = val('f-msg') + '\n\n---\nversion: ' + (val('f-version') || '-') + '\nos: ' + (val('f-os') || '-') + '\nlocale: ' + (val('f-locale') || '-') + '\npage: de';
-      var email = val('f-email'); if (email) { body += '\ncontact: ' + email; }
       var url = 'https://github.com/jason-jm/wavesubs/issues/new?title=' + encodeURIComponent('[' + kind + '] ') + '&body=' + encodeURIComponent(body);
       window.open(url, '_blank', 'noopener');
     });
+    document.querySelector('#fb-form button').disabled = false;
   })();
 </script>
 <div class="links"><a href="https://github.com/jason-jm/wavesubs/discussions" target="_blank" rel="noopener">GitHub Discussions</a><a href="https://github.com/jason-jm/wavesubs/issues" target="_blank" rel="noopener">GitHub Issues</a><a href="../">Zurück zur Website</a></div></main></body></html>

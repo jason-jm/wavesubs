@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const ms: Dict = {
   'app.tagline': 'Menukar video dan sari kata kepada bahasa yang anda mahu',
+  'library.readOnly': "Folder ini baca sahaja. Anda boleh menggunakan model yang sedia ada di dalamnya.",
   'library.folder': "Folder model",
   'library.change': "Tukar folder",
   'library.plan': "Folder lama mempunyai {n} model ({size}). Pemindahan memadam fail asal selepas pengesahan. Pertukaran folder sahaja mengekalkannya.",

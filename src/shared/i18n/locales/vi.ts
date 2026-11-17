@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const vi: Dict = {
   'app.tagline': 'Chuyển video và phụ đề sang ngôn ngữ bạn muốn',
+  'library.readOnly': "Thư mục này chỉ cho phép đọc. Bạn có thể dùng các mô hình đã có trong đó.",
   'library.folder': "Thư mục mô hình",
   'library.change': "Đổi thư mục",
   'library.plan': "Thư mục cũ có {n} mô hình ({size}). Khi di chuyển, bản gốc được xóa sau khi kiểm tra. Nếu chỉ đổi thư mục, bản gốc được giữ lại.",

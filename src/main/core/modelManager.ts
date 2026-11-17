@@ -2,8 +2,8 @@ import { createHash, randomUUID } from 'node:crypto'
 import { createReadStream, createWriteStream } from 'node:fs'
 import { Transform } from 'node:stream'
 import { pipeline } from 'node:stream/promises'
-import { link, lstat, mkdir, mkdtemp, readFile, rename, rm, writeFile } from 'node:fs/promises'
-import { join } from 'node:path'
+import { link, lstat, mkdir, readFile, rename, rm, rmdir, writeFile } from 'node:fs/promises'
+import { basename, isAbsolute, join } from 'node:path'
 import type { ModelDownloadProgress } from '../../shared/types'
 import { LocalizedError } from '../../shared/i18n/core'
 
@@ -22,6 +22,25 @@ export type FetchLike = (
 ) => Promise<Response>
 
 type Progress = Omit<ModelDownloadProgress, 'kind'>
+
+export interface DownloadStage { dir: string; token: string; file: string }
+export function validDownloadStage(s: DownloadStage): boolean {
+  return !!s && typeof s.dir === 'string' && isAbsolute(s.dir) && /^\.wavesubs-download-[a-f\d-]{36}$/i.test(s.token) &&
+    typeof s.file === 'string' && basename(s.file) === s.file && !s.file.startsWith('.') && /\.(bin|gguf)$/i.test(s.file)
+}
+export async function cleanupDownload(stage: DownloadStage): Promise<void> {
+  if (!validDownloadStage(stage)) return
+  if (!(await lstat(stage.dir)).isDirectory()) throw new Error('Download directory unavailable')
+  const folder = join(stage.dir, stage.token)
+  const known = await lstat(folder).catch(e => { if (e.code === 'ENOENT') return null; throw e })
+  if (!known?.isDirectory()) return
+  const output = join(stage.dir, stage.file)
+  const marker = await lstat(output).catch(e => { if (e.code === 'ENOENT') return null; throw e })
+  if (marker?.isFile() && marker.size === stage.token.length && await readFile(output, 'utf8') === stage.token)
+    await rm(output)
+  await rm(join(folder, 'payload'), { force: true })
+  await rmdir(folder)
+}
 
 /**
  * huggingface.co 在中国大陆不可达，hf-mirror.com 是路径完全一致的镜像。
@@ -88,7 +107,8 @@ export class ModelDownloader {
 
   constructor(
     private modelsDir: string,
-    private opts: { fetch?: FetchLike; staggerMs?: number; prepareDir?: () => Promise<unknown> } = {}
+    private opts: { fetch?: FetchLike; staggerMs?: number; prepareDir?: () => Promise<unknown>;
+      trackStage?: (stage: DownloadStage, active: boolean) => void } = {}
   ) {
     this.fetchImpl = opts.fetch ?? ((input, init) => fetch(input, init))
     this.staggerMs = opts.staggerMs ?? STAGGER_MS
@@ -112,7 +132,7 @@ export class ModelDownloader {
     const controller = new AbortController()
     this.active.set(file, controller)
     const finalPath = join(this.modelsDir, file)
-    let staging: string | undefined
+    let stage: DownloadStage | undefined
     try {
       if (this.opts.prepareDir) await this.opts.prepareDir()
       else await mkdir(this.modelsDir, { recursive: true })
@@ -125,7 +145,10 @@ export class ModelDownloader {
         }
         throw new LocalizedError('library.conflict', { file })
       }
-      staging = await mkdtemp(join(this.modelsDir, '.wavesubs-download-'))
+      stage = { dir: this.modelsDir, token: '.wavesubs-download-' + randomUUID(), file }
+      this.opts.trackStage?.(stage, true)
+      const staging = join(this.modelsDir, stage.token)
+      await mkdir(staging, { mode: 0o700 })
       const partPath = join(staging, 'payload')
       await this.loadPreferredHost()
       // 先告诉界面「在连」：被墙时官方要等几秒才切镜像，这段时间不能让用户对着 0% 干瞪眼
@@ -169,7 +192,7 @@ export class ModelDownloader {
         if (code === 'EEXIST') throw new LocalizedError('library.conflict', { file })
         if (!['ENOSYS', 'ENOTSUP', 'EOPNOTSUPP', 'EPERM', 'EACCES'].includes(code ?? '')) throw err
         // Some removable volumes have no hard links. Claim the name exclusively before replacing our marker.
-        const marker = 'wavesubs-download-' + randomUUID()
+        const marker = stage.token
         await writeFile(finalPath, marker, { flag: 'wx' })
         try { await rename(partPath, finalPath) }
         catch (error) {
@@ -184,8 +207,14 @@ export class ModelDownloader {
       if (controller.signal.aborted) throw new DownloadCancelledError()
       throw err
     } finally {
-      if (staging) await rm(staging, { recursive: true, force: true }).catch(() => {})
-      this.active.delete(file)
+      try {
+        if (stage) {
+          // A disconnected drive keeps its journal entry for the next startup or folder change.
+          await cleanupDownload(stage)
+          this.opts.trackStage?.(stage, false)
+        }
+      } catch { /* The application retries journaled cleanup on recovery. */ }
+      finally { this.active.delete(file) }
     }
   }
 

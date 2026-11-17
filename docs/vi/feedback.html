@@ -137,16 +137,14 @@
   .hidden{display:none}
 </style></head><body>
 <header class="top"><div class="wrap"><a class="brand" href="../"><img src="../assets/icon.png?v=b5f064a4" alt="Wave Subs"><span>Wave Subs</span></a></div></header>
-<main class="fb"><h1>Gặp lỗi hay có ý tưởng? Hãy cho chúng tôi biết</h1><p class="intro">Điền rồi bấm gửi — một issue GitHub đã điền sẵn phiên bản, hệ điều hành và ngôn ngữ sẽ mở ra (cần tài khoản GitHub). Bạn cũng có thể viết thẳng trong Discussions.</p>
+<main class="fb"><h1>Gặp lỗi hay có ý tưởng? Hãy cho chúng tôi biết</h1><p class="intro">Nút xem trước sẽ gửi nội dung bạn nhập đến GitHub. Nếu mở biểu mẫu từ ứng dụng, bản nháp cũng bao gồm phiên bản ứng dụng, hệ điều hành và ngôn ngữ giao diện. Vui lòng bỏ qua địa chỉ email và thông tin cá nhân. Đăng nhập GitHub để xem lại hoặc sửa bản nháp. Nội dung sẽ công khai khi bạn xác nhận gửi trên GitHub.</p>
 <form id="fb-form">
   <input type="hidden" name="version" id="f-version"><input type="hidden" name="os" id="f-os"><input type="hidden" name="locale" id="f-locale"><input type="hidden" name="page" value="vi">
   <label for="f-kind">Loại</label>
   <select name="kind" id="f-kind"><option value="bug">Lỗi</option><option value="idea">Đề xuất tính năng</option><option value="other">Khác</option></select>
   <label for="f-msg">Nội dung</label>
   <textarea name="message" id="f-msg" required placeholder="Điều gì đã xảy ra và bạn mong đợi gì; nếu là lỗi, kèm định dạng tệp và các bước thao tác"></textarea>
-  <label for="f-email">Email (không bắt buộc, để phản hồi)</label>
-  <input type="email" name="email" id="f-email" autocomplete="email">
-  <button class="btn primary" type="submit">Gửi</button>
+  <button class="btn primary" type="submit" disabled>Xem trước trên GitHub</button>
 </form>
 <script>
   // 应用里的「反馈」入口带上版本/系统/语言：?v=1.0.2&os=darwin&locale=zh-Hans；网页直接打开则留空
@@ -158,10 +156,10 @@
       var val = function (id) { var el = document.getElementById(id); return el ? el.value : ''; };
       var kind = val('f-kind') || 'other';
       var body = val('f-msg') + '\n\n---\nversion: ' + (val('f-version') || '-') + '\nos: ' + (val('f-os') || '-') + '\nlocale: ' + (val('f-locale') || '-') + '\npage: vi';
-      var email = val('f-email'); if (email) { body += '\ncontact: ' + email; }
       var url = 'https://github.com/jason-jm/wavesubs/issues/new?title=' + encodeURIComponent('[' + kind + '] ') + '&body=' + encodeURIComponent(body);
       window.open(url, '_blank', 'noopener');
     });
+    document.querySelector('#fb-form button').disabled = false;
   })();
 </script>
 <div class="links"><a href="https://github.com/jason-jm/wavesubs/discussions" target="_blank" rel="noopener">GitHub Discussions</a><a href="https://github.com/jason-jm/wavesubs/issues" target="_blank" rel="noopener">GitHub Issues</a><a href="../">Về trang chủ</a></div></main></body></html>

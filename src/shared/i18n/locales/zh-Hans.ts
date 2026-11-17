@@ -6,6 +6,7 @@
 export const zhHans = {
   // ---------- 导航与通用 ----------
   'app.tagline': '把视频或字幕变成你要的语言',
+  'library.readOnly': "这个文件夹只允许读取，可以使用里面已有的模型。",
   'library.folder': "模型文件夹",
   'library.change': "更改文件夹",
   'library.plan': "旧位置有 {n} 个模型，共 {size}。搬移会在校验后清理原文件；只切换会保留原文件。",

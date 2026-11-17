@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const fi: Dict = {
   'app.tagline': 'Muuntaa videot ja tekstitykset haluamallesi kielelle',
+  'library.readOnly': "Kansio on vain luku -tilassa. Voit käyttää siinä olevia malleja.",
   'library.folder': "Mallikansio",
   'library.change': "Vaihda kansiota",
   'library.plan': "Vanhassa kansiossa on {n} mallia ({size}). Siirto poistaa alkuperäiset tarkistuksen jälkeen. Pelkkä vaihto säilyttää ne.",

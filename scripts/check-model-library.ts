@@ -77,8 +77,9 @@ async function check(): Promise<void> {
     passed('offline reference and relink preserve the selection ID')
     assert.equal((await lib.plan(dst)).count,3)
     await assert.rejects(lib.plan(src),/library.nested/)
-    await assert.rejects(lib.plan(join(src,'llm')),/library.nested/)
-    await assert.rejects(lib.plan(dir),/library.nested/)
+    assert.equal((await lib.plan(join(src,'llm'))).moveUnavailable, 'nested')
+    await assert.rejects(lib.change(join(src,'llm'),true,undefined,signal(),()=>{}),/library.nested/)
+    assert.equal((await lib.plan(dir)).moveUnavailable,'nested')
     if (process.platform !== 'win32') {
       const alias=join(dir,'alias');await symlink(src,alias)
       await assert.rejects(lib.plan(alias),/library.nested/)
@@ -92,8 +93,9 @@ async function check(): Promise<void> {
     passed('same-name, same-size, different-content conflict preserves both files')
     await chmod(dst,0o555)
     if (process.platform !== 'win32' && process.getuid?.() !== 0) {
-      await assert.rejects(lib.plan(dst),/EACCES|EPERM/)
-      passed('read-only target is rejected')
+      assert.equal((await lib.plan(dst)).moveUnavailable,'readonly')
+      await assert.rejects(lib.change(dst,true,undefined,signal(),()=>{}),/library.readOnly/)
+      passed('read-only target supports switching while a move is blocked')
     }
     await chmod(dst,0o755)
     if (process.platform !== 'win32') {

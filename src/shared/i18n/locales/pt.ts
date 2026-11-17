@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const pt: Dict = {
   'app.tagline': 'Transforme vídeos e legendas no idioma que você quiser',
+  'library.readOnly': "Esta pasta é somente leitura. Você pode usar os modelos que já estão nela.",
   'library.folder': "Pasta de modelos",
   'library.change': "Alterar pasta",
   'library.plan': "A pasta anterior tem {n} modelos ({size}). Mover remove os originais após a verificação. Apenas trocar preserva os arquivos.",

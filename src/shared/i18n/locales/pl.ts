@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const pl: Dict = {
   'app.tagline': 'Zamienia filmy i napisy na wybrany przez ciebie język',
+  'library.readOnly': "Ten folder jest tylko do odczytu. Możesz używać zapisanych w nim modeli.",
   'library.folder': "Folder modeli",
   'library.change': "Zmień folder",
   'library.plan': "W starym folderze jest {n} modeli ({size}). Przeniesienie usuwa oryginały po weryfikacji. Sama zmiana folderu je zachowuje.",

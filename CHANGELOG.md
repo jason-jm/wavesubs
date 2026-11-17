@@ -2,6 +2,14 @@
 
 [中文版](./CHANGELOG.zh-CN.md)
 
+## 1.0.10 — 2026-11-18
+
+- Choose where Wave Subs stores models, or use an existing Whisper GGML or GGUF file in place. Models can live on another drive. Reconnecting the drive restores a saved selection. Interrupted moves protect original files and clean up unfinished copies.
+- Discover compatible speech models such as Kotoba Whisper v2.2 and translation models placed directly in the chosen folder. An engine check verifies custom models before use.
+- Cloud translation can process up to three batches at a time. Retry handling respects rate limits, keeps completed subtitles and stops on exhausted quota. OpenAI-compatible services use the model’s sampling defaults.
+- Rebuilt the macOS helpers for the declared macOS 12 minimum and added a check of every bundled executable. Windows handles model paths containing non-English names across drives.
+- Feedback now opens a reviewable GitHub issue draft in the browser.
+
 ## 1.0.9 — 2026-09-27
 
 - **Windows: speech recognition works when the Windows user name contains non-English characters** ([#1](https://github.com/jason-jm/wavesubs/issues/1)). Models live under the user folder, and whisper.cpp on Windows receives command-line paths in the system code page but opens the model as UTF-8. A Chinese, Japanese, Korean, Cyrillic or accented user name therefore crashed recognition the moment the model loaded (exit code 3221226505), and a name the system code page cannot represent made the model impossible to open. Speech detection had the same problem. Both programs now start in the models folder and receive every path relative to it, so the user name never reaches their command line. Every earlier Windows version was affected.

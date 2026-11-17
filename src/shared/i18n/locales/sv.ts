@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const sv: Dict = {
   'app.tagline': 'Gör om videor och undertexter till det språk du vill ha',
+  'library.readOnly': "Mappen är skrivskyddad. Du kan använda modellerna som redan finns i den.",
   'library.folder': "Modellmapp",
   'library.change': "Byt mapp",
   'library.plan': "Den gamla mappen innehåller {n} modeller ({size}). Vid flytt tas originalen bort efter kontroll. Vid enbart byte behålls de.",

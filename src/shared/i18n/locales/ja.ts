@@ -2,6 +2,7 @@ import type { Dict } from './zh-Hans'
 
 export const ja: Dict = {
   'app.tagline': '動画や字幕を、必要な言語に変換します',
+  'library.readOnly': "このフォルダは読み取り専用です。中にあるモデルは使用できます。",
   'library.folder': "モデルフォルダー",
   'library.change': "フォルダーを変更",
   'library.plan': "元の場所にモデルが {n} 個（{size}）あります。移動すると検証後に元のファイルを削除します。切り替えだけなら元に残ります。",
