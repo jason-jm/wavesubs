@@ -4,7 +4,7 @@
 
 ## 1.0.10 — 2026-11-18
 
-- Choose where Wave Subs stores models, or use an existing Whisper GGML or GGUF file in place. Models can live on another drive. Reconnecting the drive restores a saved selection. Interrupted moves protect original files and clean up unfinished copies.
+- Choose where Wave Subs stores models, or use an existing Whisper GGML or GGUF file in place. Models can live on another drive. Reconnecting the drive restores a saved selection. Interrupted moves protect original files and clean up unfinished copies. A small identifier in writable model folders prevents downloads to a different drive mounted at the same path.
 - Discover compatible speech models such as Kotoba Whisper v2.2 and translation models placed directly in the chosen folder. An engine check verifies custom models before use.
 - Cloud translation can process up to three batches at a time. Retry handling respects rate limits, keeps completed subtitles and stops on exhausted quota. OpenAI-compatible services use the model’s sampling defaults.
 - Rebuilt the macOS helpers for the declared macOS 12 minimum and added a check of every bundled executable. Windows handles model paths containing non-English names across drives.

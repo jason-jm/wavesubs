@@ -1,6 +1,6 @@
 import { createHash, randomUUID } from 'node:crypto'
 import { constants, createReadStream, createWriteStream } from 'node:fs'
-import { access, lstat, mkdir, open, readdir, realpath, rename, rm, stat, statfs, writeFile } from 'node:fs/promises'
+import { access, lstat, mkdir, open, readdir, readFile, realpath, rename, rm, stat, statfs, writeFile } from 'node:fs/promises'
 import { basename, dirname, isAbsolute, join, relative, sep } from 'node:path'
 import { pipeline } from 'node:stream/promises'
 import type { ModelFolderPlan, ModelInfo, ModelKind, ModelMoveProgress } from '../../shared/types'
@@ -27,6 +27,8 @@ interface PendingMove { dir: string; token: string; bookmark?: string; target?: 
 interface Cleanup { source: string; dest: string; files: OriginalFile[]; bookmark?: string; destBookmark?: string }
 export interface LibrarySettings {
   root?: string
+  folderId?: string
+  readOnlyRoot?: boolean
   bookmark?: string
   entries: Entry[]
   pending?: PendingMove
@@ -60,6 +62,8 @@ export function readLibrarySettings(raw: unknown): LibrarySettings {
     (e.origin === 'external' ? absolute(e.location) : e.origin === 'folder' && basename(e.location) === e.location &&
       e.location.toLowerCase().endsWith(extension(e.kind))) && validStamp(e.stamp) && /^[a-f\d]{64}$/i.test(e.digest))
   return { root: absolute(value?.root) ? value.root : undefined, bookmark: text(value?.bookmark), entries,
+    folderId: typeof value?.folderId === 'string' && /^[a-f\d-]{36}$/i.test(value.folderId) ? value.folderId : undefined,
+    readOnlyRoot: value?.readOnlyRoot === true,
     downloads: (Array.isArray(value?.downloads) ? value.downloads : []).filter(validDownloadStage),
     pending: journal(value?.pending), deferred: (Array.isArray(value?.deferred) ? value.deferred : []).flatMap(j => journal(j) ?? []),
     cleanup: (Array.isArray(value?.cleanup) ? value.cleanup : []).filter(j => j && absolute(j.source) && absolute(j.dest) &&
@@ -70,6 +74,28 @@ export function readLibrarySettings(raw: unknown): LibrarySettings {
 
 export const kindDir = (root: string, kind: ModelKind): string => kind === 'asr' ? root : join(root, 'llm')
 export const official = (kind: ModelKind, name: string): boolean => Boolean(kind === 'asr' ? findModelSpec(name) : findLocalLlmSpec(name))
+const folderTag = '.wavesubs-library-id'
+async function readFolderId(dir: string): Promise<string> {
+  const path = join(dir, folderTag)
+  const info = await lstat(path)
+  if (info.isFile() && info.size === 36) {
+    const id = await readFile(path, 'utf8')
+    if (/^[a-f\d-]{36}$/i.test(id)) return id
+  }
+  throw new LocalizedError('library.conflict', { file: path })
+}
+async function identifyFolder(dir: string): Promise<Pick<LibrarySettings, 'folderId' | 'readOnlyRoot'>> {
+  try { return { folderId: await readFolderId(dir), readOnlyRoot: false } }
+  catch (err) { if (!missing(err)) throw err }
+  const id = randomUUID()
+  try { await writeFile(join(dir, folderTag), id, { flag: 'wx', flush: true }); return { folderId: id, readOnlyRoot: false } }
+  catch (err) {
+    const code = (err as NodeJS.ErrnoException).code
+    if (code === 'EEXIST') return { folderId: await readFolderId(dir), readOnlyRoot: false }
+    if (['EROFS','EACCES','EPERM'].includes(code ?? '')) return { folderId: undefined, readOnlyRoot: true }
+    throw err
+  }
+}
 const extension = (kind: ModelKind): string => kind === 'asr' ? '.bin' : '.gguf'
 const sameStamp = (a: Stamp, b: Stamp): boolean =>
   a.size === b.size && a.mtimeMs === b.mtimeMs && a.ctimeMs === b.ctimeMs && a.ino === b.ino && a.dev === b.dev
@@ -163,12 +189,15 @@ export class ModelLibrary {
 
   async online(): Promise<boolean> {
     if (!this.storage.library.root) return true // A fresh install creates its default directory on first download.
+    const expected = this.storage.library.folderId
+    if (expected) return (await readFolderId(this.root).catch(() => null)) === expected
     return stat(this.root).then(s => s.isDirectory(), () => false)
   }
 
   async writable(kind: ModelKind): Promise<string> {
     const dir = kindDir(this.root, kind)
     if (!await this.online()) throw new LocalizedError('library.offline', { path: this.root })
+    if (this.storage.library.readOnlyRoot) throw new LocalizedError('library.readOnly')
     if (!this.storage.library.root) await mkdir(this.root, { recursive: true })
     if (kind === 'llm') {
       if ((await lstat(dir).catch(() => null))?.isSymbolicLink()) throw new LocalizedError('library.conflict', { file: dir })
@@ -179,6 +208,8 @@ export class ModelLibrary {
   }
 
   async canDelete(kind: ModelKind, name: string): Promise<void> {
+    if (!await this.online()) throw new LocalizedError('library.offline', { path: this.root })
+    if (this.storage.library.readOnlyRoot) throw new LocalizedError('library.readOnly')
     const dir = kindDir(this.root, kind)
     const path = join(dir, name)
     if (!official(kind, name) || !await plainParent(this.root, path) ||
@@ -195,6 +226,7 @@ export class ModelLibrary {
   // Downloaded files and verified copies have a known identity. A catalogue filename in
   // another person's folder is only a candidate until its contents have been checked.
   async catalogue(kind: ModelKind, name: string): Promise<{ installed: boolean; local?: ModelInfo['local'] }> {
+    if (!await this.online()) return { installed: false }
     const path = join(kindDir(this.root, kind), name)
     if (kind === 'llm' && (await lstat(dirname(path)).catch(() => null))?.isSymbolicLink()) return { installed: false }
     const info = await lstat(path).catch(() => null)
@@ -226,8 +258,9 @@ export class ModelLibrary {
 
   async rows(kind: ModelKind): Promise<ModelInfo[]> {
     const entries = this.storage.library.entries.filter(e => e.kind === kind)
-    const files = await diskFiles(this.root, kind)
-    if (kind === 'llm') files.push(...await diskFiles(this.root, kind, false, true))
+    const online = await this.online()
+    const files = online ? await diskFiles(this.root, kind) : []
+    if (online && kind === 'llm') files.push(...await diskFiles(this.root, kind, false, true))
     const rows: ModelInfo[] = []
     const add = (id: string, path: string, origin: Entry['origin'], size: number, status: NonNullable<ModelInfo['local']>['status']): void => {
       rows.push({ file: id, name: basename(path), sizeMB: Math.max(1, Math.round(size / 1048576)),
@@ -237,7 +270,7 @@ export class ModelLibrary {
     for (const e of entries) {
       if (e.origin === 'folder' && !e.atRoot && official(kind, e.location)) continue
       const path = this.entryPath(e)
-      const current = await stampOf(path).catch(() => null)
+      const current = online || e.origin === 'external' ? await stampOf(path).catch(() => null) : null
       add(e.id, path, e.origin, current?.size ?? e.stamp.size,
         !current ? 'missing' : await this.matches(path, current, e) ? 'ready' : 'verify')
     }
@@ -265,6 +298,7 @@ export class ModelLibrary {
     const known = existing ?? same
     const before = await stampOf(path)
     const managed = (canonical || atRoot) && !opts.asReference && known?.origin !== 'external'
+    if (managed && !await this.online()) throw new LocalizedError('library.offline', { path: this.root })
     const id = known?.id ?? (managed ? (atRoot ? 'root/' + name : name) : 'ref:' + randomUUID())
     let digest = known?.digest
     let stamp = before
@@ -286,12 +320,15 @@ export class ModelLibrary {
     if (managed && canonical && catalogue && digest !== catalogue.sha256) throw new LocalizedError('error.modelChecksum')
     next.push({ id, kind, origin: managed ? 'folder' : 'external', atRoot: managed && atRoot || undefined,
       location: managed ? name : path, stamp, digest: digest!, bookmark: opts.bookmark ?? known?.bookmark })
-    this.storage.saveLibrary({ ...this.storage.library, entries: next }, opts.select ? { kind, id } : undefined)
+    const data = this.storage.library
+    const identity = managed && data.root && !data.folderId && !data.readOnlyRoot ? await identifyFolder(data.root) : {}
+    this.storage.saveLibrary({ ...this.storage.library, ...identity, entries: next }, opts.select ? { kind, id } : undefined)
     return id
   }
 
   async resolve(kind: ModelKind, id: string): Promise<{ path: string; cacheKey: string }> {
     const entry = this.storage.library.entries.find(e => e.kind === kind && e.id === id)
+    if (entry?.origin !== 'external' && !await this.online()) throw new LocalizedError('library.offline', { path: this.root })
     if (entry) {
       const path = this.entryPath(entry)
       const current = await stampOf(path).catch(() => null)
@@ -331,13 +368,13 @@ export class ModelLibrary {
     const dest = await realpath(dir)
     const src = await realpath(this.root).catch(() => this.root)
     const original = await stat(src).catch(() => null)
-    if (relative(src, dest) === '' || (original?.ino && sameFile(original, await stat(dest)))) throw new LocalizedError('library.nested')
+    const sourceOnline = await this.online()
+    if (sourceOnline && (relative(src, dest) === '' || (original?.ino && sameFile(original, await stat(dest))))) throw new LocalizedError('library.nested')
     if (!(await stat(dest)).isDirectory()) throw new LocalizedError('library.offline', { path: dest })
     await access(dest, constants.R_OK)
     let moveUnavailable: ModelFolderPlan['moveUnavailable']
     if (inside(src, dest) || inside(dest, src)) moveUnavailable = 'nested'
     else if (!await access(dest, constants.W_OK).then(() => true, () => false)) moveUnavailable = 'readonly'
-    const sourceOnline = await this.online()
     let files: DiskFile[] = []
     if (sourceOnline && !moveUnavailable) {
       try { files = await this.inventory() } catch { moveUnavailable = 'unreadable' }
@@ -419,10 +456,11 @@ export class ModelLibrary {
     const dest = plan.dir
     const data = this.storage.library
     if (!move) {
-      this.storage.saveLibrary({ ...data, root: dest, bookmark })
+      this.storage.saveLibrary({ ...data, root: dest, bookmark, ...await identifyFolder(dest) })
       return { retained: 0 }
     }
     const files = await this.inventory()
+    const destinationStamp = await stat(dest)
     const pending: PendingMove = { dir: dest, token: 'wavesubs-' + randomUUID(), bookmark, created: [] }
     const copied = new Map<string, Stamp>()
     const digests = new Map<string, string>()
@@ -504,7 +542,8 @@ export class ModelLibrary {
       const job = { source: this.root, dest, bookmark: data.bookmark, destBookmark: bookmark,
         files: originals.map(f => ({ path: f.path, stamp: f.stamp, target: { path: join(fileDir(dest, f), f.name),
           stamp: copied.get(f.path)!, digest: digests.get(f.path)! } })) }
-      this.storage.saveLibrary({ ...this.storage.library, root: dest, bookmark, entries, pending: undefined,
+      if (!sameFile(destinationStamp, await stat(dest))) throw new LocalizedError('library.offline', { path: dest })
+      this.storage.saveLibrary({ ...this.storage.library, root: dest, bookmark, entries, ...await identifyFolder(dest), pending: undefined,
         deferred: data.deferred, cleanup: [...(data.cleanup ?? []), job] })
       const retained = await this.recover()
       return { retained: retained + files.length - originals.length }

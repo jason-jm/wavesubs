@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { spawn } from 'node:child_process'
 import { once } from 'node:events'
 import { constants } from 'node:fs'
-import { copyFile, mkdir, readFile, realpath, rename, stat, writeFile } from 'node:fs/promises'
+import { copyFile, mkdir, readFile, readdir, realpath, rename, rmdir, writeFile } from 'node:fs/promises'
 import { createServer } from 'node:net'
 import { basename, join, relative, resolve } from 'node:path'
 import { setTimeout as sleep } from 'node:timers/promises'
@@ -36,8 +36,8 @@ if (stage === 'custom') {
   settings.library = {...settings.library,root}
   await writeFile(settingsFile,JSON.stringify(settings))
 }
-if (stage === 'offline') await rename(root,disconnected)
-if (stage === 'reconnected') await rename(disconnected,root)
+if (stage === 'offline') { await rename(root,disconnected); await mkdir(root) }
+if (stage === 'reconnected') { await rmdir(root); await rename(disconnected,root) }
 const portServer = createServer()
 await new Promise(resolve => portServer.listen(0,'127.0.0.1',resolve))
 const port = portServer.address().port
@@ -79,6 +79,14 @@ try {
     pending.delete(msg.id)
     if (msg.error) receiver.reject(new Error(msg.error.message)); else receiver.resolve(msg.result)
   }
+  // CDP can list a file URL before Chromium replaces the initial execution context.
+  let ready = false
+  for (let i = 0; i < 150 && !ready; i++) {
+    try { ready = await evaluate("document.readyState === 'complete' && Boolean(window.waveSubs && document.querySelector('nav.nav .nav-item'))") }
+    catch (err) { if (!/context|navigat/i.test(err.message)) throw err }
+    if (!ready) await sleep(200)
+  }
+  assert.ok(ready,'renderer did not finish mounting')
   const info = await call('appInfo')
   const expected = stage === 'legacy' ? '1.0.9' : JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8')).version
   assert.equal(info.version,expected)
@@ -97,7 +105,7 @@ try {
   } else if (stage === 'offline') {
     assert.equal(overview.folderOnline,false)
     await assert.rejects(call('selectModel','asr',customName))
-    assert.equal(await stat(root).catch(() => null),null)
+    assert.deepEqual(await readdir(root),[])
   } else {
     assert.equal(overview.selected,customName)
     assert.ok(overview.models.find(m => m.file === customName).installed)
