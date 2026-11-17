@@ -5,6 +5,7 @@ import { createServer } from 'node:net'
 import { findTool } from '../tools'
 import { OpenAICompatibleProvider } from './openaiCompatible'
 import type { BatchItem, TranslateContext, TranslationProvider } from './types'
+import { languageName, TranslationParseError } from './types'
 import { LocalizedError } from '../../../shared/i18n/core'
 
 async function availablePort(): Promise<number> {
@@ -141,7 +142,24 @@ export class LocalLlamaProvider implements TranslationProvider {
   }
 
   async translateBatch(items: BatchItem[], ctx: TranslateContext): Promise<Map<number, string>> {
-    return (await this.ensureInner()).translateBatch(items, ctx)
+    const inner = await this.ensureInner()
+    if (items.length !== 1) return inner.translateBatch(items, ctx)
+    const [item] = items
+    try {
+      const response = await inner.translateBatch(items, ctx)
+      if (response.has(item.index)) return response
+    } catch (err) {
+      if (!(err instanceof TranslationParseError)) throw err
+    }
+    // Small instruction models sometimes return the example's row number. For one subtitle we
+    // can ask directly, without asking the model to reproduce a JSON schema or infer an index.
+    const terms = ctx.glossary?.map(g => g.from + ' → ' + g.to).join('\n')
+    const prompt = '把下面这一句字幕翻译成' + languageName(ctx.targetLanguage) + '。只输出这句话的译文。' +
+      (terms ? '\n使用以下术语：\n' + terms : '')
+    const raw = await inner.chat(prompt, item.text, { signal: ctx.signal, maxTokens: 1500 })
+    const line = raw.replace(/^[\s\S]*?<\/think(?:ing)?>/i, '').trim().replace(/^(?:译文|Translation)\s*[:：]\s*/i, '').trim()
+    if (!line || /^[\[{`]/.test(line) || line === item.text) return new Map()
+    return new Map([[item.index, line]])
   }
 
   async chat(system: string, user: string, opts?: { signal?: AbortSignal; maxTokens?: number }): Promise<string> {

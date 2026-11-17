@@ -494,6 +494,7 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
         }
         await store.save(record)
       }
+      if (translatedCount === 0) throw new LocalizedError('cloudTest.noTranslation')
     }
 
     // ---------- 画面文字 ----------

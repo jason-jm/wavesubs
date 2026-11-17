@@ -331,7 +331,7 @@ export class ModelLibrary {
     const dest = await realpath(dir)
     const src = await realpath(this.root).catch(() => this.root)
     const original = await stat(src).catch(() => null)
-    if (relative(src, dest) === '' || (original && sameFile(original, await stat(dest)))) throw new LocalizedError('library.nested')
+    if (relative(src, dest) === '' || (original?.ino && sameFile(original, await stat(dest)))) throw new LocalizedError('library.nested')
     if (!(await stat(dest)).isDirectory()) throw new LocalizedError('library.offline', { path: dest })
     await access(dest, constants.R_OK)
     let moveUnavailable: ModelFolderPlan['moveUnavailable']

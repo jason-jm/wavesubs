@@ -107,13 +107,14 @@ try {
       await copyFile(process.env.WAVESUBS_QA_AUDIO,input)
       const result = await call('runJob',input,{language:process.env.WAVESUBS_QA_LANGUAGE ?? 'en',translate:Boolean(llm),
         targetLanguage:'zh',content:'bilingual',format:'srt',signs:false,refreshCache:true})
+      console.log('Subtitle export',JSON.stringify({cues:result.cueCount,translated:result.translatedCount,device:result.asrDevice}))
       assert.ok(result.cueCount>0)
       if (llm) assert.ok(result.translatedCount>0,'no cues translated')
       const srt = await readFile(result.outputPath,'utf8')
       assert.ok(srt.includes('-->'))
+      if (llm) assert.match(srt, /[\u4e00-\u9fff]/u)
       if (!process.env.WAVESUBS_QA_ASR) assert.match(srt,/country/i)
       await writeFile(join(scratch,'packaged-output.srt'),srt)
-      console.log('Subtitle export',JSON.stringify({cues:result.cueCount,translated:result.translatedCount,device:result.asrDevice}))
     }
   }
   await evaluate("document.querySelectorAll('nav.nav .nav-item')[2]?.click()")

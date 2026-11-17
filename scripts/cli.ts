@@ -1,4 +1,5 @@
 import { existsSync, readFileSync } from 'node:fs'
+import { mkdir } from 'node:fs/promises'
 import { basename, isAbsolute, join, resolve } from 'node:path'
 import type {
   ExportContent,
@@ -195,6 +196,7 @@ async function main(): Promise<void> {
 
   const vadPath = join(modelsDir, VAD_MODEL_FILE)
   try {
+    if (outDir) await mkdir(resolve(outDir), { recursive: true })
     const result = await runSubtitleJob({
       input: inputPath,
       modelPath: model || undefined,

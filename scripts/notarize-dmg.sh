@@ -18,7 +18,9 @@ submit_with_retry() {
 APP="release/mac-arm64/Wave Subs.app"
 # electron-builder 公证失败时曾以退出码 0 结束，链条会带着未公证的 App 走到这里——先验票据
 xcrun stapler validate "$APP" >/dev/null 2>&1 || { echo "App 没有公证票据，先跑 bash scripts/notarize-app.sh"; exit 1; }
-DMG="$(ls -t release/*.dmg | head -1)"
+version=$(node -p "require('./package.json').version")
+DMG="release/Wave Subs-$version-arm64.dmg"
+[ -f "$DMG" ] || { echo "缺少当前版本的 DMG"; exit 1; }
 IDENTITY="$(security find-identity -v -p codesigning | grep 'Developer ID Application' | head -1 | awk '{print $2}')"
 [ -n "$IDENTITY" ] || { echo "钥匙串里没有 Developer ID Application 身份"; exit 1; }
 echo "签名 ${DMG}（${IDENTITY}）"
