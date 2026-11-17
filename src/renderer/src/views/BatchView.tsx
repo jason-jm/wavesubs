@@ -1,3 +1,4 @@
+import { modelOptionLabel } from '../lib/models'
 import { useCallback, useEffect, useState } from 'react'
 import type {
   BatchEntry,
@@ -45,7 +46,7 @@ interface Props {
   /** process.platform：Windows 上画面文字的说明要提语言包 */
   platform: string
   updateSettings: (patch: SettingsUpdate) => Promise<void>
-  goModels: () => void
+  goModels: (kind?: 'asr' | 'llm' | 'cloud') => void
   onSelectModel: (file: string) => void
   onSelectLlm: (file: string) => void
   downloads: Record<string, ModelDownloadProgress>
@@ -347,15 +348,19 @@ export function BatchView(props: Props): React.JSX.Element {
   const useLocal = service === 'local'
   const providerId = service.startsWith('api:') ? service.slice(4) : undefined
   const activeProvider = providers.find((p) => p.id === providerId)
+  const selectedAsr = overview?.models.find(m => m.file === overview.selected)
+  const selectedLlm = overview?.llmModels.find(m => m.file === overview.llmSelected)
+  const unavailableAsr = overview?.selected && !selectedAsr?.installed ? selectedAsr?.name ?? overview.selected : undefined
+  const unavailableLlm = overview?.llmSelected && !selectedLlm?.installed ? selectedLlm?.name ?? overview.llmSelected : undefined
   const installedLlm = overview?.llmModels.filter((m) => m.installed) ?? []
 
   const needApiKey =
     translating && !useLocal && activeProvider !== undefined && !activeProvider.hasApiKey
-  const needLlmModel = translating && useLocal && overview !== null && installedLlm.length === 0
+  const needLlmModel = translating && useLocal && overview !== null && (installedLlm.length === 0 || Boolean(unavailableLlm))
   // 队列里有要走语音识别的（没字幕轨、或指定了识别），却一个识别模型都没有——
   // 之前这里不拦，点开始后每个文件挨个报错
   const installedAsr = overview?.models.filter((m) => m.installed) ?? []
-  const needAsrModel = overview !== null && installedAsr.length === 0 &&
+  const needAsrModel = overview !== null && (installedAsr.length === 0 || Boolean(unavailableAsr)) &&
     (entries.length === 0 || entries.some((e) => effectiveSource(e)?.kind === 'asr'))
 
   const add = useCallback(
@@ -435,13 +440,16 @@ export function BatchView(props: Props): React.JSX.Element {
           {needAsrModel ? (
             <div className="card-notice">
               <ModelDownloadNotice
+                unavailable={unavailableAsr}
+                  needsVerification={selectedAsr?.local?.status === 'verify'}
+                folderOffline={overview?.folderOnline === false}
                 kind="asr"
                 models={overview?.models ?? []}
                 downloads={downloads}
                 error={modelError}
                 onDownload={onDownload}
                 onCancel={onCancelDownload}
-                goModels={goModels}
+                goModels={() => goModels('asr')}
               />
             </div>
           ) : (
@@ -454,7 +462,7 @@ export function BatchView(props: Props): React.JSX.Element {
                   <Select value={overview?.selected ?? ''} onChange={onSelectModel} disabled={running || installedAsr.length === 0}>
                     {installedAsr.map((m) => (
                       <option key={m.file} value={m.file}>
-                        {m.name}
+                        {modelOptionLabel(m, installedAsr)}
                       </option>
                     ))}
                   </Select>
@@ -512,13 +520,16 @@ export function BatchView(props: Props): React.JSX.Element {
           {needLlmModel && (
             <div className="card-notice">
               <ModelDownloadNotice
+                unavailable={unavailableLlm}
+                  needsVerification={selectedLlm?.local?.status === 'verify'}
+                folderOffline={overview?.folderOnline === false}
                 kind="llm"
                 models={overview?.llmModels ?? []}
                 downloads={downloads}
                 error={modelError}
                 onDownload={onDownload}
                 onCancel={onCancelDownload}
-                goModels={goModels}
+                goModels={() => goModels('llm')}
               />
             </div>
           )}
@@ -527,7 +538,7 @@ export function BatchView(props: Props): React.JSX.Element {
               <div className="notice notice-warn">
                 <Icon name="warning" />
                 <p>{t('home.notice.needKey', { name: activeProvider?.name ?? '' })}</p>
-                <button className="btn" onClick={goModels}>
+                <button className="btn" onClick={() => goModels('cloud')}>
                   {t('home.notice.goConfigure')}
                 </button>
               </div>
@@ -543,7 +554,7 @@ export function BatchView(props: Props): React.JSX.Element {
                 <Select value={overview?.llmSelected ?? ''} onChange={onSelectLlm} disabled={running}>
                   {installedLlm.map((m) => (
                     <option key={m.file} value={m.file}>
-                      {m.name}
+                      {modelOptionLabel(m, installedLlm)}
                     </option>
                   ))}
                 </Select>

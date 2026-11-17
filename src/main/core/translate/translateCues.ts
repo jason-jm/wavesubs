@@ -40,77 +40,56 @@ export async function translateCues(
   onProgress?: (percent: number) => void,
   control?: { signal?: AbortSignal }
 ): Promise<TranslateCuesResult> {
-  // 取消只在批与批之间生效：单批最长几十秒（本地）到 300 秒（云端超时），不去打断进行中的请求
-  const checkCancelled = (): void => {
-    if (control?.signal?.aborted) throw new LocalizedError('error.jobCancelled')
-  }
-  /**
-   * 每一轮的结果都过一道「译文里还有源语言文字」的检查，不只第一轮。
-   * 之前只在第一轮之后查，小批重试、单条兜底那两轮把原文原样抄回来的（1.7B 常干这事）
-   * 就直接进了字幕——一集里 62 条「译文」是日文原文，双语模式下同一句日文出两遍。
-   * 抄原文的不收，宁可这条留空：留空是原文出一遍，抄原文是出两遍。
-   */
-  const apply = (map: Map<number, string>): void => {
-    for (const cue of cues) {
-      const t = map.get(cue.index)
-      if (t && !looksUntranslated(t, ctx.targetLanguage)) cue.translation = t
-    }
-  }
+  const controller = new AbortController()
+  const inputs = [controller.signal, ctx.signal, control?.signal].filter((s): s is AbortSignal => Boolean(s))
+  const signal = AbortSignal.any(inputs)
+  const positions = new Map(cues.map((cue, index) => [cue, index]))
+  let lastError: Error | undefined
+  let fatal: TranslationConfigError | undefined
 
-  const byIndex = new Map(cues.map((c) => [c.index, c]))
-  /** 取该批之前的几条原文当上下文，帮模型判断言外之意与批次衔接 */
-  const precedingOf = (batch: Cue[]): string[] => {
-    const first = batch[0]
-    if (!first) return []
-    const pos = cues.indexOf(byIndex.get(first.index) as Cue)
-    return pos > 0 ? cues.slice(Math.max(0, pos - CONTEXT_LINES), pos).map((c) => c.text) : []
-  }
-
-  let lastError: Error | null = null
   const runBatch = async (batch: Cue[]): Promise<void> => {
+    const pos = positions.get(batch[0])!
+    const texts = batch.map(c => c.text)
     try {
-      apply(
-        await provider.translateBatch(
-          batch.map((c) => ({ index: c.index, text: c.text })),
-          {
-            ...ctx,
-            precedingText: precedingOf(batch),
-            signal: control?.signal,
-            // 全量表在 ctx 里，这里narrow成本批真正命中的那几条
-            glossary: applicableGlossary(ctx.glossary, batch.map((c) => c.text))
-          }
-        )
-      )
+      const returned = await provider.translateBatch(batch.map(c => ({ index: c.index, text: c.text })), {
+        ...ctx, signal, precedingText: cues.slice(Math.max(0, pos - CONTEXT_LINES), pos).map(c => c.text),
+        glossary: applicableGlossary(ctx.glossary, texts)
+      })
+      // A provider may return an index from the surrounding context. Only this batch owns these cues.
+      for (const cue of batch) {
+        const text = returned.get(cue.index)
+        if (text && !looksUntranslated(text, ctx.targetLanguage)) cue.translation = text
+      }
     } catch (err) {
-      if (err instanceof TranslationConfigError) throw err
-      lastError = err instanceof Error ? err : new Error(String(err))
+      if (err instanceof TranslationConfigError && !fatal && !signal.aborted) {
+        fatal = err
+        controller.abort()
+      } else if (!signal.aborted) lastError = err instanceof Error ? err : new Error(String(err))
     }
   }
 
-  const total = cues.length
-  let done = 0
-  for (let i = 0; i < cues.length; i += BATCH_SIZE) {
-    checkCancelled()
-    const batch = cues.slice(i, i + BATCH_SIZE)
-    await runBatch(batch)
-    done += batch.length
-    onProgress?.(Math.round((done / total) * 95))
+  const runPass = async (work: Cue[], size: number, start: number, end: number): Promise<void> => {
+    let next = 0, done = 0
+    const worker = async (): Promise<void> => {
+      while (!signal.aborted && next < work.length) {
+        const batch = work.slice(next, next + size)
+        next += size
+        await runBatch(batch)
+        done += batch.length
+        if (!signal.aborted) onProgress?.(Math.round(start + done / work.length * (end - start)))
+      }
+    }
+    const count = Math.min(Math.ceil(work.length / size), provider.maxParallelBatches ?? 1)
+    await Promise.all(Array.from({ length: count }, worker))
+    if (fatal) throw fatal
+    if (signal.aborted) throw new LocalizedError('error.jobCancelled')
   }
-
-  // 漏译的（含译文里残留源语言、被 apply 挡掉的）用更小的批再试一轮
-  const needRetry = cues.filter((c) => !c.translation)
-  for (let i = 0; i < needRetry.length; i += RETRY_BATCH_SIZE) {
-    checkCancelled()
-    await runBatch(needRetry.slice(i, i + RETRY_BATCH_SIZE))
-    onProgress?.(Math.round(95 + ((i + RETRY_BATCH_SIZE) / needRetry.length) * 5))
-  }
-  // 兜底：小批之后还缺的逐条单独翻。单条批次没有错位可能，解析端也不再核对对齐锚——
-  // 对齐锚会把「模型没照抄原文开头」的行整批丢掉，个别条会连着两轮都过不了，不能让它们留着原文出片
-  for (const cue of cues.filter((c) => !c.translation)) {
-    checkCancelled()
-    await runBatch([cue])
-  }
+  const missing = (): Cue[] => cues.filter(c => !c.translation)
+  await runPass(missing(), BATCH_SIZE, 0, 90)
+  await runPass(missing(), RETRY_BATCH_SIZE, 90, 98)
+  await runPass(missing(), 1, 98, 99)
   onProgress?.(100)
+  const total = cues.length
 
   const missingCount = cues.filter((c) => !c.translation).length
   // 一条都没译出来说明不是偶发问题，要把原始错误报出去，而不是默默导出原文

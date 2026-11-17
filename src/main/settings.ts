@@ -1,6 +1,6 @@
 import { app, safeStorage } from 'electron'
 import { randomUUID } from 'node:crypto'
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import type {
   Appearance,
@@ -19,6 +19,7 @@ import { execFileSync } from 'node:child_process'
 import { pickLocale, translatorFor } from '../shared/i18n'
 import { targetForUiLocale } from '../shared/targetLanguages'
 import { normalizeBaseUrl } from './core/translate/openaiCompatible'
+import { readLibrarySettings, type LibrarySettings } from './core/modelLibrary'
 import { normalizeAnthropicBaseUrl } from './core/translate/anthropic'
 
 /**
@@ -104,6 +105,7 @@ interface StoredSettings {
   grainDefaultRev?: number
   /** 'system' 表示跟随系统语言 */
   language: string
+  library?: LibrarySettings
   selectedModel?: string
   translateEnabled: boolean
   signsEnabled?: boolean
@@ -163,6 +165,7 @@ export class SettingsStore {
     let raw: Record<string, unknown> = {}
     try {
       raw = JSON.parse(readFileSync(this.path, 'utf8')) as Record<string, unknown>
+      if (!raw || typeof raw !== 'object') raw = {}
     } catch {
       // 全新安装：翻译目标跟随系统语言，而不是一律中文
       const fresh = structuredClone(DEFAULTS)
@@ -173,6 +176,7 @@ export class SettingsStore {
     const data: StoredSettings = {
       ...DEFAULTS,
       ...(raw as Partial<StoredSettings>),
+      library: readLibrarySettings(raw.library),
       translation: {
         engine: (t.engine as TranslationEngine) ?? DEFAULTS.translation.engine,
         targetLanguage: (t.targetLanguage as string) ?? DEFAULTS.translation.targetLanguage,
@@ -202,7 +206,25 @@ export class SettingsStore {
 
   private save(): void {
     mkdirSync(dirname(this.path), { recursive: true })
-    writeFileSync(this.path, JSON.stringify(this.data, null, 2), 'utf8')
+    const temp = this.path + '.' + randomUUID() + '.tmp'
+    try {
+      writeFileSync(temp, JSON.stringify(this.data, null, 2), { mode: 0o600, flush: true })
+      renameSync(temp, this.path)
+    } finally {
+      rmSync(temp, { force: true })
+    }
+  }
+
+  get library(): LibrarySettings {
+    return this.data.library ?? { entries: [] }
+  }
+
+  saveLibrary(library: LibrarySettings, selection?: { kind: 'asr' | 'llm'; id?: string }): void {
+    const prev = this.data
+    this.data = { ...prev, library, translation: { ...prev.translation } }
+    if (selection?.kind === 'asr') this.data.selectedModel = selection.id
+    if (selection?.kind === 'llm') this.data.translation.localModel = selection.id
+    try { this.save() } catch (error) { this.data = prev; throw error }
   }
 
   get updateCheck(): boolean {

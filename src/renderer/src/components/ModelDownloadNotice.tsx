@@ -6,6 +6,9 @@ import { Icon } from './Icon'
 
 interface Props {
   kind: ModelKind
+  unavailable?: string
+  folderOffline?: boolean
+  needsVerification?: boolean
   models: ModelInfo[]
   downloads: Record<string, ModelDownloadProgress>
   error: ModelError | null
@@ -23,6 +26,14 @@ interface Props {
 export function ModelDownloadNotice(props: Props): React.JSX.Element {
   const { t } = useI18n()
   const { kind, models, downloads, error, onDownload, onCancel, goModels } = props
+
+  if (props.unavailable || props.folderOffline) return (
+    <div className="notice notice-warn">
+      <Icon name="warning" />
+      <p>{props.needsVerification ? t('library.changed', { file: props.unavailable ?? '' }) : t('library.offline', { path: props.unavailable ?? '' })}</p>
+      <button className="btn" onClick={goModels}>{t('nav.models')}</button>
+    </div>
+  )
 
   // 正在下的那个（不一定是我们推荐的：用户可能已经在模型页点了别的）
   const active = models.find((m) => downloads[m.file])

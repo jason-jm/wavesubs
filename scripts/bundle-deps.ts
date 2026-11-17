@@ -9,7 +9,7 @@
  * 引用改成 `@executable_path/../lib/xxx.dylib`，同时把 dylib 自身的 install name
  * 也改掉——只改引用方不改被引用方，dyld 一样找不到。
  *
- * ffmpeg 走静态编译（见 ~/Documents/Wave Subs/vendor/build-ffmpeg.sh），单文件无依赖，
+ * ffmpeg 走静态编译（见 scripts/build-mac-deps.sh），单文件无外部依赖，
  * 所以这里只需要拷过来；whisper / llama 那几个才需要走完整的闭包搬运。
  */
 import { execFileSync } from 'node:child_process'
@@ -32,7 +32,7 @@ const BIN = join(VENDOR, 'bin')
 const LIB = join(VENDOR, 'lib')
 
 
-const VENDOR_SRC = join(process.env.HOME ?? '', 'Documents/Wave Subs/vendor')
+const VENDOR_SRC = resolve(process.env.WAVESUBS_VENDOR_SRC ?? join(ROOT, '..', 'vendor'))
 /** 自编的最小 LGPL ffmpeg */
 const LGPL_FFMPEG = join(VENDOR_SRC, 'ffmpeg-lgpl/bin')
 /** 自编的 whisper / llama（后端静态链入，不依赖运行时 dlopen） */
@@ -50,17 +50,6 @@ function realPath(p: string): string {
     return sh('readlink', ['-f', p]).trim() || p
   } catch {
     return p
-  }
-}
-
-function which(name: string): string | null {
-  try {
-    return realPath(sh('command', ['-v', name]).trim())
-  } catch {
-    for (const dir of ['/opt/homebrew/bin', '/usr/local/bin']) {
-      if (existsSync(join(dir, name))) return realPath(join(dir, name))
-    }
-    return null
   }
 }
 
@@ -162,53 +151,22 @@ function bundle(name: string, from: string): void {
   console.log(`  ${name.padEnd(30)} + ${libs.size} 个 dylib`)
 }
 
+const tools = [
+  ...['ffmpeg', 'ffprobe'].map((name) => ({ name, path: join(LGPL_FFMPEG, name) })),
+  ...['whisper-cli', 'whisper-vad-speech-segments', 'llama-server'].map((name) => ({
+    name, path: join(GGML_TOOLS, name)
+  }))
+]
+for (const tool of tools) {
+  if (!existsSync(tool.path)) throw new Error(`Missing ${tool.path}. Run npm run build:mac-deps first.`)
+}
 rmSync(VENDOR, { recursive: true, force: true })
 mkdirSync(BIN, { recursive: true })
 mkdirSync(LIB, { recursive: true })
 
 console.log('打包随附二进制：')
 
-const ffmpegSrc = existsSync(join(LGPL_FFMPEG, 'ffmpeg')) ? LGPL_FFMPEG : null
-if (ffmpegSrc) {
-  for (const n of ['ffmpeg', 'ffprobe']) bundle(n, join(ffmpegSrc, n))
-} else {
-  console.warn(
-    '⚠ 没找到自编的 LGPL ffmpeg，退回 Homebrew 版。\n' +
-      '  Homebrew 的 ffmpeg 是 --enable-gpl（含 x264/x265），随闭源应用分发会违反 GPL。\n' +
-      '  正式发布前必须先跑 ~/Documents/Wave Subs/vendor/build-ffmpeg.sh。'
-  )
-  for (const n of ['ffmpeg', 'ffprobe']) {
-    const p = which(n)
-    if (p) bundle(n, p)
-  }
-}
-
-/**
- * whisper / llama 必须用自编的静态版，不能用 Homebrew 的。
- *
- * Homebrew 开了 GGML_BACKEND_DL：ggml 的 BLAS/Metal/CPU 后端是运行时 dlopen 的独立 .so，
- * 而搜索路径 `/opt/homebrew/Cellar/ggml/<版本>/libexec` 是**编译期写死**在 libggml 里的。
- * 用户机器上没有 Homebrew，那个目录不存在 —— 实测结果是一个后端都加载不到，
- * 而 GGML_BACKEND_PATH 一次只认一个 .so，凑不齐三个。可执行文件同目录也不在搜索列表里。
- * 这个坑在开发机上完全看不出来（本地有 Homebrew，照常加载）。
- */
-const staticTools = existsSync(join(GGML_TOOLS, 'whisper-cli'))
-if (!staticTools) {
-  console.error(
-    '\n✗ 找不到自编的 whisper/llama（' + GGML_TOOLS + '）。\n' +
-      '  不能退回 Homebrew 版本：它的 ggml 后端靠运行时 dlopen 一个写死的 Homebrew 路径，\n' +
-      '  在用户机器上会一个后端都加载不到。先跑 ~/Documents/Wave Subs/vendor/build-ggml-tools.sh。'
-  )
-  process.exit(1)
-}
-for (const n of ['whisper-cli', 'whisper-vad-speech-segments', 'llama-server']) {
-  const p = join(GGML_TOOLS, n)
-  if (!existsSync(p)) {
-    console.warn(`⚠ 自编产物里没有 ${n}，跳过`)
-    continue
-  }
-  bundle(n, p)
-}
+for (const tool of tools) bundle(tool.name, tool.path)
 
 /**
  * 自检：残留任何指向 Homebrew 的引用，就说明这个包在别人机器上必然起不来。
@@ -216,13 +174,7 @@ for (const n of ['whisper-cli', 'whisper-vad-speech-segments', 'llama-server']) 
  * 只有用户下载后才炸——所以必须在打包阶段就断掉。
  */
 // 画面文字识别：macOS Vision 的小工具，源码在仓库里，打包时现编（需要 Xcode 命令行工具）
-{
-  const src = join(ROOT, 'native', 'vision-ocr', 'vision-ocr.swift')
-  const out = join(BIN, 'vision-ocr')
-  sh('xcrun', ['swiftc', '-O', '-o', out, src])
-  chmodSync(out, 0o755)
-  console.log('  vision-ocr 已编译（macOS Vision）')
-}
+sh('bash', [join(ROOT, 'scripts', 'build-native.sh'), join(BIN, 'vision-ocr')])
 
 // Silero VAD 模型随包自带（不到 1MB）：时间校正不再依赖任何下载，大陆用户下不到 huggingface 也不受影响
 const VAD_DIR = join(VENDOR, 'vad')

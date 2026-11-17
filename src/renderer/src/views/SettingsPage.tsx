@@ -1,3 +1,5 @@
+import { ModelFolder } from '../components/ModelFolder'
+import type { ModelsOverview } from '../../../shared/types'
 import { useEffect, useState } from 'react'
 import type { AppInfo, Appearance, SettingsUpdate, SettingsView, UpdateStatus } from '../../../shared/types'
 import { pickNotes } from '../../../shared/updates'
@@ -10,6 +12,8 @@ import { useT } from '../i18n'
 import { Icon } from '../components/Icon'
 
 interface Props {
+  overview: ModelsOverview | null
+  onRefresh: () => Promise<void>
   settings: SettingsView | null
   updateSettings: (patch: SettingsUpdate) => Promise<void>
   updateStatus: UpdateStatus | null
@@ -303,6 +307,7 @@ export function SettingsPage(props: Props): React.JSX.Element {
 
   return (
     <div className="rise">
+      {props.overview && <ModelFolder overview={props.overview} onRefresh={props.onRefresh} />}
       <div className="section">
         <div className="section-title">{t('settings.appearance')}</div>
         <div className="card">

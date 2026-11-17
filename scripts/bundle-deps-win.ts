@@ -93,8 +93,7 @@ async function ensureZip(part: Part): Promise<string> {
     const have = sha256Of(zip)
     if (have === part.sha256) return zip
     if (!FETCH) {
-      console.warn(`  ⚠ ${part.zip} 与钉死的版本不同（本机 ${have.slice(0, 12)}… / 钉死 ${part.sha256.slice(0, 12)}…），照常使用本机版本`)
-      return zip
+      throw new Error(`${part.zip} SHA-256 不匹配：${have}，期望 ${part.sha256}`)
     }
     console.log(`  ${part.zip} 校验值不符，重新下载`)
     rmSync(zip, { force: true })
@@ -104,13 +103,22 @@ async function ensureZip(part: Part): Promise<string> {
   }
   mkdirSync(SRC, { recursive: true })
   console.log(`  下载 ${basename(part.url)} …`)
-  const res = await fetch(part.url, { redirect: 'follow' })
+  let res = await fetch(part.url, { redirect: 'follow' })
+  let expected = part.sha256
+  let output = zip
+  // BtbN rotates its daily builds. Our verified 1.0.9 zip preserves those exact LGPL binaries.
+  if (res.status === 404 && part.dir === 'ffmpeg') {
+    expected = '1f70424b97d1495993b075150c2db574baecb41b8d036699eaac441971647b5b'
+    output = join(SRC, 'wavesubs-1.0.9-win.zip')
+    if (existsSync(output) && sha256Of(output) === expected) return output
+    res = await fetch('https://github.com/jason-jm/wavesubs/releases/download/v1.0.9/Wave.Subs-1.0.9-win.zip')
+  }
   if (!res.ok) throw new Error(`下载失败：HTTP ${res.status} ${part.url}`)
   const buf = Buffer.from(await res.arrayBuffer())
   const have = createHash('sha256').update(buf).digest('hex')
-  if (have !== part.sha256) throw new Error(`${part.zip} sha256 不符：得到 ${have}，期望 ${part.sha256}`)
-  writeFileSync(zip, buf)
-  return zip
+  if (have !== expected) throw new Error(`${part.zip} sha256 不符：得到 ${have}，期望 ${expected}`)
+  writeFileSync(output, buf)
+  return output
 }
 
 /** zip 里可执行文件所在的目录前缀（各家的包层级不同：根目录 / Release/ / <包名>/bin/），按内容找 */

@@ -29,6 +29,7 @@ export interface TranslateContext {
 
 export interface TranslationProvider {
   name: string
+  readonly maxParallelBatches?: number
   /** 翻译一批字幕，返回 index → 译文 的映射（允许部分缺失，由调用方重试） */
   translateBatch(items: BatchItem[], ctx: TranslateContext): Promise<Map<number, string>>
   /** 自由问答（画面文字判别用）：system + user → 模型回复文本 */
@@ -40,6 +41,14 @@ export class TranslationParseError extends Error {}
 
 /** 配置有问题（Key 无效、模型名不存在、权限不足）——重试无意义，立刻中止整个任务 */
 export class TranslationConfigError extends Error {}
+
+export function cloudParallelism(baseUrl: string): number {
+  try {
+    const host = new URL(baseUrl).hostname.toLowerCase()
+    return host === 'localhost' || host === '[::1]' || host.endsWith('.local') || !host.includes('.') ||
+      /^(127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(host) ? 1 : 3
+  } catch { return 1 }
+}
 
 /** 容器/字幕轨里的语言标记多是 ISO 639-2，统一成 639-1 两字母码 */
 const ISO3_TO_ISO1: Record<string, string> = {

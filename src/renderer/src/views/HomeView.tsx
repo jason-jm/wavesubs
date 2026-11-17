@@ -1,3 +1,4 @@
+import { modelOptionLabel } from '../lib/models'
 import { useCallback, useEffect, useState } from 'react'
 import type {
   ExportContent,
@@ -56,7 +57,7 @@ interface Props {
   updateSettings: (patch: SettingsUpdate) => Promise<void>
   onSelectModel: (file: string) => void
   onSelectLlm: (file: string) => void
-  goModels: () => void
+  goModels: (kind?: 'asr' | 'llm' | 'cloud') => void
   downloads: Record<string, ModelDownloadProgress>
   modelError: ModelError | null
   onDownload: (kind: ModelKind, file: string) => void
@@ -116,6 +117,10 @@ export function HomeView(props: Props): React.JSX.Element {
   const busy = jobState.kind === 'running'
   const eta = useStageEta(jobState.kind === 'running' ? jobState.progress : null)
   const installedModels = overview?.models.filter((m) => m.installed) ?? []
+  const selectedAsr = overview?.models.find(m => m.file === overview.selected)
+  const selectedLlm = overview?.llmModels.find(m => m.file === overview.llmSelected)
+  const unavailableAsr = overview?.selected && !selectedAsr?.installed ? selectedAsr?.name ?? overview.selected : undefined
+  const unavailableLlm = overview?.llmSelected && !selectedLlm?.installed ? selectedLlm?.name ?? overview.llmSelected : undefined
   const installedLlm = overview?.llmModels.filter((m) => m.installed) ?? []
   const translating = service !== 'none'
   const providers = settings?.translation.providers ?? []
@@ -123,9 +128,9 @@ export function HomeView(props: Props): React.JSX.Element {
   const providerId = service.startsWith('api:') ? service.slice(4) : undefined
   const activeProvider = providers.find((p) => p.id === providerId)
   const needApiKey = translating && !useLocal && activeProvider !== undefined && !activeProvider.hasApiKey
-  const needLlmModel = translating && useLocal && overview !== null && installedLlm.length === 0
+  const needLlmModel = translating && useLocal && overview !== null && (installedLlm.length === 0 || Boolean(unavailableLlm))
   const usingAsr = sourceKey === 'asr'
-  const needAsrModel = usingAsr && overview !== null && installedModels.length === 0
+  const needAsrModel = usingAsr && overview !== null && (installedModels.length === 0 || Boolean(unavailableAsr))
 
   const acceptFile = useCallback(
     (path: string) => {
@@ -362,13 +367,16 @@ export function HomeView(props: Props): React.JSX.Element {
             {needAsrModel ? (
               <div className="card-notice">
                 <ModelDownloadNotice
+                  unavailable={unavailableAsr}
+                  needsVerification={selectedAsr?.local?.status === 'verify'}
+                  folderOffline={overview?.folderOnline === false}
                   kind="asr"
                   models={overview?.models ?? []}
                   downloads={downloads}
                   error={modelError}
                   onDownload={onDownload}
                   onCancel={onCancelDownload}
-                  goModels={goModels}
+                  goModels={() => goModels('asr')}
                 />
               </div>
             ) : (
@@ -399,7 +407,7 @@ export function HomeView(props: Props): React.JSX.Element {
                       <Select value={overview?.selected ?? ''} onChange={onSelectModel}>
                         {installedModels.map((m) => (
                           <option key={m.file} value={m.file}>
-                            {m.name}
+                            {modelOptionLabel(m, installedModels)}
                           </option>
                         ))}
                       </Select>
@@ -459,13 +467,16 @@ export function HomeView(props: Props): React.JSX.Element {
             {needLlmModel && (
               <div className="card-notice">
                 <ModelDownloadNotice
+                  unavailable={unavailableLlm}
+                  needsVerification={selectedLlm?.local?.status === 'verify'}
+                  folderOffline={overview?.folderOnline === false}
                   kind="llm"
                   models={overview?.llmModels ?? []}
                   downloads={downloads}
                   error={modelError}
                   onDownload={onDownload}
                   onCancel={onCancelDownload}
-                  goModels={goModels}
+                  goModels={() => goModels('llm')}
                 />
               </div>
             )}
@@ -474,7 +485,7 @@ export function HomeView(props: Props): React.JSX.Element {
                 <div className="notice notice-warn">
                   <Icon name="warning" />
                   <p>{t('home.notice.needKey', { name: activeProvider?.name ?? '' })}</p>
-                  <button className="btn" onClick={goModels}>
+                  <button className="btn" onClick={() => goModels('cloud')}>
                     {t('home.notice.goConfigure')}
                   </button>
                 </div>
@@ -490,7 +501,7 @@ export function HomeView(props: Props): React.JSX.Element {
                   <Select value={overview?.llmSelected ?? ''} onChange={onSelectLlm}>
                     {installedLlm.map((m) => (
                       <option key={m.file} value={m.file}>
-                        {m.name}
+                        {modelOptionLabel(m, installedLlm)}
                       </option>
                     ))}
                   </Select>
@@ -623,13 +634,16 @@ export function HomeView(props: Props): React.JSX.Element {
         <div className="first-run">
           <p className="first-run-title">{t('home.empty.noModel')}</p>
           <ModelDownloadNotice
+            unavailable={unavailableAsr}
+                  needsVerification={selectedAsr?.local?.status === 'verify'}
+            folderOffline={overview?.folderOnline === false}
             kind="asr"
             models={overview.models}
             downloads={downloads}
             error={modelError}
             onDownload={onDownload}
             onCancel={onCancelDownload}
-            goModels={goModels}
+            goModels={() => goModels('asr')}
           />
         </div>
       )}

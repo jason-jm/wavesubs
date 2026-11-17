@@ -1,7 +1,7 @@
 {
   "name": "wavesubs",
   "productName": "Wave Subs",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Generate and translate subtitles from any video with local AI (macOS / Windows)",
   "private": true,
   "type": "module",
@@ -15,6 +15,7 @@
     "preview": "electron-vite preview",
     "cli": "tsx scripts/cli.ts",
     "build:native": "bash scripts/build-native.sh",
+    "build:mac-deps": "bash scripts/build-mac-deps.sh",
     "typecheck": "tsc --noEmit -p . && tsc --noEmit -p src/renderer",
     "check-i18n": "tsx scripts/check-i18n.ts",
     "gen-i18n": "tsx scripts/gen-i18n-registry.ts",
@@ -40,7 +41,9 @@
     "check-output": "tsx scripts/check-output.ts",
     "check-terms": "tsx scripts/check-terms.ts",
     "check-update": "tsx scripts/check-update.ts",
-    "check-winpaths": "tsx scripts/check-winpaths.ts"
+    "check-winpaths": "tsx scripts/check-winpaths.ts",
+    "check-model-library": "tsx scripts/check-model-library.ts",
+    "check-cloud": "tsx scripts/check-cloud.ts"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
@@ -60,6 +63,7 @@
   },
   "build": {
     "appId": "com.wavesubs.desktop",
+    "afterPack": "./scripts/check-mac-package.cjs",
     "productName": "Wave Subs",
     "copyright": "Wave Subs",
     "directories": {
@@ -72,6 +76,7 @@
       "!**/*.map"
     ],
     "mac": {
+      "minimumSystemVersion": "12.0",
       "category": "public.app-category.video",
       "icon": "build/icon.icns",
       "target": [
@@ -91,7 +96,6 @@
       "darkModeSupport": true,
       "extendInfo": {
         "NSMicrophoneUsageDescription": "Wave Subs 不使用麦克风。",
-        "LSMinimumSystemVersion": "12.0",
         "ElectronTeamID": "TZ7V6PMGV6"
       },
       "hardenedRuntime": true,
@@ -166,7 +170,6 @@
       "category": "public.app-category.video",
       "extendInfo": {
         "ITSAppUsesNonExemptEncryption": false,
-        "LSMinimumSystemVersion": "12.0",
         "NSMicrophoneUsageDescription": "Wave Subs 不使用麦克风。"
       },
       "provisioningProfile": "build/WaveSubs_MAS.provisionprofile"

@@ -38,6 +38,7 @@ import { languageName } from './translate/types'
 export interface JobOptions {
   input: string
   /** 语音识别用的模型路径；仅 source.kind === 'asr' 时需要 */
+  modelCacheKey?: string
   modelPath?: string
   language?: string
   /** Silero VAD 模型路径；提供则用真实说话区间校正字幕时间、剔除幻觉 */
@@ -201,7 +202,7 @@ export async function runSubtitleJob(opts: JobOptions): Promise<JobResult> {
     source.kind === 'asr'
       ? {
           kind: 'asr',
-          modelFile: opts.modelPath ? basename(opts.modelPath) : '',
+          modelFile: opts.modelCacheKey ?? (opts.modelPath ? basename(opts.modelPath) : ''),
           language: opts.language ?? 'auto',
           audioIndex: opts.audioIndex ?? 0
         }

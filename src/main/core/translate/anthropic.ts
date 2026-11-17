@@ -1,5 +1,5 @@
 import type { BatchItem, TranslateConfig, TranslateContext, TranslationProvider } from './types'
-import { TranslationParseError } from './types'
+import { cloudParallelism, TranslationParseError } from './types'
 import { postJsonWithRetry } from './http'
 import { buildSystemPrompt, buildUserContent, parseBatchResponse } from './prompt'
 
@@ -28,7 +28,8 @@ function thinkingExtras(model: string): Record<string, unknown> {
 export class AnthropicProvider implements TranslationProvider {
   readonly name = 'anthropic'
 
-  constructor(private config: TranslateConfig) {}
+  readonly maxParallelBatches: number
+  constructor(private config: TranslateConfig) { this.maxParallelBatches = cloudParallelism(config.baseUrl) }
 
   async translateBatch(items: BatchItem[], ctx: TranslateContext): Promise<Map<number, string>> {
     const body = JSON.stringify({

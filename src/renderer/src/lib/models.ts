@@ -13,7 +13,7 @@ export function sizeLabel(mb: number): string {
 export function recommendModel(models: ModelInfo[]): ModelInfo | null {
   const rank = (m: ModelInfo): number => (m.fitness === 'great' || m.fitness === 'ok' ? 0 : 1)
   const candidates = models
-    .filter((m) => !m.installed && m.fitness !== 'unfit')
+    .filter((m) => !m.local && !m.installed && m.fitness !== 'unfit')
     .sort(
       (a, b) =>
         rank(a) - rank(b) ||
@@ -21,4 +21,10 @@ export function recommendModel(models: ModelInfo[]): ModelInfo | null {
         b.quality - a.quality
     )
   return candidates[0] ?? null
+}
+
+/** Two references can have the same basename. Show their directory only when needed. */
+export function modelOptionLabel(model: ModelInfo, options: ModelInfo[]): string {
+  return model.local && options.some(other => other.file !== model.file && other.name === model.name)
+    ? model.local.path : model.name
 }

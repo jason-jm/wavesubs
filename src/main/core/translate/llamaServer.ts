@@ -1,11 +1,23 @@
 import { spawn, type ChildProcess } from 'node:child_process'
 import { setTimeout as delay } from 'node:timers/promises'
+import { nativePaths } from '../asr/pathArgs'
+import { createServer } from 'node:net'
 import { findTool } from '../tools'
 import { OpenAICompatibleProvider } from './openaiCompatible'
 import type { BatchItem, TranslateContext, TranslationProvider } from './types'
 import { LocalizedError } from '../../../shared/i18n/core'
 
-const PORT = 18173
+async function availablePort(): Promise<number> {
+  const server = createServer()
+  return new Promise((resolve, reject) => {
+    server.once('error', reject)
+    server.listen(0, '127.0.0.1', () => {
+      const address = server.address()
+      const port = typeof address === 'object' && address ? address.port : 0
+      server.close(err => err ? reject(err) : resolve(port))
+    })
+  })
+}
 
 export const llamaServerPath = (): string =>
   findTool('llama-server', 'WAVESUBS_LLAMA_SERVER', 'brew install llama.cpp')
@@ -19,8 +31,11 @@ export class LlamaServerManager {
   private currentModel: string | null = null
   private starting: Promise<string> | null = null
 
+  private port = 0
+  private closed: Promise<void> = Promise.resolve()
+
   get baseUrl(): string {
-    return `http://127.0.0.1:${PORT}/v1`
+    return `http://127.0.0.1:${this.port}/v1`
   }
 
   async ensure(modelPath: string): Promise<string> {
@@ -37,17 +52,22 @@ export class LlamaServerManager {
   }
 
   private async start(modelPath: string): Promise<string> {
-    this.stop()
+    await this.shutdown()
+    this.port = await availablePort()
     const bin = llamaServerPath()
+    const { paths: [model], cwd, release } = await nativePaths(modelPath, [modelPath])
     const proc = spawn(bin, [
-      '-m', modelPath,
-      '--port', String(PORT),
+      '-m', model,
+      '--port', String(this.port),
       '--host', '127.0.0.1',
       '-ngl', '99',
       '-c', '8192',
       // Qwen3 等思考型模型直接给答案，避免 <think> 拖慢并污染输出
       '--reasoning-budget', '0'
-    ], { windowsHide: true })
+    ], { cwd, windowsHide: true })
+    let spawnError: Error | undefined
+    proc.on('error', err => { spawnError = err })
+    this.closed = new Promise<void>(resolve => proc.once('close', () => { void release().finally(resolve) }))
     let stderrTail = ''
     proc.stderr?.on('data', (chunk: Buffer) => {
       stderrTail = (stderrTail + chunk.toString()).slice(-3000)
@@ -58,13 +78,14 @@ export class LlamaServerManager {
 
     const deadline = Date.now() + 180_000
     while (Date.now() < deadline) {
-      if (proc.exitCode !== null) {
+      if (spawnError) throw spawnError
+      if (proc.exitCode !== null || proc.signalCode !== null) {
         this.proc = null
         this.currentModel = null
         throw new Error(`本地翻译模型启动失败（退出码 ${proc.exitCode}）\n${stderrTail}`)
       }
       try {
-        const res = await fetch(`http://127.0.0.1:${PORT}/health`, {
+        const res = await fetch(`http://127.0.0.1:${this.port}/health`, {
           signal: AbortSignal.timeout(2000)
         })
         if (res.ok) return this.baseUrl
@@ -75,6 +96,11 @@ export class LlamaServerManager {
     }
     this.stop()
     throw new LocalizedError('error.llmLoadTimeout')
+  }
+
+  async shutdown(): Promise<void> {
+    this.stop()
+    await this.closed
   }
 
   stop(): void {
@@ -109,7 +135,7 @@ export class LocalLlamaProvider implements TranslationProvider {
         apiKey: 'local',
         model: 'local',
         targetLanguage: this.targetLanguage
-      })
+      }, true)
     }
     return this.inner
   }

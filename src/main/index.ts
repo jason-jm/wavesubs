@@ -4,7 +4,7 @@ import { translatorFor } from '../shared/i18n'
 import { APP_STORE_REVIEW_URL, DISCUSSIONS_URL, SITE_URL, feedbackUrl, isAllowedExternalUrl } from '../shared/feedback'
 import type { IpcMainInvokeEvent } from 'electron'
 import { rmSync } from 'node:fs'
-import { copyFile, mkdir, stat } from 'node:fs/promises'
+import { stat } from 'node:fs/promises'
 import { extname, join } from 'node:path'
 import type {
   AppInfo,
@@ -15,6 +15,7 @@ import type {
   MediaProbeInfo,
   ModelInfo,
   ModelKind,
+  ModelMoveProgress,
   ModelsOverview,
   RecordView,
   SettingsUpdate,
@@ -45,6 +46,8 @@ import {
 } from './core/asr/catalog'
 import { assessModelFitness, detectHardware } from './core/hardware'
 import { probeMedia } from './core/media'
+import { ModelLibrary, kindDir, official } from './core/modelLibrary'
+import { probeModel } from './core/probeModel'
 import { ModelDownloader, candidateUrls, setDownloadRegion } from './core/modelManager'
 import { runSubtitleJob } from './core/pipeline'
 import {
@@ -55,8 +58,6 @@ import {
 import {
   ffmpegPath,
   ffprobePath,
-  listLocalLlmModels,
-  listWhisperModels,
   ocrHelperPath,
   probeWindowsOcr,
   setBundledBinDirs,
@@ -103,16 +104,46 @@ const VIDEO_EXTENSIONS = ['mkv', 'mp4', 'mov', 'avi', 'ts', 'm2ts', 'webm', 'flv
 // WAVESUBS_DEBUG_PORT：开 Chrome DevTools 协议端口，自检脚本用它给界面截图；平时不设
 if (process.env.WAVESUBS_DEBUG_PORT) app.commandLine.appendSwitch('remote-debugging-port', process.env.WAVESUBS_DEBUG_PORT)
 
-function modelsDir(): string {
+function defaultModelsDir(): string {
   // 开发期用项目内 models/，打包后用用户数据目录
   // WAVESUBS_MODELS_DIR：自检脚本用它指到一个空目录，模拟刚装好、一个模型都没有的首次启动
   if (process.env.WAVESUBS_MODELS_DIR) return process.env.WAVESUBS_MODELS_DIR
   return app.isPackaged ? join(app.getPath('userData'), 'models') : join(process.cwd(), 'models')
 }
 
-function llmDir(): string {
-  return join(modelsDir(), 'llm')
+let library: ModelLibrary
+let libraryBusy = false
+let activeDownloads = 0
+let moving: AbortController | undefined
+const scopes = new Map<string, () => void>()
+const modelsDir = (): string => library.root
+const llmDir = (): string => kindDir(library.root, 'llm')
+
+function startScope(bookmark?: string): void {
+  if (process.mas && bookmark && !scopes.has(bookmark)) {
+    try { scopes.set(bookmark, app.startAccessingSecurityScopedResource(bookmark) as () => void) } catch { /* Relink from the file picker to renew access. */ }
+  }
 }
+function syncScopes(): void {
+  const data = settings.library
+  const needed = new Set([data.bookmark, data.pending?.bookmark, ...(data.deferred ?? []).map(p => p.bookmark),
+    ...(data.cleanup ?? []).flatMap(j => [j.bookmark, j.destBookmark]), ...data.entries.map(e => e.bookmark)])
+  for (const bookmark of needed) startScope(bookmark)
+  for (const [key, stop] of scopes) if (!needed.has(key)) { stop(); scopes.delete(key) }
+}
+function bindDownloaders(): void {
+  const fetch = (url: string, init: RequestInit): Promise<Response> => net.fetch(url, init)
+  asrDownloader = new ModelDownloader(modelsDir(), { fetch, prepareDir: () => library.writable('asr') })
+  llmDownloader = new ModelDownloader(llmDir(), { fetch, prepareDir: () => library.writable('llm') })
+}
+async function exclusive<T>(action: () => Promise<T>): Promise<T> {
+  if (jobRunning || libraryBusy || activeDownloads || asrDownloader.activeFiles().length || llmDownloader.activeFiles().length) {
+    throw new Error(settings.t('library.busy'))
+  }
+  libraryBusy = true
+  try { return await action() } finally { libraryBusy = false; syncScopes() }
+}
+
 
 let settings: SettingsStore
 let updates: UpdateChecker | null = null
@@ -143,11 +174,7 @@ async function ensureVadModel(): Promise<string | undefined> {
   const path = join(modelsDir(), VAD_MODEL_FILE)
   if (await isFile(path)) return path
   const bundled = bundledVadModelPath()
-  if (await isFile(bundled)) {
-    await mkdir(modelsDir(), { recursive: true })
-    await copyFile(bundled, path)
-    return path
-  }
+  if (await isFile(bundled)) return bundled
   try {
     await asrDownloader.download(VAD_MODEL_FILE, VAD_MODEL_URL, undefined, VAD_MODEL_SHA256)
     return path
@@ -184,7 +211,7 @@ async function buildModelsOverview(): Promise<ModelsOverview> {
       requirement: t(onMac ? spec.requirement : requirementPc),
       detail: t(spec.detail),
       downloadUrls: candidateUrls(modelDownloadUrl(spec.file)),
-      installed: await isFile(join(dir, spec.file)),
+      ...await library.catalogue('asr', spec.file),
       downloading: asrDownloading.has(spec.file),
       fitness: assessModelFitness(spec, hardware)
     }))
@@ -195,23 +222,26 @@ async function buildModelsOverview(): Promise<ModelsOverview> {
       requirement: t(onMac ? spec.requirement : requirementPc),
       detail: t(spec.detail),
       downloadUrls: candidateUrls(url),
-      installed: await isFile(join(ldir, spec.file)),
+      ...await library.catalogue('llm', spec.file),
       downloading: llmDownloading.has(spec.file),
       fitness: assessModelFitness(spec, hardware)
     }))
   )
 
+  const [customAsr, customLlm, folderOnline] = await Promise.all([library.rows('asr'), library.rows('llm'), library.online()])
+  models.unshift(...customAsr)
+  llmModels.unshift(...customLlm)
   const installedAsr = models.filter((m) => m.installed).map((m) => m.file)
   let selected = settings.selectedModel
-  if (!selected || !installedAsr.includes(selected)) selected = pickBestInstalled(installedAsr)
+  if (!selected) selected = pickBestInstalled(installedAsr)
 
   const installedLlm = llmModels.filter((m) => m.installed).map((m) => m.file)
   let llmSelected = settings.localLlmModel
-  if (!llmSelected || !installedLlm.includes(llmSelected)) {
+  if (!llmSelected) {
     llmSelected = pickBestInstalledLlm(installedLlm)
   }
 
-  return { dir, llmDir: ldir, hardware, selected, llmSelected, models, llmModels }
+  return { dir, llmDir: ldir, folderOnline, hardware, selected, llmSelected, models, llmModels }
 }
 
 function resolveDownload(
@@ -303,33 +333,88 @@ function registerIpc(): void {
 
   handle('models:overview', () => buildModelsOverview())
 
+  let pickedFolder: { path: string; bookmark?: string } | undefined
+  handle('models:pickFolder', () => exclusive(async () => {
+    const choice = await dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'], securityScopedBookmarks: Boolean(process.mas) })
+    if (choice.canceled || !choice.filePaths[0]) return null
+    const bookmark = choice.bookmarks?.[0]
+    startScope(bookmark)
+    const plan = await library.plan(choice.filePaths[0])
+    pickedFolder = { path: plan.dir, bookmark }
+    return plan
+  }))
+  handle('models:changeFolder', (event, path: string, move: boolean) => exclusive(async () => {
+    if (!pickedFolder || pickedFolder.path !== path) throw new Error(settings.t('library.change'))
+    const bookmark = pickedFolder.bookmark
+    startScope(bookmark)
+    await llamaManager.shutdown()
+    moving = new AbortController()
+    try {
+      const result = await library.change(path, move, bookmark, moving.signal, (p: ModelMoveProgress) => {
+        if (!event.sender.isDestroyed()) event.sender.send('models:moveProgress', p)
+      })
+      bindDownloaders()
+      pickedFolder = undefined
+      return result
+    } catch (err) {
+      if (moving.signal.aborted) throw new Error(settings.t('error.jobCancelled'))
+      throw err
+    } finally { moving = undefined }
+  }))
+  handle('models:cancelMove', () => moving?.abort())
+  handle('models:link', (_event, kind: ModelKind, id?: string) => exclusive(async () => {
+    const choice = await dialog.showOpenDialog({ properties: ['openFile'], securityScopedBookmarks: Boolean(process.mas),
+      filters: [{ name: kind === 'asr' ? 'Whisper GGML' : 'GGUF', extensions: [kind === 'asr' ? 'bin' : 'gguf'] }] })
+    if (choice.canceled || !choice.filePaths[0]) return null
+    const bookmark = choice.bookmarks?.[0]
+    startScope(bookmark)
+    return library.verify(kind, choice.filePaths[0], { id, bookmark, select: true, asReference: true })
+  }))
+  handle('models:verify', (_event, kind: ModelKind, id: string) => exclusive(async () => {
+    if (official(kind, id)) return library.verify(kind, join(kindDir(library.root, kind), id), { select: true })
+    const model = (await library.rows(kind)).find(m => m.file === id)
+    if (!model?.local) throw new Error(settings.t('error.unknownModel', { file: id }))
+    return library.verify(kind, model.local.path, { id: model.local.origin === 'external' ? id : undefined, select: true })
+  }))
+  handle('models:forget', (_event, kind: ModelKind, id: string) => exclusive(async () => {
+    if (kind === 'llm') await llamaManager.shutdown()
+    library.forget(kind, id, (kind === 'asr' ? settings.selectedModel : settings.localLlmModel) === id)
+  }))
   handle('models:download', async (event, kind: ModelKind, file: string) => {
+    if (libraryBusy) throw new Error(settings.t('library.busy'))
     const { downloader, url, sha256 } = resolveDownload(kind, file)
-    await downloader.download(
-      file,
-      url,
-      (p) => {
-        if (!event.sender.isDestroyed()) {
-          event.sender.send('models:downloadProgress', { ...p, kind })
-        }
-      },
-      sha256
-    )
+    activeDownloads++
+    try {
+      await downloader.download(
+        file,
+        url,
+        (p) => {
+          if (!event.sender.isDestroyed()) {
+            event.sender.send('models:downloadProgress', { ...p, kind })
+          }
+        },
+        sha256
+      )
+      await library.downloaded(kind, file, sha256)
+    } finally { activeDownloads-- }
   })
 
   handle('models:cancelDownload', (_event, kind: ModelKind, file: string) => {
     ;(kind === 'asr' ? asrDownloader : llmDownloader).cancel(file)
   })
 
-  handle('models:delete', async (_event, kind: ModelKind, file: string) => {
-    if (kind === 'llm') llamaManager.stop()
+  handle('models:delete', (_event, kind: ModelKind, file: string) => exclusive(async () => {
+    if (!official(kind, file)) throw new Error(settings.t('error.unknownModel', { file }))
+    await library.canDelete(kind, file)
+    if (kind === 'llm') await llamaManager.shutdown()
     await (kind === 'asr' ? asrDownloader : llmDownloader).delete(file)
-  })
+    if ((kind === 'asr' ? settings.selectedModel : settings.localLlmModel) === file) settings.saveLibrary(settings.library, { kind })
+  }))
 
-  handle('models:select', (_event, kind: ModelKind, file: string) => {
-    if (kind === 'asr') settings.setSelectedModel(file)
-    else settings.update({ translation: { localModel: file } })
-  })
+  handle('models:select', (_event, kind: ModelKind, file: string) => exclusive(async () => {
+    await library.resolve(kind, file)
+    settings.saveLibrary(settings.library, { kind, id: file })
+  }))
 
   handle('settings:get', () => settings.view())
 
@@ -397,69 +482,60 @@ function registerIpc(): void {
 
   handle('job:run', async (event, input: string, request: JobRequest) => {
     if (jobRunning) throw new Error(settings.t('error.jobRunning'))
-    const source: SubtitleSource = request.source ?? { kind: 'asr' }
-    const dir = modelsDir()
-    let modelPath: string | undefined
-    if (source.kind === 'asr') {
-      const installed = await listWhisperModels(dir)
-      const modelFile =
-        request.model && installed.includes(request.model)
-          ? request.model
-          : settings.selectedModel && installed.includes(settings.selectedModel)
-            ? settings.selectedModel
-            : pickBestInstalled(installed)
-      if (!modelFile) {
-        throw new Error(settings.t('error.noAsrModel', { dir }))
-      }
-      modelPath = join(dir, modelFile)
-    }
-
-    const translateWanted = request.translate ?? settings.translateEnabled
-    let translate:
-      | { provider: TranslationProvider; targetLanguage: string; engineId: string }
-      | undefined
-    if (translateWanted) {
-      const engine = request.engine ?? settings.translationEngine
-      const targetLanguage = request.targetLanguage ?? settings.targetLanguage
-      if (engine === 'local') {
-        const ldir = llmDir()
-        const installedLlm = await listLocalLlmModels(ldir)
-        const llmFile =
-          settings.localLlmModel && installedLlm.includes(settings.localLlmModel)
-            ? settings.localLlmModel
-            : pickBestInstalledLlm(installedLlm)
-        if (!llmFile) {
-          throw new Error(settings.t('error.noLlmModel'))
-        }
-        translate = {
-          provider: new LocalLlamaProvider(llamaManager, join(ldir, llmFile), targetLanguage),
-          targetLanguage,
-          engineId: `local|${llmFile}`
-        }
-      } else {
-        const cloud = settings.providerConfig(request.providerId)
-        if (!cloud) {
-          throw new Error(settings.t('error.noApiKey'))
-        }
-        translate = {
-          provider: createCloudProvider({ ...cloud, targetLanguage }),
-          targetLanguage,
-          engineId: `api|${cloud.id}|${cloud.model}`
-        }
-      }
-    }
-    const exportOptions = settings.exportOptions
-    const format = request.format ?? exportOptions.format
-    const content = request.content ?? exportOptions.content
-    const output = translate ? { format, content } : { format, content: 'original' as const }
-
+    if (libraryBusy) throw new Error(settings.t('library.busy'))
     jobRunning = true
     jobAbort = new AbortController()
     try {
+      const source: SubtitleSource = request.source ?? { kind: 'asr' }
+      let overview: Promise<ModelsOverview> | undefined
+      const defaults = (): Promise<ModelsOverview> => overview ??= buildModelsOverview()
+      let modelPath: string | undefined
+      let modelCacheKey: string | undefined
+      if (source.kind === 'asr') {
+        const id = request.model || settings.selectedModel || (await defaults()).selected
+        if (!id) throw new Error(settings.t('error.noAsrModel', { dir: modelsDir() }))
+        const model = await library.resolve('asr', id)
+        modelPath = model.path
+        modelCacheKey = model.cacheKey
+      }
+      const translateWanted = request.translate ?? settings.translateEnabled
+      let translate:
+        | { provider: TranslationProvider; targetLanguage: string; engineId: string }
+        | undefined
+      if (translateWanted) {
+        const engine = request.engine ?? settings.translationEngine
+        const targetLanguage = request.targetLanguage ?? settings.targetLanguage
+        if (engine === 'local') {
+          const id = settings.localLlmModel || (await defaults()).llmSelected
+          if (!id) throw new Error(settings.t('error.noLlmModel'))
+          const model = await library.resolve('llm', id)
+          translate = {
+            provider: new LocalLlamaProvider(llamaManager, model.path, targetLanguage),
+            targetLanguage,
+            engineId: `local|${model.cacheKey}`
+          }
+        } else {
+          const cloud = settings.providerConfig(request.providerId)
+          if (!cloud) {
+            throw new Error(settings.t('error.noApiKey'))
+          }
+          translate = {
+            provider: createCloudProvider({ ...cloud, targetLanguage }),
+            targetLanguage,
+            engineId: `api|${cloud.id}|${cloud.model}`
+          }
+        }
+      }
+      const exportOptions = settings.exportOptions
+      const format = request.format ?? exportOptions.format
+      const content = request.content ?? exportOptions.content
+      const output = translate ? { format, content } : { format, content: 'original' as const }
+
       const result = await runSubtitleJob({
         signal: jobAbort.signal,
         input,
         modelPath,
+        modelCacheKey,
         language: request.language === 'auto' ? undefined : request.language,
         vadModelPath: source.kind === 'asr' ? await ensureVadModel() : undefined,
         source,
@@ -750,7 +826,18 @@ function createWindow(): void {
   }
 }
 
-void app.whenReady().then(() => {
+// A second process sharing settings could mistake a live migration for an interrupted one.
+const primaryInstance = app.requestSingleInstanceLock()
+if (!primaryInstance) app.quit()
+app.on('second-instance', () => {
+  const win = BrowserWindow.getAllWindows()[0]
+  if (!win) { if (app.isReady()) createWindow(); return }
+  if (win.isMinimized()) win.restore()
+  win.show()
+  win.focus()
+})
+void app.whenReady().then(async () => {
+  if (!primaryInstance) return
   protocol.handle(MEDIA_SCHEME, handleMediaRequest)
   allowMediaRoot(PREVIEW_CACHE)
   // 必须在 SettingsStore 之前：它一构造就会往新目录写 settings.json，
@@ -807,9 +894,10 @@ void app.whenReady().then(() => {
   nativeTheme.on('updated', refreshTitleBarOverlay)
   console.log(`[i18n] 系统语言 ${describeSystemLanguages()} → 界面 ${settings.resolvedLanguage}`)
   // 用 Chromium 网络栈下载：认系统代理（Node 自带的 fetch 不认，开了系统代理也连不上被墙的 huggingface.co）
-  const fetchViaChromium = (input: string, init: RequestInit): Promise<Response> => net.fetch(input, init)
-  asrDownloader = new ModelDownloader(modelsDir(), { fetch: fetchViaChromium })
-  llmDownloader = new ModelDownloader(llmDir(), { fetch: fetchViaChromium })
+  library = new ModelLibrary(settings, defaultModelsDir(), (kind, path) => probeModel(kind, path, llamaManager))
+  syncScopes()
+  await library.recover().catch(err => console.warn('[models]', err))
+  bindDownloaders()
   registerIpc()
   buildAppMenu()
   createWindow()
@@ -821,7 +909,7 @@ void app.whenReady().then(() => {
 app.on('will-quit', () => {
   llamaManager.stop()
   // 预览帧是纯派生物，退出全删；下次要看重新生成即可
-  rmSync(PREVIEW_CACHE, { recursive: true, force: true })
+  if (primaryInstance) rmSync(PREVIEW_CACHE, { recursive: true, force: true })
 })
 
 app.on('window-all-closed', () => {

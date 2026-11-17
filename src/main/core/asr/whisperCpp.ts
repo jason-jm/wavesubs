@@ -4,7 +4,7 @@ import { availableParallelism, tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { Cue } from '../subtitle/types'
 import { LocalizedError } from '../../../shared/i18n/core'
-import { whisperPathArgs } from './pathArgs'
+import { nativePaths } from './pathArgs'
 
 export interface WhisperOptions {
   audioPath: string
@@ -59,21 +59,23 @@ export async function transcribeWithWhisperCpp(
   const workDir = await mkdtemp(join(tmpdir(), 'wavesubs-whisper-'))
   const outBase = join(workDir, 'transcript')
   const language = opts.language || 'auto'
-  // Windows 上换成从模型目录出发的纯 ASCII 相对路径，用户名不进命令行（见 pathArgs.ts）
-  const { cwd, paths: [modelArg, audioArg, outArg] } = whisperPathArgs(opts.modelPath, [opts.modelPath, opts.audioPath, outBase])
-  const args = [
-    '-m', modelArg,
-    '-f', audioArg,
-    '-l', language,
-    '-t', String(opts.threads ?? Math.min(8, availableParallelism())),
-    '-oj',
-    '-of', outArg,
-    '-pp',
-    // 跨窗口不携带文本上下文：显著降低配乐段落里的复读循环风险
-    '-mc', '0',
-    ...(opts.extraArgs ?? [])
-  ]
+  let release: (() => Promise<void>) | undefined
   try {
+    const prepared = await nativePaths(opts.modelPath, [opts.modelPath, opts.audioPath, outBase])
+    release = prepared.release
+    const { cwd, paths: [modelArg, audioArg, outArg] } = prepared
+    const args = [
+      '-m', modelArg,
+      '-f', audioArg,
+      '-l', language,
+      '-t', String(opts.threads ?? Math.min(8, availableParallelism())),
+      '-oj',
+      '-of', outArg,
+      '-pp',
+      // 跨窗口不携带文本上下文：显著降低配乐段落里的复读循环风险
+      '-mc', '0',
+      ...(opts.extraArgs ?? [])
+    ]
     let deviceLog = ''
     let languageReported = false
     let stderrTail = ''
@@ -134,6 +136,7 @@ export async function transcribeWithWhisperCpp(
       device: detectDevice(deviceLog)
     }
   } finally {
+    await release?.()
     await rm(workDir, { recursive: true, force: true })
   }
 }
@@ -168,11 +171,12 @@ export function pickDetectionWindows(
 
 /** 在一段 WAV 上跑 whisper 的语种检测（-dl，只看开头 30 秒就退出），返回语种与概率 */
 async function detectOnSample(whisperCli: string, modelPath: string, wavPath: string, signal?: AbortSignal): Promise<{ language: string; p: number } | null> {
-  return new Promise((resolve) => {
-    const { cwd, paths: [modelArg, wavArg] } = whisperPathArgs(modelPath, [modelPath, wavPath])
+  const { cwd, paths: [modelArg, wavArg], release } = await nativePaths(modelPath, [modelPath, wavPath])
+  return new Promise<{ language: string; p: number } | null>((resolve) => {
     const child = spawn(whisperCli, ['-m', modelArg, '-f', wavArg, '-dl', '-l', 'auto', '-t', '4'], { cwd, windowsHide: true })
     const onAbort = (): void => { child.kill() }
-    signal?.addEventListener('abort', onAbort, { once: true })
+    if (signal?.aborted) onAbort()
+    else signal?.addEventListener('abort', onAbort, { once: true })
     let out = ''
     child.stderr.on('data', (c: Buffer) => { out += c.toString() })
     child.stdout.resume()
@@ -182,7 +186,7 @@ async function detectOnSample(whisperCli: string, modelPath: string, wavPath: st
       const m = /auto-detected language:\s*([a-z]{2,3})\s*\(p\s*=\s*([\d.]+)\)/.exec(out)
       resolve(m ? { language: m[1], p: Number(m[2]) } : null)
     })
-  })
+  }).finally(release)
 }
 
 /**

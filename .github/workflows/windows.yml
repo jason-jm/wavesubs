@@ -1,0 +1,100 @@
+# Windows 包在公开 CI 上构建（SignPath 开源签名的前置条件：签名的二进制必须来自可复核的公开流水线）。
+#
+# 触发：推 v* 标签，或手动运行。产物：NSIS 安装程序 + 便携 ZIP，作为 Actions artifact 上传。
+# 随包依赖（ffmpeg / whisper / llama 的官方预编译包）按 scripts/bundle-deps-win.ts 里钉死的版本与 sha256 下载。
+#
+# 签名：SignPath 申请通过后，在仓库 Secrets 里填 SIGNPATH_API_TOKEN，Variables 里填
+# SIGNPATH_ORGANIZATION_ID / SIGNPATH_PROJECT_SLUG / SIGNPATH_POLICY_SLUG，下面的签名步骤会自动启用。
+name: windows
+
+on:
+  push:
+    tags: ['v*']
+    branches: ['release/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Self-checks
+        run: npm run check-i18n && npm run check-download && npm run check-cloud && npm run check-winpaths && npm run check-model-library && npm run typecheck
+
+      - name: Bundle Windows dependencies (pinned upstream builds)
+        run: npx tsx scripts/bundle-deps-win.ts --fetch
+
+      - name: Build
+        run: npm run build
+
+      - name: Package (NSIS installer + portable ZIP)
+        run: npx electron-builder --win --x64 --publish never
+
+      - name: Install the previous release, upgrade, run local inference and unplug the model folder
+        shell: pwsh
+        run: ./scripts/check-windows-upgrade.ps1
+
+      - name: Upload acceptance screenshots and subtitles
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-upgrade-evidence
+          if-no-files-found: ignore
+          path: |
+            ${{ runner.temp }}/wavesubs-qa/screenshots/*.png
+            ${{ runner.temp }}/wavesubs-qa/packaged-output.srt
+
+      - name: Checksums
+        shell: bash
+        run: |
+          cd release
+          sha256sum "Wave Subs Setup"*.exe "Wave Subs-"*-win.zip > SHA256SUMS-win.txt
+          cat SHA256SUMS-win.txt
+
+      - name: Upload unsigned artifacts
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: wavesubs-windows-unsigned
+          if-no-files-found: error
+          path: |
+            release/Wave Subs Setup*.exe
+            release/Wave Subs-*-win.zip
+            release/SHA256SUMS-win.txt
+
+  sign:
+    # 只有配置了 SignPath 凭据才跑；没配置时这个 job 直接跳过，不影响构建
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ vars.SIGNPATH_ORGANIZATION_ID != '' }}
+    steps:
+      - name: Submit installer to SignPath
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ vars.SIGNPATH_POLICY_SLUG }}
+          github-artifact-id: ${{ needs.build.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: signed
+
+      - name: Upload signed artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wavesubs-windows-signed
+          path: signed

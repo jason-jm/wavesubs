@@ -254,11 +254,13 @@ export interface ModelInfo {
   fitness: ModelFitness
   /** 全部可用的下载地址（官方在前，镜像在后）：下载失败时给用户手动下载用 */
   downloadUrls: string[]
+  local?: { origin: 'folder' | 'external'; path: string; status: 'ready' | 'verify' | 'missing'; canDelete?: boolean }
 }
 
 export interface ModelsOverview {
   dir: string
   llmDir: string
+  folderOnline: boolean
   hardware: HardwareInfo
   /** 当前选定用于识别的模型文件名 */
   selected: string | null
@@ -266,6 +268,19 @@ export interface ModelsOverview {
   llmSelected: string | null
   models: ModelInfo[]
   llmModels: ModelInfo[]
+}
+
+export interface ModelFolderPlan {
+  dir: string
+  count: number
+  bytes: number
+  sourceOnline: boolean
+}
+
+export interface ModelMoveProgress {
+  file: string
+  done: number
+  total: number
 }
 
 export interface ModelDownloadProgress {

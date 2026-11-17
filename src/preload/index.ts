@@ -10,6 +10,8 @@ import type {
   JobSummary,
   MediaProbeInfo,
   ModelDownloadProgress,
+  ModelFolderPlan,
+  ModelMoveProgress,
   ModelKind,
   ModelsOverview,
   PreviewSegment,
@@ -39,6 +41,13 @@ const api = {
     subscribe('job:progress', callback),
 
   modelsOverview: (): Promise<ModelsOverview> => ipcRenderer.invoke('models:overview'),
+  pickModelFolder: (): Promise<ModelFolderPlan | null> => ipcRenderer.invoke('models:pickFolder'),
+  changeModelFolder: (path: string, move: boolean): Promise<{ retained: number }> => ipcRenderer.invoke('models:changeFolder', path, move),
+  cancelModelMove: (): Promise<void> => ipcRenderer.invoke('models:cancelMove'),
+  onModelMove: (cb: (p: ModelMoveProgress) => void): (() => void) => subscribe('models:moveProgress', cb),
+  linkModel: (kind: ModelKind, id?: string): Promise<string | null> => ipcRenderer.invoke('models:link', kind, id),
+  verifyModel: (kind: ModelKind, id: string): Promise<string> => ipcRenderer.invoke('models:verify', kind, id),
+  forgetModel: (kind: ModelKind, id: string): Promise<void> => ipcRenderer.invoke('models:forget', kind, id),
   downloadModel: (kind: ModelKind, file: string): Promise<void> =>
     ipcRenderer.invoke('models:download', kind, file),
   cancelDownload: (kind: ModelKind, file: string): Promise<void> =>

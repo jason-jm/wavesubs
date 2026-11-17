@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process'
-import { whisperPathArgs } from './pathArgs'
+import { nativePaths } from './pathArgs'
 
 export interface SpeechRegion {
   startMs: number
@@ -37,9 +37,8 @@ export async function detectSpeechRegions(
   wavPath: string,
   signal?: AbortSignal
 ): Promise<SpeechRegion[]> {
+  const { cwd, paths: [modelArg, wavArg], release } = await nativePaths(vadModelPath, [vadModelPath, wavPath])
   const stdout = await new Promise<string>((resolve, reject) => {
-    // 和 whisper-cli 同一个坑：VAD 模型也在 AppData 下，Windows 上用户名带非 ASCII 字符就崩（见 pathArgs.ts）
-    const { cwd, paths: [modelArg, wavArg] } = whisperPathArgs(vadModelPath, [vadModelPath, wavPath])
     const child = spawn(vadBin, ['-vm', modelArg, '-f', wavArg, ...VAD_TUNING], { cwd, windowsHide: true })
     let out = ''
     let errTail = ''
@@ -59,7 +58,7 @@ export async function detectSpeechRegions(
       else if (code === 0) resolve(out)
       else reject(new Error(`VAD 检测失败（退出码 ${code}）\n${errTail}`))
     })
-  })
+  }).finally(release)
   const regions: SpeechRegion[] = []
   // 输出行形如 "Speech segment 3: start = 397.00, end = 800.00"（单位为厘秒）
   for (const match of stdout.matchAll(/start = ([\d.]+), end = ([\d.]+)/g)) {

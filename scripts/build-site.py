@@ -102,7 +102,7 @@ T['zh'] = dict(
   faq_h2='常见问题',
   faq=[('哪些视频可以生成字幕？', 'MKV、MP4、MOV、TS、AVI 等常见格式都可以；HEVC、DTS、TrueHD 这类浏览器播不了的编码也没问题，因为随包的 ffmpeg 什么都能解。纯音频文件同样可以。'),
        ('支持哪些语言？', '识别支持 whisper 覆盖的近百种语言并自动检测；翻译目标语言 29 种；界面有 32 种语言。'),
-       ('真的不需要联网吗？', '识别、对齐、翻译、编辑、导出全部本地完成。只有两件事用到网络：第一次下载模型，以及你自己选择配置云端翻译。'),
+       ('真的不需要联网吗？', '模型下载后，识别、本地翻译、编辑和导出都可以离线使用。下载模型、使用可选的云端翻译以及向 GitHub 检查更新时会联网。启动时检查更新默认开启，可在设置中关闭。'),
        ('一部两小时的电影要多久？', 'M 系列芯片上用 Large v3 Turbo 大约 3～6 分钟，加上本地翻译再多几分钟。整季批量可以挂着跑。'),
        ('生成的字幕准吗？', '识别用 whisper large 系列模型；时间轴用语音活动检测和响度分析贴回真实说话时刻，参数对照六部整片的官方字幕校准。每个文件跑完会附带质检结论。'),
        ('影片里已经有字幕轨了呢？', '会自动发现内嵌的文本字幕轨并优先使用，直接进入翻译，比识别更快更准。图形字幕（PGS/VobSub）除外。'),
@@ -161,7 +161,7 @@ T['en'] = dict(
   faq_h2='Frequently asked questions',
   faq=[('Which videos can it generate subtitles for?', "MKV, MP4, MOV, TS, AVI and other common formats; HEVC, DTS and TrueHD streams a browser can't play are fine too, because the bundled ffmpeg decodes everything. Audio-only files work as well."),
        ('Which languages are supported?', 'Recognition covers the nearly 100 languages whisper supports, with automatic detection; there are 29 translation targets; the interface comes in 32 languages.'),
-       ('Does it really work without internet?', 'Recognition, alignment, translation, editing and export all run locally. Only two things touch the network: the one-time model download, and cloud translation if you choose to configure it.'),
+       ('Does it really work without internet?', 'Once the models are downloaded, recognition, local translation, editing and export work offline. Model downloads, optional cloud translation and GitHub update checks use the network. The check at launch is on by default and can be turned off in Settings.'),
        ('How long does a two-hour film take?', 'Roughly 3–6 minutes with Large v3 Turbo on an M-series chip, plus a few more for local translation. Batch a whole season and let it run.'),
        ('How accurate are the subtitles?', 'Recognition uses the whisper large family; timing is snapped to when lines are actually spoken using voice activity detection and loudness analysis, tuned against official subtitles of six full films. Every file gets a quality verdict.'),
        ('What if the video already has a subtitle track?', 'Embedded text tracks are detected and preferred, skipping straight to translation — faster and more accurate than recognition. Image-based subtitles (PGS/VobSub) are the exception.'),
@@ -220,7 +220,7 @@ T['ja'] = dict(
   faq_h2='よくある質問',
   faq=[('どんな動画に対応していますか？', 'MKV、MP4、MOV、TS、AVI など一般的な形式に対応。ブラウザで再生できない HEVC、DTS、TrueHD も、同梱の ffmpeg がすべてデコードします。音声のみのファイルも可。'),
        ('対応言語は？', '認識は whisper が対応する約 100 言語を自動判定。翻訳先は 29 言語、UI は 32 言語。'),
-       ('本当にネット不要？', '認識・同期・翻訳・編集・書き出しはすべてローカル。ネットを使うのは初回のモデルダウンロードと、自分で設定した場合のクラウド翻訳だけです。'),
+       ('本当にネット不要？', 'モデルをダウンロードした後は、認識、ローカル翻訳、編集、書き出しをオフラインで行えます。モデルのダウンロード、任意のクラウド翻訳、GitHub での更新確認には通信が必要です。起動時の更新確認は初期設定で有効で、設定でオフにできます。'),
        ('2 時間の映画はどれくらいかかる？', 'M シリーズなら Large v3 Turbo で約 3〜6 分、ローカル翻訳にさらに数分。シーズンまるごと一括処理して放置できます。'),
        ('Intel Mac は？', '現在非対応です。ローカル認識は Apple Silicon の Metal 加速に依存しており、Intel では実用にならない速度です。')], footer_changelog='更新履歴',
 )
@@ -275,7 +275,7 @@ T['ko'] = dict(
   faq_h2='자주 묻는 질문',
   faq=[('어떤 영상에 자막을 만들 수 있나요?', 'MKV, MP4, MOV, TS, AVI 등 일반 형식 모두. 브라우저가 못 여는 HEVC, DTS, TrueHD도 내장 ffmpeg가 모두 디코딩합니다. 오디오 파일도 됩니다.'),
        ('지원 언어는?', '인식은 whisper가 지원하는 약 100개 언어를 자동 감지. 번역 대상 29개, 인터페이스 32개 언어.'),
-       ('정말 인터넷이 필요 없나요?', '인식·정렬·번역·편집·내보내기 모두 로컬. 네트워크는 첫 모델 다운로드와, 직접 설정한 경우의 클라우드 번역에만 씁니다.'),
+       ('정말 인터넷이 필요 없나요?', '모델을 다운로드한 후에는 인식, 로컬 번역, 편집, 내보내기를 오프라인으로 사용할 수 있습니다. 모델 다운로드, 선택적 클라우드 번역, GitHub 업데이트 확인에는 네트워크가 필요합니다. 시작 시 업데이트 확인은 기본으로 켜져 있으며 설정에서 끌 수 있습니다.'),
        ('2시간 영화는 얼마나 걸리나요?', 'M 시리즈 칩에서 Large v3 Turbo로 약 3~6분, 로컬 번역에 몇 분 추가. 시즌 전체를 일괄로 걸어 두세요.'),
        ('Intel Mac은요?', '현재 미지원. 로컬 인식이 Apple Silicon의 Metal 가속에 의존해 Intel에서는 실용적이지 않습니다.')], footer_changelog='변경 내역',
 )
@@ -330,7 +330,7 @@ T['fr'] = dict(
   faq_h2='Questions fréquentes',
   faq=[('Quelles vidéos sont prises en charge ?', 'MKV, MP4, MOV, TS, AVI et les formats courants ; HEVC, DTS et TrueHD, que les navigateurs ne lisent pas, passent aussi grâce au ffmpeg intégré. Les fichiers audio seuls fonctionnent.'),
        ('Quelles langues ?', 'La reconnaissance couvre la centaine de langues de whisper avec détection automatique ; 29 langues cibles pour la traduction ; interface en 32 langues.'),
-       ('Vraiment sans internet ?', 'Tout se fait en local. Seuls le téléchargement initial des modèles et, si vous le configurez, la traduction cloud utilisent le réseau.'),
+       ('Vraiment sans internet ?', 'Une fois les modèles téléchargés, la reconnaissance, la traduction locale, la modification et l’export fonctionnent hors ligne. Le téléchargement des modèles, la traduction en ligne facultative et la recherche de mises à jour sur GitHub utilisent le réseau. La vérification au démarrage est activée par défaut et peut être désactivée dans les réglages.'),
        ('Combien de temps pour un film de deux heures ?', 'Environ 3 à 6 minutes avec Large v3 Turbo sur puce M, plus quelques minutes de traduction locale. Lancez une saison entière en lot.'),
        ('Et les Mac Intel ?', 'Pas pour le moment : la reconnaissance locale dépend de l\'accélération Metal des puces Apple ; sur Intel ce serait trop lent.')], footer_changelog='Journal des modifications',
 )
@@ -385,7 +385,7 @@ T['de'] = dict(
   faq_h2='Häufige Fragen',
   faq=[('Welche Videos gehen?', 'MKV, MP4, MOV, TS, AVI und andere gängige Formate; auch HEVC, DTS und TrueHD, die Browser nicht abspielen, weil das mitgelieferte ffmpeg alles dekodiert. Reine Audiodateien ebenfalls.'),
        ('Welche Sprachen?', 'Die Erkennung deckt die knapp 100 Sprachen von whisper mit automatischer Erkennung ab; 29 Zielsprachen für die Übersetzung; Oberfläche in 32 Sprachen.'),
-       ('Wirklich ohne Internet?', 'Alles läuft lokal. Nur der erste Modell-Download und – falls eingerichtet – die Cloud-Übersetzung nutzen das Netz.'),
+       ('Wirklich ohne Internet?', 'Nach dem Modelldownload funktionieren Erkennung, lokale Übersetzung, Bearbeitung und Export offline. Modelldownloads, die optionale Cloud-Übersetzung und die Update-Suche auf GitHub nutzen das Netz. Die Suche beim Start ist standardmäßig aktiviert und lässt sich in den Einstellungen ausschalten.'),
        ('Wie lange dauert ein zweistündiger Film?', 'Etwa 3–6 Minuten mit Large v3 Turbo auf einem M-Chip, plus einige Minuten lokale Übersetzung. Eine ganze Staffel im Stapel laufen lassen.'),
        ('Gibt es eine Intel-Mac-Version?', 'Derzeit nicht. Die lokale Erkennung braucht die Metal-Beschleunigung von Apple Silicon; auf Intel wäre es zu langsam.')], footer_changelog='Änderungsprotokoll',
 )
@@ -440,7 +440,7 @@ T['ru'] = dict(
   faq_h2='Частые вопросы',
   faq=[('Для каких видео это работает?', 'MKV, MP4, MOV, TS, AVI и другие распространённые форматы; HEVC, DTS и TrueHD, которые браузер не воспроизводит, тоже подходят — встроенный ffmpeg декодирует всё. Аудиофайлы тоже.'),
        ('Какие языки поддерживаются?', 'Распознавание — почти 100 языков whisper с автоопределением; 29 языков перевода; интерфейс на 32 языках.'),
-       ('Правда без интернета?', 'Всё локально. Сеть нужна только для первой загрузки моделей и для облачного перевода, если вы сами его настроите.'),
+       ('Правда без интернета?', 'После загрузки моделей распознавание, локальный перевод, редактирование и экспорт работают без интернета. Сеть используется для загрузки моделей, облачного перевода по вашему выбору и проверки обновлений на GitHub. Проверка при запуске включена по умолчанию. Её можно отключить в настройках.'),
        ('Сколько занимает двухчасовой фильм?', 'Около 3–6 минут с Large v3 Turbo на чипе M плюс несколько минут локального перевода. Запустите сезон пакетом и займитесь своими делами.'),
        ('А Intel Mac?', 'Пока нет: локальное распознавание опирается на ускорение Metal в Apple Silicon, на Intel это было бы слишком медленно.')], footer_changelog='История изменений',
 )
@@ -495,7 +495,7 @@ T['id'] = dict(
   faq_h2='Pertanyaan umum',
   faq=[('Video apa saja yang bisa?', 'MKV, MP4, MOV, TS, AVI dan format umum lainnya; HEVC, DTS, TrueHD yang tak bisa diputar browser juga bisa, karena ffmpeg bawaan mendekode semuanya. Berkas audio saja juga bisa.'),
        ('Bahasa apa yang didukung?', 'Pengenalan mencakup hampir 100 bahasa whisper dengan deteksi otomatis; 29 bahasa target terjemahan; antarmuka 32 bahasa.'),
-       ('Benar-benar tanpa internet?', 'Semua berjalan lokal. Jaringan hanya dipakai untuk unduhan model pertama kali dan terjemahan cloud jika Anda memasangnya sendiri.'),
+       ('Benar-benar tanpa internet?', 'Setelah model diunduh, pengenalan ucapan, terjemahan lokal, penyuntingan, dan ekspor dapat berjalan luring. Unduhan model, terjemahan awan opsional, dan pemeriksaan pembaruan di GitHub menggunakan jaringan. Pemeriksaan saat aplikasi dibuka aktif secara bawaan dan dapat dimatikan di Pengaturan.'),
        ('Berapa lama film dua jam?', 'Sekitar 3–6 menit dengan Large v3 Turbo di chip seri M, ditambah beberapa menit terjemahan lokal. Jalankan satu musim sekaligus.'),
        ('Mac Intel?', 'Belum. Pengenalan lokal bergantung pada akselerasi Metal di Apple Silicon; di Intel terlalu lambat.')], footer_changelog='Catatan perubahan',
 )
@@ -550,7 +550,7 @@ T['ms'] = dict(
   faq_h2='Soalan lazim',
   faq=[('Video apa yang boleh?', 'MKV, MP4, MOV, TS, AVI dan format biasa lain; HEVC, DTS, TrueHD yang pelayar tidak boleh main pun boleh, kerana ffmpeg yang disertakan menyahkod semuanya. Fail audio sahaja juga boleh.'),
        ('Bahasa apa yang disokong?', 'Pengecaman meliputi hampir 100 bahasa whisper dengan pengesanan automatik; 29 bahasa sasaran terjemahan; antara muka 32 bahasa.'),
-       ('Betul-betul tanpa internet?', 'Semuanya tempatan. Rangkaian hanya digunakan untuk muat turun model kali pertama dan terjemahan awan jika anda memasangnya sendiri.'),
+       ('Betul-betul tanpa internet?', 'Selepas model dimuat turun, pengecaman, terjemahan setempat, penyuntingan dan eksport boleh digunakan di luar talian. Muat turun model, terjemahan awan pilihan dan semakan kemas kini di GitHub menggunakan rangkaian. Semakan semasa aplikasi dibuka dihidupkan secara lalai dan boleh dimatikan dalam Tetapan.'),
        ('Berapa lama filem dua jam?', 'Kira-kira 3–6 minit dengan Large v3 Turbo pada cip siri M, ditambah beberapa minit terjemahan tempatan. Jalankan satu musim sekali gus.'),
        ('Mac Intel?', 'Belum. Pengecaman tempatan bergantung pada pecutan Metal Apple Silicon; pada Intel terlalu perlahan.')], footer_changelog='Log perubahan',
 )
@@ -605,7 +605,7 @@ T['vi'] = dict(
   faq_h2='Câu hỏi thường gặp',
   faq=[('Tạo phụ đề được cho video nào?', 'MKV, MP4, MOV, TS, AVI và các định dạng phổ biến; HEVC, DTS, TrueHD trình duyệt không phát được cũng ổn vì ffmpeg đi kèm giải mã được tất cả. Tệp chỉ có âm thanh cũng được.'),
        ('Hỗ trợ ngôn ngữ nào?', 'Nhận dạng gần 100 ngôn ngữ của whisper với tự phát hiện; 29 ngôn ngữ đích để dịch; giao diện 32 ngôn ngữ.'),
-       ('Thật sự không cần internet?', 'Mọi thứ chạy cục bộ. Mạng chỉ dùng cho lần tải mô hình đầu tiên và dịch đám mây nếu bạn tự cấu hình.'),
+       ('Thật sự không cần internet?', 'Sau khi tải mô hình, bạn có thể nhận dạng, dịch cục bộ, chỉnh sửa và xuất phụ đề khi ngoại tuyến. Ứng dụng dùng mạng khi tải mô hình, dùng dịch vụ dịch đám mây tùy chọn hoặc kiểm tra bản cập nhật trên GitHub. Tính năng kiểm tra lúc khởi động mặc định được bật và có thể tắt trong Cài đặt.'),
        ('Phim hai tiếng mất bao lâu?', 'Khoảng 3–6 phút với Large v3 Turbo trên chip dòng M, cộng vài phút dịch cục bộ. Chạy cả mùa hàng loạt rồi để đó.'),
        ('Mac Intel thì sao?', 'Hiện chưa. Nhận dạng cục bộ dựa vào tăng tốc Metal của Apple Silicon; trên Intel sẽ quá chậm.')], footer_changelog='Nhật ký thay đổi',
 )
@@ -660,7 +660,7 @@ T['th'] = dict(
   faq_h2='คำถามที่พบบ่อย',
   faq=[('ใช้กับวิดีโอแบบไหนได้บ้าง?', 'MKV, MP4, MOV, TS, AVI และรูปแบบทั่วไป HEVC, DTS, TrueHD ที่เบราว์เซอร์เล่นไม่ได้ก็ใช้ได้ เพราะ ffmpeg ที่มาพร้อมแอปถอดรหัสได้ทุกอย่าง ไฟล์เสียงอย่างเดียวก็ได้'),
        ('รองรับภาษาอะไรบ้าง?', 'จับบทพูดได้เกือบ 100 ภาษาที่ whisper รองรับพร้อมตรวจภาษาอัตโนมัติ แปลได้ 29 ภาษา หน้าจอมี 32 ภาษา'),
-       ('ไม่ต้องต่อเน็ตจริงเหรอ?', 'ทำในเครื่องทั้งหมด ใช้เน็ตแค่โหลดโมเดลครั้งแรก กับการแปลบนคลาวด์ถ้าคุณตั้งค่าเอง'),
+       ('ไม่ต้องต่อเน็ตจริงเหรอ?', 'เมื่อดาวน์โหลดโมเดลแล้ว คุณสามารถรู้จำเสียง แปลในเครื่อง แก้ไข และส่งออกคำบรรยายแบบออฟไลน์ได้ แอปใช้อินเทอร์เน็ตเมื่อดาวน์โหลดโมเดล เลือกแปลบนคลาวด์ หรือตรวจหาการอัปเดตบน GitHub การตรวจสอบเมื่อเปิดแอปเปิดไว้โดยค่าเริ่มต้นและปิดได้ในการตั้งค่า'),
        ('หนังสองชั่วโมงใช้เวลานานไหม?', 'ราว 3–6 นาทีด้วย Large v3 Turbo บนชิปตระกูล M บวกอีกไม่กี่นาทีสำหรับแปลในเครื่อง สั่งทั้งซีซันแล้วปล่อยให้รันได้'),
        ('Mac Intel ล่ะ?', 'ยังไม่รองรับ การจับบทพูดในเครื่องต้องพึ่งการเร่งด้วย Metal ของ Apple Silicon บน Intel จะช้าเกินกว่าจะใช้งานจริง')], footer_changelog='บันทึกการเปลี่ยนแปลง',
 )
@@ -724,41 +724,41 @@ DL_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="c
 
 def esc(s): return html.escape(s, quote=True)
 
-# 官网反馈表单（Netlify Forms，零后端）：每种语言一页 feedback.html + 成功页 feedback-ok.html
+# Each feedback form opens a draft GitHub issue. Keep the legacy feedback-ok URLs usable.
 FB = {
- 'zh': dict(title='反馈', h1='有问题或建议？直接告诉我们', intro='填好下面的内容点「发送」，会带着版本、系统和语言信息跳到 GitHub 提交（需要 GitHub 账号）。也可以直接到讨论区交流。',
-            kind='类型', k_bug='遇到问题', k_idea='功能建议', k_other='其它', msg='内容', msg_ph='发生了什么、期望怎样；如果是问题，附上文件格式和大致操作步骤', email='邮箱（选填，用于回复）', submit='发送',
-            ok_h1='已收到，谢谢！', ok_p='如果留了邮箱，我们会尽快回复。', back='返回官网', gh='GitHub 讨论区', issues='GitHub Issues'),
- 'en': dict(title='Feedback', h1='Found a problem or have an idea? Tell us', intro='Fill this in and hit send — it opens a prefilled GitHub issue with your version, OS and language attached (a GitHub account is needed). You can also just post in Discussions.',
-            kind='Type', k_bug='Problem', k_idea='Feature idea', k_other='Other', msg='Message', msg_ph='What happened and what you expected; for problems, include the file format and roughly what you did', email='Email (optional, for a reply)', submit='Send',
-            ok_h1='Received, thank you!', ok_p='If you left an email, we will get back to you soon.', back='Back to the website', gh='GitHub Discussions', issues='GitHub Issues'),
- 'ja': dict(title='フィードバック', h1='問題や要望があれば教えてください', intro='入力して送信すると、バージョン・OS・言語を添えた GitHub の issue が開きます（GitHub アカウントが必要）。ディスカッションに書き込むだけでも構いません。',
-            kind='種類', k_bug='不具合', k_idea='機能の要望', k_other='その他', msg='内容', msg_ph='何が起きたか、どうなってほしいか。不具合の場合はファイル形式と操作手順も', email='メールアドレス（任意・返信用）', submit='送信',
-            ok_h1='受け取りました。ありがとうございます！', ok_p='メールアドレスをいただいた場合は、できるだけ早く返信します。', back='サイトに戻る', gh='GitHub Discussions', issues='GitHub Issues'),
- 'ko': dict(title='피드백', h1='문제나 제안이 있나요? 알려주세요', intro='입력 후 보내기를 누르면 버전·OS·언어가 첨부된 GitHub 이슈가 열립니다(GitHub 계정 필요). 토론 게시판에 남기셔도 됩니다.',
-            kind='유형', k_bug='문제', k_idea='기능 제안', k_other='기타', msg='내용', msg_ph='무슨 일이 있었고 어떻게 되길 바라는지. 문제라면 파일 형식과 대략적인 조작 순서도 적어 주세요', email='이메일 (선택, 답장용)', submit='보내기',
-            ok_h1='잘 받았습니다. 감사합니다!', ok_p='이메일을 남기셨다면 곧 답장드리겠습니다.', back='웹사이트로 돌아가기', gh='GitHub Discussions', issues='GitHub Issues'),
- 'fr': dict(title='Commentaires', h1='Un problème ou une idée ? Dites-le-nous', intro="Remplissez et envoyez : une issue GitHub pré-remplie s'ouvre avec votre version, votre OS et votre langue (un compte GitHub est nécessaire). Vous pouvez aussi écrire dans les discussions.",
-            kind='Type', k_bug='Problème', k_idea='Suggestion', k_other='Autre', msg='Message', msg_ph="Ce qui s'est passé et ce que vous attendiez ; pour un problème, indiquez le format du fichier et les étapes", email='E-mail (facultatif, pour une réponse)', submit='Envoyer',
-            ok_h1='Bien reçu, merci !', ok_p='Si vous avez laissé un e-mail, nous vous répondrons rapidement.', back='Retour au site', gh='GitHub Discussions', issues='GitHub Issues'),
- 'de': dict(title='Feedback', h1='Problem gefunden oder eine Idee? Sag es uns', intro='Ausfüllen und senden: Es öffnet sich ein vorausgefülltes GitHub-Issue mit Version, System und Sprache (ein GitHub-Konto ist nötig). Du kannst auch einfach in den Diskussionen schreiben.',
-            kind='Art', k_bug='Problem', k_idea='Funktionswunsch', k_other='Sonstiges', msg='Nachricht', msg_ph='Was passiert ist und was du erwartet hast; bei Problemen bitte Dateiformat und ungefähre Schritte', email='E-Mail (optional, für eine Antwort)', submit='Senden',
-            ok_h1='Angekommen, danke!', ok_p='Wenn du eine E-Mail hinterlassen hast, melden wir uns bald.', back='Zurück zur Website', gh='GitHub Discussions', issues='GitHub Issues'),
- 'ru': dict(title='Обратная связь', h1='Нашли проблему или есть идея? Напишите нам', intro='Заполните и нажмите «Отправить» — откроется заготовленный issue на GitHub с версией, системой и языком (нужен аккаунт GitHub). Можно просто написать в обсуждениях.',
-            kind='Тип', k_bug='Проблема', k_idea='Предложение', k_other='Другое', msg='Сообщение', msg_ph='Что произошло и чего вы ожидали; для проблем укажите формат файла и примерные шаги', email='E-mail (необязательно, для ответа)', submit='Отправить',
-            ok_h1='Получено, спасибо!', ok_p='Если вы оставили e-mail, мы скоро ответим.', back='Вернуться на сайт', gh='GitHub Discussions', issues='GitHub Issues'),
- 'id': dict(title='Masukan', h1='Menemukan masalah atau punya ide? Beri tahu kami', intro='Isi lalu kirim — akan terbuka issue GitHub yang sudah terisi versi, OS, dan bahasa Anda (perlu akun GitHub). Bisa juga langsung menulis di Discussions.',
-            kind='Jenis', k_bug='Masalah', k_idea='Usulan fitur', k_other='Lainnya', msg='Pesan', msg_ph='Apa yang terjadi dan apa yang Anda harapkan; untuk masalah, sertakan format berkas dan langkah yang dilakukan', email='Email (opsional, untuk balasan)', submit='Kirim',
-            ok_h1='Diterima, terima kasih!', ok_p='Jika Anda meninggalkan email, kami akan segera membalas.', back='Kembali ke situs', gh='GitHub Discussions', issues='GitHub Issues'),
- 'ms': dict(title='Maklum balas', h1='Jumpa masalah atau ada idea? Beritahu kami', intro='Isi dan hantar — satu issue GitHub yang telah diisi dengan versi, OS dan bahasa anda akan dibuka (perlukan akaun GitHub). Anda juga boleh terus menulis di Discussions.',
-            kind='Jenis', k_bug='Masalah', k_idea='Cadangan ciri', k_other='Lain-lain', msg='Mesej', msg_ph='Apa yang berlaku dan apa yang anda jangkakan; untuk masalah, sertakan format fail dan langkah yang dilakukan', email='E-mel (pilihan, untuk balasan)', submit='Hantar',
-            ok_h1='Diterima, terima kasih!', ok_p='Jika anda tinggalkan e-mel, kami akan membalas tidak lama lagi.', back='Kembali ke laman', gh='GitHub Discussions', issues='GitHub Issues'),
- 'vi': dict(title='Góp ý', h1='Gặp lỗi hay có ý tưởng? Hãy cho chúng tôi biết', intro='Điền rồi bấm gửi — một issue GitHub đã điền sẵn phiên bản, hệ điều hành và ngôn ngữ sẽ mở ra (cần tài khoản GitHub). Bạn cũng có thể viết thẳng trong Discussions.',
-            kind='Loại', k_bug='Lỗi', k_idea='Đề xuất tính năng', k_other='Khác', msg='Nội dung', msg_ph='Điều gì đã xảy ra và bạn mong đợi gì; nếu là lỗi, kèm định dạng tệp và các bước thao tác', email='Email (không bắt buộc, để phản hồi)', submit='Gửi',
-            ok_h1='Đã nhận, cảm ơn bạn!', ok_p='Nếu bạn để lại email, chúng tôi sẽ sớm phản hồi.', back='Về trang chủ', gh='GitHub Discussions', issues='GitHub Issues'),
- 'th': dict(title='ข้อเสนอแนะ', h1='พบปัญหาหรือมีไอเดีย? บอกเราได้เลย', intro='กรอกแล้วกดส่ง จะเปิดหน้า issue บน GitHub ที่กรอกเวอร์ชัน ระบบ และภาษาไว้ให้แล้ว (ต้องมีบัญชี GitHub) หรือจะเขียนในหน้า Discussions ก็ได้',
-            kind='ประเภท', k_bug='พบปัญหา', k_idea='เสนอฟีเจอร์', k_other='อื่น ๆ', msg='ข้อความ', msg_ph='เกิดอะไรขึ้นและคาดหวังอย่างไร หากเป็นปัญหา โปรดระบุรูปแบบไฟล์และขั้นตอนคร่าว ๆ', email='อีเมล (ไม่บังคับ ใช้ตอบกลับ)', submit='ส่ง',
-            ok_h1='ได้รับแล้ว ขอบคุณ!', ok_p='หากคุณใส่อีเมลไว้ เราจะตอบกลับโดยเร็ว', back='กลับไปหน้าเว็บ', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'zh': dict(title='反馈', h1='有问题或建议？直接告诉我们', intro='点「在 GitHub 预览」会把内容交给 GitHub。如果从应用打开，还会附上版本、系统和界面语言。请勿填写邮箱或其他个人资料。登录 GitHub 后可以修改草稿，确认提交后内容会公开。',
+            kind='类型', k_bug='遇到问题', k_idea='功能建议', k_other='其它', msg='内容', msg_ph='发生了什么、期望怎样；如果是问题，附上文件格式和大致操作步骤', submit='在 GitHub 预览',
+            ok_h1='在 GitHub 查看反馈', ok_p='提交记录和回复都在 GitHub 的公开 Issue 中。', back='返回官网', gh='GitHub 讨论区', issues='GitHub Issues'),
+ 'en': dict(title='Feedback', h1='Found a problem or have an idea? Tell us', intro='Preview on GitHub sends your message to GitHub. Opening the form from the app also includes the app version, OS and interface language. Leave out email addresses and other personal details. Sign in to review or edit the draft. It becomes public when you submit it on GitHub.',
+            kind='Type', k_bug='Problem', k_idea='Feature idea', k_other='Other', msg='Message', msg_ph='What happened and what you expected; for problems, include the file format and roughly what you did', submit='Preview on GitHub',
+            ok_h1='View feedback on GitHub', ok_p='Submitted reports and replies are available in the public GitHub issues.', back='Back to the website', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'ja': dict(title='フィードバック', h1='問題や要望があれば教えてください', intro='「GitHub で確認」を押すと、入力内容が GitHub に送られます。アプリから開いた場合はバージョン、OS、表示言語も含まれます。メールアドレスなどの個人情報は入力しないでください。ログイン後に下書きを編集でき、GitHub で投稿を確定すると公開されます。',
+            kind='種類', k_bug='不具合', k_idea='機能の要望', k_other='その他', msg='内容', msg_ph='何が起きたか、どうなってほしいか。不具合の場合はファイル形式と操作手順も', submit='GitHub で確認',
+            ok_h1='GitHub でフィードバックを確認', ok_p='投稿と返信は GitHub の公開 Issue で確認できます。', back='サイトに戻る', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'ko': dict(title='피드백', h1='문제나 제안이 있나요? 알려주세요', intro='‘GitHub에서 미리 보기’를 누르면 작성한 내용이 GitHub로 전송됩니다. 앱에서 열면 앱 버전, 운영 체제, 표시 언어도 포함됩니다. 이메일 주소 등 개인 정보는 적지 마세요. 로그인 후 초안을 수정할 수 있으며, GitHub에서 제출을 확정하면 공개됩니다.',
+            kind='유형', k_bug='문제', k_idea='기능 제안', k_other='기타', msg='내용', msg_ph='무슨 일이 있었고 어떻게 되길 바라는지. 문제라면 파일 형식과 대략적인 조작 순서도 적어 주세요', submit='GitHub에서 미리 보기',
+            ok_h1='GitHub에서 피드백 보기', ok_p='제출한 내용과 답변은 GitHub의 공개 이슈에서 확인할 수 있습니다.', back='웹사이트로 돌아가기', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'fr': dict(title='Commentaires', h1='Un problème ou une idée ? Dites-le-nous', intro='Le bouton d’aperçu envoie votre message à GitHub. Si vous ouvrez le formulaire depuis l’application, la version, le système et la langue de l’interface sont également inclus. Évitez les adresses e-mail et autres données personnelles. Connectez-vous pour relire ou modifier le brouillon. Il devient public lorsque vous le publiez sur GitHub.',
+            kind='Type', k_bug='Problème', k_idea='Suggestion', k_other='Autre', msg='Message', msg_ph="Ce qui s'est passé et ce que vous attendiez ; pour un problème, indiquez le format du fichier et les étapes", submit='Aperçu sur GitHub',
+            ok_h1='Consulter les retours sur GitHub', ok_p='Les signalements et les réponses sont disponibles dans les tickets publics sur GitHub.', back='Retour au site', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'de': dict(title='Feedback', h1='Problem gefunden oder eine Idee? Sag es uns', intro='Mit „Vorschau auf GitHub“ wird deine Nachricht an GitHub gesendet. Beim Öffnen aus der App werden auch Version, Betriebssystem und Oberflächensprache eingetragen. Lass E-Mail-Adressen und andere persönliche Angaben weg. Nach der Anmeldung kannst du den Entwurf prüfen und bearbeiten. Öffentlich wird er, wenn du ihn auf GitHub abschickst.',
+            kind='Art', k_bug='Problem', k_idea='Funktionswunsch', k_other='Sonstiges', msg='Nachricht', msg_ph='Was passiert ist und was du erwartet hast; bei Problemen bitte Dateiformat und ungefähre Schritte', submit='Vorschau auf GitHub',
+            ok_h1='Feedback auf GitHub ansehen', ok_p='Eingereichte Meldungen und Antworten findest du in den öffentlichen GitHub-Issues.', back='Zurück zur Website', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'ru': dict(title='Обратная связь', h1='Нашли проблему или есть идея? Напишите нам', intro='Кнопка предпросмотра отправляет текст на GitHub. Если открыть форму из приложения, в черновик также попадут версия, ОС и язык интерфейса. Не указывайте электронную почту и другие личные данные. Войдите в GitHub, чтобы проверить или изменить черновик. Он станет общедоступным после публикации на GitHub.',
+            kind='Тип', k_bug='Проблема', k_idea='Предложение', k_other='Другое', msg='Сообщение', msg_ph='Что произошло и чего вы ожидали; для проблем укажите формат файла и примерные шаги', submit='Предпросмотр на GitHub',
+            ok_h1='Отзывы на GitHub', ok_p='Опубликованные обращения и ответы доступны в открытых обсуждениях GitHub Issues.', back='Вернуться на сайт', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'id': dict(title='Masukan', h1='Menemukan masalah atau punya ide? Beri tahu kami', intro='Tombol pratinjau mengirim pesan Anda ke GitHub. Jika formulir dibuka dari aplikasi, versi aplikasi, sistem operasi, dan bahasa antarmuka juga disertakan. Hindari alamat email dan data pribadi lainnya. Masuk ke GitHub untuk memeriksa atau mengubah draf. Isinya menjadi publik setelah Anda mengirimkannya di GitHub.',
+            kind='Jenis', k_bug='Masalah', k_idea='Usulan fitur', k_other='Lainnya', msg='Pesan', msg_ph='Apa yang terjadi dan apa yang Anda harapkan; untuk masalah, sertakan format berkas dan langkah yang dilakukan', submit='Pratinjau di GitHub',
+            ok_h1='Lihat masukan di GitHub', ok_p='Laporan dan balasan yang sudah dikirim tersedia di GitHub Issues yang terbuka untuk umum.', back='Kembali ke situs', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'ms': dict(title='Maklum balas', h1='Jumpa masalah atau ada idea? Beritahu kami', intro='Butang pratonton menghantar mesej anda ke GitHub. Jika borang dibuka daripada aplikasi, versi aplikasi, sistem operasi dan bahasa antara muka turut disertakan. Elakkan alamat e-mel dan maklumat peribadi lain. Log masuk ke GitHub untuk menyemak atau menyunting draf. Kandungannya akan dipaparkan kepada umum apabila anda menghantarnya di GitHub.',
+            kind='Jenis', k_bug='Masalah', k_idea='Cadangan ciri', k_other='Lain-lain', msg='Mesej', msg_ph='Apa yang berlaku dan apa yang anda jangkakan; untuk masalah, sertakan format fail dan langkah yang dilakukan', submit='Pratonton di GitHub',
+            ok_h1='Lihat maklum balas di GitHub', ok_p='Laporan dan balasan yang telah dihantar boleh dilihat oleh umum dalam GitHub Issues.', back='Kembali ke laman', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'vi': dict(title='Góp ý', h1='Gặp lỗi hay có ý tưởng? Hãy cho chúng tôi biết', intro='Nút xem trước sẽ gửi nội dung bạn nhập đến GitHub. Nếu mở biểu mẫu từ ứng dụng, bản nháp cũng bao gồm phiên bản ứng dụng, hệ điều hành và ngôn ngữ giao diện. Vui lòng bỏ qua địa chỉ email và thông tin cá nhân. Đăng nhập GitHub để xem lại hoặc sửa bản nháp. Nội dung sẽ công khai khi bạn xác nhận gửi trên GitHub.',
+            kind='Loại', k_bug='Lỗi', k_idea='Đề xuất tính năng', k_other='Khác', msg='Nội dung', msg_ph='Điều gì đã xảy ra và bạn mong đợi gì; nếu là lỗi, kèm định dạng tệp và các bước thao tác', submit='Xem trước trên GitHub',
+            ok_h1='Xem phản hồi trên GitHub', ok_p='Các báo cáo đã gửi và câu trả lời được đăng công khai trong mục Issues trên GitHub.', back='Về trang chủ', gh='GitHub Discussions', issues='GitHub Issues'),
+ 'th': dict(title='ข้อเสนอแนะ', h1='พบปัญหาหรือมีไอเดีย? บอกเราได้เลย', intro='ปุ่มดูตัวอย่างจะส่งข้อความของคุณไปยัง GitHub หากเปิดแบบฟอร์มจากแอป ระบบจะใส่เวอร์ชันแอป ระบบปฏิบัติการ และภาษาของอินเทอร์เฟซด้วย โปรดเว้นอีเมลและข้อมูลส่วนบุคคลอื่น ๆ คุณสามารถลงชื่อเข้าใช้ GitHub เพื่อตรวจทานหรือแก้ไขฉบับร่างได้ ข้อความจะเป็นสาธารณะเมื่อคุณยืนยันส่งบน GitHub',
+            kind='ประเภท', k_bug='พบปัญหา', k_idea='เสนอฟีเจอร์', k_other='อื่น ๆ', msg='ข้อความ', msg_ph='เกิดอะไรขึ้นและคาดหวังอย่างไร หากเป็นปัญหา โปรดระบุรูปแบบไฟล์และขั้นตอนคร่าว ๆ', submit='ดูตัวอย่างบน GitHub',
+            ok_h1='ดูความคิดเห็นบน GitHub', ok_p='อ่านรายงานที่ส่งแล้วและคำตอบได้ในหน้า Issues สาธารณะของ GitHub', back='กลับไปหน้าเว็บ', gh='GitHub Discussions', issues='GitHub Issues'),
 }
 
 def feedback_page(k, ok=False):
@@ -785,9 +785,7 @@ def feedback_page(k, ok=False):
             f'  <select name="kind" id="f-kind"><option value="bug">{esc(f["k_bug"])}</option><option value="idea">{esc(f["k_idea"])}</option><option value="other">{esc(f["k_other"])}</option></select>\n'
             f'  <label for="f-msg">{esc(f["msg"])}</label>\n'
             f'  <textarea name="message" id="f-msg" required placeholder="{esc(f["msg_ph"])}"></textarea>\n'
-            f'  <label for="f-email">{esc(f["email"])}</label>\n'
-            '  <input type="email" name="email" id="f-email" autocomplete="email">\n'
-            f'  <button class="btn primary" type="submit">{esc(f["submit"])}</button>\n'
+            f'  <button class="btn primary" type="submit" disabled>{esc(f["submit"])}</button>\n'
             '</form>\n'
             '<script>\n'
             '  // 应用里的「反馈」入口带上版本/系统/语言：?v=1.0.2&os=darwin&locale=zh-Hans；网页直接打开则留空\n'
@@ -799,10 +797,10 @@ def feedback_page(k, ok=False):
             "      var val = function (id) { var el = document.getElementById(id); return el ? el.value : ''; };\n"
             "      var kind = val('f-kind') || 'other';\n"
             "      var body = val('f-msg') + '\\n\\n---\\nversion: ' + (val('f-version') || '-') + '\\nos: ' + (val('f-os') || '-') + '\\nlocale: ' + (val('f-locale') || '-') + '\\npage: __PAGE__';\n"
-            "      var email = val('f-email'); if (email) { body += '\\ncontact: ' + email; }\n"
             "      var url = '__REPO__/issues/new?title=' + encodeURIComponent('[' + kind + '] ') + '&body=' + encodeURIComponent(body);\n"
             "      window.open(url, '_blank', 'noopener');\n"
             '    });\n'
+            "    document.querySelector('#fb-form button').disabled = false;\n"
             '  })();\n'
             '</script>\n').replace('__PAGE__', k).replace('__REPO__', REPO)
     return head + form + foot

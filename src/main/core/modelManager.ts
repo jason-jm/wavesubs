@@ -1,7 +1,8 @@
-import { createHash } from 'node:crypto'
-import { createWriteStream } from 'node:fs'
-import { once } from 'node:events'
-import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
+import { createHash, randomUUID } from 'node:crypto'
+import { createReadStream, createWriteStream } from 'node:fs'
+import { Transform } from 'node:stream'
+import { pipeline } from 'node:stream/promises'
+import { link, lstat, mkdir, mkdtemp, readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import type { ModelDownloadProgress } from '../../shared/types'
 import { LocalizedError } from '../../shared/i18n/core'
@@ -87,7 +88,7 @@ export class ModelDownloader {
 
   constructor(
     private modelsDir: string,
-    opts: { fetch?: FetchLike; staggerMs?: number } = {}
+    private opts: { fetch?: FetchLike; staggerMs?: number; prepareDir?: () => Promise<unknown> } = {}
   ) {
     this.fetchImpl = opts.fetch ?? ((input, init) => fetch(input, init))
     this.staggerMs = opts.staggerMs ?? STAGGER_MS
@@ -108,48 +109,49 @@ export class ModelDownloader {
     expectedSha256?: string
   ): Promise<void> {
     if (this.active.has(file)) throw new LocalizedError('error.modelDownloading')
-    await mkdir(this.modelsDir, { recursive: true })
-    await this.loadPreferredHost()
     const controller = new AbortController()
     this.active.set(file, controller)
-    const partPath = join(this.modelsDir, `${file}.download`)
     const finalPath = join(this.modelsDir, file)
+    let staging: string | undefined
     try {
+      if (this.opts.prepareDir) await this.opts.prepareDir()
+      else await mkdir(this.modelsDir, { recursive: true })
+      const existing = await lstat(finalPath).catch(err => { if (err.code === 'ENOENT') return null; throw err })
+      if (existing) {
+        if (existing.isFile() && expectedSha256) {
+          const hash = createHash('sha256')
+          for await (const chunk of createReadStream(finalPath, { signal: controller.signal })) hash.update(chunk)
+          if (hash.digest('hex') === expectedSha256.toLowerCase()) return
+        }
+        throw new LocalizedError('library.conflict', { file })
+      }
+      staging = await mkdtemp(join(this.modelsDir, '.wavesubs-download-'))
+      const partPath = join(staging, 'payload')
+      await this.loadPreferredHost()
       // 先告诉界面「在连」：被墙时官方要等几秒才切镜像，这段时间不能让用户对着 0% 干瞪眼
       onProgress?.({ file, phase: 'connecting', percent: -1, receivedMB: 0, totalMB: 0 })
       const { res, host } = await this.open(url, controller.signal)
       const total = Number(res.headers.get('content-length') ?? 0)
       const totalMB = Math.round(total / 1048576)
       onProgress?.({ file, phase: 'downloading', percent: total > 0 ? 0 : -1, receivedMB: 0, totalMB })
-      const out = createWriteStream(partPath)
       const hash = expectedSha256 ? createHash('sha256') : null
       let received = 0
       let lastEmit = 0
-      try {
-        for await (const chunk of res.body as AsyncIterable<Uint8Array>) {
+      const meter = new Transform({
+        transform(chunk: Buffer, _encoding, callback) {
           received += chunk.length
           hash?.update(chunk)
-          if (!out.write(chunk)) await once(out, 'drain')
-          const now = Date.now()
-          if (now - lastEmit > 300) {
-            lastEmit = now
+          if (Date.now() - lastEmit > 300) {
+            lastEmit = Date.now()
             onProgress?.({
-              file,
-              phase: 'downloading',
-              percent: total > 0 ? Math.round((received / total) * 100) : -1,
-              receivedMB: Math.round(received / 1048576),
-              totalMB
+              file, phase: 'downloading', percent: total > 0 ? Math.round((received / total) * 100) : -1,
+              receivedMB: Math.round(received / 1048576), totalMB
             })
           }
+          callback(null, chunk)
         }
-        await new Promise<void>((resolve, reject) => {
-          out.end(() => resolve())
-          out.on('error', reject)
-        })
-      } catch (err) {
-        out.destroy()
-        throw err
-      }
+      })
+      await pipeline(res.body as AsyncIterable<Uint8Array>, meter, createWriteStream(partPath, { flags: 'wx', flush: true }), { signal: controller.signal })
       if (hash && expectedSha256) {
         const got = hash.digest('hex')
         if (got !== expectedSha256.toLowerCase()) {
@@ -160,14 +162,29 @@ export class ModelDownloader {
           throw err
         }
       }
-      await rename(partPath, finalPath)
+      controller.signal.throwIfAborted()
+      try { await link(partPath, finalPath) }
+      catch (err) {
+        const code = (err as NodeJS.ErrnoException).code
+        if (code === 'EEXIST') throw new LocalizedError('library.conflict', { file })
+        if (!['ENOSYS', 'ENOTSUP', 'EOPNOTSUPP', 'EPERM', 'EACCES'].includes(code ?? '')) throw err
+        // Some removable volumes have no hard links. Claim the name exclusively before replacing our marker.
+        const marker = 'wavesubs-download-' + randomUUID()
+        await writeFile(finalPath, marker, { flag: 'wx' })
+        try { await rename(partPath, finalPath) }
+        catch (error) {
+          if ((await lstat(finalPath).catch(() => null))?.size === marker.length && await readFile(finalPath, 'utf8') === marker)
+            await rm(finalPath)
+          throw error
+        }
+      }
       if (host) await this.savePreferredHost(host)
       onProgress?.({ file, phase: 'downloading', percent: 100, receivedMB: Math.round(received / 1048576), totalMB })
     } catch (err) {
-      await rm(partPath, { force: true })
       if (controller.signal.aborted) throw new DownloadCancelledError()
       throw err
     } finally {
+      if (staging) await rm(staging, { recursive: true, force: true }).catch(() => {})
       this.active.delete(file)
     }
   }
@@ -176,7 +193,10 @@ export class ModelDownloader {
     if (this.hostLoaded || preferredHost) return
     this.hostLoaded = true
     try {
-      const saved = (await readFile(join(this.modelsDir, PREFERRED_HOST_FILE), 'utf8')).trim()
+      const path = join(this.modelsDir, PREFERRED_HOST_FILE)
+      const info = await lstat(path)
+      if (!info.isFile() || info.size > 100) return
+      const saved = (await readFile(path, 'utf8')).trim()
       if (HOSTS.includes(saved)) preferredHost = saved
     } catch {
       /* 没记过就走默认顺序 */
@@ -186,7 +206,10 @@ export class ModelDownloader {
   private async savePreferredHost(host: string): Promise<void> {
     preferredHost = host
     try {
-      await writeFile(join(this.modelsDir, PREFERRED_HOST_FILE), host)
+      const temp = join(this.modelsDir, '.wavesubs-host-' + randomUUID())
+      await writeFile(temp, host, { flag: 'wx' })
+      try { await rename(temp, join(this.modelsDir, PREFERRED_HOST_FILE)) }
+      finally { await rm(temp, { force: true }) }
     } catch {
       /* 记不下也不影响本次下载 */
     }
@@ -218,6 +241,7 @@ export class ModelDownloader {
         finish(() => reject(new DownloadCancelledError()))
       }
       userSignal.addEventListener('abort', onUserAbort, { once: true })
+      if (userSignal.aborted) { onUserAbort(); return }
 
       const launch = (): void => {
         if (done || next >= candidates.length) return

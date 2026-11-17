@@ -1,3 +1,4 @@
+import { ModelWorkProvider } from './components/ModelWork'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type {
   UpdateStatus,
@@ -134,13 +135,17 @@ export default function App(): React.JSX.Element {
     setBatch(batchRef.current)
   }, [])
 
-  const refreshOverview = useCallback(() => {
-    void window.waveSubs.modelsOverview().then(setOverview)
+  const overviewRequest = useRef(0)
+  const refreshOverview = useCallback(async () => {
+    const version = ++overviewRequest.current
+    const next = await window.waveSubs.modelsOverview()
+    if (version === overviewRequest.current) setOverview(next)
   }, [])
 
   useEffect(() => {
     void window.waveSubs.getSettings().then(setSettings)
     refreshOverview()
+    window.addEventListener('focus', refreshOverview)
     const offJob = window.waveSubs.onJobProgress((progress) => {
       setJobState((prev) => (prev.kind === 'running' ? { ...prev, progress } : prev))
       // 批量是串行跑的，同一时刻至多一项处于 running
@@ -153,10 +158,25 @@ export default function App(): React.JSX.Element {
       setDownloads((prev) => ({ ...prev, [p.file]: p }))
     })
     return () => {
+      window.removeEventListener('focus', refreshOverview)
       offJob()
       offDownload()
     }
   }, [refreshOverview])
+
+  const awaitingDrive = overview && (!overview.folderOnline ||
+    [...overview.models, ...overview.llmModels].some(m => m.local?.status === 'missing'))
+  useEffect(() => {
+    if (!awaitingDrive) return
+    let stopped = false
+    let timer: ReturnType<typeof setTimeout>
+    const check = async (): Promise<void> => {
+      try { if (!document.hidden) await refreshOverview() }
+      finally { if (!stopped) timer = setTimeout(check, 5000) }
+    }
+    timer = setTimeout(check, 5000)
+    return () => { stopped = true; clearTimeout(timer) }
+  }, [awaitingDrive, refreshOverview])
 
   const updateSettings = useCallback((patch: SettingsUpdate) => {
     return window.waveSubs.updateSettings(patch).then(setSettings)
@@ -333,7 +353,7 @@ export default function App(): React.JSX.Element {
 
   const selectModel = useCallback(
     (kind: ModelKind, file: string) => {
-      void window.waveSubs.selectModel(kind, file).then(refreshOverview)
+      void window.waveSubs.selectModel(kind, file).then(refreshOverview).catch(err => { setModelError({ kind, file, message: String(err.message ?? err) }); setView('models'); setModelTab(kind) })
     },
     [refreshOverview]
   )
@@ -420,6 +440,7 @@ export default function App(): React.JSX.Element {
 
   return (
     <I18nProvider locale={locale}>
+    <ModelWorkProvider>
     <div className="app">
       <div className="titlebar" />
       <aside className="sidebar">
@@ -490,7 +511,7 @@ export default function App(): React.JSX.Element {
               onCancelDownload={cancelDownload}
               onSelectModel={(file) => selectModel('asr', file)}
               onSelectLlm={(file) => selectModel('llm', file)}
-              goModels={() => setView('models')}
+              goModels={(tab) => { setModelTab(tab ?? 'asr'); setView('models') }}
             />
           </div>
           {view === 'editor' && editorPath && (
@@ -521,7 +542,7 @@ export default function App(): React.JSX.Element {
               modelError={modelError}
               onDownload={downloadModel}
               onCancelDownload={cancelDownload}
-              goModels={() => setView('models')}
+              goModels={(tab) => { setModelTab(tab ?? 'asr'); setView('models') }}
               onSelectModel={(file) => selectModel('asr', file)}
               onSelectLlm={(file) => selectModel('llm', file)}
             />
@@ -529,6 +550,7 @@ export default function App(): React.JSX.Element {
           {view === 'models' && (
             <ModelsView
               tab={modelTab}
+              onRefresh={refreshOverview}
               overview={overview}
               settings={settings}
               downloads={downloads}
@@ -541,6 +563,8 @@ export default function App(): React.JSX.Element {
           )}
           {view === 'settings' && (
             <SettingsPage
+              overview={overview}
+              onRefresh={refreshOverview}
               settings={settings}
               updateSettings={updateSettings}
               updateStatus={updateStatus}
@@ -551,6 +575,7 @@ export default function App(): React.JSX.Element {
         </div>
       </main>
     </div>
+    </ModelWorkProvider>
     </I18nProvider>
   )
 }

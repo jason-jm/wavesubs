@@ -1,5 +1,6 @@
 import type { BatchItem, TranslateConfig, TranslateContext, TranslationProvider } from './types'
-import { postJsonWithRetry } from './http'
+import { postJsonWithRetry, TranslationHttpError } from './http'
+import { cloudParallelism } from './types'
 import { buildSystemPrompt, buildUserContent, parseBatchResponse } from './prompt'
 
 /** Azure 的 URL 里必须带 api-version，用户没写就用这个 */
@@ -41,9 +42,14 @@ function azureUrl(baseUrl: string, deployment: string): string {
 /** OpenAI 的 /chat/completions 形态，以及和它只差 URL 与认证头的 Azure OpenAI */
 export class OpenAICompatibleProvider implements TranslationProvider {
   readonly name: string
+  readonly maxParallelBatches: number
+  private tokenLimit: 'max_tokens' | 'max_completion_tokens'
 
-  constructor(private config: TranslateConfig) {
+  constructor(private config: TranslateConfig, private bundledLlama = false) {
     this.name = config.protocol === 'azure' ? 'azure-openai' : 'openai-compatible'
+    this.maxParallelBatches = cloudParallelism(config.baseUrl)
+    this.tokenLimit = config.protocol === 'azure' || /^https:\/\/api\.openai\.com(?:\/|$)/i.test(config.baseUrl)
+      ? 'max_completion_tokens' : 'max_tokens'
   }
 
   async translateBatch(items: BatchItem[], ctx: TranslateContext): Promise<Map<number, string>> {
@@ -51,7 +57,7 @@ export class OpenAICompatibleProvider implements TranslationProvider {
     const body = JSON.stringify({
       // Azure 的模型由 URL 里的部署名决定，body 里的 model 会被忽略
       model: this.config.model,
-      temperature: 0.3,
+      ...(this.bundledLlama ? { temperature: 0.3 } : {}),
       messages: [
         { role: 'system', content: buildSystemPrompt(ctx) },
         { role: 'user', content: buildUserContent(items, ctx) }
@@ -72,34 +78,40 @@ export class OpenAICompatibleProvider implements TranslationProvider {
   }
 
   /**
-   * 单轮对话。目前只有画面文字的判别在用，所以走贪心解码 + 固定种子：
-   * 判别是分类，同一部片跑两遍必须给同一份答案。带随机性时实测同一集连跑三次
-   * 画面文字是 60 / 65 / 60 条，连哪几块该出都在变，既没法验证改动也不像个工具。
+   * 固定版 llama-server 支持确定性采样。云端模型自行提供兼容的采样默认值。
    */
   async chat(system: string, user: string, opts?: { signal?: AbortSignal; maxTokens?: number }): Promise<string> {
     const isAzure = this.config.protocol === 'azure'
-    const body = JSON.stringify({
+    const body = {
       model: this.config.model,
-      temperature: 0,
-      top_p: 1,
-      seed: 1,
-      max_tokens: opts?.maxTokens ?? 4000,
+      ...(this.bundledLlama ? { temperature: 0, top_p: 1, seed: 1 } : {}),
       messages: [
         { role: 'system', content: system },
         { role: 'user', content: user }
       ],
       ...noThinkingExtras(this.config.baseUrl)
-    })
+    }
     const url = isAzure
       ? azureUrl(this.config.baseUrl, this.config.model)
       : `${normalizeBaseUrl(this.config.baseUrl)}/chat/completions`
     const headers: Record<string, string> = isAzure
       ? { 'api-key': this.config.apiKey }
       : { authorization: `Bearer ${this.config.apiKey}` }
-    const data = (await postJsonWithRetry(url, headers, body, opts?.signal)) as {
-      choices?: Array<{ message?: { content?: string } }>
+    const request = async (field: typeof this.tokenLimit): Promise<string> => {
+      const data = (await postJsonWithRetry(url, headers, JSON.stringify({ ...body, [field]: opts?.maxTokens ?? 4000 }), opts?.signal)) as {
+        choices?: Array<{ message?: { content?: string } }>
+      }
+      return data.choices?.[0]?.message?.content ?? ''
     }
-    return data.choices?.[0]?.message?.content ?? ''
+    const field = this.tokenLimit
+    try { return await request(field) }
+    catch (err) {
+      if (!(err instanceof TranslationHttpError) || ![400, 422].includes(err.status) || err.param !== field) throw err
+      const alternate = field === 'max_tokens' ? 'max_completion_tokens' : 'max_tokens'
+      const reply = await request(alternate)
+      this.tokenLimit = alternate
+      return reply
+    }
   }
 }
 

@@ -5,6 +5,7 @@ import type {
   ModelsOverview,
   SettingsView
 } from '../../../shared/types'
+import { ModelFolder, modelErrorText } from '../components/ModelFolder'
 import { sizeLabel } from '../lib/models'
 import type { TranslationKey, Translate } from '../../../shared/i18n'
 import { useState } from 'react'
@@ -15,6 +16,7 @@ import { CloudPane } from './CloudPane'
 import { GlossaryPane } from './GlossaryPane'
 
 interface Props {
+  onRefresh: () => Promise<void>
   tab: ModelTab
   overview: ModelsOverview | null
   settings: SettingsView | null
@@ -65,6 +67,11 @@ function Meter({ value }: { value: number }): React.JSX.Element {
 
 function ModelRow(props: {
   model: ModelInfo
+  selected: boolean
+  busy: boolean
+  use: () => void
+  relink: () => void
+  forget: () => void
   kind: ModelKind
   dl?: ModelDownloadProgress
   t: Translate
@@ -73,6 +80,29 @@ function ModelRow(props: {
   onDelete: Props['onDelete']
 }): React.JSX.Element {
   const { model, kind, dl, t, onDownload, onCancel, onDelete } = props
+  if (model.local) {
+    const { origin, status, path } = model.local
+    return (
+      <div className="model-row model-local">
+        <div className="model-main">
+          <div className="model-name"><strong dir="auto">{model.name}</strong>
+            <span className={status === 'ready' ? 'tag tag-green' : 'tag tag-orange'}>{t(status === 'ready' ? (props.selected ? 'library.current' : 'models.installed') : status === 'missing' ? 'library.missing' : 'library.verify')}</span>
+          </div>
+          <p className="model-detail library-path" dir="auto">{path}</p>
+          <div className="model-meta">{t(origin === 'external' ? 'library.linked' : 'library.folder')} · {sizeLabel(model.sizeMB)}</div>
+        </div>
+        <div className="model-side library-buttons">
+          {status !== 'missing' && (!props.selected || status !== 'ready') && <button className="btn" disabled={props.busy} onClick={props.use}>{t(status === 'verify' ? 'library.testUse' : 'library.use')}</button>}
+          {origin === 'external' && <>
+            {status === 'missing' && <button className="btn" disabled={props.busy} onClick={props.relink}>{t('library.relink')}</button>}
+            <button className="btn btn-quiet" disabled={props.busy} onClick={props.forget}>{t('library.forget')}</button>
+          </>}
+          {model.local.canDelete && <button className="btn btn-quiet" disabled={props.busy}
+            onClick={() => onDelete(kind, model.file)}>{t('models.deleteTitle')}</button>}
+        </div>
+      </div>
+    )
+  }
   const fit = FITNESS[model.fitness]
   return (
     <div className={`model-row ${model.fitness === 'unfit' ? 'model-row-dim' : ''}`}>
@@ -135,9 +165,10 @@ function ModelRow(props: {
           </div>
         ) : model.installed ? (
           <>
+            {!props.selected && <button className="btn btn-quiet" disabled={props.busy} onClick={props.use}>{t('library.use')}</button>}
             <span className="installed">
               <Icon name="check" size={12} />
-              {t('models.installed')}
+              {t(props.selected ? 'library.current' : 'models.installed')}
             </span>
             <button
               className="btn btn-quiet btn-danger"
@@ -166,6 +197,15 @@ export function ModelsView(props: Props): React.JSX.Element {
   const { tab, overview, settings, downloads, error, onDownload, onCancel, onDelete } = props
   const t = useT()
   const [copied, setCopied] = useState<string | null>(null)
+
+  const [busy, setBusy] = useState(false)
+  const [localError, setLocalError] = useState('')
+  const [workLabel, setWorkLabel] = useState('')
+  async function act(action: () => Promise<unknown>, label = ''): Promise<void> {
+    setBusy(true); setLocalError(''); setWorkLabel(label)
+    try { await action(); await props.onRefresh() } catch (e) { setLocalError(modelErrorText(e)) }
+    finally { setBusy(false); setWorkLabel('') }
+  }
 
   if (!overview) return <p className="loading">{t('common.loadingModels')}</p>
 
@@ -231,6 +271,13 @@ export function ModelsView(props: Props): React.JSX.Element {
             </span>
           </div>
 
+          <ModelFolder overview={overview} onRefresh={props.onRefresh} />
+          <div className="library-toolbar">
+            <button className="btn btn-primary" disabled={busy} onClick={() => void act(() => window.waveSubs.linkModel(tab), t('library.testing'))}><Icon name="plus" size={14} />{t('library.add')}</button>
+            <button className="btn" disabled={busy} onClick={() => void act(props.onRefresh)}>{t('library.refresh')}</button>
+            <span>{workLabel || t('library.linkHint')}</span>
+          </div>
+          {localError && <div className="notice notice-error" role="alert"><Icon name="warning" /><p>{localError}</p></div>}
           {tab === 'asr' && (
             <p className="models-lang-guide">
               {t('models.lang.guide')}
@@ -245,6 +292,11 @@ export function ModelsView(props: Props): React.JSX.Element {
                 key={m.file}
                 model={m}
                 kind={tab === 'asr' ? 'asr' : 'llm'}
+                selected={m.file === (tab === 'asr' ? overview.selected : overview.llmSelected)}
+                busy={busy}
+                use={() => void act(() => m.local?.status === 'verify' ? window.waveSubs.verifyModel(tab, m.file) : window.waveSubs.selectModel(tab, m.file), m.local?.status === 'verify' ? t('library.testing') : '')}
+                relink={() => void act(() => window.waveSubs.linkModel(tab, m.file), t('library.testing'))}
+                forget={() => void act(() => window.waveSubs.forgetModel(tab, m.file))}
                 dl={downloads[m.file]}
                 t={t}
                 onDownload={onDownload}
@@ -263,7 +315,7 @@ export function ModelsView(props: Props): React.JSX.Element {
               {t(isMac ? 'models.openFinder' : 'models.openExplorer')}
             </button>
             <br />
-            {t('models.manualHint', { pattern: tab === 'asr' ? 'ggml-*.bin' : '*.gguf' })}
+            {t('models.manualHint', { pattern: tab === 'asr' ? '*.bin' : '*.gguf' })}
           </p>
         </>
       )}

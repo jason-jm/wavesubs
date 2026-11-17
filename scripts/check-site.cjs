@@ -44,6 +44,30 @@ app.on('window-all-closed', () => {})
 app.whenReady().then(async () => {
   await new Promise((r) => server.listen(0, '127.0.0.1', r))
   const base = `http://127.0.0.1:${server.address().port}/en/`
+  // Exercise the real form locally. Capture the draft URL before any GitHub navigation.
+  const feedback = new BrowserWindow({ show: false })
+  feedback.webContents.session.webRequest.onBeforeRequest(
+    { urls: ['https://*/*'] }, (_details, callback) => callback({ cancel: true })
+  )
+  for (const lang of LANGS) {
+    const route = lang === 'zh' ? '/feedback.html' : `/${lang}/feedback.html`
+    await feedback.loadURL(new URL(route + '?v=1.0.9&os=darwin&locale=en&email=private%40example.test', base).href)
+    const draft = await feedback.webContents.executeJavaScript(`(() => {
+      let url = ''
+      window.open = value => { url = value }
+      document.getElementById('f-msg').value = 'Test: 音频 & timing'
+      const button = document.querySelector('#fb-form button')
+      button.click()
+      return { url, hasEmail: !!document.querySelector('[type=email], [name=email]') }
+    })()`)
+    const url = new URL(draft.url)
+    const body = url.searchParams.get('body') || ''
+    ok(`${lang}: public GitHub draft contains only the message and app context`,
+      url.origin === 'https://github.com' && url.pathname === '/jason-jm/wavesubs/issues/new' &&
+      body === `Test: 音频 & timing\n\n---\nversion: 1.0.9\nos: darwin\nlocale: en\npage: ${lang}` &&
+      !draft.hasEmail && !decodeURIComponent(draft.url).includes('private@example.test'))
+  }
+  feedback.destroy()
   console.log('\n根页语言跳转：')
   const cases = [['ja-JP', 'ja/'], ['en-US', 'en/'], ['zh-CN', ''], ['zh-TW', ''], ['pt-BR', 'en/'], ['id-ID', 'id/'], ['ms-MY', 'ms/'], ['th', 'th/'], ['ru-RU', 'ru/'], ['de-AT', 'de/']]
   for (const [lang, want] of cases) {

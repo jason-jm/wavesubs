@@ -2656,3 +2656,22 @@ select optgroup {
   flex-wrap: wrap;
   justify-content: flex-end;
 }
+
+.library-folder { padding: 15px 18px; margin: 0 0 12px; }
+.library-heading, .library-toolbar, .library-buttons { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.library-heading { justify-content: space-between; flex-wrap: nowrap; }
+.library-heading > div { min-width: 0; }
+.library-heading h3 { margin: 0 0 5px; font-size: 14px; }
+.library-folder p { margin: 5px 0; font-size: 12px; }
+.library-path { overflow-wrap: anywhere; color: var(--text-2); unicode-bidi: plaintext; }
+.library-plan { border-top: 1px solid var(--line); margin-top: 12px; padding-top: 8px; }
+.library-plan .library-buttons { margin-top: 10px; }
+.library-toolbar { margin: 12px 0; }
+.library-toolbar > span, .library-progress { font-size: 12px; color: var(--text-2); }
+.library-progress { display: grid; gap: 5px; margin: 10px 0; }
+.library-progress progress { width: 100%; accent-color: var(--accent); }
+.library-alert { color: var(--text-1); background: var(--accent-quiet); padding: 8px 10px; border-radius: 7px; overflow-wrap: anywhere; }
+.library-alert svg { vertical-align: text-bottom; }
+.model-local .model-name { flex-wrap: wrap; }
+.model-local .model-name strong { overflow-wrap: anywhere; }
+.model-local .model-main { min-width: 0; }
