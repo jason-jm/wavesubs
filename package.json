@@ -1,7 +1,7 @@
 {
   "name": "wavesubs",
   "productName": "Wave Subs",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Generate and translate subtitles from any video with local AI (macOS / Windows)",
   "private": true,
   "type": "module",

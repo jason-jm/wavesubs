@@ -9,7 +9,7 @@ import { basename, join, relative, resolve } from 'node:path'
 import { setTimeout as sleep } from 'node:timers/promises'
 
 const [stage, exe, scratchArg] = process.argv.slice(2)
-assert.ok(['legacy','upgrade','custom','restart','offline','reconnected'].includes(stage))
+assert.ok(['legacy','upgrade','custom','restart','offline','reconnected','linked','replaced'].includes(stage))
 const scratch = await realpath(scratchArg)
 const profile = process.env.WAVESUBS_QA_PROFILE ?? join(scratch, '用户 资料')
 const original = join(profile, 'models')
@@ -88,17 +88,25 @@ try {
   }
   assert.ok(ready,'renderer did not finish mounting')
   const info = await call('appInfo')
-  const expected = stage === 'legacy' ? '1.0.9' : JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8')).version
+  const expected = process.env.WAVESUBS_QA_EXPECTED_VERSION || (stage === 'legacy' ? '1.0.9' : JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8')).version)
   assert.equal(info.version,expected)
   const overview = await call('modelsOverview')
-  assert.equal(relative(overview.dir,['legacy','upgrade'].includes(stage) ? original : root),'')
+  assert.equal(relative(overview.dir,['legacy','upgrade','linked','replaced'].includes(stage) ? original : root),'')
   if (stage === 'legacy') {
     await call('updateSettings',{language:'zh-Hans',updateCheck:false,translateEnabled:false})
     await call('selectModel','asr','ggml-tiny.bin')
-  } else if (stage === 'upgrade') {
+  } else if (stage === 'replaced') {
+    assert.equal(overview.folderOnline, false)
+    await assert.rejects(call('downloadModel', 'llm', 'Qwen3-1.7B-Q8_0.gguf'), /无法使用原位置|reconnect|library\.offline/i)
+    assert.deepEqual(await readdir(original), [])
+  } else if (stage === 'upgrade' || stage === 'linked') {
     assert.equal((await call('getSettings')).language,'zh-Hans')
     assert.equal(overview.selected,'ggml-tiny.bin')
     assert.ok(overview.models.find(m => m.file === 'ggml-tiny.bin').installed)
+    if (stage === 'linked') {
+      assert.equal(overview.folderOnline, true)
+      assert.match(await readFile(join(original,'.wavesubs-library-id'),'utf8'), /^[a-f\d-]{36}$/i)
+    }
   } else if (stage === 'custom') {
     assert.equal(await call('verifyModel','asr',customName),customName)
     if (llm) assert.equal(await call('verifyModel','llm','root/'+llmName),'root/'+llmName)

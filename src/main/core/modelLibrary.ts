@@ -159,6 +159,34 @@ export class ModelLibrary {
   // A remount, hard link, or backup restore may change filesystem metadata without changing any bytes.
   private hashes = new Map<string, { stamp: Stamp; result: Promise<{ stamp: Stamp; digest: string }> }>()
 
+  private recognizing?: { root: string; promise: Promise<void> }
+
+  private async redirectedDefault(): Promise<boolean> {
+    return !this.storage.library.root && (await lstat(this.defaultRoot).catch(() => null))?.isSymbolicLink() === true
+  }
+
+  // Before the folder picker existed, some users moved models with a symlink or Windows junction.
+  // An empty replacement volume at that path is not evidence that it belongs to this profile.
+  private async needsConfirmation(): Promise<boolean> {
+    const data = this.storage.library
+    return !data.folderId && !data.readOnlyRoot && (Boolean(data.root) || await this.redirectedDefault())
+  }
+
+  private async recognizeFolder(file: string, verified: Stamp): Promise<void> {
+    const root = this.root
+    if (!await this.needsConfirmation()) return
+    if (this.recognizing?.root === root) return this.recognizing.promise
+    const promise = (async () => {
+      if (!sameStamp(verified, await stampOf(file))) throw new LocalizedError('library.changed', { file: basename(file) })
+      const identity = await identifyFolder(root)
+      const data = this.storage.library
+      if (this.root === root && !data.folderId && !data.readOnlyRoot) this.storage.saveLibrary({ ...data, ...identity })
+    })()
+    this.recognizing = { root, promise }
+    try { await promise }
+    finally { if (this.recognizing?.promise === promise) this.recognizing = undefined }
+  }
+
   private async digestAt(path: string, current: Stamp): Promise<string> {
     let cached = this.hashes.get(path)
     if (!cached || !sameStamp(current, cached.stamp)) {
@@ -188,17 +216,21 @@ export class ModelLibrary {
   }
 
   async online(): Promise<boolean> {
-    if (!this.storage.library.root) return true // A fresh install creates its default directory on first download.
     const expected = this.storage.library.folderId
     if (expected) return (await readFolderId(this.root).catch(() => null)) === expected
+    if (!this.storage.library.root && !await this.redirectedDefault()) return true // Created on first download.
     return stat(this.root).then(s => s.isDirectory(), () => false)
+  }
+
+  private async requireWritableRoot(): Promise<void> {
+    if (!await this.online() || await this.needsConfirmation()) throw new LocalizedError('library.offline', { path: this.root })
+    if (this.storage.library.readOnlyRoot) throw new LocalizedError('library.readOnly')
   }
 
   async writable(kind: ModelKind): Promise<string> {
     const dir = kindDir(this.root, kind)
-    if (!await this.online()) throw new LocalizedError('library.offline', { path: this.root })
-    if (this.storage.library.readOnlyRoot) throw new LocalizedError('library.readOnly')
-    if (!this.storage.library.root) await mkdir(this.root, { recursive: true })
+    await this.requireWritableRoot()
+    if (!this.storage.library.root && !this.storage.library.folderId) await mkdir(this.root, { recursive: true })
     if (kind === 'llm') {
       if ((await lstat(dir).catch(() => null))?.isSymbolicLink()) throw new LocalizedError('library.conflict', { file: dir })
       try { await mkdir(dir) } catch (e) { if ((e as NodeJS.ErrnoException).code !== 'EEXIST') throw e }
@@ -208,8 +240,7 @@ export class ModelLibrary {
   }
 
   async canDelete(kind: ModelKind, name: string): Promise<void> {
-    if (!await this.online()) throw new LocalizedError('library.offline', { path: this.root })
-    if (this.storage.library.readOnlyRoot) throw new LocalizedError('library.readOnly')
+    await this.requireWritableRoot()
     const dir = kindDir(this.root, kind)
     const path = join(dir, name)
     if (!official(kind, name) || !await plainParent(this.root, path) ||
@@ -232,10 +263,14 @@ export class ModelLibrary {
     const info = await lstat(path).catch(() => null)
     if (!info?.isFile()) return { installed: false }
     const e = this.storage.library.entries.find(e => e.kind === kind && e.origin === 'folder' && !e.atRoot && e.location === name)
-    if (e && await this.matches(path, info, e)) return { installed: true }
+    if (e && await this.matches(path, info, e)) {
+      await this.recognizeFolder(path, info)
+      return { installed: true }
+    }
     if (!e && !this.storage.library.root) {
       const spec = kind === 'asr' ? findModelSpec(name) : findLocalLlmSpec(name)
       if (spec && await this.digestAt(path, info).catch(() => null) === spec.sha256) {
+        await this.recognizeFolder(path, info)
         const data = this.storage.library
         if (!data.root && !data.entries.some(entry => entry.kind === kind && entry.id === name))
           this.storage.saveLibrary({ ...data, entries: [...data.entries,
@@ -315,14 +350,13 @@ export class ModelLibrary {
       if (!sameFile(before, stamp) || before.size !== stamp.size || before.mtimeMs !== stamp.mtimeMs)
         throw new LocalizedError('library.changed', { file: name })
     }
-    const next = this.storage.library.entries.filter(e => !known || e.kind !== kind || e.id !== known.id)
     const catalogue = kind === 'asr' ? findModelSpec(name) : findLocalLlmSpec(name)
     if (managed && canonical && catalogue && digest !== catalogue.sha256) throw new LocalizedError('error.modelChecksum')
+    if (managed) await this.recognizeFolder(path, stamp)
+    const next = this.storage.library.entries.filter(e => !known || e.kind !== kind || e.id !== known.id)
     next.push({ id, kind, origin: managed ? 'folder' : 'external', atRoot: managed && atRoot || undefined,
       location: managed ? name : path, stamp, digest: digest!, bookmark: opts.bookmark ?? known?.bookmark })
-    const data = this.storage.library
-    const identity = managed && data.root && !data.folderId && !data.readOnlyRoot ? await identifyFolder(data.root) : {}
-    this.storage.saveLibrary({ ...this.storage.library, ...identity, entries: next }, opts.select ? { kind, id } : undefined)
+    this.storage.saveLibrary({ ...this.storage.library, entries: next }, opts.select ? { kind, id } : undefined)
     return id
   }
 
@@ -334,6 +368,7 @@ export class ModelLibrary {
       const current = await stampOf(path).catch(() => null)
       if (!current) throw new LocalizedError('library.offline', { path })
       if (!await this.matches(path, current, entry)) throw new LocalizedError('library.changed', { file: basename(path) })
+      if (entry.origin === 'folder') await this.recognizeFolder(path, current)
       return { path, cacheKey: entry.origin === 'folder' && official(kind, id) ? id : 'sha256-' + entry.digest }
     }
     if (id !== basename(id)) throw new LocalizedError('error.unknownModel', { file: id })
@@ -343,6 +378,7 @@ export class ModelLibrary {
     const spec = kind === 'asr' ? findModelSpec(id) : findLocalLlmSpec(id)
     const checked = await checkedHash(path)
     if (checked.digest !== spec?.sha256) throw new LocalizedError('error.modelChecksum')
+    await this.recognizeFolder(path, checked.stamp)
     const data = this.storage.library
     if (!data.entries.some(e => e.kind === kind && e.id === id)) {
       this.storage.saveLibrary({ ...data, entries: [...data.entries, { id, kind, origin: 'folder', location: id, ...checked }] })
@@ -359,9 +395,10 @@ export class ModelLibrary {
   private async inventory(): Promise<DiskFile[]> {
     const files = (await Promise.all([diskFiles(this.root, 'asr', true), diskFiles(this.root, 'llm', true), diskFiles(this.root, 'llm', true, true)])).flat()
     const entries = this.storage.library.entries
-    // The default directory belongs to Wave Subs. A user-selected directory may be a shared model collection.
+    // Redirected and user-selected folders may be shared with another app.
+    const owned = !this.storage.library.root && !await this.redirectedDefault()
     return files.filter(f => !entries.some(e => e.origin === 'external' && relative(e.location, f.path) === '') &&
-      (!this.storage.library.root || entries.some(e => e.origin === 'folder' && relative(this.entryPath(e), f.path) === '')))
+      (owned || entries.some(e => e.origin === 'folder' && relative(this.entryPath(e), f.path) === '')))
   }
 
   async plan(dir: string): Promise<ModelFolderPlan> {
@@ -369,11 +406,16 @@ export class ModelLibrary {
     const src = await realpath(this.root).catch(() => this.root)
     const original = await stat(src).catch(() => null)
     const sourceOnline = await this.online()
-    if (sourceOnline && (relative(src, dest) === '' || (original?.ino && sameFile(original, await stat(dest))))) throw new LocalizedError('library.nested')
+    if (sourceOnline && (relative(src, dest) === '' || (original?.ino && sameFile(original, await stat(dest))))) {
+      // Explicit selection also confirms an intentionally empty redirected folder.
+      if (await this.redirectedDefault() || await this.needsConfirmation()) return { dir: dest, count: 0, bytes: 0, sourceOnline }
+      throw new LocalizedError('library.nested')
+    }
     if (!(await stat(dest)).isDirectory()) throw new LocalizedError('library.offline', { path: dest })
     await access(dest, constants.R_OK)
     let moveUnavailable: ModelFolderPlan['moveUnavailable']
     if (inside(src, dest) || inside(dest, src)) moveUnavailable = 'nested'
+    else if (sourceOnline && await this.needsConfirmation()) moveUnavailable = 'unreadable'
     else if (!await access(dest, constants.W_OK).then(() => true, () => false)) moveUnavailable = 'readonly'
     let files: DiskFile[] = []
     if (sourceOnline && !moveUnavailable) {
@@ -455,7 +497,7 @@ export class ModelLibrary {
       plan.moveUnavailable === 'readonly' ? 'library.readOnly' : 'library.offline', { path: this.root })
     const dest = plan.dir
     const data = this.storage.library
-    if (!move) {
+    if (!move || plan.count === 0) {
       this.storage.saveLibrary({ ...data, root: dest, bookmark, ...await identifyFolder(dest) })
       return { retained: 0 }
     }

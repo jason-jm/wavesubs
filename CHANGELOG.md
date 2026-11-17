@@ -2,6 +2,10 @@
 
 [中文版](./CHANGELOG.zh-CN.md)
 
+## 1.0.11 — 2026-11-18
+
+- Users who redirected the old model folder with a Windows junction or a macOS symlink can keep using their models after upgrading. Wave Subs checks a verified model before trusting the disk. If another drive appears at the old path, new downloads and deletion are blocked. An intentionally empty directory can be confirmed in the model folder picker.
+
 ## 1.0.10 — 2026-11-18
 
 - Choose where Wave Subs stores models, or use an existing Whisper GGML or GGUF file in place. Models can live on another drive. Reconnecting the drive restores a saved selection. Interrupted moves protect original files and clean up unfinished copies. A small identifier in writable model folders prevents downloads to a different drive mounted at the same path.

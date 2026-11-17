@@ -218,6 +218,50 @@ async function check(): Promise<void> {
     assert.equal(readLibrarySettings({root: finalDir, entries: {}}).root, finalDir)
     passed('malformed old settings retain the selected folder without trusting invalid entries or journals')
 
+    const volume = join(dir, 'legacy-volume'), redirect = join(dir, 'legacy-models')
+    const previous = new DiskSettings(join(dir, 'previous-settings'))
+    const reopened = () => new ModelLibrary(previous, redirect, probe)
+    await mkdir(volume)
+    await symlink(volume, redirect, process.platform === 'win32' ? 'junction' : 'dir')
+    const redirected = reopened()
+    // The first upgrade may run with a different, empty disk already at the old path.
+    await assert.rejects(redirected.writable('llm'), /library.offline/)
+    await assert.rejects(redirected.canDelete('asr', 'ggml-tiny.bin'), /library.offline/)
+    assert.deepEqual(await readdir(volume), [])
+    const file = join(volume, '手动搬过的模型.bin')
+    await writeFile(file, original)
+    const linkedId = await redirected.verify('asr', file, { select: true })
+    assert.ok(previous.library.folderId)
+    const stable = (await redirected.resolve('asr', linkedId)).cacheKey
+    await redirected.writable('llm')
+    await rename(volume, volume + '-absent')
+    assert.equal(await reopened().online(), false)
+    await mkdir(volume)
+    assert.equal(await reopened().online(), false)
+    await assert.rejects(reopened().writable('llm'), /library.offline/)
+    await assert.rejects(reopened().resolve('asr', linkedId), /library.offline/)
+    assert.deepEqual(await readdir(volume), [])
+    await rm(volume, { recursive: true }); await rename(volume + '-absent', volume)
+    assert.equal((await reopened().resolve('asr', linkedId)).cacheKey, stable)
+    passed('legacy symlink or Windows junction: first upgrade on a substitute, disk removal, same-path replacement and reconnection')
+
+    const older = { ...previous.library, root: volume, folderId: undefined }
+    previous.saveLibrary(older)
+    await assert.rejects(reopened().writable('llm'), /library.offline/)
+    await Promise.all([reopened().resolve('asr', linkedId), reopened().resolve('asr', linkedId)])
+    assert.ok(previous.library.folderId)
+    assert.equal((await reopened().resolve('asr', linkedId)).cacheKey, stable)
+    passed('previously saved folder without a volume marker is identified from its verified model')
+
+    previous.saveLibrary({ entries: [] })
+    await rm(redirect)
+    const empty = join(dir, 'confirmed-empty'); await mkdir(empty)
+    await symlink(empty, redirect, process.platform === 'win32' ? 'junction' : 'dir')
+    assert.equal((await reopened().plan(empty)).count, 0)
+    await reopened().change(empty, false, undefined, signal(), () => {})
+    assert.equal(await reopened().writable('llm'), join(empty, 'llm'))
+    passed('explicitly selecting the actual destination of an empty old link enables downloads without moving files')
+
     console.log('Passed',count,'model-library scenarios.')
   } finally { await chmod(dst,0o755).catch(()=>{}); await rm(dir,{recursive:true,force:true}) }
 }

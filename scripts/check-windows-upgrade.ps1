@@ -8,6 +8,7 @@ function Get-VerifiedFile($url, $name, $sha) {
   return $file
 }
 $old = Get-VerifiedFile 'https://github.com/jason-jm/wavesubs/releases/download/v1.0.9/Wave.Subs.Setup.1.0.9.exe' 'legacy.exe' 'fb743bdf4829c7cdce666fad9d1c678465a82c31d1679d3a7658a1b46d977685'
+$previous = Get-VerifiedFile 'https://github.com/jason-jm/wavesubs/releases/download/v1.0.10/Wave.Subs.Setup.1.0.10.exe' 'previous.exe' '5447ad1991dc38b1a09e1fdf02ddeae1a5f1ffd7d96917959041d22c25db88c5'
 $env:WAVESUBS_QA_TINY = Get-VerifiedFile 'https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.bin' 'tiny.bin' 'be07e048e1e599ad46341c8d2a135645097a538221678b7acdd1b1919c6e1b21'
 $env:WAVESUBS_QA_LLM = Get-VerifiedFile 'https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/9217f5db79a29953eb74d5343926648285ec7e67/qwen2.5-0.5b-instruct-q4_k_m.gguf' 'qwen.gguf' '74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db'
 $env:WAVESUBS_QA_AUDIO = Get-VerifiedFile 'https://raw.githubusercontent.com/ggml-org/whisper.cpp/f049fff95a089aa9969deb009cdd4892b3e74916/samples/jfk.wav' 'speech.wav' '59dfb9a4acb36fe2a2affc14bacbee2920ff435cb13cc314a08c13f66ba7860e'
@@ -23,11 +24,41 @@ function Test-Stage($stage, $exe) {
   if ($LASTEXITCODE -ne 0) { throw "Failed acceptance stage $stage" }
 }
 $app = Join-Path $installDir 'Wave Subs.exe'
+$normalProfile = $env:WAVESUBS_QA_PROFILE
+$linkProfile = Join-Path $env:LOCALAPPDATA 'WaveSubs QA 旧版联接'
+$linkPath = Join-Path $linkProfile 'models'
+$linkTarget = Join-Path $qa '旧版模型盘'
+
 Install-TestPackage $old
 Test-Stage 'legacy' $app
+$env:WAVESUBS_QA_PROFILE = $linkProfile
+Test-Stage 'legacy' $app
+Copy-Item -LiteralPath $linkPath -Destination $linkTarget -Recurse
+Remove-Item -LiteralPath $linkPath -Recurse
+New-Item -ItemType Junction -Path $linkPath -Target $linkTarget | Out-Null
+
+Install-TestPackage $previous
+$env:WAVESUBS_QA_EXPECTED_VERSION = '1.0.10'
+Test-Stage 'upgrade' $app
+$env:WAVESUBS_QA_PROFILE = $normalProfile
+Test-Stage 'upgrade' $app
+Test-Stage 'custom' $app
+Remove-Item Env:WAVESUBS_QA_EXPECTED_VERSION
+
 $version = (Get-Content package.json | ConvertFrom-Json).version
 Install-TestPackage (Resolve-Path "release/Wave Subs Setup $version.exe")
-foreach ($stage in 'upgrade','custom','restart','offline') { Test-Stage $stage $app }
+$env:WAVESUBS_QA_PROFILE = $linkProfile
+Test-Stage 'linked' $app
+Move-Item -LiteralPath $linkTarget -Destination "$linkTarget-away"
+New-Item -ItemType Directory -Path $linkTarget | Out-Null
+Test-Stage 'replaced' $app
+Remove-Item -LiteralPath $linkTarget
+Move-Item -LiteralPath "$linkTarget-away" -Destination $linkTarget
+Test-Stage 'linked' $app
+
+$env:WAVESUBS_QA_PROFILE = $normalProfile
+Test-Stage 'restart' $app
+Test-Stage 'offline' $app
 $portable = Join-Path $qa 'Portable'
 Expand-Archive -LiteralPath "release/Wave Subs-$version-win.zip" -DestinationPath $portable
 Test-Stage 'reconnected' (Join-Path $portable 'Wave Subs.exe')
